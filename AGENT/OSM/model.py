@@ -108,8 +108,16 @@ class CityModel(mesa.Model):
         print(f"Connecting to DB at: {DB_PATH}")
         try:
             self.con = duckdb.connect(DB_PATH, read_only=True)
-            self.con.install_extension("spatial")
-            self.con.load_extension("spatial")
+            
+            # Try to load spatial extension, but continue if it fails
+            try:
+                self.con.install_extension("spatial")
+                self.con.load_extension("spatial")
+                print("[OK] Spatial extension loaded")
+            except Exception as e:
+                print(f"[WARN] Could not load spatial extension: {e}")
+                print("[INFO] Continuing without spatial extension - basic operations will still work")
+            
             print("[OK] Database connected")
         except Exception as e:
             print(f"[ERROR] Database connection failed: {e}")
