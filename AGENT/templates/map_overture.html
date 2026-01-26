@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Overture Maps DuckDB - Interactive Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #map { 
+            position: absolute; 
+            top: 0; 
+            bottom: 0; 
+            width: 100%; 
+        }
+        .info-panel { 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 350px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .info-panel h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .stat-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .control-section {
+            margin: 15px 0;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 4px;
+        }
+        .control-section h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #34495e;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 2px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+        .layer-toggle {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .layer-toggle input {
+            margin-right: 8px;
+        }
+        .layer-toggle label {
+            font-size: 13px;
+            cursor: pointer;
+        }
+        #agent-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 4px;
+            display: none;
+            font-size: 12px;
+        }
+        .legend {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .legend-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border: 1px solid #333;
+            border-radius: 2px;
+        }
+        .loading {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="info-panel">
+        <h3>🗺️ Overture Maps Viewer</h3>
+        
+        <div id="stats" class="loading">Loading statistics...</div>
+        
+        <div class="control-section">
+            <h4>📊 Layers</h4>
+            <div class="layer-toggle">
+                <input type="checkbox" id="toggle-buildings" checked>
+                <label for="toggle-buildings">Buildings</label>
+            </div>
+            <div class="layer-toggle">
+                <input type="checkbox" id="toggle-places" checked>
+                <label for="toggle-places">Places (POIs)</label>
+            </div>
+            <div class="layer-toggle">
+                <input type="checkbox" id="toggle-roads" checked>
+                <label for="toggle-roads">Roads</label>
+            </div>
+            <div class="layer-toggle">
+                <input type="checkbox" id="toggle-connectors">
+                <label for="toggle-connectors">Intersections</label>
+            </div>
+            <div class="layer-toggle">
+                <input type="checkbox" id="toggle-agents" checked>
+                <label for="toggle-agents">Agents</label>
+            </div>
+        </div>
+        
+        <div class="control-section">
+            <h4>🤖 Simulation</h4>
+            <button onclick="stepSimulation()">▶️ Step</button>
+            <button onclick="toggleAutoRun()">⏯️ Auto Run</button>
+            <button onclick="resetView()">🔄 Reset View</button>
+            <div style="margin-top: 10px; font-size: 12px;">
+                Steps: <span id="step-count">0</span>
+            </div>
+        </div>
+        
+        <div id="agent-info"></div>
+        
+        <div class="legend">
+            <h4 style="margin: 0 0 10px 0;">Legend</h4>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #3498db; opacity: 0.7;"></div>
+                <span>Buildings</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e74c3c;"></div>
+                <span>Places/POIs</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f39c12;"></div>
+                <span>Roads</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2ecc71;"></div>
+                <span>Agents</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize map centered on Barcelona Eixample
+        const map = L.map('map').setView([41.39, 2.166], 15);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Layer groups
+        let buildingsLayer = L.layerGroup().addTo(map);
+        let placesLayer = L.layerGroup().addTo(map);
+        let roadsLayer = L.layerGroup().addTo(map);
+        let connectorsLayer = L.layerGroup();
+        let agentsLayer = L.layerGroup().addTo(map);
+        
+        let autoRunInterval = null;
+        let stepCount = 0;
+        
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                
+                let html = '<div class="stats-grid">';
+                html += `<div class="stat-item"><div class="stat-label">Buildings</div><div class="stat-value">${stats.buildings || 0}</div></div>`;
+                html += `<div class="stat-item"><div class="stat-label">Places</div><div class="stat-value">${stats.places || 0}</div></div>`;
+                html += `<div class="stat-item"><div class="stat-label">Roads</div><div class="stat-value">${stats.transportation_segments || 0}</div></div>`;
+                html += `<div class="stat-item"><div class="stat-label">Intersections</div><div class="stat-value">${stats.transportation_connectors || 0}</div></div>`;
+                html += '</div>';
+                
+                if (stats.bbox) {
+                    const bounds = [[stats.bbox.minLat, stats.bbox.minLon], [stats.bbox.maxLat, stats.bbox.maxLon]];
+                    map.fitBounds(bounds);
+                }
+                
+                document.getElementById('stats').innerHTML = html;
+            } catch (error) {
+                document.getElementById('stats').innerHTML = '<div class="loading">Error loading statistics</div>';
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        // Load buildings
+        async function loadBuildings() {
+            try {
+                const response = await fetch('/api/buildings');
+                const data = await response.json();
+                
+                buildingsLayer.clearLayers();
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        const buildingClass = feature.properties.building_class;
+                        let color = '#3498db';
+                        if (buildingClass === 'residential') color = '#9b59b6';
+                        else if (buildingClass === 'commercial') color = '#e67e22';
+                        else if (buildingClass === 'mixed_use') color = '#1abc9c';
+                        
+                        return {
+                            fillColor: color,
+                            fillOpacity: 0.6,
+                            color: '#2c3e50',
+                            weight: 1
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        const props = feature.properties;
+                        layer.bindPopup(`
+                            <strong>${props.name}</strong><br>
+                            Class: ${props.building_class}<br>
+                            Height: ${props.height ? props.height.toFixed(1) + 'm' : 'N/A'}<br>
+                            Floors: ${props.num_floors || 'N/A'}
+                        `);
+                    }
+                }).addTo(buildingsLayer);
+                
+                console.log(`Loaded ${data.features.length} buildings`);
+            } catch (error) {
+                console.error('Error loading buildings:', error);
+            }
+        }
+        
+        // Load places (POIs)
+        async function loadPlaces() {
+            try {
+                const response = await fetch('/api/places');
+                const data = await response.json();
+                
+                placesLayer.clearLayers();
+                L.geoJSON(data, {
+                    pointToLayer: function(feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            radius: 6,
+                            fillColor: '#e74c3c',
+                            color: '#c0392b',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.8
+                        });
+                    },
+                    onEachFeature: function(feature, layer) {
+                        const props = feature.properties;
+                        layer.bindPopup(`
+                            <strong>${props.name}</strong><br>
+                            Category: ${props.category}<br>
+                            Confidence: ${(props.confidence * 100).toFixed(1)}%
+                        `);
+                    }
+                }).addTo(placesLayer);
+                
+                console.log(`Loaded ${data.features.length} places`);
+            } catch (error) {
+                console.error('Error loading places:', error);
+            }
+        }
+        
+        // Load transportation segments (roads)
+        async function loadRoads() {
+            try {
+                const response = await fetch('/api/transportation_segments');
+                const data = await response.json();
+                
+                roadsLayer.clearLayers();
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        const roadClass = feature.properties.class;
+                        let color = '#f39c12';
+                        let weight = 2;
+                        
+                        if (roadClass === 'primary') {
+                            color = '#e74c3c';
+                            weight = 3;
+                        } else if (roadClass === 'secondary') {
+                            color = '#f39c12';
+                            weight = 2;
+                        } else if (roadClass === 'residential') {
+                            color = '#95a5a6';
+                            weight = 1.5;
+                        } else if (roadClass === 'pedestrian') {
+                            color = '#16a085';
+                            weight = 1;
+                        }
+                        
+                        return {
+                            color: color,
+                            weight: weight,
+                            opacity: 0.7
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        const props = feature.properties;
+                        layer.bindPopup(`
+                            <strong>${props.name}</strong><br>
+                            Class: ${props.class}<br>
+                            Surface: ${props.road_surface || 'N/A'}
+                        `);
+                    }
+                }).addTo(roadsLayer);
+                
+                console.log(`Loaded ${data.features.length} road segments`);
+            } catch (error) {
+                console.error('Error loading roads:', error);
+            }
+        }
+        
+        // Load transportation connectors
+        async function loadConnectors() {
+            try {
+                const response = await fetch('/api/transportation_connectors');
+                const data = await response.json();
+                
+                connectorsLayer.clearLayers();
+                L.geoJSON(data, {
+                    pointToLayer: function(feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            radius: 3,
+                            fillColor: '#9b59b6',
+                            color: '#8e44ad',
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.7
+                        });
+                    }
+                }).addTo(connectorsLayer);
+                
+                console.log(`Loaded ${data.features.length} connectors`);
+            } catch (error) {
+                console.error('Error loading connectors:', error);
+            }
+        }
+        
+        // Load agents
+        async function loadAgents() {
+            try {
+                const response = await fetch('/api/agents');
+                const data = await response.json();
+                
+                agentsLayer.clearLayers();
+                L.geoJSON(data, {
+                    pointToLayer: function(feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            radius: 8,
+                            fillColor: '#2ecc71',
+                            color: '#27ae60',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.9
+                        });
+                    },
+                    onEachFeature: function(feature, layer) {
+                        layer.on('click', async function() {
+                            const agentId = feature.properties.id;
+                            const response = await fetch(`/api/agent/${agentId}`);
+                            const agentData = await response.json();
+                            
+                            let html = `<h4>Agent ${agentId}</h4>`;
+                            html += `<div>Location: ${agentData.location.lon.toFixed(5)}, ${agentData.location.lat.toFixed(5)}</div>`;
+                            
+                            if (agentData.nearby_places && agentData.nearby_places.length > 0) {
+                                html += `<div style="margin-top: 10px;"><strong>Nearby Places:</strong></div>`;
+                                agentData.nearby_places.slice(0, 5).forEach(place => {
+                                    html += `<div style="margin: 5px 0; padding: 5px; background: white; border-radius: 3px;">`;
+                                    html += `${place.name} (${place.category})<br>`;
+                                    html += `<small>${place.dist.toFixed(0)}m away</small>`;
+                                    html += `</div>`;
+                                });
+                            }
+                            
+                            document.getElementById('agent-info').innerHTML = html;
+                            document.getElementById('agent-info').style.display = 'block';
+                        });
+                    }
+                }).addTo(agentsLayer);
+                
+                console.log(`Loaded ${data.features.length} agents`);
+            } catch (error) {
+                console.error('Error loading agents:', error);
+            }
+        }
+        
+        // Simulation controls
+        async function stepSimulation() {
+            try {
+                const response = await fetch('/api/step', { method: 'POST' });
+                const data = await response.json();
+                stepCount = data.step;
+                document.getElementById('step-count').textContent = stepCount;
+                await loadAgents();
+            } catch (error) {
+                console.error('Error stepping simulation:', error);
+            }
+        }
+        
+        function toggleAutoRun() {
+            if (autoRunInterval) {
+                clearInterval(autoRunInterval);
+                autoRunInterval = null;
+            } else {
+                autoRunInterval = setInterval(stepSimulation, 1000);
+            }
+        }
+        
+        function resetView() {
+            map.setView([41.39, 2.166], 15);
+        }
+        
+        // Layer toggles
+        document.getElementById('toggle-buildings').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(buildingsLayer);
+            } else {
+                map.removeLayer(buildingsLayer);
+            }
+        });
+        
+        document.getElementById('toggle-places').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(placesLayer);
+            } else {
+                map.removeLayer(placesLayer);
+            }
+        });
+        
+        document.getElementById('toggle-roads').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(roadsLayer);
+            } else {
+                map.removeLayer(roadsLayer);
+            }
+        });
+        
+        document.getElementById('toggle-connectors').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(connectorsLayer);
+            } else {
+                map.removeLayer(connectorsLayer);
+            }
+        });
+        
+        document.getElementById('toggle-agents').addEventListener('change', function(e) {
+            if (e.target.checked) {
+                map.addLayer(agentsLayer);
+            } else {
+                map.removeLayer(agentsLayer);
+            }
+        });
+        
+        // Initialize data
+        loadStats();
+        loadBuildings();
+        loadPlaces();
+        loadRoads();
+        loadAgents();
+    </script>
+</body>
+</html>
