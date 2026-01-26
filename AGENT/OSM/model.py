@@ -5,10 +5,18 @@ from shapely import wkt
 from shapely.geometry import Point, LineString
 import random
 import os
+import sys
+from pathlib import Path
 from collections import defaultdict
 
-# Path to the DuckDB database
-DB_PATH = r"d:\IaaC\2ND YEAR\THESIS\CODE EXPLORATIONS\Environment\Term02\DuckDB_OSM_Pipeline\OSM\eixample_osm.duckdb"
+# Add project root to path for imports
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
+from config import get_db_path
+
+# Path to the DuckDB database - now configurable
+DB_PATH = str(get_db_path())
 
 class CityAgent(mg.GeoAgent):
     """An agent that walks around the city"""
