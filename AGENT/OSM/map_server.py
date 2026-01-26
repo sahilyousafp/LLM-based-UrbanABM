@@ -30,8 +30,14 @@ city_model = CityModel(num_agents=100)
 def get_db_connection():
     """Get DuckDB connection"""
     con = duckdb.connect(DB_PATH, read_only=True)
-    con.install_extension("spatial")
-    con.load_extension("spatial")
+    
+    # Try to load spatial extension, but continue if it fails
+    try:
+        con.install_extension("spatial")
+        con.load_extension("spatial")
+    except Exception as e:
+        print(f"Warning: Could not load spatial extension: {e}")
+    
     return con
 
 @app.get("/", response_class=HTMLResponse)
