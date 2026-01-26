@@ -5,6 +5,14 @@ from fastapi.staticfiles import StaticFiles
 import duckdb
 from shapely import wkt
 import json
+import sys
+from pathlib import Path
+
+# Add project root to path for imports
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
+from config import get_db_path
 from model import CityModel
 
 app = FastAPI()
@@ -13,8 +21,8 @@ templates = Jinja2Templates(directory="templates")
 templates.env.auto_reload = True
 templates.env.cache_size = 0
 
-# Database path
-DB_PATH = r"D:\IaaC\2ND YEAR\THESIS\LLM_Based_UrbanABM\Environment\OSM\eixample_osm.duckdb"
+# Database path - now configurable
+DB_PATH = str(get_db_path())
 
 # Initialize Mesa model with agents
 city_model = CityModel(num_agents=100)
