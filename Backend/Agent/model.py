@@ -72,10 +72,10 @@ class CityAgent(mg.GeoAgent):
             next_edges = self.model.find_connected_edges(end_point)
             
             if next_edges:
-                # Filter out the previous edge to prevent immediate backtracking
+                # Filter out the CURRENT edge to prevent immediate reversal on same edge
                 candidate_edges = [
                     (eid, geom, direction) for eid, geom, direction in next_edges 
-                    if eid != self.previous_edge_id
+                    if eid != self.current_edge_id
                 ]
                 
                 # If filtering left no options, allow backtracking (dead end)
@@ -172,10 +172,10 @@ class CityModel(mesa.Model):
                 start_key = (round(start_point.x, 6), round(start_point.y, 6))
                 end_key = (round(end_point.x, 6), round(end_point.y, 6))
                 
-                # Forward direction: from end point, can take this edge forward
-                self.node_to_edges[end_key].append((edge_id, edge_geom, 'forward'))
-                # Reverse direction: from start point, can take this edge backward
-                self.node_to_edges[start_key].append((edge_id, edge_geom, 'reverse'))
+                # From start point: can take this edge in forward direction
+                self.node_to_edges[start_key].append((edge_id, edge_geom, 'forward'))
+                # From end point: can take this edge in reverse direction  
+                self.node_to_edges[end_key].append((edge_id, edge_geom, 'reverse'))
             
             print(f"[OK] Built BIDIRECTIONAL network graph with {len(self.node_to_edges)} nodes")
             
