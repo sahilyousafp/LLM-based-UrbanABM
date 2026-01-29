@@ -1,6 +1,17 @@
-# DuckDB OSM Pipeline
+# Urban ABM Environment - Spatial Database
 
-This project extracts OpenStreetMap (OSM) data for a specific region (default: Eixample, Barcelona) and stores it in a DuckDB database with the Spatial extension enabled. This setup is designed to support LLM-powered Social Agent-Based Models (ABMs).
+## 🗺️ Overview
+
+This module manages the spatial database for the Urban Agent-Based Model using **DuckDB** with **spatial extensions**. It supports both **OpenStreetMap (OSM)** and **Overture Maps Foundation** data sources.
+
+### 🆕 Overture Maps Integration
+
+The system now supports **Overture Maps** - a high-quality, structured geospatial dataset provided by major tech companies (Meta, Microsoft, Amazon, TomTom).
+
+**Current Implementation**: Overture-compatible architecture using OSM data  
+**Migration Path**: Easy switch to Overture when access is configured
+
+📖 **See [OVERTURE_GUIDE.md](OVERTURE_GUIDE.md) for complete Overture Maps documentation**
 
 ## Pipeline Overview
 
