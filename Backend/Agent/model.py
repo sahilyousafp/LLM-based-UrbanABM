@@ -7,8 +7,8 @@ import random
 import os
 from collections import defaultdict
 
-# Path to the DuckDB database
-DB_PATH = r"d:\IaaC\2ND YEAR\THESIS\CODE EXPLORATIONS\Environment\Term02\DuckDB_OSM_Pipeline\OSM\eixample_osm.duckdb"
+# Path to the DuckDB database (Overture Maps data)
+DB_PATH = r"d:\IaaC\2ND YEAR\THESIS\LLM_Based_UrbanABM\Backend\Environment\eixample_overture.duckdb"
 
 class CityAgent(mg.GeoAgent):
     """An agent that walks around the city"""
