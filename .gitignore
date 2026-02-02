@@ -47,6 +47,9 @@ Thumbs.db
 *.duckdb.wal
 *.duckdb.tmp
 
+# Agent tracking database (keep README, ignore database files)
+Backend/Agent/tracking_data/*.duckdb
+
 # Temporary files
 /tmp/
 *.tmp

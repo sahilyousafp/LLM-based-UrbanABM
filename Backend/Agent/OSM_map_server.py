@@ -1,74 +1,48 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import duckdb
 from shapely import wkt
-from model import CityModel
-import sys
+import json
 from pathlib import Path
+from OSM_model import CityModel
 
-# Add LLM module to path
-sys.path.append(str(Path(__file__).parent.parent / "LLM"))
-from llm_service import get_llm_service
+app = FastAPI()
 
-# Import Mapillary service
-from mapillary import MapillaryService
-
-app = FastAPI(title="Urban ABM Backend API")
-
-# Configure CORS to allow frontend to fetch from backend
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your frontend URL
+    allow_origins=["*"],  # Allow all origins for development
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Use absolute path for templates directory
+SCRIPT_DIR = Path(__file__).parent
+templates = Jinja2Templates(directory=str(SCRIPT_DIR / "templates"))
+# Disable template caching for development
+templates.env.auto_reload = True
+templates.env.cache_size = 0
 
-# Database path - use absolute path from project root
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
+# Database path
+DB_PATH = r"..\Environment\eixample_osm.duckdb"
 
 # Initialize Mesa model with agents
-city_model = CityModel(num_agents=500)
-
-# Initialize LLM service
-llm_service = get_llm_service()
-
-# Initialize Mapillary service
-MAPILLARY_API_KEY = "MLY|33533093396335529|30cb7c42be1a23189b63952f439551bd"
-mapillary_service = MapillaryService(MAPILLARY_API_KEY)
+city_model = CityModel(num_agents=200)
 
 def get_db_connection():
     """Get DuckDB connection"""
-    con = duckdb.connect(str(DB_PATH), read_only=True)
+    con = duckdb.connect(DB_PATH, read_only=True)
     con.install_extension("spatial")
     con.load_extension("spatial")
     return con
 
-@app.get("/")
-async def read_root():
-    """API root - health check"""
-    return {
-        "status": "running",
-        "message": "Urban ABM Backend API",
-        "endpoints": [
-            "/api/buildings",
-            "/api/walk_network",
-            "/api/roads",
-            "/api/agents",
-            "/api/agent/{agent_id}",
-            "/api/agent/{agent_id}/summary",
-            "/api/agent/{agent_id}/streetview",
-            "/api/agents/summaries",
-            "/api/amenities",
-            "/api/walk_nodes",
-            "/api/stats",
-            "/api/tables",
-            "/api/test",
-            "/api/step_continuous (POST)",
-            "/api/step (POST)"
-        ]
-    }
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    """Main page with map"""
+    return templates.TemplateResponse("map.html", {"request": request})
 
 @app.get("/api/buildings")
 async def get_buildings():
@@ -166,52 +140,48 @@ async def get_roads():
     """Get roads/drive network as GeoJSON"""
     con = get_db_connection()
     try:
-        # Check if roads or drive_edges table exists
+        # Check if drive_edges table exists
         tables = con.execute("SHOW TABLES").fetchall()
         table_names = [t[0] for t in tables]
         
         print(f"Available tables: {table_names}")
         
-        # Try 'roads' table first (Overture), then fall back to 'drive_edges' (OSM)
-        if 'roads' in table_names:
-            query = "SELECT ST_AsText(geometry) as wkt FROM roads"
-        elif 'drive_edges' in table_names:
+        if 'drive_edges' in table_names:
             query = "SELECT ST_AsText(geometry) as wkt FROM drive_edges"
+            results = con.execute(query).fetchall()
+            
+            print(f"Retrieved {len(results)} road edges from database")
+            
+            features = []
+            for idx, row in enumerate(results):
+                try:
+                    geom = wkt.loads(row[0])
+                    coords = [list(coord) for coord in geom.coords]
+                    features.append({
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": coords
+                        },
+                        "properties": {"layer": "roads"}
+                    })
+                except Exception as e:
+                    if idx < 5:
+                        print(f"Error processing road {idx}: {e}")
+                    continue
+            
+            print(f"Returning {len(features)} road features")
+            
+            return {
+                "type": "FeatureCollection",
+                "features": features
+            }
         else:
-            print("No roads or drive_edges table found")
+            print("No drive_edges table found")
             return {
                 "type": "FeatureCollection",
                 "features": []
             }
-        
-        results = con.execute(query).fetchall()
-        
-        print(f"Retrieved {len(results)} road edges from database")
-        
-        features = []
-        for idx, row in enumerate(results):
-            try:
-                geom = wkt.loads(row[0])
-                coords = [list(coord) for coord in geom.coords]
-                features.append({
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "LineString",
-                        "coordinates": coords
-                    },
-                    "properties": {"layer": "roads"}
-                })
-            except Exception as e:
-                if idx < 5:
-                    print(f"Error processing road {idx}: {e}")
-                continue
-        
-        print(f"Returning {len(features)} road features")
-        
-        return {
-            "type": "FeatureCollection",
-            "features": features
-        }
     finally:
         con.close()
 
@@ -256,94 +226,6 @@ async def get_agent_info(agent_id: int):
             "lat": agent.geometry.y
         },
         "nearby_amenities": agent.nearby_amenities
-    }
-
-@app.get("/api/agent/{agent_id}/summary")
-async def get_agent_summary(agent_id: int):
-    """Get LLM-generated natural language summary of what the agent sees"""
-    # Find the agent
-    agent = next((a for a in city_model.city_agents if a.unique_id == agent_id), None)
-    
-    if not agent:
-        return {"error": "Agent not found"}
-    
-    # Prepare agent data for LLM
-    agent_data = {
-        "id": agent.unique_id,
-        "type": agent.agent_type,
-        "location": {
-            "lon": agent.geometry.x,
-            "lat": agent.geometry.y
-        },
-        "nearby_amenities": agent.nearby_amenities
-    }
-    
-    # Generate summary using LLM
-    summary = llm_service.summarize_agent_perspective(agent_data)
-    
-    return {
-        "agent_id": agent.unique_id,
-        "summary": summary,
-        "location": agent_data["location"],
-        "amenity_count": len(agent.nearby_amenities)
-    }
-
-@app.get("/api/agent/{agent_id}/streetview")
-async def get_agent_streetview(agent_id: int):
-    """Get Mapillary street view images near the agent's location"""
-    # Find the agent
-    agent = next((a for a in city_model.city_agents if a.unique_id == agent_id), None)
-    
-    if not agent:
-        return {"error": "Agent not found"}
-    
-    # Fetch Mapillary images near agent's location
-    images = mapillary_service.get_images_near_location(
-        lon=agent.geometry.x,
-        lat=agent.geometry.y,
-        radius=50  # 50 meter radius
-    )
-    
-    return {
-        "agent_id": agent.unique_id,
-        "location": {
-            "lon": agent.geometry.x,
-            "lat": agent.geometry.y
-        },
-        "images": images,
-        "image_count": len(images)
-    }
-
-@app.get("/api/agents/summaries")
-async def get_all_agent_summaries():
-    """Get LLM-generated summaries for all agents simultaneously"""
-    summaries = []
-    
-    for agent in city_model.city_agents:
-        # Prepare agent data for LLM
-        agent_data = {
-            "id": agent.unique_id,
-            "type": agent.agent_type,
-            "location": {
-                "lon": agent.geometry.x,
-                "lat": agent.geometry.y
-            },
-            "nearby_amenities": agent.nearby_amenities
-        }
-        
-        # Generate summary using LLM
-        summary = llm_service.summarize_agent_perspective(agent_data)
-        
-        summaries.append({
-            "agent_id": agent.unique_id,
-            "summary": summary,
-            "location": agent_data["location"],
-            "amenity_count": len(agent.nearby_amenities)
-        })
-    
-    return {
-        "total_agents": len(summaries),
-        "summaries": summaries
     }
 
 @app.post("/api/step")
@@ -412,7 +294,7 @@ async def get_amenities():
     """Get amenities as GeoJSON"""
     con = get_db_connection()
     try:
-        query = "SELECT name, amenity, ST_AsText(geometry) as wkt, address, website, phone, amenity_tags FROM amenities"
+        query = "SELECT name, amenity, ST_AsText(geometry) as wkt FROM amenities"
         results = con.execute(query).fetchall()
         
         features = []
@@ -428,10 +310,6 @@ async def get_amenities():
                     "properties": {
                         "name": str(row[0]) if row[0] else "Unnamed",
                         "amenity": row[1],
-                        "address": str(row[3]) if row[3] else None,
-                        "website": str(row[4]) if row[4] else None,
-                        "phone": str(row[5]) if row[5] else None,
-                        "amenity_tags": str(row[6]) if row[6] else None,
                         "layer": "amenities"
                     }
                 })
@@ -516,4 +394,4 @@ async def get_stats():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("map_server:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("OSM_map_server:app", host="127.0.0.1", port=8000, reload=True)
