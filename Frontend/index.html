@@ -112,6 +112,19 @@
             color: #666;
             font-style: italic;
         }
+        #streetview-container {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+        #streetview-images img {
+            transition: transform 0.2s;
+        }
+        #streetview-images img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -171,6 +184,15 @@
             <div id="agent-summary" style="font-size:12px; margin-top:10px; padding:10px; background:#f9f9f9; border-radius:3px; line-height:1.6;">
                 <em style="color:#999;">Loading perspective...</em>
             </div>
+            <div id="streetview-container" style="margin-top:10px; padding:10px; background:#f0f0f0; border-radius:3px;">
+                <h5 style="margin:0 0 8px 0; font-size:13px; color:#333;">Street View</h5>
+                <div id="streetview-images" style="display:flex; flex-wrap:wrap; gap:5px; max-height:200px; overflow-y:auto;">
+                    <em style="color:#999; font-size:11px;">Loading street views...</em>
+                </div>
+                <div style="font-size:10px; color:#666; margin-top:5px;">
+                    Updates every 5s | Powered by Mapillary
+                </div>
+            </div>
         </div>
     </div>
     <script>
@@ -199,7 +221,7 @@
         let selectedAgentId = null;
         let agentMarkers = {}; // Map of agent ID to marker
         let selectedMarker = null;
-        let summaryUpdateInterval = null; // For periodic summary updates
+        let summaryUpdateInterval = null; // For periodic updates (5s interval)
 
         async function loadAll() {
             try {
@@ -318,7 +340,29 @@
                             });
                         },
                         onEachFeature: (feature, layer) => {
-                            layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.amenity);
+                            const props = feature.properties;
+                            let popupContent = '<div style="font-family: Arial, sans-serif; max-width: 250px;">';
+                            popupContent += '<strong style="font-size: 14px; color: #2E7D32;">' + props.name + '</strong><br>';
+                            popupContent += '<span style="display: inline-block; background: #4CAF50; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin: 5px 0;">' + props.amenity + '</span><br>';
+                            
+                            if (props.address) {
+                                popupContent += '<div style="margin-top: 8px;"><strong style="font-size: 11px;">📍 Address:</strong><br><span style="font-size: 11px;">' + props.address + '</span></div>';
+                            }
+                            
+                            if (props.phone) {
+                                popupContent += '<div style="margin-top: 5px;"><strong style="font-size: 11px;">📞 Phone:</strong> <a href="tel:' + props.phone + '" style="font-size: 11px;">' + props.phone + '</a></div>';
+                            }
+                            
+                            if (props.website) {
+                                popupContent += '<div style="margin-top: 5px;"><strong style="font-size: 11px;">🌐 Website:</strong> <a href="' + props.website + '" target="_blank" style="font-size: 11px;">Visit site</a></div>';
+                            }
+                            
+                            if (props.amenity_tags) {
+                                popupContent += '<div style="margin-top: 8px; padding-top: 5px; border-top: 1px solid #ddd;"><strong style="font-size: 10px; color: #666;">Additional info:</strong><br><span style="font-size: 10px; color: #888;">' + props.amenity_tags + '</span></div>';
+                            }
+                            
+                            popupContent += '</div>';
+                            layer.bindPopup(popupContent);
                         }
                     }).addTo(layers.amenities);
                     console.log('Amenities added to map');
@@ -385,14 +429,16 @@
         async function selectAgent(agentId) {
             selectedAgentId = agentId;
             await showAgentSummary(agentId);
+            await showStreetView(agentId); // Initial fetch
             
-            // Start periodic updates every 5 seconds
+            // Start periodic updates every 5 seconds for both summary and street view
             if (summaryUpdateInterval) {
                 clearInterval(summaryUpdateInterval);
             }
             summaryUpdateInterval = setInterval(() => {
                 if (selectedAgentId === agentId) {
                     showAgentSummary(agentId);
+                    showStreetView(agentId);
                 }
             }, 5000);
             
@@ -508,6 +554,46 @@
                 console.error('Error fetching agent summary:', error);
                 document.getElementById('agent-summary').innerHTML = 
                     '<em style="color:#c00;">Error loading perspective. Is the backend running?</em>';
+            }
+        }
+        
+        async function showStreetView(agentId) {
+            const apiUrl = getApiUrl();
+            try {
+                console.log('Fetching Mapillary street view for agent:', agentId);
+                const response = await fetch(`${apiUrl}/api/agent/${agentId}/streetview`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    console.error('Agent not found:', agentId);
+                    return;
+                }
+                
+                const imagesContainer = document.getElementById('streetview-images');
+                
+                if (data.images && data.images.length > 0) {
+                    // Display images - thumb_url contains 1024px resolution (optimal quality/performance)
+                    imagesContainer.innerHTML = '';
+                    data.images.forEach(img => {
+                        const imgElement = document.createElement('div');
+                        imgElement.style.cssText = 'flex: 0 0 calc(50% - 5px); cursor: pointer;';
+                        imgElement.innerHTML = `
+                            <img src="${img.thumb_url}" 
+                                 alt="Street view" 
+                                 style="width:100%; height:auto; border-radius:3px; border:1px solid #ddd;"
+                                 title="Captured: ${new Date(img.captured_at).toLocaleDateString()}"
+                                 onclick="window.open('https://www.mapillary.com/app/?pKey=${img.id}', '_blank')">
+                        `;
+                        imagesContainer.appendChild(imgElement);
+                    });
+                } else {
+                    imagesContainer.innerHTML = '<em style="color:#999; font-size:11px;">No street views available in this area</em>';
+                }
+                
+            } catch (error) {
+                console.error('Error fetching street view:', error);
+                document.getElementById('streetview-images').innerHTML = 
+                    '<em style="color:#c00; font-size:11px;">Error loading street views</em>';
             }
         }
         

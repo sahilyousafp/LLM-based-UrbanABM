@@ -16,7 +16,7 @@
       "location": {
         "residence_type": "Apartment",
         "neighborhood": "Historic District",
-        "work_neighborhood": "Waterfront",
+        "work_neigh borhood": "Waterfront",
         "commute_distance_km": 2.4
       },
       "behavior": {
