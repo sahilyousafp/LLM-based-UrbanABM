@@ -99,8 +99,9 @@
             transition: border-color 0.2s;
         }
         
-        .api-input:focus {
-            outline: none;
+        .api-input:focus-visible {
+            outline: 2px solid #4A90E2;
+            outline-offset: 2px;
             border-color: #4A90E2;
         }
         
@@ -139,9 +140,15 @@
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background-color 0.2s, transform 0.2s;
             width: 100%;
             margin: 4px 0;
+            touch-action: manipulation;
+        }
+        
+        .btn:focus-visible {
+            outline: 2px solid #4A90E2;
+            outline-offset: 2px;
         }
         
         .btn-primary {
@@ -162,7 +169,7 @@
             background: #C0392B;
         }
         
-        /* Speed Control */
+        <!-- Speed Control -->
         .speed-control {
             margin-top: 8px;
         }
@@ -182,6 +189,7 @@
             background: #ddd;
             outline: none;
             -webkit-appearance: none;
+            touch-action: manipulation;
         }
         
         .speed-slider::-webkit-slider-thumb {
@@ -203,6 +211,11 @@
             border: none;
         }
         
+        .speed-slider:focus-visible {
+            outline: 2px solid #4A90E2;
+            outline-offset: 2px;
+        }
+        
         /* Search Box */
         .search-box {
             display: flex;
@@ -217,6 +230,12 @@
             font-size: 13px;
         }
         
+        .search-input:focus-visible {
+            outline: 2px solid #4A90E2;
+            outline-offset: 2px;
+            border-color: #4A90E2;
+        }
+        
         .search-btn {
             padding: 8px 16px;
             background: #4A90E2;
@@ -226,10 +245,16 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
+            touch-action: manipulation;
         }
         
         .search-btn:hover {
             background: #357ABD;
+        }
+        
+        .search-btn:focus-visible {
+            outline: 2px solid #4A90E2;
+            outline-offset: 2px;
         }
         
         /* Stats Display */
@@ -289,6 +314,81 @@
             font-style: italic;
         }
         
+        /* Street View Section */
+        .streetview-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e5e5;
+        }
+        
+        .streetview-header {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .streetview-attribution {
+            font-size: 10px;
+            color: #999;
+            font-weight: 400;
+        }
+        
+        .streetview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+        
+        .streetview-item {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #f0f0f0;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .streetview-item:hover {
+            transform: scale(1.05);
+            border-color: #4A90E2;
+        }
+        
+        .streetview-item:focus-visible {
+            outline: 2px solid #4A90E2;
+            outline-offset: 2px;
+        }
+        
+        .streetview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .streetview-empty {
+            grid-column: 1 / -1;
+            padding: 16px;
+            text-align: center;
+            color: #999;
+            font-size: 11px;
+        }
+        
+        .streetview-loading {
+            grid-column: 1 / -1;
+            padding: 16px;
+            text-align: center;
+            color: #666;
+            font-size: 11px;
+        }
+        
         .close-btn {
             position: absolute;
             top: 12px;
@@ -303,6 +403,11 @@
         
         .close-btn:hover {
             color: #333;
+        }
+        
+        .close-btn:focus-visible {
+            outline: 2px solid #4A90E2;
+            outline-offset: 2px;
         }
         
         /* Loading Overlay */
@@ -375,7 +480,7 @@
     <div id="loading" class="loading-overlay">
         <div class="loading-content">
             <div class="spinner"></div>
-            <div class="loading-text">Loading Urban ABM...</div>
+            <div class="loading-text">Loading Urban ABM…</div>
         </div>
     </div>
     
@@ -388,8 +493,8 @@
         
         <!-- API Configuration -->
         <div class="section">
-            <label style="font-size: 11px; color: #666; display: block; margin-bottom: 4px;">Backend API</label>
-            <input type="text" id="api-url" class="api-input" value="http://127.0.0.1:8000" placeholder="http://127.0.0.1:8000">
+            <label for="api-url" style="font-size: 11px; color: #666; display: block; margin-bottom: 4px;">Backend API</label>
+            <input type="text" id="api-url" class="api-input" value="http://127.0.0.1:8000" placeholder="http://127.0.0.1:8000" autocomplete="off">
         </div>
         
         <!-- Layer Controls -->
@@ -436,14 +541,14 @@
                     <span>Speed</span>
                     <span id="speed-value">1.0s</span>
                 </div>
-                <input type="range" id="speed-slider" class="speed-slider" min="0.1" max="5" step="0.1" value="1">
+                <input type="range" id="speed-slider" class="speed-slider" min="0.1" max="5" step="0.1" value="1" aria-label="Animation speed">
             </div>
         </div>
         
         <!-- Agent Search -->
         <div class="section">
             <div class="search-box">
-                <input type="number" id="agent-search" class="search-input" placeholder="Agent ID" min="0">
+                <input type="number" id="agent-search" class="search-input" placeholder="Agent ID" min="0" aria-label="Agent ID" inputmode="numeric">
                 <button id="agent-search-btn" class="search-btn">Find</button>
             </div>
         </div>
@@ -479,7 +584,7 @@
     
     <!-- Agent Detail Panel (Left, Hidden by Default) -->
     <div class="panel agent-panel" id="agent-panel">
-        <button class="close-btn" id="close-agent-btn">×</button>
+        <button class="close-btn" id="close-agent-btn" aria-label="Close agent panel">×</button>
         <div class="panel-header">Agent <span id="agent-id-display"></span></div>
         
         <div class="agent-info-grid">
@@ -490,8 +595,19 @@
             <span class="agent-value" id="agent-nearby">—</span>
         </div>
         
-        <div class="agent-summary" id="agent-summary">
-            <em style="color: #999;">Loading perspective...</em>
+        <div class="agent-summary" id="agent-summary" aria-live="polite">
+            <em style="color: #999;">Loading perspective…</em>
+        </div>
+        
+        <!-- Street View Section -->
+        <div class="streetview-section">
+            <div class="streetview-header">
+                <span>Street View</span>
+                <span class="streetview-attribution">Mapillary</span>
+            </div>
+            <div class="streetview-grid" id="streetview-grid" role="list">
+                <div class="streetview-loading">Loading street views…</div>
+            </div>
         </div>
     </div>
     
@@ -679,12 +795,33 @@
             // Add click handler for popups
             map.on('click', 'amenities-circles', (e) => {
                 const feature = e.features[0];
+                const props = feature.properties;
+                
+                let popupContent = '<div style="font-family: Arial, sans-serif; max-width: 250px;">';
+                popupContent += '<strong style="font-size: 14px; color: #1E8449;">' + (props.name || 'Amenity') + '</strong><br>';
+                popupContent += '<span style="display: inline-block; background: #27AE60; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin: 5px 0;">' + (props.amenity || '') + '</span><br>';
+                
+                if (props.address) {
+                    popupContent += '<div style="margin-top: 8px;"><strong style="font-size: 11px;">📍 Address:</strong><br><span style="font-size: 11px;">' + props.address + '</span></div>';
+                }
+                
+                if (props.phone) {
+                    popupContent += '<div style="margin-top: 5px;"><strong style="font-size: 11px;">📞 Phone:</strong> <a href="tel:' + props.phone + '" style="font-size: 11px;">' + props.phone + '</a></div>';
+                }
+                
+                if (props.website) {
+                    popupContent += '<div style="margin-top: 5px;"><strong style="font-size: 11px;">🌐 Website:</strong> <a href="' + props.website + '" target="_blank" style="font-size: 11px;">Visit site</a></div>';
+                }
+                
+                if (props.amenity_tags) {
+                    popupContent += '<div style="margin-top: 8px; padding-top: 5px; border-top: 1px solid #ddd;"><strong style="font-size: 10px; color: #666;">Additional info:</strong><br><span style="font-size: 10px; color: #888;">' + props.amenity_tags + '</span></div>';
+                }
+                
+                popupContent += '</div>';
+                
                 new mapboxgl.Popup()
                     .setLngLat(e.lngLat)
-                    .setHTML(`
-                        <strong>${feature.properties.name || 'Amenity'}</strong><br>
-                        ${feature.properties.amenity || ''}
-                    `)
+                    .setHTML(popupContent)
                     .addTo(map);
             });
             
@@ -981,6 +1118,9 @@
             // Fetch agent summary
             await showAgentSummary(agentId);
             
+            // Fetch street view images (initial)
+            await showStreetView(agentId);
+            
             // Start periodic updates
             if (summaryUpdateInterval) {
                 clearInterval(summaryUpdateInterval);
@@ -988,8 +1128,9 @@
             summaryUpdateInterval = setInterval(() => {
                 if (selectedAgentId === agentId) {
                     showAgentSummary(agentId);
+                    showStreetView(agentId);
                 }
-            }, 3000);
+            }, 5000); // Update every 5 seconds
         }
         
         // Parse simple markdown to HTML (for LLM outputs)
@@ -1040,6 +1181,68 @@
                 console.error('Error fetching agent summary:', error);
                 document.getElementById('agent-summary').innerHTML = 
                     '<em style="color: #E74C3C;">Error loading perspective</em>';
+            }
+        }
+        
+        // Show street view images from Mapillary
+        async function showStreetView(agentId) {
+            const apiUrl = getApiUrl();
+            const gridContainer = document.getElementById('streetview-grid');
+            
+            try {
+                const response = await fetch(`${apiUrl}/api/agent/${agentId}/streetview`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    console.error('Agent not found:', agentId);
+                    return;
+                }
+                
+                // Clear existing content
+                gridContainer.innerHTML = '';
+                
+                if (data.images && data.images.length > 0) {
+                    // Create image elements - thumb_url contains 1024px resolution
+                    data.images.forEach((img, index) => {
+                        const button = document.createElement('button');
+                        button.className = 'streetview-item';
+                        button.type = 'button';
+                        button.setAttribute('role', 'listitem');
+                        button.setAttribute('aria-label', `Street view image ${index + 1} from ${new Date(img.captured_at).toLocaleDateString()}`);
+                        
+                        const imgElement = document.createElement('img');
+                        imgElement.src = img.thumb_url;  // 1024px resolution (thumb_1024_url)
+                        imgElement.alt = `Street view captured on ${new Date(img.captured_at).toLocaleDateString()}`;
+                        imgElement.loading = 'lazy';
+                        
+                        button.appendChild(imgElement);
+                        
+                        // Click handler
+                        button.addEventListener('click', () => {
+                            window.open(`https://www.mapillary.com/app/?pKey=${img.id}`, '_blank', 'noopener,noreferrer');
+                        });
+                        
+                        // Keyboard handler
+                        button.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                button.click();
+                            }
+                        });
+                        
+                        gridContainer.appendChild(button);
+                    });
+                } else {
+                    // No images available
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'streetview-empty';
+                    emptyState.textContent = 'No street views available in this area';
+                    gridContainer.appendChild(emptyState);
+                }
+                
+            } catch (error) {
+                console.error('Error fetching street view:', error);
+                gridContainer.innerHTML = '<div class="streetview-empty">Error loading street views</div>';
             }
         }
         
