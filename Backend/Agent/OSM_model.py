@@ -7,6 +7,7 @@ import random
 import os
 from collections import defaultdict
 from pathlib import Path
+from agent_tracker import AgentTracker
 
 # Path to the DuckDB database (OSM data)
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -32,6 +33,18 @@ class CityAgent(mg.GeoAgent):
         self.edge_visit_count = {}  # Count visits per edge
         if edge_id:
             self.edge_visit_count[edge_id] = 1
+        
+        # Log initial position to tracker
+        if hasattr(model, 'tracker') and model.tracker:
+            model.tracker.log_movement(
+                agent_id=self.unique_id,
+                step_number=model.steps,
+                longitude=geometry.x,
+                latitude=geometry.y,
+                edge_id=edge_id,
+                position_along_edge=self.position_along_edge,
+                speed=self.move_speed
+            )
     
     def step(self):
         # Move along current edge
@@ -60,6 +73,19 @@ class CityAgent(mg.GeoAgent):
         
         # Query DuckDB for nearby amenities (always, not just on click)
         self.nearby_amenities = self.model.get_nearby_amenities(self.geometry)
+        
+        # Log movement to tracker
+        if hasattr(self.model, 'tracker') and self.model.tracker:
+            self.model.tracker.log_movement(
+                agent_id=self.unique_id,
+                step_number=self.model.steps,
+                longitude=self.geometry.x,
+                latitude=self.geometry.y,
+                edge_id=self.current_edge_id,
+                position_along_edge=self.position_along_edge,
+                speed=self.move_speed,
+                nearby_amenities_count=len(self.nearby_amenities)
+            )
     
     def _select_next_edge(self):
         """Select the next edge to walk along, avoiding backtracking and preferring exploration"""
@@ -84,6 +110,10 @@ class CityAgent(mg.GeoAgent):
                 if not candidate_edges:
                     candidate_edges = next_edges
                 
+                # Determine decision type and reason
+                decision_type = "edge_change"
+                decision_reason = "exploration"
+                
                 # Prefer less-visited edges for exploration (70% of the time)
                 if len(candidate_edges) > 1 and random.random() < 0.7:
                     # Sort by visit count (ascending - prefer unvisited)
@@ -92,13 +122,29 @@ class CityAgent(mg.GeoAgent):
                     # Pick from the least-visited half
                     cutoff = max(1, len(candidate_edges) // 2)
                     next_edge_id, next_edge_geom, direction = random.choice(candidate_edges[:cutoff])
+                    decision_reason = "prefer_unvisited"
                 else:
                     # Pick randomly (allows some variability)
                     next_edge_id, next_edge_geom, direction = random.choice(candidate_edges)
+                    decision_reason = "random_choice"
                 
                 # Handle reverse direction: flip the geometry
                 if direction == 'reverse':
                     next_edge_geom = LineString(list(next_edge_geom.coords)[::-1])
+                
+                # Log decision to tracker
+                if hasattr(self.model, 'tracker') and self.model.tracker:
+                    self.model.tracker.log_decision(
+                        agent_id=self.unique_id,
+                        step_number=self.model.steps,
+                        decision_type=decision_type,
+                        longitude=end_point.x,
+                        latitude=end_point.y,
+                        from_edge_id=self.current_edge_id,
+                        to_edge_id=next_edge_id,
+                        alternatives_count=len(candidate_edges),
+                        decision_reason=decision_reason
+                    )
                 
                 # Update edge tracking
                 self.previous_edge_id = self.current_edge_id
@@ -132,6 +178,14 @@ class CityModel(mesa.Model):
         
         # Use custom attribute name (Mesa 3.0+ reserves 'agents')
         self.city_agents = []
+        
+        # Initialize agent tracker
+        try:
+            self.tracker = AgentTracker()
+            print(f"[OK] Agent tracker initialized: {self.tracker.db_path}")
+        except Exception as e:
+            print(f"[WARN] Failed to initialize agent tracker: {e}")
+            self.tracker = None
         
         # Connect to DuckDB
         print(f"Connecting to DB at: {DB_PATH}")
@@ -262,9 +316,18 @@ class CityModel(mesa.Model):
         random.shuffle(self.city_agents)
         for agent in self.city_agents:
             agent.step()
+        
+        # Periodically flush tracker data to disk (every 10 steps)
+        if self.tracker and self.steps % 10 == 0:
+            self.tracker.flush()
     
     def __del__(self):
-        """Cleanup database connection"""
+        """Cleanup database connection and tracker"""
+        try:
+            if self.tracker:
+                self.tracker.close()
+        except:
+            pass
         try:
             self.con.close()
         except:
