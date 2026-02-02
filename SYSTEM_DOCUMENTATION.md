@@ -24,6 +24,7 @@ Urban Agent-Based Models traditionally represent agent perception through struct
 |-----------|------------|---------|
 | Agent Framework | Mesa 3.0+ | Agent-based modeling core |
 | Spatial Engine | DuckDB + Spatial Extensions | Geospatial data storage and queries |
+| Cloud Data Warehouse | GCP BigQuery | Scalable geospatial data analytics |
 | API Server | FastAPI | RESTful API with CORS support |
 | LLM Runtime | Ollama | Local LLM inference server |
 | Language Model | Llama 3.1 (8B parameters) | Natural language generation |
@@ -83,8 +84,18 @@ Urban Agent-Based Models traditionally represent agent perception through struct
     │ • Buildings (polygons) │   │                              │
     │ • Walk edges (lines)   │   │ • Model: llama3.1:8b        │
     │ • Amenities (points)   │   │ • Temperature: 0.7          │
-    │ • OSM Barcelona data   │   │ • Max tokens: 150           │
-    └────────────────────────┘   └──────────────────────────────┘
+    │ • OSM/Overture data    │   │ • Max tokens: 150           │
+    └────────┬───────────────┘   └──────────────────────────────┘
+             │
+             ↓
+    ┌────────────────────────────────────────────────────────────┐
+    │  GCP BigQuery (Optional Cloud Layer)                       │
+    │                                                            │
+    │ • Petabyte-scale geospatial analytics                     │
+    │ • Overture Maps Foundation data                           │
+    │ • GEOGRAPHY data types with spatial functions             │
+    │ • Serverless, pay-per-query model                         │
+    └────────────────────────────────────────────────────────────┘
 ```
 
 ### 2.2 Component Interactions
@@ -583,13 +594,13 @@ maxSpeed = 5.0         // Maximum simulation speed
 
 ### 6.2 Database Schema
 
-**DuckDB Tables:**
+**DuckDB Tables (Local):**
 
 ```sql
 -- Buildings (polygons)
 CREATE TABLE buildings (
     geometry GEOMETRY,
-    -- Additional OSM attributes
+    -- Additional OSM/Overture attributes
 );
 
 -- Pedestrian network (linestrings)
@@ -606,6 +617,36 @@ CREATE TABLE amenities (
     geometry GEOMETRY,
     -- Additional tags
 );
+```
+
+**BigQuery Schema (Cloud - Optional):**
+
+```sql
+-- Overture Buildings (from BigQuery public datasets)
+-- bigquery-public-data.overture_maps.buildings
+SELECT 
+    id,
+    ST_GEOGFROMTEXT(geometry) as geography,
+    names,
+    height,
+    class,
+    sources
+FROM `bigquery-public-data.overture_maps.buildings`
+WHERE ST_DWITHIN(
+    geography, 
+    ST_GEOGPOINT(2.1734, 41.3851),  -- Barcelona center
+    5000  -- 5km radius
+);
+
+-- Overture Places/Amenities
+-- bigquery-public-data.overture_maps.places
+SELECT 
+    id,
+    ST_GEOGFROMTEXT(geometry) as geography,
+    names.primary as name,
+    categories,
+    confidence
+FROM `bigquery-public-data.overture_maps.places`;
 ```
 
 ## 7. Deployment Architecture
@@ -722,6 +763,10 @@ requests>=2.31.0
 
 # Data Processing
 pandas>=2.0.0
+
+# Cloud Integration (Optional)
+google-cloud-bigquery>=3.10.0
+db-dtypes>=1.1.1  # BigQuery data types support
 ```
 
 ### 10.3 Installation
@@ -766,6 +811,8 @@ python map_server.py
 
 **Data Sources:**
 - OpenStreetMap: Collaborative mapping project (https://www.openstreetmap.org/)
+- Overture Maps Foundation: High-quality open map data (https://overturemaps.org/)
+- GCP BigQuery: Public geospatial datasets (https://cloud.google.com/bigquery/public-data)
 
 ---
 
