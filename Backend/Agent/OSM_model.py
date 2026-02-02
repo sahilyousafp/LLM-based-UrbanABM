@@ -8,9 +8,9 @@ import os
 from collections import defaultdict
 from pathlib import Path
 
-# Path to the DuckDB database (Overture Maps data)
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-DB_PATH = PROJECT_ROOT / "eixample_overture.duckdb"
+# Path to the DuckDB database (OSM data)
+PROJECT_ROOT = Path(__file__).parent.parent
+DB_PATH = PROJECT_ROOT / "Environment" / "eixample_osm.duckdb"
 
 class CityAgent(mg.GeoAgent):
     """An agent that walks around the city"""
