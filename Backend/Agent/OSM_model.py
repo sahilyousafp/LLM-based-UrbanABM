@@ -1,3 +1,4 @@
+import asyncio
 import mesa
 import mesa_geo as mg
 import duckdb
@@ -5,36 +6,51 @@ from shapely import wkt
 from shapely.geometry import Point, LineString
 import random
 import os
+import sys
 from collections import defaultdict
 from pathlib import Path
 from agent_tracker import AgentTracker
+
+# Add Backend root to path for cross-module imports
+_BACKEND_ROOT = Path(__file__).parent.parent
+if str(_BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BACKEND_ROOT))
+
+from LLM.llm_config import LLMConfig
+from LLM.llm_client import LLMClient
+from Memory.memory import Memory
+from Thinking.dispatcher import BlockDispatcher, reset_step_counter
 
 # Path to the DuckDB database (OSM data)
 PROJECT_ROOT = Path(__file__).parent.parent
 DB_PATH = PROJECT_ROOT / "Environment" / "eixample_osm.duckdb"
 
 class CityAgent(mg.GeoAgent):
-    """An agent that walks around the city"""
-    
-    def __init__(self, model, geometry, crs="EPSG:4326", edge_id=None, edge_geom=None):
-        # GeoAgent requires model, geometry, and crs
+    """
+    A pedestrian agent (OSM data) with LLM-driven movement decisions.
+    Memory stores agent state; BlockDispatcher coordinates reasoning blocks.
+    """
+
+    ARCHETYPES = ["resident", "commuter", "tourist", "student"]
+
+    def __init__(self, model, geometry, crs="EPSG:4326", edge_id=None, edge_geom=None, archetype="resident"):
         super().__init__(model=model, geometry=geometry, crs=crs)
         self.agent_type = "CityAgent"
         self.nearby_amenities = []
-        
-        # Network movement attributes
         self.current_edge_id = edge_id
         self.current_edge_geom = edge_geom
-        self.previous_edge_id = None  # Track previous edge to prevent backtracking
-        self.position_along_edge = 0.0  # 0.0 to 1.0
-        self.move_speed = random.uniform(0.15, 0.25)  # Move 15-25% of edge per step (faster, varied speeds)
-        
-        # Exploration tracking to reduce revisiting same areas
-        self.edge_visit_count = {}  # Count visits per edge
-        if edge_id:
-            self.edge_visit_count[edge_id] = 1
-        
-        # Log initial position to tracker
+        self.previous_edge_id = None
+        self.position_along_edge = 0.0
+        self.move_speed = random.uniform(0.15, 0.25)
+
+        self.memory = Memory(agent_id=self.unique_id)
+        self.dispatcher = BlockDispatcher(
+            llm_client=model.llm_client,
+            memory=self.memory,
+            context={"model": model},
+        )
+        asyncio.get_event_loop().run_until_complete(self._init_memory(edge_id, geometry, archetype))
+
         if hasattr(model, 'tracker') and model.tracker:
             model.tracker.log_movement(
                 agent_id=self.unique_id,
@@ -45,36 +61,52 @@ class CityAgent(mg.GeoAgent):
                 position_along_edge=self.position_along_edge,
                 speed=self.move_speed
             )
-    
+
+    async def _init_memory(self, edge_id, geometry, archetype: str) -> None:
+        prefs = {
+            "resident": ["supermarket", "pharmacy", "park"],
+            "commuter": ["direct_route", "transport", "cafe"],
+            "tourist": ["attraction", "cafe", "restaurant"],
+            "student": ["cafe", "library", "park"],
+        }
+        await self.memory.status.update("agent_profile", {
+            "archetype": archetype,
+            "age": random.randint(18, 70),
+            "preferences": prefs.get(archetype, []),
+        })
+        await self.memory.status.update("position", {"lon": geometry.x, "lat": geometry.y, "edge_id": edge_id})
+        if edge_id is not None:
+            await self.memory.status.update("visited_edges", {str(edge_id): 1})
+
     def step(self):
-        # Move along current edge
-        if self.current_edge_geom is not None:
-            self.position_along_edge += self.move_speed
-            
-            # If we've reached the end of the edge, pick a new edge
-            if self.position_along_edge >= 1.0:
-                self._select_next_edge()
-            
-            # Update position along current edge
-            if self.current_edge_geom is not None:
-                coords = list(self.current_edge_geom.coords)
-                # Simple linear interpolation along edge
-                if len(coords) >= 2:
-                    idx = min(int(self.position_along_edge * (len(coords) - 1)), len(coords) - 2)
-                    frac = (self.position_along_edge * (len(coords) - 1)) - idx
-                    
-                    x1, y1 = coords[idx]
-                    x2, y2 = coords[idx + 1]
-                    
-                    new_x = x1 + (x2 - x1) * frac
-                    new_y = y1 + (y2 - y1) * frac
-                    
-                    self.geometry = Point(new_x, new_y)
-        
-        # Query DuckDB for nearby amenities (always, not just on click)
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                import concurrent.futures
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+                    future = pool.submit(asyncio.run, self._async_step())
+                    future.result(timeout=30)
+            else:
+                loop.run_until_complete(self._async_step())
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Agent {self.unique_id} step error: {e}")
+            self._advance_along_edge()
+
+    async def _async_step(self) -> None:
         self.nearby_amenities = self.model.get_nearby_amenities(self.geometry)
-        
-        # Log movement to tracker
+        await self.memory.status.update("position", {
+            "lon": self.geometry.x, "lat": self.geometry.y, "edge_id": self.current_edge_id,
+        })
+        candidate_edges = self._get_candidate_edges()
+        result = await self.dispatcher.run(
+            step=self.model.steps,
+            candidate_edges=candidate_edges,
+            nearby_amenities=self.nearby_amenities,
+        )
+        if result.mobility.action == "move_to_edge":
+            self._apply_mobility(result.mobility.params)
+        self._advance_along_edge()
         if hasattr(self.model, 'tracker') and self.model.tracker:
             self.model.tracker.log_movement(
                 agent_id=self.unique_id,
@@ -86,99 +118,66 @@ class CityAgent(mg.GeoAgent):
                 speed=self.move_speed,
                 nearby_amenities_count=len(self.nearby_amenities)
             )
-    
-    def _select_next_edge(self):
-        """Select the next edge to walk along, avoiding backtracking and preferring exploration"""
-        if self.current_edge_id is None:
+
+    def _get_candidate_edges(self) -> list[dict]:
+        if self.current_edge_geom is None:
+            return []
+        end_point = Point(self.current_edge_geom.coords[-1])
+        raw_edges = self.model.find_connected_edges(end_point)
+        candidates = [(eid, g, d) for eid, g, d in raw_edges if eid != self.current_edge_id]
+        if not candidates:
+            candidates = raw_edges
+        return [
+            {"edge_id": eid, "geom": g, "direction": d, "amenities": [], "description": f"{d} edge"}
+            for eid, g, d in candidates
+        ]
+
+    def _apply_mobility(self, params: dict) -> None:
+        geom = params.get("geom") or self.model.edges.get(params.get("edge_id"))
+        if geom is None:
             return
-        
-        # Get current edge end point
-        if self.current_edge_geom:
-            end_point = Point(self.current_edge_geom.coords[-1])
-            
-            # Find edges connected to this end point (bidirectional)
-            next_edges = self.model.find_connected_edges(end_point)
-            
-            if next_edges:
-                # Filter out the CURRENT edge to prevent immediate reversal on same edge
-                candidate_edges = [
-                    (eid, geom, direction) for eid, geom, direction in next_edges 
-                    if eid != self.current_edge_id
-                ]
-                
-                # If filtering left no options, allow backtracking (dead end)
-                if not candidate_edges:
-                    candidate_edges = next_edges
-                
-                # Determine decision type and reason
-                decision_type = "edge_change"
-                decision_reason = "exploration"
-                
-                # Prefer less-visited edges for exploration (70% of the time)
-                if len(candidate_edges) > 1 and random.random() < 0.7:
-                    # Sort by visit count (ascending - prefer unvisited)
-                    candidate_edges.sort(key=lambda e: self.edge_visit_count.get(e[0], 0))
-                    
-                    # Pick from the least-visited half
-                    cutoff = max(1, len(candidate_edges) // 2)
-                    next_edge_id, next_edge_geom, direction = random.choice(candidate_edges[:cutoff])
-                    decision_reason = "prefer_unvisited"
-                else:
-                    # Pick randomly (allows some variability)
-                    next_edge_id, next_edge_geom, direction = random.choice(candidate_edges)
-                    decision_reason = "random_choice"
-                
-                # Handle reverse direction: flip the geometry
-                if direction == 'reverse':
-                    next_edge_geom = LineString(list(next_edge_geom.coords)[::-1])
-                
-                # Log decision to tracker
-                if hasattr(self.model, 'tracker') and self.model.tracker:
-                    self.model.tracker.log_decision(
-                        agent_id=self.unique_id,
-                        step_number=self.model.steps,
-                        decision_type=decision_type,
-                        longitude=end_point.x,
-                        latitude=end_point.y,
-                        from_edge_id=self.current_edge_id,
-                        to_edge_id=next_edge_id,
-                        alternatives_count=len(candidate_edges),
-                        decision_reason=decision_reason
-                    )
-                
-                # Update edge tracking
-                self.previous_edge_id = self.current_edge_id
-                self.current_edge_id = next_edge_id
-                self.current_edge_geom = next_edge_geom
-                self.position_along_edge = 0.0
-                
-                # Track visits
-                self.edge_visit_count[next_edge_id] = self.edge_visit_count.get(next_edge_id, 0) + 1
-            else:
-                # No connected edges - stay on current edge or reset
-                self.position_along_edge = 0.0
-    
+        if params.get("direction") == "reverse":
+            geom = LineString(list(geom.coords)[::-1])
+        self.previous_edge_id = self.current_edge_id
+        self.current_edge_id = params.get("edge_id")
+        self.current_edge_geom = geom
+        self.position_along_edge = 0.0
+
+    def _advance_along_edge(self) -> None:
+        if self.current_edge_geom is None:
+            return
+        self.position_along_edge += self.move_speed
+        if self.position_along_edge >= 1.0:
+            self.position_along_edge = 0.0
+        coords = list(self.current_edge_geom.coords)
+        if len(coords) >= 2:
+            idx = min(int(self.position_along_edge * (len(coords) - 1)), len(coords) - 2)
+            frac = (self.position_along_edge * (len(coords) - 1)) - idx
+            x1, y1 = coords[idx]
+            x2, y2 = coords[idx + 1]
+            self.geometry = Point(x1 + (x2 - x1) * frac, y1 + (y2 - y1) * frac)
+
     def to_dict(self):
         return {
             "id": self.unique_id,
             "type": self.agent_type,
-            "location": {
-                "lon": self.geometry.x,
-                "lat": self.geometry.y
-            }
+            "location": {"lon": self.geometry.x, "lat": self.geometry.y}
         }
 
 class CityModel(mesa.Model):
-    """A model with agents moving through a city"""
+    """A model (OSM data) with LLM-driven agents moving through a city"""
     
     def __init__(self, num_agents=500):
         super().__init__()
         self.num_agents = num_agents
         self.steps = 0
-        
-        # Use custom attribute name (Mesa 3.0+ reserves 'agents')
         self.city_agents = []
-        
+        self.edge_visit_count_global = {}
+
+        llm_config = LLMConfig.from_env()
+        self.llm_client = LLMClient(llm_config)
+        print(f"[OK] LLM client: provider={llm_config.provider}, model={llm_config.model}")
+
         # Initialize agent tracker
         try:
             self.tracker = AgentTracker()
@@ -249,23 +248,19 @@ class CityModel(mesa.Model):
         
         for i in range(num_agents):
             try:
-                # Pick a random edge
                 edge_id = random.choice(edge_ids)
                 edge_geom = self.edges[edge_id]
-                
-                # Start at beginning of edge
                 start_point = Point(edge_geom.coords[0])
-                
+                archetype = CityAgent.ARCHETYPES[i % len(CityAgent.ARCHETYPES)]
                 if i == 0:
-                    print(f"  Agent 0: lon={start_point.x:.6f}, lat={start_point.y:.6f} on edge {edge_id}")
-                
-                # Create agent with edge information
+                    print(f"  Agent 0: lon={start_point.x:.6f}, lat={start_point.y:.6f} on edge {edge_id} [{archetype}]")
                 agent = CityAgent(
-                    model=self, 
-                    geometry=start_point, 
+                    model=self,
+                    geometry=start_point,
                     crs="EPSG:4326",
                     edge_id=edge_id,
-                    edge_geom=edge_geom
+                    edge_geom=edge_geom,
+                    archetype=archetype,
                 )
                 self.city_agents.append(agent)
                 
@@ -312,12 +307,19 @@ class CityModel(mesa.Model):
     
     def step(self):
         self.steps += 1
-        # Step all agents
+        reset_step_counter(self.steps)
         random.shuffle(self.city_agents)
         for agent in self.city_agents:
             agent.step()
-        
-        # Periodically flush tracker data to disk (every 10 steps)
+        if self.tracker and self.steps % 10 == 0:
+            self.tracker.flush()
+
+    async def async_step(self):
+        """Async-native step for use within FastAPI endpoints."""
+        self.steps += 1
+        reset_step_counter(self.steps)
+        random.shuffle(self.city_agents)
+        await asyncio.gather(*[agent._async_step() for agent in self.city_agents])
         if self.tracker and self.steps % 10 == 0:
             self.tracker.flush()
     

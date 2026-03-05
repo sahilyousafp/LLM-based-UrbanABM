@@ -59,6 +59,9 @@ async def read_root():
             "/api/agent/{agent_id}",
             "/api/agent/{agent_id}/summary",
             "/api/agent/{agent_id}/streetview",
+            "/api/agent/{agent_id}/memory",
+            "/api/agent/{agent_id}/stream",
+            "/api/agent/{agent_id}/cognition",
             "/api/agents/summaries",
             "/api/amenities",
             "/api/walk_nodes",
@@ -348,19 +351,19 @@ async def get_all_agent_summaries():
 
 @app.post("/api/step")
 async def step_simulation():
-    """Step the simulation forward"""
-    city_model.step()
+    """Step the simulation forward using async LLM-driven movement."""
+    await city_model.async_step()
     return {
         "step": city_model.steps,
-        "agents": len(city_model.city_agents)
+        "agents": len(city_model.city_agents),
+        "llm_stats": city_model.llm_client.stats(),
     }
 
 @app.post("/api/step_continuous")
 async def step_continuous():
     """Step simulation and return updated agent positions"""
-    city_model.step()
+    await city_model.async_step()
     
-    # Return updated agent positions
     agents_data = []
     for agent in city_model.city_agents:
         agents_data.append({
@@ -372,7 +375,8 @@ async def step_continuous():
     
     return {
         "step": city_model.steps,
-        "agents": agents_data
+        "agents": agents_data,
+        "llm_stats": city_model.llm_client.stats(),
     }
 
 @app.get("/api/test")
@@ -513,6 +517,85 @@ async def get_stats():
         return stats
     finally:
         con.close()
+
+@app.get("/api/agent/{agent_id}/memory")
+async def get_agent_memory(agent_id: int):
+    """Return the full memory snapshot (status + stream) for an agent."""
+    agent = next((a for a in city_model.city_agents if a.unique_id == agent_id), None)
+    if not agent:
+        return {"error": "Agent not found"}
+    snapshot = await agent.memory.snapshot()
+    return snapshot
+
+
+@app.get("/api/agent/{agent_id}/stream")
+async def get_agent_stream(agent_id: int, topic: str = "", n: int = 20):
+    """Return recent stream memory events for an agent, optionally filtered by topic."""
+    agent = next((a for a in city_model.city_agents if a.unique_id == agent_id), None)
+    if not agent:
+        return {"error": "Agent not found"}
+    if topic:
+        nodes = await agent.memory.stream.get_recent(topic, n=n)
+    else:
+        nodes = await agent.memory.stream.get_recent_all(n=n)
+    return {
+        "agent_id": agent_id,
+        "topic": topic or "all",
+        "events": [
+            {"step": nd.step, "topic": nd.topic, "description": nd.description, "metadata": nd.metadata}
+            for nd in nodes
+        ],
+    }
+
+
+@app.get("/api/agent/{agent_id}/cognition")
+async def get_agent_cognition(agent_id: int):
+    """Return current cognition state and needs for an agent."""
+    agent = next((a for a in city_model.city_agents if a.unique_id == agent_id), None)
+    if not agent:
+        return {"error": "Agent not found"}
+    cognition = await agent.memory.status.get("cognition_state", {})
+    needs = await agent.memory.status.get("needs", {})
+    profile = await agent.memory.status.get("agent_profile", {})
+    plan = await agent.memory.status.get("current_plan", {})
+    return {
+        "agent_id": agent_id,
+        "archetype": profile.get("archetype", "unknown"),
+        "cognition_state": cognition,
+        "needs": needs,
+        "current_plan": plan,
+    }
+
+
+@app.post("/api/config/llm")
+async def update_llm_config(provider: str, model: str, base_url: str = "", api_key: str = ""):
+    """Hot-swap the LLM provider/model at runtime (takes effect on next agent step)."""
+    import os
+    os.environ["LLM_PROVIDER"] = provider
+    os.environ["LLM_MODEL"] = model
+    if base_url:
+        os.environ["LLM_BASE_URL"] = base_url
+    if api_key:
+        os.environ["LLM_API_KEY"] = api_key
+
+    from LLM.llm_config import LLMConfig
+    from LLM.llm_client import LLMClient
+    new_config = LLMConfig.from_env()
+    city_model.llm_client = LLMClient(new_config)
+    # Update all agent dispatchers to use the new client
+    for agent in city_model.city_agents:
+        agent.dispatcher.llm = city_model.llm_client
+        agent.dispatcher.needs_block.llm = city_model.llm_client
+        agent.dispatcher.cognition_block.llm = city_model.llm_client
+        agent.dispatcher.mobility_block.llm = city_model.llm_client
+    return {"status": "updated", "provider": provider, "model": model}
+
+
+@app.get("/api/llm/stats")
+async def get_llm_stats():
+    """Return LLM usage statistics (token counts, latency)."""
+    return city_model.llm_client.stats()
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -44,18 +44,44 @@ Open Frontend\index.html in browser
 ## System Overview
 
 ```
-Frontend (Leaflet.js) ←→ API (FastAPI) ←→ ABM (Mesa) + LLM (Ollama/Llama 3.1)
-                                           ↓
-                                      DuckDB (Spatial)
+Frontend (Leaflet.js) ←→ API (FastAPI) ←→ ABM (Mesa) + LLM (Ollama/OpenAI/vLLM)
+                                           ↓              ↓
+                                      DuckDB (Spatial)  Memory + Thinking Blocks
 ```
 
 ## Features
 
-- **500 Agents**: Navigating Barcelona's pedestrian network
-- **Real-time LLM**: Natural language agent perspectives
+- **500 Agents**: Navigating Barcelona's pedestrian network with LLM-driven decisions
+- **Memory Module**: Per-agent KVMemory (status) + StreamMemory (event log)
+- **Thinking Blocks**: MobilityBlock (LLM movement), NeedsBlock (decay + satisfaction), CognitionBlock (attitude updates)
+- **Provider-Agnostic LLM**: Supports Ollama, OpenAI, vLLM, DeepSeek via OpenAI-compatible API
+- **Agent Archetypes**: Resident, Commuter, Tourist, Student — each with distinct LLM-guided behaviour
 - **Spatial Queries**: DuckDB with spatial extensions
 - **Interactive Visualization**: Leaflet.js mapping
-- **Decoupled Architecture**: Independent frontend/backend
+- **Benchmark Suite**: 5 Jupyter notebooks comparing DB engines, LLM providers, map datasets, VLMs
+
+## Configuration
+
+Copy `scripts/.env.example` to `scripts/.env` and configure:
+
+```env
+LLM_PROVIDER=ollama          # ollama | openai | deepseek | vllm
+LLM_MODEL=llama3.1
+LLM_BASE_URL=http://localhost:11434/v1
+LLM_API_KEY=                 # required for openai/deepseek
+LLM_CALLS_PER_STEP=50        # max agents calling LLM per step (cost control)
+```
+
+## Benchmark Suite
+
+```
+benchmark/
+├── 01_database_comparison.ipynb       # DuckDB vs SQLite vs PostgreSQL+PostGIS
+├── 02_llm_provider_comparison.ipynb   # Ollama vs vLLM vs GPT-4o
+├── 03_map_data_comparison.ipynb       # Overture vs OSM
+├── 04_vlm_perception_comparison.ipynb # PerceptionLM vs LLaVA vs GPT-4o-Vision
+└── 05_system_integration_benchmark.ipynb  # End-to-end latency + humanistic scoring
+```
 
 ## Research Applications
 
