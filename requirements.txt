@@ -23,9 +23,21 @@ fastapi>=0.104.0
 uvicorn>=0.24.0
 jinja2>=3.1.2
 
-# HTTP client (if needed for API calls)
+# HTTP client
 requests>=2.31.0
+
+# LLM integration (OpenAI-compatible client — works with Ollama, OpenAI, DeepSeek, etc.)
+openai>=1.30.0
 
 # Additional dependencies for geospatial work
 pyproj>=3.6.0
 fiona>=1.9.0
+
+# Benchmark notebooks
+jupyter>=1.0.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+folium>=0.14.0
+plotly>=5.18.0
+psycopg2-binary>=2.9.0  # PostgreSQL driver for DB benchmark
+

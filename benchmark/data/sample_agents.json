@@ -1,0 +1,142 @@
+[
+  {
+    "agent_id": 1, "archetype": "resident", "age": 45,
+    "location": {"lon": 2.1686, "lat": 41.3954},
+    "needs": {"hunger": 0.7, "energy": 0.6, "social": 0.3},
+    "preferences": ["supermarket", "pharmacy", "park"],
+    "expected_destinations": ["supermarket", "pharmacy"]
+  },
+  {
+    "agent_id": 2, "archetype": "tourist", "age": 28,
+    "location": {"lon": 2.1720, "lat": 41.3970},
+    "needs": {"hunger": 0.5, "energy": 0.9, "social": 0.6},
+    "preferences": ["cafe", "attraction", "restaurant"],
+    "expected_destinations": ["cafe", "restaurant", "attraction"]
+  },
+  {
+    "agent_id": 3, "archetype": "commuter", "age": 35,
+    "location": {"lon": 2.1650, "lat": 41.3940},
+    "needs": {"hunger": 0.4, "energy": 0.5, "social": 0.2},
+    "preferences": ["direct_route", "transport", "cafe"],
+    "expected_destinations": ["cafe", "transport"]
+  },
+  {
+    "agent_id": 4, "archetype": "student", "age": 22,
+    "location": {"lon": 2.1700, "lat": 41.3960},
+    "needs": {"hunger": 0.8, "energy": 0.7, "social": 0.8},
+    "preferences": ["cafe", "library", "park"],
+    "expected_destinations": ["cafe", "library", "park"]
+  },
+  {
+    "agent_id": 5, "archetype": "resident", "age": 62,
+    "location": {"lon": 2.1630, "lat": 41.3930},
+    "needs": {"hunger": 0.6, "energy": 0.3, "social": 0.5},
+    "preferences": ["pharmacy", "park", "supermarket"],
+    "expected_destinations": ["pharmacy", "park"]
+  },
+  {
+    "agent_id": 6, "archetype": "tourist", "age": 34,
+    "location": {"lon": 2.1710, "lat": 41.3980},
+    "needs": {"hunger": 0.6, "energy": 0.8, "social": 0.7},
+    "preferences": ["cafe", "attraction", "restaurant", "new_streets"],
+    "expected_destinations": ["cafe", "attraction"]
+  },
+  {
+    "agent_id": 7, "archetype": "commuter", "age": 40,
+    "location": {"lon": 2.1660, "lat": 41.3945},
+    "needs": {"hunger": 0.3, "energy": 0.6, "social": 0.1},
+    "preferences": ["direct_route", "efficiency"],
+    "expected_destinations": ["transport"]
+  },
+  {
+    "agent_id": 8, "archetype": "student", "age": 19,
+    "location": {"lon": 2.1690, "lat": 41.3965},
+    "needs": {"hunger": 0.9, "energy": 0.8, "social": 0.9},
+    "preferences": ["cheap_food", "park", "social"],
+    "expected_destinations": ["cafe", "park"]
+  },
+  {
+    "agent_id": 9, "archetype": "resident", "age": 50,
+    "location": {"lon": 2.1645, "lat": 41.3935},
+    "needs": {"hunger": 0.5, "energy": 0.4, "social": 0.4},
+    "preferences": ["supermarket", "park", "pharmacy"],
+    "expected_destinations": ["supermarket", "park"]
+  },
+  {
+    "agent_id": 10, "archetype": "tourist", "age": 25,
+    "location": {"lon": 2.1730, "lat": 41.3975},
+    "needs": {"hunger": 0.7, "energy": 1.0, "social": 0.5},
+    "preferences": ["restaurant", "cafe", "views"],
+    "expected_destinations": ["restaurant", "cafe"]
+  },
+  {
+    "agent_id": 11, "archetype": "commuter", "age": 42,
+    "location": {"lon": 2.1655, "lat": 41.3942},
+    "needs": {"hunger": 0.5, "energy": 0.5, "social": 0.2},
+    "preferences": ["cafe", "transport"],
+    "expected_destinations": ["cafe", "transport"]
+  },
+  {
+    "agent_id": 12, "archetype": "student", "age": 24,
+    "location": {"lon": 2.1695, "lat": 41.3958},
+    "needs": {"hunger": 0.6, "energy": 0.9, "social": 0.7},
+    "preferences": ["library", "cafe"],
+    "expected_destinations": ["library", "cafe"]
+  },
+  {
+    "agent_id": 13, "archetype": "resident", "age": 38,
+    "location": {"lon": 2.1640, "lat": 41.3938},
+    "needs": {"hunger": 0.8, "energy": 0.7, "social": 0.3},
+    "preferences": ["supermarket", "pharmacy"],
+    "expected_destinations": ["supermarket"]
+  },
+  {
+    "agent_id": 14, "archetype": "tourist", "age": 55,
+    "location": {"lon": 2.1715, "lat": 41.3972},
+    "needs": {"hunger": 0.4, "energy": 0.6, "social": 0.6},
+    "preferences": ["attraction", "cafe", "restaurant"],
+    "expected_destinations": ["attraction", "restaurant"]
+  },
+  {
+    "agent_id": 15, "archetype": "commuter", "age": 31,
+    "location": {"lon": 2.1665, "lat": 41.3948},
+    "needs": {"hunger": 0.6, "energy": 0.4, "social": 0.3},
+    "preferences": ["cafe", "direct_route"],
+    "expected_destinations": ["cafe"]
+  },
+  {
+    "agent_id": 16, "archetype": "student", "age": 20,
+    "location": {"lon": 2.1685, "lat": 41.3962},
+    "needs": {"hunger": 0.7, "energy": 0.8, "social": 0.9},
+    "preferences": ["park", "cafe", "social"],
+    "expected_destinations": ["park", "cafe"]
+  },
+  {
+    "agent_id": 17, "archetype": "resident", "age": 67,
+    "location": {"lon": 2.1625, "lat": 41.3928},
+    "needs": {"hunger": 0.5, "energy": 0.2, "social": 0.6},
+    "preferences": ["park", "pharmacy"],
+    "expected_destinations": ["park", "pharmacy"]
+  },
+  {
+    "agent_id": 18, "archetype": "tourist", "age": 30,
+    "location": {"lon": 2.1725, "lat": 41.3968},
+    "needs": {"hunger": 0.8, "energy": 0.9, "social": 0.5},
+    "preferences": ["restaurant", "cafe", "new_streets"],
+    "expected_destinations": ["restaurant", "cafe"]
+  },
+  {
+    "agent_id": 19, "archetype": "commuter", "age": 44,
+    "location": {"lon": 2.1648, "lat": 41.3943},
+    "needs": {"hunger": 0.4, "energy": 0.6, "social": 0.1},
+    "preferences": ["efficiency", "direct_route"],
+    "expected_destinations": ["transport"]
+  },
+  {
+    "agent_id": 20, "archetype": "student", "age": 21,
+    "location": {"lon": 2.1692, "lat": 41.3960},
+    "needs": {"hunger": 0.9, "energy": 0.7, "social": 0.8},
+    "preferences": ["cheap_food", "library", "park"],
+    "expected_destinations": ["cafe", "library"]
+  }
+]
