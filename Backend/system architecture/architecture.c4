@@ -1,0 +1,91 @@
+specification {
+  element system {
+    style {
+      shape billboard
+    }
+  }
+  element container {
+    style {
+      shape rectangle
+    }
+  }
+  element component {
+    style {
+      shape component
+    }
+  }
+  element database {
+    style {
+      shape cylinder
+    }
+  }
+}
+
+model {
+  urban_abm = system "Urban ABM Ecosystem" {
+    
+    frontend = container "Web Dashboard" {
+      description "React-based visualization interface"
+      technology "React, Three.js, Deck.gl"
+    }
+
+    backend = container "Backend API" {
+      description "Central control and simulation engine"
+      technology "FastAPI, Python"
+
+      api_routes = component "API Routes" {
+        description "REST endpoints for simulation control and data access"
+        technology "FastAPI"
+      }
+
+      sim_engine = component "Simulation Engine" {
+        description "Manages agent lifecycle and simulation steps"
+        technology "Mesa, Mesa-Geo"
+      }
+
+      agent_logic = component "CityAgent" {
+        description "Pedestrian behavior and network movement"
+        technology "Mesa-Geo, Shapely"
+      }
+
+      llm_client = component "LLM Service" {
+        description "Handles async requests to the language model"
+        technology "AsyncOpenAI"
+      }
+    }
+
+    database = database "DuckDB" {
+      description "Spatial data storage for Overture Maps and Amenities"
+      technology "DuckDB Spatial"
+    }
+
+    llm_server = system "vLLM Server" {
+      description "Local inference engine for LLM decisions"
+      technology "vLLM, Docker"
+    }
+
+    # Relationships
+    frontend -> api_routes "Requests agent data and control"
+    api_routes -> sim_engine "Triggers simulation steps"
+    sim_engine -> agent_logic "Updates agent state"
+    agent_logic -> database "Spatial queries (amenities/network)"
+    agent_logic -> llm_client "Requests behavior decisions"
+    llm_client -> llm_server "Async inference requests"
+    api_routes -> database "Fetch geometries for visualization"
+  }
+}
+
+views {
+  view index {
+    project urban_abm
+    include *
+  }
+
+  view backend {
+    project urban_abm.backend
+    include *
+    include urban_abm.database
+    include urban_abm.llm_server
+    include urban_abm.frontend
+  }
+}
