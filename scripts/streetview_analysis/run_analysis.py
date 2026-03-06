@@ -19,7 +19,7 @@ OUTPUT_DIR = SCRIPT_DIR / "output"
 
 
 def ensure_dirs():
-    for sub in ("images", "grids", "results"):
+    for sub in ("images", "results"):
         (OUTPUT_DIR / sub).mkdir(parents=True, exist_ok=True)
 
 
@@ -30,7 +30,7 @@ def run_pipeline(
     image_path: str | None = None,
     api_key: str | None = None,
 ) -> Path:
-    """Run fetch → split → analyze → save and return the result JSON path."""
+    """Run fetch → analyze → save and return the result JSON path."""
     ensure_dirs()
 
     # ---- Step 1: Obtain source image ----
@@ -39,32 +39,23 @@ def run_pipeline(
         if not src.exists():
             print(f"[ERROR] Image not found: {src}")
             sys.exit(1)
-        print(f"[1/3] Using local image: {src}")
+        print(f"[1/2] Using local image: {src}")
     elif lat is not None and lng is not None:
         from streetview_fetcher import fetch_streetview
 
-        print(f"[1/3] Fetching Street View image at ({lat}, {lng}) heading={heading} …")
+        print(f"[1/2] Fetching Street View image at ({lat}, {lng}) heading={heading} …")
         src = fetch_streetview(lat, lng, heading=heading, api_key=api_key)
         print(f"       Saved → {src}")
     else:
         print("[ERROR] Provide --lat/--lng or --image")
         sys.exit(1)
 
-    # ---- Step 2: Split into 3×3 grid ----
-    from grid_splitter import split_image_3x3
-
-    grid_dir = OUTPUT_DIR / "grids"
-    print("[2/3] Splitting into 3×3 grid …")
-    cells = split_image_3x3(src, grid_dir)
-    for pos, p in cells.items():
-        print(f"       {pos}: {p.name}")
-
-    # ---- Step 3: Analyze each cell with PerceptionLM ----
+    # ---- Step 2: Analyze full image with PerceptionLM (single pass, 9 quadrants) ----
     from plm_analyzer import PLMAnalyzer
 
-    print("[3/3] Analyzing grid cells with PerceptionLM-1B …")
+    print("[2/2] Analyzing full image with PerceptionLM-1B (9-quadrant single pass) …")
     analyzer = PLMAnalyzer()
-    cell_results = analyzer.analyze_grid(cells)
+    quadrant_analysis = analyzer.analyze_image(src)
 
     # ---- Build combined result ----
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
@@ -79,7 +70,7 @@ def run_pipeline(
             "model": "facebook/Perception-LM-1B",
             "device": analyzer.device,
         },
-        "grid_analysis": cell_results,
+        "quadrant_analysis": quadrant_analysis,
     }
 
     result_path = OUTPUT_DIR / "results" / f"{src.stem}_{timestamp}.json"

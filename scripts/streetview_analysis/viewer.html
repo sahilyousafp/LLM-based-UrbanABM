@@ -328,11 +328,10 @@ function render() {
   if (!currentData) return;
   const main = document.getElementById('mainContent');
   const meta = currentData.metadata || {};
-  const cells = currentData.grid_analysis || [];
+  const quadrants = currentData.quadrant_analysis || {};
 
-  // Build a map position → data
-  const cellMap = {};
-  cells.forEach(c => { cellMap[c.position] = c; });
+  // cellMap is already keyed by position — use directly
+  const cellMap = quadrants;
 
   main.innerHTML = `
     <div class="grid-panel">
@@ -380,8 +379,9 @@ function render() {
     el.addEventListener('click', () => selectCell(el.dataset.pos, cellMap));
   });
 
-  // Auto-select first cell
-  if (cells.length) selectCell(cells[0].position, cellMap);
+  // Auto-select first available quadrant
+  const firstPos = POSITIONS.find(p => cellMap[p]) || POSITIONS[0];
+  selectCell(firstPos, cellMap);
 }
 
 function selectCell(pos, cellMap) {

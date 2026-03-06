@@ -1,115 +1,113 @@
-# LLM Backend for Agent Perspective
+# Backend LLM Providers
 
-This module provides LLM-powered natural language summaries of agent perspectives using Ollama and Llama 3.1.
+This folder contains the provider-agnostic LLM client used by the simulation backend.
 
-## Requirements
+The current runtime path is:
 
-1. **Ollama** must be installed and running
-2. **Llama 3.1** model must be available
+- `llm_config.py` - reads provider settings from environment variables
+- `llm_client.py` - talks to Ollama, vLLM, OpenAI, DeepSeek, or any other OpenAI-compatible endpoint
+- `llm_service.py` - older Ollama-specific helper kept for local summary experiments
 
-## Setup
+`Backend\Agent\model.py` uses `llm_config.py` + `llm_client.py` for agent reasoning, so vLLM support belongs here.
 
-### 1. Install Ollama
+## Supported providers
 
-Download from: https://ollama.ai/
+| Provider | `LLM_PROVIDER` | `LLM_BASE_URL` | `LLM_API_KEY` | Notes |
+|---|---|---|---|---|
+| Ollama | `ollama` | leave blank | leave blank | Defaults to `http://localhost:11434/v1`; supports HuggingFace GGUF models via `hf.co/...` |
+| vLLM in Docker | `vllm` | leave blank (defaults to `http://localhost:8001/v1`) | leave blank (defaults to `vllm`) | Run the Docker container on port `8001` so it does not collide with the FastAPI backend on `8000` |
+| Docker Model Runner | `docker` | leave blank (defaults to `http://localhost:12434/engines/llama.cpp/v1`) | not needed | Requires Docker Desktop 4.40+ with Model Runner enabled |
+| OpenAI-compatible custom server | `custom` | required | provider-specific | Any OpenAI-compatible endpoint works if `LLM_BASE_URL` is set |
 
-### 2. Pull Llama 3.1
+## Quick start
 
-```bash
+### Option A - Ollama (default model)
+
+```powershell
+ollama serve
 ollama pull llama3.1
+
+$env:LLM_PROVIDER = "ollama"
+$env:LLM_MODEL = "llama3.1"
+python Backend\Agent\map_server.py
 ```
 
-### 3. Verify Ollama is running
+### Option B - vLLM in Docker with Qwen3.5-9B GGUF
 
-```bash
-ollama list
+Serves the `unsloth/Qwen3.5-9B-GGUF` (Q4_K_M) model via the official vLLM Docker image.
+Requires an **NVIDIA GPU** with Docker `--runtime nvidia` support.
+
+1. Start the vLLM server:
+
+```powershell
+Backend\LLM\start_vllm_docker.bat
 ```
 
-Should show llama3.1 in the list.
+This runs `docker run vllm/vllm-openai:latest` with `--model unsloth/Qwen3.5-9B-GGUF` on port `8001`.
 
-### 4. Install Python dependencies
+2. Point the backend at vLLM:
 
-```bash
-pip install requests
+```powershell
+$env:LLM_PROVIDER = "vllm"
+$env:LLM_MODEL = "unsloth/Qwen3.5-9B-GGUF"
+python Backend\Agent\map_server.py
 ```
 
-## Usage
+You can also hot-swap at runtime:
 
-The LLM service is automatically integrated into the main backend API.
-
-### Endpoint
-
-```
-GET /api/agent/{agent_id}/summary
+```powershell
+curl -X POST "http://127.0.0.1:8000/api/config/llm?provider=vllm&model=unsloth/Qwen3.5-9B-GGUF"
 ```
 
-Returns a natural language summary of what the agent sees.
+> **No GPU?** Use Ollama instead — it already has the model downloaded:
+> ```powershell
+> $env:LLM_PROVIDER = "ollama"
+> $env:LLM_MODEL = "hf.co/unsloth/Qwen3.5-9B-GGUF:Q4_K_M"
+> ```
 
-**Example Response:**
-```json
-{
-  "agent_id": 302,
-  "summary": "I'm Agent 302, walking through a vibrant part of Barcelona. Right now I can see Joys cafe just 25 meters away, perfect for a quick coffee break. There's also a Domino's nearby if I'm feeling hungry, and I notice a few vending machines scattered around - this seems like a well-serviced neighborhood with plenty of amenities within easy reach."
-}
-```
+## Why vLLM failed without GPU access
 
-## How It Works
+If the Docker logs show `No CUDA runtime is found`, the container cannot see an NVIDIA GPU runtime.
 
-1. Frontend requests agent summary every 3 seconds
-2. Backend fetches agent's nearby amenities
-3. LLM service formats the data into a prompt
-4. Ollama/Llama 3.1 generates natural language summary
-5. Summary is returned to frontend and displayed
+Common causes:
 
-## Fallback Mode
+- Docker was started without `--gpus all`
+- the NVIDIA runtime / toolkit is not available to Docker
+- the host machine does not expose a CUDA-capable GPU to the container
+- the backend was pointed at the wrong port or `LLM_BASE_URL` was left blank
 
-If Ollama is not available, the service falls back to template-based summaries:
+Docker Model Runner (`docker model run`) does **not** require GPU flags and avoids this issue entirely, but needs Docker Desktop 4.40+. Ollama with a GGUF model is the simpler no-GPU alternative.
 
-```
-"Agent 302: I can see Joys cafe (cafe), Domino's (fast_food), and a drinking_water nearby."
-```
+## Files in this folder
 
-## Configuration
-
-Edit `llm_service.py` to customize:
-
-- **Ollama URL**: Default is `http://localhost:11434`
-- **Model**: Default is `llama3.1` (can use `llama3.1:8b`, `llama3.1:70b`, etc.)
-- **Temperature**: Default is 0.7 (0.0 = deterministic, 1.0 = creative)
-- **Max Tokens**: Default is 150
+- `README.md` - overview of supported providers
+- `SETUP_GUIDE.md` - step-by-step setup for Ollama and Docker Model Runner
+- `start_vllm_docker.bat` - Windows helper to pull and serve a model via Docker Model Runner
+- `llm_config.py` - provider, model, timeout, and endpoint configuration
+- `llm_client.py` - Async OpenAI-compatible client used by the backend
 
 ## Troubleshooting
 
-### "Ollama not available"
+### `docker model` command not found
 
-Make sure Ollama is running:
-```bash
-ollama serve
+Docker Model Runner requires **Docker Desktop 4.40+**. Update Docker Desktop and enable
+Model Runner in Settings → Features in Development.
+
+Alternatively, use Ollama — it supports the same GGUF models without any Docker version requirement:
+
+```powershell
+ollama pull hf.co/unsloth/Qwen3.5-9B-GGUF:Q4_K_M
+$env:LLM_PROVIDER = "ollama"
+$env:LLM_MODEL = "hf.co/unsloth/Qwen3.5-9B-GGUF:Q4_K_M"
 ```
 
-### "Model not found"
+### Backend still points to Ollama
 
-Pull the model:
-```bash
-ollama pull llama3.1
-```
+- Using `LLM_PROVIDER=ollama` with a `hf.co/...` model ID is the recommended local path — Ollama resolves it automatically.
+- If using `LLM_PROVIDER=custom`, you must provide an explicit `LLM_BASE_URL`.
+- If `LLM_BASE_URL` is blank with `custom`, the backend falls back to the Ollama default URL.
 
-### Slow responses
+### Port conflict
 
-- Use a smaller model: `llama3.1:8b`
-- Reduce max_tokens in `llm_service.py`
-- Check your GPU/CPU usage
-
-## Performance
-
-- **Cold start**: ~2-5 seconds (first request)
-- **Warm**: ~0.5-2 seconds (subsequent requests)
-- **Fallback**: <0.1 seconds (no LLM)
-
-## Examples
-
-### With LLM (Natural):
-> "I'm walking through a lively neighborhood in Barcelona's Eixample district. I can see Joys cafe nearby where I might grab a coffee, and there's a Domino's just around the corner. The area feels well-serviced with several vending machines and a pharmacy within view."
-
-### Without LLM (Template):
-> "Agent 302: I can see Joys cafe (cafe), Domino's (fast_food), and a drinking_water nearby."
+- `Backend\Agent\map_server.py` serves the API on `8000`.
+- Ollama listens on `11434` — no conflict with the backend.

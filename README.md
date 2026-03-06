@@ -227,7 +227,7 @@ The system uses `openai.AsyncOpenAI` which is compatible with any OpenAI-format 
 |---|---|---|---|
 | Ollama (local) | `ollama` | *(auto: localhost:11434/v1)* | *(not needed)* |
 | OpenAI | `openai` | *(auto: api.openai.com/v1)* | `sk-...` |
-| vLLM (local GPU) | `custom` | `http://localhost:8000/v1` | `vllm` |
+| vLLM (local GPU) | `custom` | `http://localhost:8001/v1` | `vllm` |
 | DeepSeek | `deepseek` | *(auto: api.deepseek.com/v1)* | your key |
 
 Hot-swap at runtime without restarting:
@@ -278,7 +278,11 @@ LLM_Based_UrbanABM/
 │   ├── 04_vlm_perception_comparison.ipynb # PerceptionLM vs LLaVA vs GPT-4o-V
 │   └── 05_system_integration_benchmark.ipynb # End-to-end latency + humanistic scoring
 ├── scripts/
-│   └── .env.example            # LLM configuration template
+│   ├── .env.example            # Shared environment template
+│   └── streetview_analysis/
+│       ├── run_analysis.py     # Street View pipeline entry point
+│       ├── viewer.html         # Result viewer
+│       └── README.md           # How to run the Street View pipeline
 ├── requirements.txt
 ├── start_system.bat            # Windows one-click launcher
 └── README.md
@@ -312,6 +316,8 @@ Five Jupyter notebooks in `benchmark/` evaluate all major technology choices. Ea
 - `SYSTEM_DOCUMENTATION.md` — full system architecture and implementation details
 - `DUCKDB_INSPECTION_GUIDE.md` — how to inspect the spatial database
 - `GCP_BIGQUERY_ACCESS_GUIDE.md` — Overture Maps via BigQuery
+- `Backend/LLM/SETUP_GUIDE.md` — backend LLM setup for Ollama and vLLM
+- `scripts/streetview_analysis/README.md` — setup and usage for the Street View analysis pipeline
 - `benchmark/README.md` — benchmark setup and rubric
 
 ## Citation
@@ -321,4 +327,3 @@ Five Jupyter notebooks in `benchmark/` evaluate all major technology choices. Ea
 ## License
 
 [Add license information]
-
