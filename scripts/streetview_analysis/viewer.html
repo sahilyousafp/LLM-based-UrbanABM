@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PerceptionLM — Street View Grid Analysis</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #6c8aff;
+    --accent2: #ff6c8a;
+    --text: #e4e6f0;
+    --muted: #8b8fa3;
+    --green: #4ade80;
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  header {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  header h1 { font-size: 1.25rem; font-weight: 600; }
+  header .badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .controls {
+    padding: 16px 32px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .controls select, .controls input[type="file"] {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+  .controls label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-right: -8px;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 24px 32px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  @media (max-width: 1024px) { .main { grid-template-columns: 1fr; } }
+
+  /* --- Grid Panel --- */
+  .grid-panel {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .grid-panel h2 {
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .grid-container {
+    position: relative;
+    aspect-ratio: 1;
+    background: #000;
+  }
+  .grid-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .grid-cell {
+    border: 1px solid rgba(108, 138, 255, 0.25);
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .grid-cell:hover { background: rgba(108, 138, 255, 0.15); }
+  .grid-cell.active {
+    background: rgba(108, 138, 255, 0.25);
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 2px var(--accent);
+    color: #fff;
+  }
+
+  /* --- Detail Panel --- */
+  .detail-panel {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+  }
+  .detail-panel h2 {
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .detail-body {
+    overflow-y: auto;
+    padding: 18px;
+    flex: 1;
+  }
+  .field {
+    margin-bottom: 14px;
+  }
+  .field-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .field-value {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .tag {
+    display: inline-block;
+    background: rgba(108, 138, 255, 0.15);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    margin: 2px 4px 2px 0;
+  }
+  .narrative-box {
+    background: rgba(74, 222, 128, 0.08);
+    border-left: 3px solid var(--green);
+    padding: 12px 14px;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    line-height: 1.6;
+    font-size: 0.9rem;
+  }
+  .meta-row {
+    display: flex;
+    gap: 18px;
+    padding: 10px 18px;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .meta-row span { white-space: nowrap; }
+
+  /* --- Narrative Summary --- */
+  .summary {
+    grid-column: 1 / -1;
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 18px;
+  }
+  .summary h2 { margin-bottom: 14px; font-size: 0.95rem; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .summary-cell {
+    background: rgba(108, 138, 255, 0.06);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .summary-cell:hover { border-color: var(--accent); }
+  .summary-cell .pos {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-state h3 { margin-bottom: 8px; color: var(--text); }
+
+  .json-raw {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 12px;
+  }
+
+  .latency {
+    font-family: var(--mono);
+    color: var(--accent2);
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏙️ PerceptionLM Street View Analyzer</h1>
+  <span class="badge">PLM-1B</span>
+</header>
+
+<div class="controls">
+  <label for="resultSelect">Result file:</label>
+  <select id="resultSelect"><option value="">— load a JSON result —</option></select>
+  <label for="fileInput">or upload:</label>
+  <input type="file" id="fileInput" accept=".json">
+</div>
+
+<div class="main" id="mainContent">
+  <div class="empty-state" style="grid-column:1/-1">
+    <h3>No result loaded</h3>
+    <p>Select a result JSON from the dropdown, or upload one.</p>
+    <p style="margin-top:12px; font-size:0.8rem;">
+      Run: <code style="background:var(--card);padding:2px 8px;border-radius:4px;">python run_analysis.py --lat 41.3874 --lng 2.1686</code>
+    </p>
+  </div>
+</div>
+
+<script>
+const POSITIONS = [
+  'top_left','top_center','top_right',
+  'middle_left','middle_center','middle_right',
+  'bottom_left','bottom_center','bottom_right'
+];
+const FIELD_ORDER = [
+  'building_typology','architectural_style','materials','condition',
+  'street_furniture','vegetation','signage','pedestrian_activity',
+  'dominant_colors','spatial_impression','narrative'
+];
+
+let currentData = null;
+let activeCell = null;
+
+/* ---- Load result list from server ---- */
+async function loadResultList() {
+  const select = document.getElementById('resultSelect');
+  try {
+    const resp = await fetch('output/results/');
+    if (!resp.ok) return;
+    const text = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const links = [...doc.querySelectorAll('a')].map(a => a.textContent.trim())
+      .filter(n => n.endsWith('.json'));
+    links.sort().reverse();
+    links.forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = `output/results/${name}`;
+      opt.textContent = name;
+      select.appendChild(opt);
+    });
+  } catch { /* server may not list directory */ }
+}
+
+document.getElementById('resultSelect').addEventListener('change', async e => {
+  if (!e.target.value) return;
+  const resp = await fetch(e.target.value);
+  currentData = await resp.json();
+  render();
+});
+
+document.getElementById('fileInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => { currentData = JSON.parse(reader.result); render(); };
+  reader.readAsText(file);
+});
+
+/* ---- Render ---- */
+function render() {
+  if (!currentData) return;
+  const main = document.getElementById('mainContent');
+  const meta = currentData.metadata || {};
+  const cells = currentData.grid_analysis || [];
+
+  // Build a map position → data
+  const cellMap = {};
+  cells.forEach(c => { cellMap[c.position] = c; });
+
+  main.innerHTML = `
+    <div class="grid-panel">
+      <h2>📷 Source Image <span style="margin-left:auto;font-size:0.78rem;color:var(--muted)">${meta.source_image || ''}</span></h2>
+      <div class="grid-container">
+        <img id="srcImg" src="output/images/${meta.source_image || ''}" alt="street view"
+             onerror="this.style.display='none'">
+        <div class="grid-overlay">
+          ${POSITIONS.map(p => `<div class="grid-cell" data-pos="${p}">${p.replace('_',' ')}</div>`).join('')}
+        </div>
+      </div>
+      <div class="meta-row">
+        <span>📍 ${meta.latitude ?? '—'}, ${meta.longitude ?? '—'}</span>
+        <span>🧭 heading ${meta.heading ?? 0}°</span>
+        <span>🤖 ${meta.model || 'PLM-1B'}</span>
+        <span>💻 ${meta.device || 'cpu'}</span>
+        <span>🕐 ${meta.timestamp || ''}</span>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="detailPanel">
+      <h2 id="detailTitle">Select a grid cell</h2>
+      <div class="detail-body" id="detailBody">
+        <p style="color:var(--muted)">Click on a grid cell to view its urban analysis.</p>
+      </div>
+    </div>
+
+    <div class="summary">
+      <h2>📝 Narrative Overview</h2>
+      <div class="summary-grid">
+        ${POSITIONS.map(p => {
+          const c = cellMap[p];
+          const narr = c ? (c.narrative || '—') : '—';
+          return `<div class="summary-cell" data-pos="${p}">
+            <div class="pos">${p.replace('_',' ')}</div>
+            ${narr}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+
+  // Cell click handlers
+  main.querySelectorAll('[data-pos]').forEach(el => {
+    el.addEventListener('click', () => selectCell(el.dataset.pos, cellMap));
+  });
+
+  // Auto-select first cell
+  if (cells.length) selectCell(cells[0].position, cellMap);
+}
+
+function selectCell(pos, cellMap) {
+  activeCell = pos;
+  document.querySelectorAll('.grid-cell').forEach(el =>
+    el.classList.toggle('active', el.dataset.pos === pos)
+  );
+
+  const data = cellMap[pos];
+  const title = document.getElementById('detailTitle');
+  const body = document.getElementById('detailBody');
+  title.textContent = `🔍 ${pos.replace('_', ' ').toUpperCase()}`;
+
+  if (!data) {
+    body.innerHTML = '<p style="color:var(--muted)">No data for this cell.</p>';
+    return;
+  }
+
+  let html = '';
+
+  FIELD_ORDER.forEach(key => {
+    if (key === 'narrative') return;
+    const val = data[key];
+    if (val === undefined) return;
+
+    html += `<div class="field"><div class="field-label">${key.replace('_',' ')}</div>`;
+    if (Array.isArray(val)) {
+      html += `<div class="field-value">${val.map(v => `<span class="tag">${v}</span>`).join('')}</div>`;
+    } else {
+      html += `<div class="field-value">${val}</div>`;
+    }
+    html += '</div>';
+  });
+
+  if (data.narrative) {
+    html += `<div class="field"><div class="field-label">Narrative</div>
+      <div class="narrative-box">"${data.narrative}"</div></div>`;
+  }
+
+  if (data._latency_ms) {
+    html += `<div class="field"><div class="field-label">Inference</div>
+      <div class="latency">${(data._latency_ms / 1000).toFixed(1)}s</div></div>`;
+  }
+
+  // Raw JSON toggle
+  const clean = Object.fromEntries(Object.entries(data).filter(([k]) => !k.startsWith('_')));
+  html += `<details style="margin-top:10px">
+    <summary style="cursor:pointer;color:var(--muted);font-size:0.8rem">Raw JSON</summary>
+    <div class="json-raw">${JSON.stringify(clean, null, 2)}</div>
+  </details>`;
+
+  body.innerHTML = html;
+}
+
+/* ---- Init ---- */
+loadResultList();
+</script>
+</body>
+</html>
