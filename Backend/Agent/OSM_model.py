@@ -49,7 +49,7 @@ class CityAgent(mg.GeoAgent):
             memory=self.memory,
             context={"model": model},
         )
-        asyncio.get_event_loop().run_until_complete(self._init_memory(edge_id, geometry, archetype))
+        self._init_memory_sync(edge_id, geometry, archetype)
 
         if hasattr(model, 'tracker') and model.tracker:
             model.tracker.log_movement(
@@ -61,6 +61,22 @@ class CityAgent(mg.GeoAgent):
                 position_along_edge=self.position_along_edge,
                 speed=self.move_speed
             )
+
+    def _init_memory_sync(self, edge_id, geometry, archetype: str) -> None:
+        prefs = {
+            "resident": ["supermarket", "pharmacy", "park"],
+            "commuter": ["direct_route", "transport", "cafe"],
+            "tourist": ["attraction", "cafe", "restaurant"],
+            "student": ["cafe", "library", "park"],
+        }
+        self.memory.status._data["agent_profile"] = {
+            "archetype": archetype,
+            "age": random.randint(18, 70),
+            "preferences": prefs.get(archetype, []),
+        }
+        self.memory.status._data["position"] = {"lon": geometry.x, "lat": geometry.y, "edge_id": edge_id}
+        if edge_id is not None:
+            self.memory.status._data["visited_edges"] = {str(edge_id): 1}
 
     async def _init_memory(self, edge_id, geometry, archetype: str) -> None:
         prefs = {

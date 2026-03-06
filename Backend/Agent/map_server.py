@@ -6,9 +6,8 @@ from model import CityModel
 import sys
 from pathlib import Path
 
-# Add LLM module to path
-sys.path.append(str(Path(__file__).parent.parent / "LLM"))
-from llm_service import get_llm_service
+# Ensure Backend root on path (model.py also does this, but be explicit here)
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Import Mapillary service
 from mapillary import MapillaryService
@@ -28,11 +27,8 @@ app.add_middleware(
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
 
-# Initialize Mesa model with agents
+# Initialize Mesa model with agents (LLMClient is initialised inside CityModel)
 city_model = CityModel(num_agents=500)
-
-# Initialize LLM service
-llm_service = get_llm_service()
 
 # Initialize Mapillary service
 MAPILLARY_API_KEY = "MLY|33533093396335529|30cb7c42be1a23189b63952f439551bd"
@@ -220,9 +216,15 @@ async def get_roads():
 
 @app.get("/api/agents")
 async def get_agents():
-    """Get agents as GeoJSON with their current query results"""
+    """Get agents as GeoJSON with current state."""
     features = []
     for agent in city_model.city_agents:
+        archetype = "unknown"
+        try:
+            profile = await agent.memory.status.get("agent_profile", {})
+            archetype = profile.get("archetype", "unknown")
+        except Exception:
+            pass
         features.append({
             "type": "Feature",
             "geometry": {
@@ -232,6 +234,7 @@ async def get_agents():
             "properties": {
                 "id": agent.unique_id,
                 "type": agent.agent_type,
+                "archetype": archetype,
                 "nearby_count": len(agent.nearby_amenities)
             }
         })
@@ -263,32 +266,34 @@ async def get_agent_info(agent_id: int):
 
 @app.get("/api/agent/{agent_id}/summary")
 async def get_agent_summary(agent_id: int):
-    """Get LLM-generated natural language summary of what the agent sees"""
-    # Find the agent
+    """Get LLM-generated natural language summary of what the agent sees."""
     agent = next((a for a in city_model.city_agents if a.unique_id == agent_id), None)
-    
     if not agent:
         return {"error": "Agent not found"}
-    
-    # Prepare agent data for LLM
-    agent_data = {
-        "id": agent.unique_id,
-        "type": agent.agent_type,
-        "location": {
-            "lon": agent.geometry.x,
-            "lat": agent.geometry.y
-        },
-        "nearby_amenities": agent.nearby_amenities
-    }
-    
-    # Generate summary using LLM
-    summary = llm_service.summarize_agent_perspective(agent_data)
-    
+
+    profile = await agent.memory.status.get("agent_profile", {})
+    needs = await agent.memory.status.get("needs", {})
+    cognition = await agent.memory.status.get("cognition_state", {})
+
+    messages = [
+        {"role": "system", "content": "You are narrating an urban simulation agent in Barcelona Eixample. Be concise (2-3 sentences)."},
+        {"role": "user", "content": (
+            f"Agent {agent_id} is a {profile.get('archetype','pedestrian')} at "
+            f"lon={agent.geometry.x:.5f}, lat={agent.geometry.y:.5f}. "
+            f"Needs: hunger={needs.get('hunger',0.5):.2f}, energy={needs.get('energy',1.0):.2f}, social={needs.get('social',0.5):.2f}. "
+            f"Mood: {cognition.get('mood','neutral')}. "
+            f"Nearby: {', '.join(a.get('type','?') for a in agent.nearby_amenities[:5]) or 'nothing notable'}. "
+            "Narrate what this agent is experiencing right now."
+        )}
+    ]
+
+    summary = await city_model.llm_client.chat(messages)
     return {
         "agent_id": agent.unique_id,
         "summary": summary,
-        "location": agent_data["location"],
-        "amenity_count": len(agent.nearby_amenities)
+        "location": {"lon": agent.geometry.x, "lat": agent.geometry.y},
+        "amenity_count": len(agent.nearby_amenities),
+        "archetype": profile.get("archetype", "unknown"),
     }
 
 @app.get("/api/agent/{agent_id}/streetview")
@@ -319,35 +324,32 @@ async def get_agent_streetview(agent_id: int):
 
 @app.get("/api/agents/summaries")
 async def get_all_agent_summaries():
-    """Get LLM-generated summaries for all agents simultaneously"""
-    summaries = []
-    
-    for agent in city_model.city_agents:
-        # Prepare agent data for LLM
-        agent_data = {
-            "id": agent.unique_id,
-            "type": agent.agent_type,
-            "location": {
-                "lon": agent.geometry.x,
-                "lat": agent.geometry.y
-            },
-            "nearby_amenities": agent.nearby_amenities
-        }
-        
-        # Generate summary using LLM
-        summary = llm_service.summarize_agent_perspective(agent_data)
-        
-        summaries.append({
+    """Get LLM-generated summaries for a sample of agents (first 10 to avoid overload)."""
+    import asyncio
+
+    async def _summarize(agent):
+        profile = await agent.memory.status.get("agent_profile", {})
+        needs = await agent.memory.status.get("needs", {})
+        messages = [
+            {"role": "system", "content": "Narrate this urban simulation agent in one sentence."},
+            {"role": "user", "content": (
+                f"Agent {agent.unique_id} ({profile.get('archetype','pedestrian')}) at "
+                f"{agent.geometry.x:.4f},{agent.geometry.y:.4f}. "
+                f"Hunger={needs.get('hunger',0.5):.1f} Energy={needs.get('energy',1.0):.1f}. "
+                f"Nearby: {', '.join(a.get('type','?') for a in agent.nearby_amenities[:3]) or 'none'}."
+            )}
+        ]
+        summary = await city_model.llm_client.chat(messages)
+        return {
             "agent_id": agent.unique_id,
             "summary": summary,
-            "location": agent_data["location"],
-            "amenity_count": len(agent.nearby_amenities)
-        })
-    
-    return {
-        "total_agents": len(summaries),
-        "summaries": summaries
-    }
+            "location": {"lon": agent.geometry.x, "lat": agent.geometry.y},
+            "archetype": profile.get("archetype", "unknown"),
+        }
+
+    sample = city_model.city_agents[:10]
+    summaries = await asyncio.gather(*[_summarize(a) for a in sample])
+    return {"total_agents": len(city_model.city_agents), "sample_size": len(summaries), "summaries": list(summaries)}
 
 @app.post("/api/step")
 async def step_simulation():
