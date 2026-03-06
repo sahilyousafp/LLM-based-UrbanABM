@@ -54,8 +54,8 @@ class CityAgent(mg.GeoAgent):
             context={"model": model},
         )
 
-        # Initialise memory with agent profile
-        asyncio.get_event_loop().run_until_complete(self._init_memory(edge_id, geometry, archetype))
+        # Initialise memory with agent profile (sync — safe at init time, no loop running)
+        self._init_memory_sync(edge_id, geometry, archetype)
 
         # Log initial position to tracker
         if hasattr(model, 'tracker') and model.tracker:
@@ -68,6 +68,21 @@ class CityAgent(mg.GeoAgent):
                 position_along_edge=self.position_along_edge,
                 speed=self.move_speed
             )
+
+    def _init_memory_sync(self, edge_id, geometry, archetype: str) -> None:
+        """Initialise memory synchronously at agent creation (no asyncio loop needed)."""
+        self.memory.status._data["agent_profile"] = {
+            "archetype": archetype,
+            "age": random.randint(18, 70),
+            "preferences": self._archetype_preferences(archetype),
+        }
+        self.memory.status._data["position"] = {
+            "lon": geometry.x,
+            "lat": geometry.y,
+            "edge_id": edge_id,
+        }
+        if edge_id is not None:
+            self.memory.status._data["visited_edges"] = {str(edge_id): 1}
 
     async def _init_memory(self, edge_id, geometry, archetype: str) -> None:
         """Set up initial memory state for this agent."""

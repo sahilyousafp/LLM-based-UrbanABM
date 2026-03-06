@@ -14,8 +14,8 @@ from .block import BlockResult
 from .blocks.mobility_block import MobilityBlock
 from .blocks.needs_block import NeedsBlock
 from .blocks.cognition_block import CognitionBlock
-from ..LLM.llm_client import LLMClient
-from ..Memory.memory import Memory
+from LLM.llm_client import LLMClient
+from Memory.memory import Memory
 
 logger = logging.getLogger(__name__)
 
