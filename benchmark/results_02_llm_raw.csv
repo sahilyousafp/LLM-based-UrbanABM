@@ -1,0 +1,4 @@
+provider,status,error,latency_ms,json_ok,accurate,in_tokens,out_tokens
+ollama,access_not_possible,"Error code: 404 - {'error': {'message': ""model 'Qwen3.5-9B-GGUF:Q4_K_M' not found"", 'type': 'api_error', 'param': None, 'code': None}}",,,,,
+vllm,access_not_possible,service unreachable (not running locally),,,,,
+gemini-flash,access_not_possible,authentication failed (check API key),,,,,

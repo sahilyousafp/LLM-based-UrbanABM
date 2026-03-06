@@ -1,202 +1,133 @@
-# Quick Setup Guide for LLM Integration
+# Quick Setup Guide for Backend LLM Providers
+
+This guide covers the provider-agnostic backend in `Backend\LLM`.
+
+The active simulation path uses:
+
+- `Backend\LLM\llm_config.py`
+- `Backend\LLM\llm_client.py`
+- `Backend\Agent\model.py`
+
+Choose one provider path below.
 
 ## Prerequisites
 
-1. **Ollama** - Local LLM runtime
-2. **Llama 3.1** - Language model
+- Python dependencies installed from the project root
+- One working LLM provider:
+  - Ollama (recommended — supports HuggingFace GGUF models directly)
 
-## Installation Steps
+## Option A - Ollama
 
-### Step 1: Install Ollama
+### 1. Install and start Ollama
 
-**Windows:**
 ```powershell
-# Download from https://ollama.ai/download
-# Or use winget:
 winget install Ollama.Ollama
-```
-
-**Mac:**
-```bash
-brew install ollama
-```
-
-**Linux:**
-```bash
-curl -fsSL https://ollama.ai/install.sh | sh
-```
-
-### Step 2: Start Ollama Service
-
-```bash
 ollama serve
 ```
 
-Leave this running in a terminal.
+### 2. Pull a model
 
-### Step 3: Pull Llama 3.1
-
-In another terminal:
-```bash
+```powershell
 ollama pull llama3.1
 ```
 
-This will download the model (~4GB for 8B version).
+### 3. Configure the backend shell
 
-### Step 4: Verify Installation
-
-```bash
-ollama list
+```powershell
+$env:LLM_PROVIDER = "ollama"
+$env:LLM_MODEL = "llama3.1"
+Remove-Item Env:LLM_BASE_URL -ErrorAction SilentlyContinue
+Remove-Item Env:LLM_API_KEY -ErrorAction SilentlyContinue
 ```
 
-You should see `llama3.1` in the list.
+### 4. Start the backend
 
-### Step 5: Test Ollama
-
-```bash
-ollama run llama3.1 "Hello, how are you?"
+```powershell
+python Backend\Agent\map_server.py
 ```
 
-### Step 6: Start the Backend
+## Option B - vLLM in Docker with Qwen3.5-9B GGUF
 
-```bash
-cd Backend\Agent
-python map_server.py
+Requires an **NVIDIA GPU** with Docker `--runtime nvidia` support. No HF token needed — `unsloth/Qwen3.5-9B-GGUF` is a public model.
+
+### 1. Start the vLLM server
+
+```powershell
+Backend\LLM\start_vllm_docker.bat
 ```
 
-You should see:
+This runs:
 ```
-[LLM] Available models: ['llama3.1:latest']
-[LLM] Service initialized successfully
+docker run --runtime nvidia --gpus all vllm/vllm-openai:latest \
+  --model unsloth/Qwen3.5-9B-GGUF \
+  --tokenizer Qwen/Qwen2.5-9B-Instruct \
+  --max-model-len 8192
+```
+on port `8001`. First run downloads the model (~5 GB) into the HuggingFace cache.
+
+### 2. Point the backend at vLLM
+
+```powershell
+$env:LLM_PROVIDER = "vllm"
+$env:LLM_MODEL = "unsloth/Qwen3.5-9B-GGUF"
+```
+
+Then start the backend:
+
+```powershell
+python Backend\Agent\map_server.py
+```
+
+### 3. Verify the endpoint
+
+```powershell
+curl http://127.0.0.1:8001/v1/models
+```
+
+> **No GPU / prefer CPU?** Use Ollama — the model is already downloaded locally:
+> ```powershell
+> $env:LLM_PROVIDER = "ollama"
+> $env:LLM_MODEL = "hf.co/unsloth/Qwen3.5-9B-GGUF:Q4_K_M"
+> ```
+
+## Hot-swap provider at runtime
+
+If the backend is already running, you can reconfigure it without restarting:
+
+```powershell
+curl -X POST "http://127.0.0.1:8000/api/config/llm?provider=vllm&model=unsloth/Qwen3.5-9B-GGUF"
+```
+
+## Test the backend API
+
+```powershell
+curl http://127.0.0.1:8000/api/agent/0/summary
+curl http://127.0.0.1:8000/api/llm/stats
 ```
 
 ## Troubleshooting
 
-### "Ollama not available"
+### `ollama: command not found`
 
-**Check if Ollama is running:**
-```bash
-# Windows
-tasklist | findstr ollama
+Install Ollama and make sure it is running:
 
-# Mac/Linux
-ps aux | grep ollama
-```
-
-**Start Ollama:**
-```bash
+```powershell
+winget install Ollama.Ollama
 ollama serve
 ```
 
-### "Model not found"
+### `docker model` command not found (Docker Model Runner)
 
-Pull the model:
-```bash
-ollama pull llama3.1
-```
+Docker Model Runner requires **Docker Desktop 4.40 or later**. Use Ollama instead — it supports
+the same `hf.co/...` GGUF model paths without any Docker version requirement.
 
-### Slow Performance
+### Backend still talks to Ollama when using a different provider
 
-**Option 1: Use smaller model**
-```bash
-ollama pull llama3.1:8b
-```
+- For local GGUF inference, keep `LLM_PROVIDER=ollama` — that is the correct setting.
+- If you use `LLM_PROVIDER=custom`, you must also set an explicit `LLM_BASE_URL`.
+- If `LLM_BASE_URL` is blank and provider is `custom`, the backend falls back to the Ollama default URL.
 
-Edit `llm_service.py`:
-```python
-model: str = "llama3.1:8b"
-```
+### Port conflict
 
-**Option 2: Use quantized version**
-```bash
-ollama pull llama3.1:7b-q4
-```
-
-### Port Conflicts
-
-If Ollama is on a different port, edit `llm_service.py`:
-```python
-ollama_url: str = "http://localhost:YOUR_PORT"
-```
-
-## Testing
-
-### Test the API
-
-```bash
-# Get LLM summary for agent 0
-curl http://127.0.0.1:8000/api/agent/0/summary
-```
-
-**Expected Response:**
-```json
-{
-  "agent_id": 0,
-  "summary": "I'm Agent 0, walking through Barcelona's Eixample district...",
-  "location": {"lon": 2.18024, "lat": 41.39648},
-  "amenity_count": 20
-}
-```
-
-### Test in Browser
-
-1. Open Frontend/index.html
-2. Click on any agent
-3. Wait 1-2 seconds
-4. See natural language summary appear
-
-## Performance Expectations
-
-| Model | RAM | Speed | Quality |
-|-------|-----|-------|---------|
-| llama3.1:8b | 8GB | ~1s | Good |
-| llama3.1:7b | 4GB | ~2s | Decent |
-| llama3.1:70b | 40GB | ~5s | Excellent |
-
-## Configuration Options
-
-Edit `Backend/LLM/llm_service.py`:
-
-```python
-# Model selection
-model: str = "llama3.1"  # or "llama3.1:8b", "llama3.1:70b"
-
-# Temperature (creativity)
-"temperature": 0.7,  # 0.0-1.0, higher = more creative
-
-# Max tokens (length)
-"max_tokens": 150,  # Increase for longer summaries
-
-# Timeout
-timeout=10  # Seconds to wait for response
-```
-
-## Fallback Mode
-
-If Ollama is not available, the system automatically uses template-based summaries:
-
-```
-"Agent 0: I can see Joys cafe (cafe), Domino's (fast_food), and a drinking_water nearby."
-```
-
-No LLM required, instant responses.
-
-## Production Deployment
-
-For production, consider:
-
-1. **Use a dedicated LLM server**
-2. **Cache summaries** for frequently visited locations
-3. **Rate limit** LLM calls
-4. **Use async processing** with a queue
-5. **Monitor token usage** and costs
-
-## Next Steps
-
-- [x] Install Ollama
-- [x] Pull Llama 3.1
-- [x] Test backend API
-- [x] View summaries in frontend
-- [ ] Customize prompts in `llm_service.py`
-- [ ] Adjust temperature/tokens for your needs
-- [ ] Consider caching strategy for production
+- the backend API listens on `8000`
+- Ollama listens on `11434` — no conflict with the backend
