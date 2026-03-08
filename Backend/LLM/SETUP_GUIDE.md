@@ -46,11 +46,21 @@ Remove-Item Env:LLM_API_KEY -ErrorAction SilentlyContinue
 python Backend\Agent\map_server.py
 ```
 
-## Option B - vLLM in Docker with Qwen3.5-9B GGUF
+## Option B - vLLM in Docker (GPU only)
 
-Requires an **NVIDIA GPU** with Docker `--runtime nvidia` support. No HF token needed — `unsloth/Qwen3.5-9B-GGUF` is a public model.
+Requires an **NVIDIA GPU** with CUDA support and the NVIDIA Container Toolkit installed.
+AWQ quantization is GPU-only — if you have no NVIDIA GPU, use Option A (Ollama) instead.
 
-### 1. Start the vLLM server
+### 1. Verify GPU access
+
+```powershell
+nvidia-smi                       # must show your NVIDIA GPU
+docker run --rm --gpus all nvidia/cuda:12.4.0-base-ubuntu22.04 nvidia-smi  # must work inside Docker
+```
+
+If either command fails, see the troubleshooting section below.
+
+### 2. Start the vLLM server
 
 ```powershell
 Backend\LLM\start_vllm_docker.bat
@@ -58,18 +68,18 @@ Backend\LLM\start_vllm_docker.bat
 
 This runs:
 ```
-docker run --runtime nvidia --gpus all vllm/vllm-openai:latest \
-  --model unsloth/Qwen3.5-9B-GGUF \
-  --tokenizer Qwen/Qwen2.5-9B-Instruct \
+docker run --gpus all vllm/vllm-openai:latest \
+  --model hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4 \
+  --quantization awq \
   --max-model-len 8192
 ```
-on port `8001`. First run downloads the model (~5 GB) into the HuggingFace cache.
+on port `8001`. First run downloads the model (~4.5 GB) into the HuggingFace cache.
 
 ### 2. Point the backend at vLLM
 
 ```powershell
 $env:LLM_PROVIDER = "vllm"
-$env:LLM_MODEL = "unsloth/Qwen3.5-9B-GGUF"
+$env:LLM_MODEL = "hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
 ```
 
 Then start the backend:
@@ -84,18 +94,19 @@ python Backend\Agent\map_server.py
 curl http://127.0.0.1:8001/v1/models
 ```
 
-> **No GPU / prefer CPU?** Use Ollama — the model is already downloaded locally:
+> **No NVIDIA GPU?** Use Ollama — it runs GGUF-quantized models on CPU:
 > ```powershell
 > $env:LLM_PROVIDER = "ollama"
 > $env:LLM_MODEL = "hf.co/unsloth/Qwen3.5-9B-GGUF:Q4_K_M"
 > ```
+> AWQ quantization requires GPU hardware. GGUF quantization works on CPU.
 
 ## Hot-swap provider at runtime
 
 If the backend is already running, you can reconfigure it without restarting:
 
 ```powershell
-curl -X POST "http://127.0.0.1:8000/api/config/llm?provider=vllm&model=unsloth/Qwen3.5-9B-GGUF"
+curl -X POST "http://127.0.0.1:8000/api/config/llm?provider=vllm&model=hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
 ```
 
 ## Test the backend API

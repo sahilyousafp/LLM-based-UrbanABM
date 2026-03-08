@@ -32,10 +32,10 @@ $env:LLM_MODEL = "llama3.1"
 python Backend\Agent\map_server.py
 ```
 
-### Option B - vLLM in Docker with Qwen3.5-9B GGUF
+### Option B - vLLM in Docker (GPU only)
 
-Serves the `unsloth/Qwen3.5-9B-GGUF` (Q4_K_M) model via the official vLLM Docker image.
-Requires an **NVIDIA GPU** with Docker `--runtime nvidia` support.
+Serves `hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4` via the official vLLM Docker image.
+**Requires an NVIDIA GPU** with CUDA support and the NVIDIA Container Toolkit.
 
 1. Start the vLLM server:
 
@@ -43,40 +43,50 @@ Requires an **NVIDIA GPU** with Docker `--runtime nvidia` support.
 Backend\LLM\start_vllm_docker.bat
 ```
 
-This runs `docker run vllm/vllm-openai:latest` with `--model unsloth/Qwen3.5-9B-GGUF` on port `8001`.
+The script checks for an NVIDIA GPU before launching. If no GPU is found it prints
+setup guidance and exits.
 
 2. Point the backend at vLLM:
 
 ```powershell
 $env:LLM_PROVIDER = "vllm"
-$env:LLM_MODEL = "unsloth/Qwen3.5-9B-GGUF"
+$env:LLM_MODEL = "hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
 python Backend\Agent\map_server.py
 ```
 
 You can also hot-swap at runtime:
 
 ```powershell
-curl -X POST "http://127.0.0.1:8000/api/config/llm?provider=vllm&model=unsloth/Qwen3.5-9B-GGUF"
+curl -X POST "http://127.0.0.1:8000/api/config/llm?provider=vllm&model=hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
 ```
 
-> **No GPU?** Use Ollama instead — it already has the model downloaded:
+> **No NVIDIA GPU?** Use Ollama instead — it runs GGUF-quantized models on CPU:
 > ```powershell
 > $env:LLM_PROVIDER = "ollama"
 > $env:LLM_MODEL = "hf.co/unsloth/Qwen3.5-9B-GGUF:Q4_K_M"
 > ```
+> AWQ quantization (used by the vLLM model) requires GPU. GGUF quantization (used by
+> Ollama) works on both CPU and GPU.
 
 ## Why vLLM failed without GPU access
 
-If the Docker logs show `No CUDA runtime is found`, the container cannot see an NVIDIA GPU runtime.
+If the Docker logs show `No CUDA runtime is found` or `Failed to infer device type`,
+the container cannot see an NVIDIA GPU.
 
-Common causes:
+Common causes (in order of likelihood):
 
-- Docker was started without `--gpus all`
-- the NVIDIA runtime / toolkit is not available to Docker
-- the host machine does not expose a CUDA-capable GPU to the container
-- the backend was pointed at the wrong port or `LLM_BASE_URL` was left blank
+1. **No NVIDIA GPU** — the machine only has Intel/AMD integrated graphics.
+   Run `nvidia-smi` on the host; if it fails, there is no NVIDIA GPU.
+2. **NVIDIA Container Toolkit not installed** — Docker needs the toolkit to expose
+   GPUs inside containers. Install from https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/
+3. **WSL2 GPU passthrough not configured** — on Windows with Docker Desktop,
+   GPU passthrough requires a recent NVIDIA driver (≥ 470) with WSL2 support.
+   Run `wsl nvidia-smi` to verify the GPU is visible inside WSL.
+4. **Docker started without `--gpus all`** — the container needs explicit GPU access.
 
-Docker Model Runner (`docker model run`) does **not** require GPU flags and avoids this issue entirely, but needs Docker Desktop 4.40+. Ollama with a GGUF model is the simpler no-GPU alternative.
+**If you have no NVIDIA GPU**, use Ollama (CPU-friendly GGUF quantization) or
+Docker Model Runner instead. vLLM CPU mode does not support AWQ quantization and
+is extremely slow for 8B+ parameter models.
 
 ## Files in this folder
 
