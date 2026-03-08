@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 import torch
 from PIL import Image
-from transformers import AutoModelForImageTextToText, AutoTokenizer
+from transformers import AutoModelForImageTextToText, AutoProcessor, AutoTokenizer
 
 MODEL_PATH = "facebook/Perception-LM-1B"
 LOCAL_CACHE = Path(
@@ -322,16 +322,42 @@ class PLMAnalyzer:
         print(f"[PLM] Loading model from {self.model_source} on {self.device} ({self.dtype}) …")
         t0 = time.perf_counter()
 
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            self.model_source,
-            local_files_only=local_files_only,
-        )
+        # Prefer AutoProcessor (handles apply_chat_template and image alignment).
+        # Fall back to AutoTokenizer when the processor requires unavailable extras
+        # (e.g. torchvision) so the pipeline can still run on CPU-only environments.
+        self._use_processor = False
+        self.processor = None
+        try:
+            self.processor = AutoProcessor.from_pretrained(
+                self.model_source,
+                local_files_only=local_files_only,
+                use_fast=False,
+            )
+            self.tokenizer = self.processor.tokenizer
+            self._use_processor = True
+            print("[PLM] Loaded AutoProcessor (apply_chat_template + image alignment active).")
+        except Exception as exc:
+            print(f"[PLM] AutoProcessor unavailable ({exc}); falling back to AutoTokenizer.")
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.model_source,
+                local_files_only=local_files_only,
+            )
+
         self.model = AutoModelForImageTextToText.from_pretrained(
             self.model_source,
             local_files_only=local_files_only,
             torch_dtype=self.dtype,
         ).to(self.device)
         self.model.eval()
+
+        # PLM-1B stores lm_head and embed_tokens at different nesting levels so
+        # model.tie_weights() is ineffective; the tie must be applied manually.
+        try:
+            self.model.lm_head.weight = self.model.model.language_model.embed_tokens.weight
+            print("[PLM] Weight tying applied (lm_head ← embed_tokens).")
+        except AttributeError:
+            print("[PLM] Weight tying skipped (lm_head / embed_tokens path not found).")
+
         self.image_token = getattr(self.tokenizer, "image_token", "<|image|>")
 
         elapsed = time.perf_counter() - t0
@@ -339,7 +365,30 @@ class PLMAnalyzer:
 
     # ------------------------------------------------------------------
 
+    def _chat_messages(self, prompt: str) -> list[dict]:
+        """Build the messages list for apply_chat_template."""
+        return [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "image"},
+                    {"type": "text", "text": prompt.strip()},
+                ],
+            }
+        ]
+
     def _format_prompt(self, prompt: str) -> str:
+        """Return the formatted prompt string using apply_chat_template when possible."""
+        if hasattr(self.tokenizer, "apply_chat_template"):
+            try:
+                return self.tokenizer.apply_chat_template(
+                    self._chat_messages(prompt),
+                    add_generation_prompt=True,
+                    tokenize=False,
+                )
+            except Exception:
+                pass
+        # Legacy fallback: manual Llama-3 chat format
         bos_token = self.tokenizer.bos_token or "<|begin_of_text|>"
         return (
             f"{bos_token}<|start_header_id|>system<|end_header_id|>\n\n"
@@ -350,6 +399,21 @@ class PLMAnalyzer:
         )
 
     def _build_inputs(self, image_path: str | Path, prompt: str) -> dict[str, torch.Tensor]:
+        # Preferred path: let AutoProcessor handle image preprocessing and token alignment.
+        if self._use_processor and self.processor is not None:
+            image = Image.open(image_path).convert("RGB")
+            text = self.tokenizer.apply_chat_template(
+                self._chat_messages(prompt),
+                add_generation_prompt=True,
+                tokenize=False,
+            )
+            inputs = self.processor(text=text, images=[image], return_tensors="pt")
+            return {
+                k: v.to(self.device, dtype=self.dtype if v.is_floating_point() else v.dtype)
+                for k, v in inputs.items()
+            }
+
+        # Fallback: custom image preprocessor + manual token expansion.
         pixel_values = self.image_preprocessor.preprocess(image_path)
         num_tiles = pixel_values.shape[0]
         tokens_per_tile = (
