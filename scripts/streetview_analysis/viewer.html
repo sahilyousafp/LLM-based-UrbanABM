@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PerceptionLM — Street View Grid Analysis</title>
+<title>PerceptionLM — Street View Scene Analysis</title>
 <style>
   :root {
     --bg: #0f1117;
@@ -14,6 +14,9 @@
     --text: #e4e6f0;
     --muted: #8b8fa3;
     --green: #4ade80;
+    --amber: #fbbf24;
+    --purple: #a855f7;
+    --sky: #38bdf8;
     --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,6 +42,10 @@
     font-size: 0.75rem;
     font-weight: 600;
   }
+  header .badge-scene {
+    background: var(--green);
+    color: #0f1117;
+  }
   .controls {
     padding: 16px 32px;
     display: flex;
@@ -60,6 +67,18 @@
     color: var(--muted);
     margin-right: -8px;
   }
+  .badge-scene { display: none; }
+  .badge-scene.visible { display: inline-block; }
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    display: none;
+  }
+  .format-pill.scene { border-color: var(--green); color: var(--green); display: inline-block; }
+  .format-pill.legacy { border-color: var(--accent2); color: var(--accent2); display: inline-block; }
 
   .main {
     display: grid;
@@ -71,14 +90,14 @@
   }
   @media (max-width: 1024px) { .main { grid-template-columns: 1fr; } }
 
-  /* --- Grid Panel --- */
-  .grid-panel {
+  /* --- Image Panel --- */
+  .image-panel {
     background: var(--card);
     border-radius: 12px;
     border: 1px solid var(--border);
     overflow: hidden;
   }
-  .grid-panel h2 {
+  .image-panel h2 {
     padding: 14px 18px;
     font-size: 0.95rem;
     border-bottom: 1px solid var(--border);
@@ -86,17 +105,19 @@
     align-items: center;
     gap: 8px;
   }
-  .grid-container {
+  .image-container {
     position: relative;
     aspect-ratio: 1;
     background: #000;
   }
-  .grid-container img {
+  .image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
+
+  /* --- Legacy Grid Overlay (old format only) --- */
   .grid-overlay {
     position: absolute;
     inset: 0;
@@ -125,57 +146,6 @@
     color: #fff;
   }
 
-  /* --- Detail Panel --- */
-  .detail-panel {
-    background: var(--card);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    max-height: 80vh;
-  }
-  .detail-panel h2 {
-    padding: 14px 18px;
-    font-size: 0.95rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .detail-body {
-    overflow-y: auto;
-    padding: 18px;
-    flex: 1;
-  }
-  .field {
-    margin-bottom: 14px;
-  }
-  .field-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-  .field-value {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-  .tag {
-    display: inline-block;
-    background: rgba(108, 138, 255, 0.15);
-    color: var(--accent);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 0.78rem;
-    margin: 2px 4px 2px 0;
-  }
-  .narrative-box {
-    background: rgba(74, 222, 128, 0.08);
-    border-left: 3px solid var(--green);
-    padding: 12px 14px;
-    border-radius: 0 8px 8px 0;
-    font-style: italic;
-    line-height: 1.6;
-    font-size: 0.9rem;
-  }
   .meta-row {
     display: flex;
     gap: 18px;
@@ -187,7 +157,98 @@
   }
   .meta-row span { white-space: nowrap; }
 
-  /* --- Narrative Summary --- */
+  /* --- Scene Elements Panel --- */
+  .scene-panel {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+  }
+  .scene-panel h2 {
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .scene-body {
+    overflow-y: auto;
+    padding: 18px;
+    flex: 1;
+  }
+  .field {
+    margin-bottom: 16px;
+  }
+  .field-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .field-value {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .tag {
+    display: inline-block;
+    background: rgba(108, 138, 255, 0.15);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    margin: 2px 4px 2px 0;
+  }
+
+  /* --- Viewer Perspectives --- */
+  .perspectives {
+    grid-column: 1 / -1;
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 18px;
+  }
+  .perspectives h2 { margin-bottom: 14px; font-size: 0.95rem; }
+  .perspectives-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 900px) { .perspectives-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .perspectives-grid { grid-template-columns: 1fr; } }
+
+  .perspective-card {
+    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+  .perspective-card .pv-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .perspective-card .pv-text {
+    font-style: italic;
+    color: var(--text);
+    opacity: 0.9;
+  }
+  .pv-resident  { background: rgba(74, 222, 128, 0.07);  border-color: rgba(74,222,128,0.3);  }
+  .pv-commuter  { background: rgba(56, 189, 248, 0.07);  border-color: rgba(56,189,248,0.3);  }
+  .pv-tourist   { background: rgba(251, 191, 36, 0.07);  border-color: rgba(251,191,36,0.3);  }
+  .pv-student   { background: rgba(168, 85, 247, 0.07);  border-color: rgba(168,85,247,0.3);  }
+  .pv-resident  .pv-label { color: var(--green);  }
+  .pv-commuter  .pv-label { color: var(--sky);    }
+  .pv-tourist   .pv-label { color: var(--amber);  }
+  .pv-student   .pv-label { color: var(--purple); }
+
+  /* --- Legacy Narrative Summary --- */
   .summary {
     grid-column: 1 / -1;
     background: var(--card);
@@ -246,6 +307,27 @@
     color: var(--accent2);
     font-size: 0.8rem;
   }
+
+  .scene-overview-box {
+    background: rgba(108, 138, 255, 0.07);
+    border-left: 3px solid var(--accent);
+    padding: 12px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-bottom: 18px;
+    font-style: italic;
+  }
+
+  .section-divider {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin: 18px 0 12px;
+  }
 </style>
 </head>
 <body>
@@ -253,6 +335,7 @@
 <header>
   <h1>🏙️ PerceptionLM Street View Analyzer</h1>
   <span class="badge">PLM-1B</span>
+  <span class="badge badge-scene" id="formatBadge">Full-Image Scene</span>
 </header>
 
 <div class="controls">
@@ -260,6 +343,7 @@
   <select id="resultSelect"><option value="">— load a JSON result —</option></select>
   <label for="fileInput">or upload:</label>
   <input type="file" id="fileInput" accept=".json">
+  <span class="format-pill" id="formatPill"></span>
 </div>
 
 <div class="main" id="mainContent">
@@ -273,12 +357,37 @@
 </div>
 
 <script>
+/* ======================================================
+   Constants
+====================================================== */
 const POSITIONS = [
   'top_left','top_center','top_right',
   'middle_left','middle_center','middle_right',
   'bottom_left','bottom_center','bottom_right'
 ];
-const FIELD_ORDER = [
+
+const SCENE_FIELDS = [
+  'scene_overview',
+  'buildings',
+  'materials',
+  'building_condition',
+  'street_furniture',
+  'vegetation',
+  'signage',
+  'ground_surfaces',
+  'spatial_enclosure',
+  'pedestrian_activity',
+  'lighting_atmosphere'
+];
+
+const VIEWER_PERSPECTIVES = [
+  { key: 'as_resident', label: '🏠 Resident',  cls: 'pv-resident',  desc: 'Daily inhabitant' },
+  { key: 'as_commuter', label: '🚶 Commuter',  cls: 'pv-commuter',  desc: 'Purposive walker' },
+  { key: 'as_tourist',  label: '📸 Tourist',   cls: 'pv-tourist',   desc: 'Exploratory gaze' },
+  { key: 'as_student',  label: '📚 Student',   cls: 'pv-student',   desc: 'Social walker'    }
+];
+
+const LEGACY_FIELD_ORDER = [
   'building_typology','architectural_style','materials','condition',
   'street_furniture','vegetation','signage','pedestrian_activity',
   'dominant_colors','spatial_impression','narrative'
@@ -287,7 +396,9 @@ const FIELD_ORDER = [
 let currentData = null;
 let activeCell = null;
 
-/* ---- Load result list from server ---- */
+/* ======================================================
+   Load result list from server directory listing
+====================================================== */
 async function loadResultList() {
   const select = document.getElementById('resultSelect');
   try {
@@ -323,38 +434,165 @@ document.getElementById('fileInput').addEventListener('change', e => {
   reader.readAsText(file);
 });
 
-/* ---- Render ---- */
+/* ======================================================
+   Format detection
+====================================================== */
+function detectFormat(data) {
+  if (data.scene_analysis) return 'scene';
+  if (data.quadrant_analysis || data.grid_analysis) return 'legacy';
+  return 'unknown';
+}
+
+/* ======================================================
+   Main render dispatcher
+====================================================== */
 function render() {
   if (!currentData) return;
-  const main = document.getElementById('mainContent');
-  const meta = currentData.metadata || {};
-  const quadrants = currentData.quadrant_analysis || {};
+  const fmt = detectFormat(currentData);
 
-  // cellMap is already keyed by position — use directly
-  const cellMap = quadrants;
+  // Update format indicator
+  const pill = document.getElementById('formatPill');
+  const badge = document.getElementById('formatBadge');
+  if (fmt === 'scene') {
+    pill.textContent = 'Full-Image Scene Analysis';
+    pill.className = 'format-pill scene';
+  } else if (fmt === 'legacy') {
+    pill.textContent = 'Legacy 9-Quadrant Format';
+    pill.className = 'format-pill legacy';
+  } else {
+    pill.textContent = '';
+    pill.className = 'format-pill';
+  }
+  badge.classList.toggle('visible', fmt === 'scene');
+
+  if (fmt === 'scene') {
+    renderScene(currentData);
+  } else {
+    renderLegacy(currentData);
+  }
+}
+
+/* ======================================================
+   NEW FORMAT: Full-Image Scene Analysis
+====================================================== */
+function renderScene(data) {
+  const main = document.getElementById('mainContent');
+  const meta = data.metadata || {};
+  const scene = data.scene_analysis || {};
+
+  const latency = scene._latency_ms
+    ? `<span>⏱ ${(scene._latency_ms / 1000).toFixed(1)}s inference</span>` : '';
 
   main.innerHTML = `
-    <div class="grid-panel">
-      <h2>📷 Source Image <span style="margin-left:auto;font-size:0.78rem;color:var(--muted)">${meta.source_image || ''}</span></h2>
-      <div class="grid-container">
-        <img id="srcImg" src="output/images/${meta.source_image || ''}" alt="street view"
+    <div class="image-panel">
+      <h2>📷 Street View
+        <span style="margin-left:auto;font-size:0.78rem;color:var(--muted)">${esc(meta.source_image || '')}</span>
+      </h2>
+      <div class="image-container">
+        <img src="output/images/${esc(meta.source_image || '')}" alt="street view"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="meta-row">
+        <span>📍 ${meta.latitude ?? '—'}, ${meta.longitude ?? '—'}</span>
+        <span>🧭 heading ${meta.heading ?? 0}°</span>
+        <span>🤖 ${esc(meta.model || 'PLM-1B')}</span>
+        <span>💻 ${esc(meta.device || 'cpu')}</span>
+        <span>🕐 ${esc(meta.timestamp || '')}</span>
+        ${latency}
+      </div>
+    </div>
+
+    <div class="scene-panel">
+      <h2>🔍 Scene Elements</h2>
+      <div class="scene-body" id="sceneBody">
+        ${buildSceneFields(scene)}
+      </div>
+    </div>
+
+    <div class="perspectives">
+      <h2>👁️ Viewer Perspectives</h2>
+      <div class="perspectives-grid">
+        ${VIEWER_PERSPECTIVES.map(vp => buildPerspectiveCard(vp, scene[vp.key])).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function buildSceneFields(scene) {
+  let html = '';
+
+  // scene_overview gets special treatment — prominent box at top
+  if (scene.scene_overview) {
+    html += `<div class="scene-overview-box">${esc(scene.scene_overview)}</div>`;
+  }
+
+  SCENE_FIELDS.forEach(key => {
+    if (key === 'scene_overview') return; // already shown above
+    const val = scene[key];
+    if (!val) return;
+    html += `<div class="field">
+      <div class="field-label">${key.replace(/_/g, ' ')}</div>
+      <div class="field-value">${esc(String(val))}</div>
+    </div>`;
+  });
+
+  // Raw JSON toggle (exclude private keys and perspective fields)
+  const clean = Object.fromEntries(
+    Object.entries(scene).filter(([k]) =>
+      !k.startsWith('_') && !VIEWER_PERSPECTIVES.map(v => v.key).includes(k)
+    )
+  );
+  html += `<details style="margin-top:14px">
+    <summary style="cursor:pointer;color:var(--muted);font-size:0.8rem">Raw JSON</summary>
+    <div class="json-raw">${esc(JSON.stringify(clean, null, 2))}</div>
+  </details>`;
+
+  return html;
+}
+
+function buildPerspectiveCard(vp, text) {
+  const content = text
+    ? `<div class="pv-text">"${esc(text)}"</div>`
+    : `<div class="pv-text" style="color:var(--muted);font-style:normal">No data</div>`;
+  return `
+    <div class="perspective-card ${vp.cls}">
+      <div class="pv-label">${vp.label} <span style="font-weight:400;opacity:0.7">${vp.desc}</span></div>
+      ${content}
+    </div>`;
+}
+
+/* ======================================================
+   LEGACY FORMAT: 9-Quadrant Analysis
+====================================================== */
+function renderLegacy(data) {
+  const main = document.getElementById('mainContent');
+  const meta = data.metadata || {};
+  const cellMap = data.quadrant_analysis || data.grid_analysis || {};
+
+  main.innerHTML = `
+    <div class="image-panel">
+      <h2>📷 Source Image
+        <span style="margin-left:auto;font-size:0.78rem;color:var(--muted)">${esc(meta.source_image || '')}</span>
+      </h2>
+      <div class="image-container">
+        <img src="output/images/${esc(meta.source_image || '')}" alt="street view"
              onerror="this.style.display='none'">
         <div class="grid-overlay">
-          ${POSITIONS.map(p => `<div class="grid-cell" data-pos="${p}">${p.replace('_',' ')}</div>`).join('')}
+          ${POSITIONS.map(p => `<div class="grid-cell" data-pos="${p}">${p.replace(/_/g,' ')}</div>`).join('')}
         </div>
       </div>
       <div class="meta-row">
         <span>📍 ${meta.latitude ?? '—'}, ${meta.longitude ?? '—'}</span>
         <span>🧭 heading ${meta.heading ?? 0}°</span>
-        <span>🤖 ${meta.model || 'PLM-1B'}</span>
-        <span>💻 ${meta.device || 'cpu'}</span>
-        <span>🕐 ${meta.timestamp || ''}</span>
+        <span>🤖 ${esc(meta.model || 'PLM-1B')}</span>
+        <span>💻 ${esc(meta.device || 'cpu')}</span>
+        <span>🕐 ${esc(meta.timestamp || '')}</span>
       </div>
     </div>
 
-    <div class="detail-panel" id="detailPanel">
+    <div class="scene-panel" id="detailPanel">
       <h2 id="detailTitle">Select a grid cell</h2>
-      <div class="detail-body" id="detailBody">
+      <div class="scene-body" id="detailBody">
         <p style="color:var(--muted)">Click on a grid cell to view its urban analysis.</p>
       </div>
     </div>
@@ -364,9 +602,9 @@ function render() {
       <div class="summary-grid">
         ${POSITIONS.map(p => {
           const c = cellMap[p];
-          const narr = c ? (c.narrative || '—') : '—';
+          const narr = c ? esc(c.narrative || '—') : '—';
           return `<div class="summary-cell" data-pos="${p}">
-            <div class="pos">${p.replace('_',' ')}</div>
+            <div class="pos">${p.replace(/_/g,' ')}</div>
             ${narr}
           </div>`;
         }).join('')}
@@ -374,17 +612,16 @@ function render() {
     </div>
   `;
 
-  // Cell click handlers
+  // Click handlers
   main.querySelectorAll('[data-pos]').forEach(el => {
-    el.addEventListener('click', () => selectCell(el.dataset.pos, cellMap));
+    el.addEventListener('click', () => selectLegacyCell(el.dataset.pos, cellMap));
   });
 
-  // Auto-select first available quadrant
   const firstPos = POSITIONS.find(p => cellMap[p]) || POSITIONS[0];
-  selectCell(firstPos, cellMap);
+  selectLegacyCell(firstPos, cellMap);
 }
 
-function selectCell(pos, cellMap) {
+function selectLegacyCell(pos, cellMap) {
   activeCell = pos;
   document.querySelectorAll('.grid-cell').forEach(el =>
     el.classList.toggle('active', el.dataset.pos === pos)
@@ -393,7 +630,7 @@ function selectCell(pos, cellMap) {
   const data = cellMap[pos];
   const title = document.getElementById('detailTitle');
   const body = document.getElementById('detailBody');
-  title.textContent = `🔍 ${pos.replace('_', ' ').toUpperCase()}`;
+  title.textContent = `🔍 ${pos.replace(/_/g, ' ').toUpperCase()}`;
 
   if (!data) {
     body.innerHTML = '<p style="color:var(--muted)">No data for this cell.</p>';
@@ -401,24 +638,22 @@ function selectCell(pos, cellMap) {
   }
 
   let html = '';
-
-  FIELD_ORDER.forEach(key => {
+  LEGACY_FIELD_ORDER.forEach(key => {
     if (key === 'narrative') return;
     const val = data[key];
     if (val === undefined) return;
-
-    html += `<div class="field"><div class="field-label">${key.replace('_',' ')}</div>`;
+    html += `<div class="field"><div class="field-label">${key.replace(/_/g,' ')}</div>`;
     if (Array.isArray(val)) {
-      html += `<div class="field-value">${val.map(v => `<span class="tag">${v}</span>`).join('')}</div>`;
+      html += `<div class="field-value">${val.map(v => `<span class="tag">${esc(String(v))}</span>`).join('')}</div>`;
     } else {
-      html += `<div class="field-value">${val}</div>`;
+      html += `<div class="field-value">${esc(String(val))}</div>`;
     }
     html += '</div>';
   });
 
   if (data.narrative) {
     html += `<div class="field"><div class="field-label">Narrative</div>
-      <div class="narrative-box">"${data.narrative}"</div></div>`;
+      <div class="scene-overview-box">"${esc(data.narrative)}"</div></div>`;
   }
 
   if (data._latency_ms) {
@@ -426,14 +661,25 @@ function selectCell(pos, cellMap) {
       <div class="latency">${(data._latency_ms / 1000).toFixed(1)}s</div></div>`;
   }
 
-  // Raw JSON toggle
   const clean = Object.fromEntries(Object.entries(data).filter(([k]) => !k.startsWith('_')));
   html += `<details style="margin-top:10px">
     <summary style="cursor:pointer;color:var(--muted);font-size:0.8rem">Raw JSON</summary>
-    <div class="json-raw">${JSON.stringify(clean, null, 2)}</div>
+    <div class="json-raw">${esc(JSON.stringify(clean, null, 2))}</div>
   </details>`;
 
   body.innerHTML = html;
+}
+
+/* ======================================================
+   Utility: HTML escape to prevent XSS
+====================================================== */
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 /* ---- Init ---- */
