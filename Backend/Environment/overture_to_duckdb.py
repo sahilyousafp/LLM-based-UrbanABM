@@ -24,13 +24,14 @@ import tempfile
 PLACE_NAME = "Eixample, Barcelona, Spain"
 DB_PATH = "eixample_overture.duckdb"
 
-# Barcelona Eixample bounding box (approximate)
+# 2 km × 2 km bounding box centered on Passeig de Gràcia, Eixample (41.3952°N, 2.1620°E)
+# Δlat = 1000 / 111000 ≈ 0.009009°  |  Δlon = 1000 / (111000 × cos(41.3952°)) ≈ 0.012007°
 # Coordinates: [min_lon, min_lat, max_lon, max_lat]
 BBOX = {
-    'min_lon': 2.1446,
-    'min_lat': 41.3773,
-    'max_lon': 2.1890,
-    'max_lat': 41.4091
+    'min_lon': 2.1500,
+    'min_lat': 41.3862,
+    'max_lon': 2.1740,
+    'max_lat': 41.4042
 }
 
 # Overture Maps BigQuery project

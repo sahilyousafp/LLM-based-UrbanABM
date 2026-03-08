@@ -1,0 +1,153 @@
+{
+  "metadata": {
+    "timestamp": "20260307_155305",
+    "source_image": "sv_41.387400_2.168600_h0.jpg",
+    "source_path": "output\\images\\sv_41.387400_2.168600_h0.jpg",
+    "latitude": null,
+    "longitude": null,
+    "heading": 0,
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda"
+  },
+  "quadrant_analysis": {
+    "top_left": {
+      "building_typology": "modern",
+      "architectural_style": "unknown",
+      "materials": "glass",
+      "condition": "good",
+      "street_furniture": "no",
+      "vegetation": "green trees",
+      "signage": "no",
+      "pedestrian_activity": "low",
+      "dominant_colors": [
+        "green"
+      ],
+      "spatial_impression": "large",
+      "narrative": "no"
+    },
+    "top_center": {
+      "building_typology": " modern, sleek, minimalist ",
+      "architectural_style": " contemporary ",
+      "materials": "glass, steel ",
+      "condition": "new ",
+      "street_furniture": "pavements ",
+      "vegetation": "greenery ",
+      "signage": "signs ",
+      "pedestrian_activity": "walking ",
+      "dominant_colors": " blues ",
+      "spatial_impression": "open spaces ",
+      "narrative": "a scenic view of a river surrounded by greenery "
+    },
+    "top_right": {
+      "building_typology": "unknown",
+      "architectural_style": "modern",
+      "materials": "glass",
+      "condition": "good",
+      "street_furniture": "no",
+      "vegetation": "green",
+      "signage": "no",
+      "pedestrian_activity": "low",
+      "dominant_colors": [
+        "blue",
+        "green"
+      ],
+      "spatial_impression": "open space",
+      "narrative": "a cityscape"
+    },
+    "middle_left": {
+      "building_typology": "modern",
+      "architectural_style": "unknown",
+      "materials": "glass",
+      "condition": "good",
+      "street_furniture": "no",
+      "vegetation": "green trees",
+      "signage": "canadian flag",
+      "pedestrian_activity": "low",
+      "dominant_colors": [
+        "red",
+        "white"
+      ],
+      "spatial_impression": "open space",
+      "narrative": "a busy city street"
+    },
+    "middle_center": {
+      "building_typology": "Modern",
+      "architectural_style": "unknown",
+      "materials": "Glass",
+      "condition": "Good",
+      "street_furniture": "No",
+      "vegetation": "Green",
+      "signage": "Signage",
+      "pedestrian_activity": "Low",
+      "dominant_colors": [
+        "Gray",
+        "White"
+      ],
+      "spatial_impression": "Urban",
+      "narrative": "A city street scene"
+    },
+    "middle_right": {
+      "building_typology": "Modern",
+      "architectural_style": "unknown",
+      "materials": "Glass",
+      "condition": "Good",
+      "street_furniture": "Benches",
+      "vegetation": "Trees",
+      "signage": "No signage",
+      "pedestrian_activity": "People walking",
+      "dominant_colors": [
+        "White",
+        "Black"
+      ],
+      "spatial_impression": "Urban",
+      "narrative": "A busy city street"
+    },
+    "bottom_left": {
+      "building_typology": " modern ",
+      "architectural_style": "unknown",
+      "materials": "glass",
+      "condition": "old",
+      "street_furniture": "benches",
+      "vegetation": "trees",
+      "signage": "no signage",
+      "pedestrian_activity": "little",
+      "dominant_colors": [
+        "yellow"
+      ],
+      "spatial_impression": "open space",
+      "narrative": "empty"
+    },
+    "bottom_center": {
+      "building_typology": " modern ",
+      "architectural_style": "unknown",
+      "materials": "concrete",
+      "condition": "poor",
+      "street_furniture": "no benches or tables",
+      "vegetation": " scarce",
+      "signage": "no signs",
+      "pedestrian_activity": "low",
+      "dominant_colors": [
+        "yellow"
+      ],
+      "spatial_impression": "open layout",
+      "narrative": "empty"
+    },
+    "bottom_right": {
+      "building_typology": " modern ",
+      "architectural_style": " contemporary ",
+      "materials": "glass and steel",
+      "condition": "good",
+      "street_furniture": "benches",
+      "vegetation": "trees",
+      "signage": "no signage",
+      "pedestrian_activity": "low",
+      "dominant_colors": [
+        "black",
+        "white"
+      ],
+      "spatial_impression": "open space",
+      "narrative": "empty parking lot"
+    },
+    "_latency_ms": 23626.2
+  }
+}

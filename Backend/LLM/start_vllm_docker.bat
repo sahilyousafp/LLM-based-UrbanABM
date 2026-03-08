@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set "VLLM_MODEL=unsloth/Qwen3.5-9B-GGUF"
+set "VLLM_MODEL=C:\Users\Lenovo\.cache\huggingface\hub\models--hugging-quants--Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
 set "VLLM_TOKENIZER=Qwen/Qwen2.5-9B-Instruct"
 set "VLLM_HOST_PORT=8001"
 

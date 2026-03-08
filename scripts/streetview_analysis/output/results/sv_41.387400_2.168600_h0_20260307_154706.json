@@ -1,0 +1,132 @@
+{
+  "metadata": {
+    "timestamp": "20260307_154706",
+    "source_image": "sv_41.387400_2.168600_h0.jpg",
+    "source_path": "output\\images\\sv_41.387400_2.168600_h0.jpg",
+    "latitude": null,
+    "longitude": null,
+    "heading": 0,
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda"
+  },
+  "quadrant_analysis": {
+    "top_left": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "Good",
+      "street_furniture": [],
+      "vegetation": "Greenery",
+      "signage": "No",
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": ""
+    },
+    "top_center": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "new",
+      "street_furniture": [],
+      "vegetation": "green trees",
+      "signage": "no",
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": ""
+    },
+    "top_right": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "good",
+      "street_furniture": [],
+      "vegetation": "green trees",
+      "signage": "no",
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": ""
+    },
+    "middle_left": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "unknown",
+      "street_furniture": [],
+      "vegetation": "unknown",
+      "signage": [],
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": "{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 5"
+    },
+    "middle_center": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "Good",
+      "street_furniture": [],
+      "vegetation": "Green trees",
+      "signage": "Design",
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": "City center"
+    },
+    "middle_right": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "unknown",
+      "street_furniture": [],
+      "vegetation": "unknown",
+      "signage": [],
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": "{ architectural style: modern; materials: glass, steel, concrete; condition: good; street furniture: benches, trash cans; vegetation: trees; signage: digital displays; pedestrian activity: high; domin"
+    },
+    "bottom_left": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "Good",
+      "street_furniture": [],
+      "vegetation": "None",
+      "signage": "None",
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": ""
+    },
+    "bottom_center": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "good",
+      "street_furniture": [],
+      "vegetation": "greenery",
+      "signage": "no",
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": ""
+    },
+    "bottom_right": {
+      "building_typology": "unknown",
+      "architectural_style": "unknown",
+      "materials": [],
+      "condition": "Good",
+      "street_furniture": [],
+      "vegetation": "None",
+      "signage": "None",
+      "pedestrian_activity": "unknown",
+      "dominant_colors": [],
+      "spatial_impression": "unknown",
+      "narrative": "Urban landscape"
+    },
+    "_latency_ms": 24798.1
+  }
+}
