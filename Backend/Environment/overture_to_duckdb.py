@@ -15,14 +15,22 @@ BigQuery Access: https://console.cloud.google.com/bigquery
 import duckdb
 import geopandas as gpd
 from shapely.geometry import box
+import json
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 from google.cloud import bigquery
 from google.oauth2 import service_account
 import tempfile
 
+# Load .env from project root
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+load_dotenv(PROJECT_ROOT / ".env")
+
 # Configuration
 PLACE_NAME = "Eixample, Barcelona, Spain"
-DB_PATH = "eixample_overture.duckdb"
+DB_DIR = Path(__file__).parent
+DB_PATH = DB_DIR / "eixample_overture.duckdb"
 
 # 2 km × 2 km bounding box centered on Passeig de Gràcia, Eixample (41.3952°N, 2.1620°E)
 # Δlat = 1000 / 111000 ≈ 0.009009°  |  Δlon = 1000 / (111000 × cos(41.3952°)) ≈ 0.012007°
@@ -407,13 +415,214 @@ def extract_transportation(bq_client, duckdb_con, bbox):
         print(f"✗ Error loading transportation: {e}")
         return False
 
+def _aggregate_quadrant_field(quadrants, field_name, field_variants=None):
+    """Extract a field across all 9 quadrants, handling inconsistent PLM output keys."""
+    variants = [field_name] + (field_variants or [])
+    values = []
+    for qdata in quadrants:
+        if not isinstance(qdata, dict):
+            continue
+        for key in variants:
+            val = qdata.get(key)
+            if val is not None and val != "unknown" and val != 0:
+                if isinstance(val, list):
+                    values.extend(v for v in val if v and v != 0)
+                else:
+                    values.append(val)
+                break
+    return values
+
+def load_streetview_perception(duckdb_con):
+    """
+    Load PLM street view analysis JSONs into a queryable DuckDB table.
+    
+    Each JSON contains per-quadrant analysis of a street view image with
+    architectural style, walkability, vegetation, pedestrian activity, etc.
+    These are aggregated into per-location summary metrics.
+    """
+    results_dir = PROJECT_ROOT / "Backend" / "Environment" / "output" / "results"
+    if not results_dir.is_dir():
+        print(f"✗ Street view results directory not found: {results_dir}")
+        return False
+
+    print("Loading street view perception data...")
+    rows = []
+
+    for fp in sorted(results_dir.glob("*_analysis.json")):
+        try:
+            data = json.loads(fp.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            continue
+
+        meta = data.get("metadata", {})
+        lat = meta.get("latitude")
+        lon = meta.get("longitude")
+        if lat is None or lon is None:
+            continue
+
+        qa = data.get("quadrant_analysis", {})
+        parse_failed = bool(qa.get("_parse_error"))
+
+        # Default to null metrics; populated below if parse succeeded
+        avg_walkability = None
+        has_vegetation = None
+        avg_pedestrian = None
+        dominant_style = None
+        dominant_condition = None
+
+        if not parse_failed:
+            # Collect values from all 9 quadrants
+            quadrant_values = [v for k, v in qa.items()
+                               if isinstance(v, dict) and not k.startswith("_")]
+
+            walk_scores = _aggregate_quadrant_field(
+                quadrant_values, "walkability_score", ["walkability score"])
+            numeric_scores = [s for s in walk_scores if isinstance(s, (int, float))]
+            avg_walkability = round(sum(numeric_scores) / len(numeric_scores), 1) if numeric_scores else None
+
+            veg_vals = _aggregate_quadrant_field(
+                quadrant_values, "vegetation", [" vegetation"])
+            has_vegetation = any(
+                v and isinstance(v, str) and v.lower() not in ("none", "unknown", "no", "0")
+                for v in veg_vals)
+
+            ped_vals = _aggregate_quadrant_field(
+                quadrant_values, "pedestrian_activity",
+                ["pedestrian activity", "pedestrianActivity"])
+            ped_str_vals = [v.lower() for v in ped_vals
+                            if isinstance(v, str) and v.lower() not in ("unknown",)]
+            ped_map = {"low": 1, "moderate": 2, "medium": 2, "high": 3}
+            ped_numeric = [ped_map.get(v, 0) for v in ped_str_vals if v in ped_map]
+            avg_pedestrian = round(sum(ped_numeric) / len(ped_numeric), 1) if ped_numeric else None
+
+            style_vals = _aggregate_quadrant_field(
+                quadrant_values, "architectural_style",
+                ["building_typology", "building style", "architectural style"])
+            style_strs = [s.lower().strip() for s in style_vals
+                          if isinstance(s, str) and s.lower() not in ("unknown",)]
+            dominant_style = max(set(style_strs), key=style_strs.count) if style_strs else None
+
+            cond_vals = _aggregate_quadrant_field(quadrant_values, "condition")
+            cond_strs = [c.lower().strip() for c in cond_vals
+                         if isinstance(c, str) and c.lower() not in ("unknown",)]
+            dominant_condition = max(set(cond_strs), key=cond_strs.count) if cond_strs else None
+
+        # ── Rich fields extracted from quadrant data ──────────────────
+        # Narrative: prefer center_center quadrant, fall back to any non-unknown
+        scene_narrative = None
+        if not parse_failed:
+            center = qa.get("center_center", {})
+            center_narrative = center.get("narrative") if isinstance(center, dict) else None
+            if center_narrative and center_narrative.lower() not in ("unknown", ""):
+                scene_narrative = center_narrative[:600]
+            else:
+                narratives = [
+                    v.get("narrative", "") for v in qa.values()
+                    if isinstance(v, dict) and v.get("narrative", "").lower() not in ("unknown", "")
+                ]
+                if narratives:
+                    scene_narrative = " | ".join(narratives[:3])[:600]
+
+        # Materials: collect all unique non-empty values across quadrants
+        dominant_materials = None
+        if not parse_failed:
+            mat_vals = _aggregate_quadrant_field(quadrant_values, "materials")
+            unique_mats = list(dict.fromkeys(
+                m.strip().lower() for m in mat_vals
+                if isinstance(m, str) and m.strip().lower() not in ("unknown", "")
+            ))
+            if unique_mats:
+                dominant_materials = ", ".join(unique_mats[:6])
+
+        # Street furniture: collect unique items
+        dominant_furniture = None
+        if not parse_failed:
+            furn_vals = _aggregate_quadrant_field(quadrant_values, "street_furniture")
+            unique_furn = list(dict.fromkeys(
+                f.strip().lower() for f in furn_vals
+                if isinstance(f, str) and f.strip().lower() not in ("unknown", "")
+            ))
+            if unique_furn:
+                dominant_furniture = ", ".join(unique_furn[:6])
+
+        # Spatial impression: prefer center_center quadrant
+        spatial_impression = None
+        if not parse_failed:
+            center = qa.get("center_center", {})
+            sp = center.get("spatial_impression") if isinstance(center, dict) else None
+            if sp and sp.lower() not in ("unknown", ""):
+                spatial_impression = sp
+            else:
+                sp_vals = _aggregate_quadrant_field(quadrant_values, "spatial_impression")
+                if sp_vals:
+                    spatial_impression = sp_vals[0]
+
+        rows.append((
+            lat, lon,
+            avg_walkability,
+            has_vegetation,
+            avg_pedestrian,
+            dominant_style,
+            dominant_condition,
+            meta.get("source_image", ""),
+            scene_narrative,
+            dominant_materials,
+            dominant_furniture,
+            spatial_impression,
+            float(meta.get("heading", 0.0) or 0.0),
+            str(meta.get("timestamp", "") or ""),
+            str(meta.get("model", "") or ""),
+        ))
+
+    if not rows:
+        print("✗ No valid street view perception data found")
+        return False
+
+    # Create table
+    duckdb_con.execute("""
+        CREATE OR REPLACE TABLE streetview_perception (
+            latitude DOUBLE,
+            longitude DOUBLE,
+            geometry GEOMETRY,
+            walkability DOUBLE,
+            has_vegetation BOOLEAN,
+            pedestrian_activity DOUBLE,
+            architectural_style VARCHAR,
+            building_condition VARCHAR,
+            source_image VARCHAR,
+            scene_narrative VARCHAR,
+            materials VARCHAR,
+            street_furniture VARCHAR,
+            spatial_impression VARCHAR,
+            heading DOUBLE,
+            timestamp_str VARCHAR,
+            model_name VARCHAR
+        )
+    """)
+
+    for r in rows:
+        duckdb_con.execute("""
+            INSERT INTO streetview_perception VALUES (
+                ?, ?,
+                ST_Point(?, ?),
+                ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?, ?
+            )
+        """, [r[0], r[1], r[1], r[0],
+              r[2], r[3], r[4], r[5], r[6], r[7],
+              r[8], r[9], r[10], r[11], r[12], r[13], r[14]])
+
+    count = duckdb_con.execute("SELECT COUNT(*) FROM streetview_perception").fetchone()[0]
+    print(f"✓ Loaded {count:,} street view perception points")
+    return True
+
 def create_spatial_indexes(con):
     """
     Create spatial indexes for efficient queries
     """
     print("Creating spatial indexes...")
     
-    tables = ['buildings', 'amenities', 'walk_edges', 'roads']
+    tables = ['buildings', 'amenities', 'walk_edges', 'roads', 'streetview_perception']
     
     for table in tables:
         try:
@@ -492,7 +701,7 @@ def main():
             print(f"   Creating backup and using a new filename...")
             import time
             timestamp = time.strftime("%Y%m%d_%H%M%S")
-            DB_PATH = f"eixample_overture_{timestamp}.duckdb"
+            DB_PATH = DB_DIR / f"eixample_overture_{timestamp}.duckdb"
             print(f"   New database: {DB_PATH}")
     
     # Setup BigQuery client
@@ -511,6 +720,9 @@ def main():
     success &= extract_buildings(bq_client, duckdb_con, BBOX)
     success &= extract_places(bq_client, duckdb_con, BBOX)
     success &= extract_transportation(bq_client, duckdb_con, BBOX)
+    
+    # Load local street view perception data
+    load_streetview_perception(duckdb_con)
     
     if success:
         # Create spatial indexes
