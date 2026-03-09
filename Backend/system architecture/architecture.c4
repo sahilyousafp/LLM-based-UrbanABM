@@ -25,8 +25,8 @@ model {
   urban_abm = system "Urban ABM Ecosystem" {
     
     frontend = container "Web Dashboard" {
-      description "React-based visualization interface"
-      technology "React, Three.js, Deck.gl"
+      description "Leaflet map dashboard for simulation visualization and control"
+      technology "Leaflet.js, HTML/CSS/JS"
     }
 
     backend = container "Backend API" {
@@ -52,26 +52,47 @@ model {
         description "Handles async requests to the language model"
         technology "AsyncOpenAI"
       }
+
+      etl_pipeline = component "ETL Pipeline" {
+        description "Loads Overture Maps data and PLM street perception into DuckDB"
+        technology "overture_to_duckdb.py, DuckDB Spatial"
+      }
+
+      streetview_api = component "Street View API" {
+        description "Serves /api/streetview_grid/* endpoints for map-based perception queries"
+        technology "FastAPI, DuckDB"
+      }
     }
 
     database = database "DuckDB" {
-      description "Spatial data storage for Overture Maps and Amenities"
+      description "Spatial data storage: buildings, roads, amenities, walk_edges, streetview_perception"
       technology "DuckDB Spatial"
     }
 
     llm_server = system "vLLM Server" {
-      description "Local inference engine for LLM decisions"
-      technology "vLLM, Docker"
+      description "Local inference engine for LLM agent decisions"
+      technology "vLLM, Docker, CUDA"
     }
 
-    # Relationships
+    plm_server = system "PerceptionLM (PLM-1B)" {
+      description "Facebook PLM-1B vision-language model for street scene analysis"
+      technology "Python, HuggingFace Transformers"
+    }
+
+    # Simulation flow
     frontend -> api_routes "Requests agent data and control"
     api_routes -> sim_engine "Triggers simulation steps"
     sim_engine -> agent_logic "Updates agent state"
-    agent_logic -> database "Spatial queries (amenities/network)"
+    agent_logic -> database "Spatial queries (amenities / network)"
     agent_logic -> llm_client "Requests behavior decisions"
     llm_client -> llm_server "Async inference requests"
     api_routes -> database "Fetch geometries for visualization"
+
+    # Street view perception flow
+    plm_server -> etl_pipeline "Outputs JSON scene analyses"
+    etl_pipeline -> database "Writes streetview_perception table"
+    database -> streetview_api "Queries perception data"
+    streetview_api -> frontend "GeoJSON feature collection"
   }
 }
 
@@ -86,6 +107,8 @@ views {
     include *
     include urban_abm.database
     include urban_abm.llm_server
+    include urban_abm.plm_server
     include urban_abm.frontend
   }
 }
+

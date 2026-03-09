@@ -6,659 +6,746 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
         #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-        .info-panel { 
-            position: absolute; 
-            top: 10px; 
-            right: 10px; 
-            background: white; 
-            padding: 15px; 
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            z-index: 2000; 
-            max-width: 300px;
-            max-height: 90vh;
-            overflow-y: auto;
+
+        /* ── Loading overlay ─────────────────────────────── */
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .info-panel h3 { margin: 0 0 10px 0; font-size: 16px; }
-        .layer-control { margin: 5px 0; }
-        .stats { font-size: 12px; color: #666; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; }
-        .loading { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%);
-            background: white; 
-            padding: 20px; 
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            z-index: 2000;
+        .loading-overlay.hidden { display: none; }
+        .loading-overlay h2 { margin: 0 0 20px; color: #333; }
+        .progress-bar { width: 300px; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: #2196F3; transition: width 0.3s; width: 0%; }
+        .loading-status { margin-top: 10px; color: #666; font-size: 13px; }
+
+        /* ── Control panel ───────────────────────────────── */
+        .control-panel {
+            position: absolute; top: 10px; right: 10px;
+            background: white; padding: 15px; border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25); z-index: 2000;
+            max-width: 320px; max-height: 90vh; overflow-y: auto;
+            font-size: 13px;
         }
-        .agent-search {
-            margin: 10px 0;
-            padding: 10px 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
+        .control-panel h3 { margin: 0 0 10px; font-size: 16px; }
+        .control-panel section { margin: 10px 0; padding: 10px 0; border-top: 1px solid #eee; }
+        .control-panel section:first-of-type { border-top: none; padding-top: 0; }
+        .control-panel label { display: block; margin: 4px 0; cursor: pointer; }
+        .control-panel input[type="text"],
+        .control-panel input[type="number"],
+        .control-panel select { width: 100%; padding: 5px; margin: 3px 0; border: 1px solid #ccc; border-radius: 3px; }
+
+        /* ── LLM panel ───────────────────────────────────── */
+        .llm-panel { background: #f8f9fa; border-radius: 5px; padding: 10px; }
+        .llm-panel h4 { margin: 0 0 8px; font-size: 14px; }
+        .llm-option { display: flex; align-items: center; gap: 8px; padding: 6px 8px; margin: 4px 0; border-radius: 4px; cursor: pointer; border: 2px solid transparent; }
+        .llm-option:hover { background: #e3f2fd; }
+        .llm-option.selected { border-color: #2196F3; background: #e3f2fd; }
+        .llm-option .llm-name { font-weight: 600; }
+        .llm-option .llm-desc { font-size: 11px; color: #666; }
+        .model-input { margin-top: 8px; }
+        .model-input label { font-size: 12px; color: #555; }
+
+        /* ── Buttons ─────────────────────────────────────── */
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600; }
+        .btn-primary { background: #2196F3; color: white; }
+        .btn-primary:hover { background: #1976D2; }
+        .btn-primary:disabled { background: #90CAF9; cursor: not-allowed; }
+        .btn-danger { background: #f44336; color: white; }
+        .btn-danger:hover { background: #d32f2f; }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-success:hover { background: #388E3C; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+        /* ── Simulation controls ─────────────────────────── */
+        .sim-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .sim-info { font-size: 11px; color: #555; margin-top: 5px; }
+        .speed-control { margin-top: 6px; }
+        .speed-control input[type="range"] { width: 100%; }
+
+        /* ── Agent info ──────────────────────────────────── */
+        .agent-info { display: none; }
+        .agent-info.visible { display: block; }
+        .agent-summary { font-size: 12px; padding: 8px; background: #f9f9f9; border-radius: 3px; line-height: 1.6; margin-top: 8px; }
+        .agent-summary strong { color: #2196F3; }
+        .agent-summary em { color: #666; }
+
+        .needs-bar-container { display: flex; align-items: center; gap: 6px; margin: 3px 0; font-size: 11px; }
+        .needs-bar-label { width: 50px; text-align: right; color: #555; }
+        .needs-bar { flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+        .needs-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+        .needs-bar-value { width: 30px; font-size: 10px; color: #888; }
+
+        .cognition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 11px; margin-top: 4px; }
+        .cognition-item { background: #f0f4f8; padding: 4px 6px; border-radius: 3px; }
+        .cognition-item .label { color: #666; }
+        .cognition-item .value { font-weight: 600; color: #333; }
+
+        .thought-stream { max-height: 150px; overflow-y: auto; font-size: 11px; margin-top: 6px; }
+        .thought-event { padding: 4px 6px; border-left: 3px solid #2196F3; margin: 3px 0; background: #fafafa; border-radius: 0 3px 3px 0; }
+        .thought-event.mobility { border-color: #FF9800; }
+        .thought-event.cognition { border-color: #9C27B0; }
+        .thought-event.needs { border-color: #4CAF50; }
+        .thought-event.amenity_visit { border-color: #F44336; }
+        .thought-event .te-step { font-size: 10px; color: #999; }
+        .thought-event .te-desc { color: #333; }
+
+        .agent-section-title { font-size: 11px; font-weight: 600; color: #555; margin: 8px 0 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .llm-narrative { position: relative; }
+        .llm-spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid #ddd; border-top-color: #2196F3; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-left: 4px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Street view grid popup ──────────────────────── */
+        .sv-popup { font-family: 'Segoe UI', Arial, sans-serif; min-width: 280px; max-width: 340px; }
+        .sv-popup img { width: 100%; border-radius: 6px; display: block; background: #111; }
+        .sv-popup .sv-img-wrap { position: relative; }
+        .sv-popup .sv-heading-badge {
+            position: absolute; bottom: 6px; right: 6px;
+            background: rgba(0,0,0,0.55); color: #fff;
+            font-size: 10px; padding: 2px 6px; border-radius: 10px;
         }
-        .agent-search input {
-            width: 60px;
-            padding: 3px;
-            margin: 0 5px;
+        .sv-popup .sv-overview {
+            font-size: 12px; color: #333; line-height: 1.6;
+            margin: 8px 0 4px; font-style: italic;
         }
-        .agent-search button {
-            padding: 3px 8px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
+        .sv-popup .sv-overview.muted { color: #999; font-style: italic; }
+        .sv-popup .sv-footer { text-align: right; margin-top: 6px; }
+        .sv-popup .sv-footer a {
+            font-size: 11px; color: #2196F3; text-decoration: none;
+            border: 1px solid #2196F3; border-radius: 4px; padding: 2px 8px;
         }
-        .agent-search button:hover {
-            background: #45a049;
-        }
-        .animation-controls {
-            margin: 10px 0;
-            padding: 10px 0;
-            border-top: 1px solid #ddd;
-        }
-        .animation-controls button {
-            padding: 5px 10px;
-            margin: 2px;
-            background: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .animation-controls button:hover {
-            background: #0b7dda;
-        }
-        .animation-controls button.pause {
-            background: #f44336;
-        }
-        .animation-controls button.pause:hover {
-            background: #da190b;
-        }
-        .speed-control {
-            margin: 5px 0;
-            font-size: 12px;
-        }
-        .speed-control input {
-            width: 100%;
-        }
-        .simulation-info {
-            font-size: 11px;
-            color: #444;
-            margin: 5px 0;
-        }
-        .api-config {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f5f5f5;
-            border-radius: 3px;
-            font-size: 11px;
-        }
-        .api-config input {
-            width: 100%;
-            padding: 3px;
-            margin-top: 3px;
-        }
-        #agent-summary strong {
-            color: #2196F3;
-            font-weight: 600;
-        }
-        #agent-summary em {
-            color: #666;
-            font-style: italic;
-        }
-        #streetview-container {
-            margin-top: 10px;
-            padding: 10px;
-            background: #f0f0f0;
-            border-radius: 3px;
-        }
-        #streetview-images img {
-            transition: transform 0.2s;
-        }
-        #streetview-images img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
+        .sv-popup .sv-footer a:hover { background: #e3f2fd; }
+
+
+        /* ── Status badge ────────────────────────────────── */
+        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .status-badge.ready { background: #C8E6C9; color: #2E7D32; }
+        .status-badge.running { background: #BBDEFB; color: #1565C0; }
+        .status-badge.stopped { background: #FFCDD2; color: #C62828; }
+        .status-badge.configuring { background: #FFF9C4; color: #F57F17; }
     </style>
 </head>
 <body>
-    <div id="loading" class="loading">Loading data from backend...</div>
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <h2>🏙️ Urban ABM</h2>
+        <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
+        <div id="loading-status" class="loading-status">Connecting to backend...</div>
+    </div>
+
     <div id="map"></div>
-    <div class="info-panel">
-        <h3>Urban ABM Visualization</h3>
-        
-        <!-- API Configuration -->
-        <div class="api-config">
-            <strong>Backend API:</strong>
+
+    <!-- Control panel -->
+    <div class="control-panel">
+        <h3>🏙️ Urban ABM <span id="sim-status" class="status-badge ready">Ready</span></h3>
+
+        <!-- Backend URL -->
+        <section>
+            <label><strong>Backend API</strong></label>
             <input type="text" id="api-url" value="http://127.0.0.1:8000" placeholder="Backend URL">
-        </div>
-        
-        <!-- Animation Controls -->
-        <div class="animation-controls">
-            <button id="btn-play">▶ Play</button>
-            <button id="btn-pause" class="pause" style="display:none;">⏸ Pause</button>
-            <div class="simulation-info">
-                Step: <span id="sim-step">0</span> | 
-                Queries: <span id="query-count">0</span>
+        </section>
+
+        <!-- LLM Selection -->
+        <section>
+            <div class="llm-panel">
+                <h4>🤖 LLM Provider</h4>
+                <div id="llm-options"></div>
+                <div class="model-input">
+                    <label>Model name:</label>
+                    <input type="text" id="llm-model" placeholder="Loading...">
+                </div>
+                <button class="btn btn-primary btn-sm" id="btn-apply-llm" style="margin-top:8px;">Apply LLM Config</button>
+                <div id="llm-status" style="font-size:11px; color:#666; margin-top:4px;"></div>
+            </div>
+        </section>
+
+        <!-- Simulation Controls -->
+        <section>
+            <h4 style="margin:0 0 8px;">▶ Simulation</h4>
+            <div class="sim-controls">
+                <button class="btn btn-success" id="btn-run">▶ Run</button>
+                <button class="btn btn-danger" id="btn-stop" style="display:none;">⏸ Pause</button>
+                <button class="btn btn-primary btn-sm" id="btn-step">Step</button>
+            </div>
+            <div class="sim-info">
+                Step: <strong id="sim-step">0</strong> |
+                Agents: <strong id="agent-count">0</strong> |
+                LLM calls: <strong id="llm-calls">0</strong>
+            </div>
+            <div style="display:flex; gap:4px; align-items:center; margin-top:6px;">
+                <label style="font-size:11px; white-space:nowrap;">Agents:</label>
+                <input type="number" id="agent-count-input" value="15" min="1" max="100" style="width:55px; padding:3px;">
+                <button class="btn btn-primary btn-sm" id="btn-respawn">Respawn</button>
             </div>
             <div class="speed-control">
                 Speed: <span id="speed-value">1.0</span>s/step
                 <input type="range" id="speed-slider" min="0.1" max="5" step="0.1" value="1">
             </div>
-        </div>
-        
-        <!-- Agent Search -->
-        <div class="agent-search">
-            <strong>Find Agent:</strong>
-            <input type="number" id="agent-search-input" placeholder="ID" min="0" max="499">
-            <button id="agent-search-btn">Go</button>
-        </div>
-        
+        </section>
+
         <!-- Layer Controls -->
-        <div class="layer-control">
+        <section>
+            <h4 style="margin:0 0 8px;">🗺️ Layers</h4>
             <label><input type="checkbox" id="layer-buildings" checked> Buildings</label>
-        </div>
-        <div class="layer-control">
-            <label><input type="checkbox" id="layer-network" checked> Walk Network (Blue)</label>
-        </div>
-        <div class="layer-control">
-            <label><input type="checkbox" id="layer-roads" checked> Roads (Red)</label>
-        </div>
-        <div class="layer-control">
+            <label><input type="checkbox" id="layer-network" checked> Walk Network</label>
+            <label><input type="checkbox" id="layer-roads" checked> Roads</label>
             <label><input type="checkbox" id="layer-amenities" checked> Amenities</label>
-        </div>
-        <div class="layer-control">
-            <label><input type="checkbox" id="layer-agents" checked> Agents (Orange)</label>
-        </div>
-        <div class="stats" id="stats">Loading...</div>
-        <div id="agent-info" style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid #ddd;">
-            <h4 style="margin:5px 0;">Agent <span id="agent-id"></span></h4>
-            <p style="margin:5px 0; font-size:12px;">Location: <span id="agent-location"></span></p>
-            <p style="margin:5px 0; font-size:12px;">Nearby: <span id="agent-amenity-count"></span> places</p>
-            <div id="agent-summary" style="font-size:12px; margin-top:10px; padding:10px; background:#f9f9f9; border-radius:3px; line-height:1.6;">
-                <em style="color:#999;">Loading perspective...</em>
+            <label><input type="checkbox" id="layer-agents" checked> Agents</label>
+            <label><input type="checkbox" id="layer-streetview" checked> 📷 Street View Grid</label>
+        </section>
+
+        <!-- Agent Search -->
+        <section>
+            <h4 style="margin:0 0 8px;">🔍 Find Agent</h4>
+            <div style="display:flex; gap:4px;">
+                <input type="number" id="agent-search-input" placeholder="Agent ID" min="0" max="499" style="flex:1;">
+                <button class="btn btn-primary btn-sm" id="agent-search-btn">Go</button>
             </div>
-            <div id="streetview-container" style="margin-top:10px; padding:10px; background:#f0f0f0; border-radius:3px;">
-                <h5 style="margin:0 0 8px 0; font-size:13px; color:#333;">Street View</h5>
-                <div id="streetview-images" style="display:flex; flex-wrap:wrap; gap:5px; max-height:200px; overflow-y:auto;">
-                    <em style="color:#999; font-size:11px;">Loading street views...</em>
+        </section>
+
+        <!-- Stats -->
+        <section>
+            <div id="stats" style="font-size:11px; color:#666;">Loading stats...</div>
+        </section>
+
+        <!-- Agent Info (shown when agent selected) -->
+        <div class="agent-info" id="agent-info">
+            <section>
+                <h4 style="margin:0 0 5px;">Agent <span id="agent-id"></span> <span id="agent-archetype" class="status-badge ready"></span></h4>
+                <p style="margin:3px 0; font-size:12px;">📍 <span id="agent-location"></span></p>
+                <p style="margin:3px 0; font-size:12px;">Nearby: <span id="agent-amenity-count"></span> places</p>
+
+                <div class="agent-section-title">📊 Needs</div>
+                <div id="agent-needs">
+                    <div class="needs-bar-container"><span class="needs-bar-label">Hunger</span><div class="needs-bar"><div class="needs-bar-fill" id="need-hunger" style="width:50%;background:#FF9800;"></div></div><span class="needs-bar-value" id="need-hunger-val">0.5</span></div>
+                    <div class="needs-bar-container"><span class="needs-bar-label">Energy</span><div class="needs-bar"><div class="needs-bar-fill" id="need-energy" style="width:100%;background:#4CAF50;"></div></div><span class="needs-bar-value" id="need-energy-val">1.0</span></div>
+                    <div class="needs-bar-container"><span class="needs-bar-label">Social</span><div class="needs-bar"><div class="needs-bar-fill" id="need-social" style="width:50%;background:#2196F3;"></div></div><span class="needs-bar-value" id="need-social-val">0.5</span></div>
                 </div>
-                <div style="font-size:10px; color:#666; margin-top:5px;">
-                    Updates every 5s | Powered by Mapillary
+
+                <div class="agent-section-title">🧠 Cognition</div>
+                <div class="cognition-grid" id="agent-cognition">
+                    <div class="cognition-item"><span class="label">Mood:</span> <span class="value" id="cog-mood">—</span></div>
+                    <div class="cognition-item"><span class="label">Curiosity:</span> <span class="value" id="cog-curiosity">—</span></div>
+                    <div class="cognition-item"><span class="label">Fatigue:</span> <span class="value" id="cog-fatigue">—</span></div>
+                    <div class="cognition-item"><span class="label">Goal:</span> <span class="value" id="cog-goal">—</span></div>
                 </div>
-            </div>
+
+                <div class="agent-section-title">💭 Thought Stream</div>
+                <div class="thought-stream" id="agent-stream">
+                    <em style="color:#999; font-size:11px;">Run a simulation step to see thoughts</em>
+                </div>
+
+                <div class="agent-section-title llm-narrative">🗣️ LLM Narrative <span id="llm-spinner" class="llm-spinner" style="display:none;"></span></div>
+                <div id="agent-summary" class="agent-summary">
+                    <em style="color:#999;">Click an agent or search by ID</em>
+                </div>
+            </section>
         </div>
     </div>
-    <script>
-        // Get API base URL
-        function getApiUrl() {
-            return document.getElementById('api-url').value;
-        }
 
-        const map = L.map('map').setView([41.39, 2.17], 15);
+    <script>
+        // ── State ───────────────────────────────────────────
+        let map, layers = {};
+        let animationInterval = null;
+        let animationSpeed = 1000;
+        let selectedAgentId = null;
+        let agentMarkers = {};
+        let selectedMarker = null;
+        let summaryUpdateInterval = null;
+        let currentLLMProvider = 'ollama';
+
+        function getApiUrl() { return document.getElementById('api-url').value; }
+
+        // ── Map setup ───────────────────────────────────────
+        map = L.map('map').setView([41.39, 2.17], 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap',
-            maxZoom: 19
+            attribution: '© OpenStreetMap', maxZoom: 19
         }).addTo(map);
 
-        const layers = {
+        layers = {
             buildings: L.layerGroup().addTo(map),
             network: L.layerGroup().addTo(map),
             roads: L.layerGroup().addTo(map),
             amenities: L.layerGroup().addTo(map),
-            agents: L.layerGroup().addTo(map)
+            agents: L.layerGroup().addTo(map),
+            streetview: L.layerGroup().addTo(map)
         };
 
-        // Animation state
-        let animationInterval = null;
-        let animationSpeed = 1000; // ms per step
-        let selectedAgentId = null;
-        let agentMarkers = {}; // Map of agent ID to marker
-        let selectedMarker = null;
-        let summaryUpdateInterval = null; // For periodic updates (5s interval)
+        // ── Loading progress ────────────────────────────────
+        function setProgress(pct, text) {
+            document.getElementById('progress-fill').style.width = pct + '%';
+            document.getElementById('loading-status').textContent = text;
+        }
 
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+
+        // ── Staged loading ──────────────────────────────────
         async function loadAll() {
+            const apiUrl = getApiUrl();
             try {
-                console.log('Starting to load data...');
-                const apiUrl = getApiUrl();
-                
-                // Check available tables
-                const tablesRes = await fetch(`${apiUrl}/api/tables`);
-                const tables = await tablesRes.json();
-                console.log('Available tables:', tables);
-                
-                // Load stats
+                setProgress(5, 'Fetching database stats...');
                 const statsRes = await fetch(`${apiUrl}/api/stats`);
                 const stats = await statsRes.json();
-                console.log('Stats:', stats);
-                
-                document.getElementById('stats').innerHTML = 
-                    '<strong>Database:</strong><br>' +
-                    'Buildings: ' + (stats.buildings || 0).toLocaleString() + '<br>' +
-                    'Walk Network: ' + (stats.walk_edges || 0).toLocaleString() + '<br>' +
-                    'Amenities: ' + (stats.amenities || 0).toLocaleString() + '<br>' +
-                    'Tables: ' + Object.keys(tables).join(', ');
-                
+
                 if (stats.bbox) {
                     map.fitBounds([
                         [stats.bbox.minLat, stats.bbox.minLon],
                         [stats.bbox.maxLat, stats.bbox.maxLon]
                     ]);
                 }
-                
-                // Load buildings
-                console.log('Loading buildings...');
-                const buildingsRes = await fetch(`${apiUrl}/api/buildings`);
-                const buildingsData = await buildingsRes.json();
-                console.log('Buildings received:', buildingsData?.features?.length || 0);
-                
-                if (buildingsData && buildingsData.features && buildingsData.features.length > 0) {
-                    console.log('First building:', buildingsData.features[0]);
-                    const buildingsLayer = L.geoJSON(buildingsData, {
-                        style: {
-                            fillColor: '#cccccc',
-                            fillOpacity: 0.4,
-                            color: '#888888',
-                            weight: 0.5,
-                            zIndex: 1
-                        }
-                    });
-                    buildingsLayer.addTo(layers.buildings);
-                    console.log('Buildings added to map');
-                } else {
-                    console.warn('No building features received!');
-                }
-                
-                // Load walk network
-                console.log('Loading walk network...');
-                const networkRes = await fetch(`${apiUrl}/api/walk_network`);
-                const networkData = await networkRes.json();
-                console.log('Walk network received:', networkData?.features?.length || 0);
-                
-                if (networkData && networkData.features && networkData.features.length > 0) {
-                    console.log('First walk edge:', networkData.features[0]);
-                    const walkLayer = L.geoJSON(networkData, {
-                        style: { 
-                            color: '#0066ff', 
-                            weight: 4, 
-                            opacity: 0.9,
-                            zIndex: 1000
-                        }
-                    });
-                    walkLayer.addTo(layers.network);
-                    console.log('Walk network added to map');
-                    console.log('Walk network bounds:', walkLayer.getBounds());
-                } else {
-                    console.warn('No walk network features received!');
-                }
-                
-                // Load roads if available
-                console.log('Loading roads...');
-                const roadsRes = await fetch(`${apiUrl}/api/roads`);
-                const roadsData = await roadsRes.json();
-                console.log('Roads received:', roadsData?.features?.length || 0);
-                
-                if (roadsData && roadsData.features && roadsData.features.length > 0) {
-                    console.log('First road:', roadsData.features[0]);
-                    const roadsLayer = L.geoJSON(roadsData, {
-                        style: { 
-                            color: '#ff3333', 
-                            weight: 3, 
-                            opacity: 0.8,
-                            zIndex: 999
-                        }
-                    });
-                    roadsLayer.addTo(layers.roads);
-                    console.log('Roads added to map');
-                    console.log('Roads bounds:', roadsLayer.getBounds());
-                } else {
-                    console.log('No roads in database');
-                }
-                
-                // Load amenities
-                console.log('Loading amenities...');
-                const amenitiesRes = await fetch(`${apiUrl}/api/amenities`);
-                const amenitiesData = await amenitiesRes.json();
-                console.log('Amenities received:', amenitiesData?.features?.length || 0);
-                
-                if (amenitiesData && amenitiesData.features && amenitiesData.features.length > 0) {
-                    console.log('First amenity:', amenitiesData.features[0]);
-                    L.geoJSON(amenitiesData, {
-                        pointToLayer: (feature, latlng) => {
-                            return L.circleMarker(latlng, {
-                                radius: 4,
-                                fillColor: '#4CAF50',
-                                color: '#2E7D32',
-                                weight: 1,
-                                fillOpacity: 0.8
-                            });
-                        },
-                        onEachFeature: (feature, layer) => {
-                            const props = feature.properties;
-                            let popupContent = '<div style="font-family: Arial, sans-serif; max-width: 250px;">';
-                            popupContent += '<strong style="font-size: 14px; color: #2E7D32;">' + props.name + '</strong><br>';
-                            popupContent += '<span style="display: inline-block; background: #4CAF50; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin: 5px 0;">' + props.amenity + '</span><br>';
-                            
-                            if (props.address) {
-                                popupContent += '<div style="margin-top: 8px;"><strong style="font-size: 11px;">📍 Address:</strong><br><span style="font-size: 11px;">' + props.address + '</span></div>';
-                            }
-                            
-                            if (props.phone) {
-                                popupContent += '<div style="margin-top: 5px;"><strong style="font-size: 11px;">📞 Phone:</strong> <a href="tel:' + props.phone + '" style="font-size: 11px;">' + props.phone + '</a></div>';
-                            }
-                            
-                            if (props.website) {
-                                popupContent += '<div style="margin-top: 5px;"><strong style="font-size: 11px;">🌐 Website:</strong> <a href="' + props.website + '" target="_blank" style="font-size: 11px;">Visit site</a></div>';
-                            }
-                            
-                            if (props.amenity_tags) {
-                                popupContent += '<div style="margin-top: 8px; padding-top: 5px; border-top: 1px solid #ddd;"><strong style="font-size: 10px; color: #666;">Additional info:</strong><br><span style="font-size: 10px; color: #888;">' + props.amenity_tags + '</span></div>';
-                            }
-                            
-                            popupContent += '</div>';
-                            layer.bindPopup(popupContent);
-                        }
-                    }).addTo(layers.amenities);
-                    console.log('Amenities added to map');
-                } else {
-                    console.warn('No amenities received!');
-                }
-                
-                // Load agents
-                console.log('Loading agents...');
+
+                // Tables
+                const tablesRes = await fetch(`${apiUrl}/api/tables`);
+                const tables = await tablesRes.json();
+                document.getElementById('stats').innerHTML =
+                    '<strong>Database:</strong><br>' +
+                    'Buildings: ' + (stats.buildings || 0).toLocaleString() + '<br>' +
+                    'Walk Network: ' + (stats.walk_edges || 0).toLocaleString() + '<br>' +
+                    'Amenities: ' + (stats.amenities || 0).toLocaleString() + '<br>' +
+                    'Tables: ' + Object.keys(tables).join(', ');
+
+                // Phase 1: Load map data
+                setProgress(15, 'Loading buildings...');
+                await loadBuildings(apiUrl);
+
+                setProgress(30, 'Loading walk network...');
+                await loadWalkNetwork(apiUrl);
+
+                setProgress(45, 'Loading roads...');
+                await loadRoads(apiUrl);
+
+                setProgress(55, 'Loading amenities...');
+                await loadAmenities(apiUrl);
+
+                setProgress(70, 'Loading agents...');
                 await loadAgents();
-                
-                document.getElementById('loading').style.display = 'none';
-                console.log('All data loaded successfully!');
-                
+                document.getElementById('agent-count').textContent = Object.keys(agentMarkers).length;
+
+                // Phase 2: Load street view grid
+                setProgress(85, 'Loading street view grid...');
+                await loadStreetViewGrid(apiUrl);
+
+                // Phase 3: Load LLM config
+                setProgress(95, 'Loading LLM configuration...');
+                await loadLLMConfig(apiUrl);
+
+                setProgress(100, 'Ready!');
+                setTimeout(hideLoading, 500);
+
             } catch (error) {
                 console.error('Error loading data:', error);
-                document.getElementById('loading').innerHTML = 'Error: ' + error.message + '<br><small>Make sure backend is running at ' + getApiUrl() + '</small>';
+                setProgress(0, '❌ Error: ' + error.message + ' — Is the backend running at ' + apiUrl + '?');
             }
         }
-        
+
+        // ── Data loaders ────────────────────────────────────
+        async function loadBuildings(apiUrl) {
+            const res = await fetch(`${apiUrl}/api/buildings`);
+            const data = await res.json();
+            if (data?.features?.length) {
+                L.geoJSON(data, {
+                    style: { fillColor: '#cccccc', fillOpacity: 0.4, color: '#888888', weight: 0.5 }
+                }).addTo(layers.buildings);
+            }
+        }
+
+        async function loadWalkNetwork(apiUrl) {
+            const res = await fetch(`${apiUrl}/api/walk_network`);
+            const data = await res.json();
+            if (data?.features?.length) {
+                L.geoJSON(data, {
+                    style: { color: '#0066ff', weight: 4, opacity: 0.9 }
+                }).addTo(layers.network);
+            }
+        }
+
+        async function loadRoads(apiUrl) {
+            const res = await fetch(`${apiUrl}/api/roads`);
+            const data = await res.json();
+            if (data?.features?.length) {
+                L.geoJSON(data, {
+                    style: { color: '#ff3333', weight: 3, opacity: 0.8 }
+                }).addTo(layers.roads);
+            }
+        }
+
+        async function loadAmenities(apiUrl) {
+            const res = await fetch(`${apiUrl}/api/amenities`);
+            const data = await res.json();
+            if (data?.features?.length) {
+                L.geoJSON(data, {
+                    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+                        radius: 4, fillColor: '#4CAF50', color: '#2E7D32', weight: 1, fillOpacity: 0.8
+                    }),
+                    onEachFeature: (feature, layer) => {
+                        const p = feature.properties;
+                        let html = `<div style="max-width:250px;font-family:sans-serif;">`;
+                        html += `<strong style="color:#2E7D32;">${p.name}</strong><br>`;
+                        html += `<span style="background:#4CAF50;color:white;padding:2px 6px;border-radius:3px;font-size:11px;">${p.amenity}</span>`;
+                        if (p.address) html += `<div style="margin-top:5px;font-size:11px;">📍 ${p.address}</div>`;
+                        if (p.phone) html += `<div style="font-size:11px;">📞 <a href="tel:${p.phone}">${p.phone}</a></div>`;
+                        if (p.website) html += `<div style="font-size:11px;">🌐 <a href="${p.website}" target="_blank">Visit</a></div>`;
+                        html += `</div>`;
+                        layer.bindPopup(html);
+                    }
+                }).addTo(layers.amenities);
+            }
+        }
+
         async function loadAgents() {
             const apiUrl = getApiUrl();
-            console.log('Fetching agents...');
-            const response = await fetch(`${apiUrl}/api/agents`);
-            const agentsData = await response.json();
-            console.log('Agents received:', agentsData?.features?.length || 0);
-            
-            // Clear existing agents
+            const res = await fetch(`${apiUrl}/api/agents`);
+            const data = await res.json();
             layers.agents.clearLayers();
             agentMarkers = {};
-            
-            if (agentsData && agentsData.features && agentsData.features.length > 0) {
-                console.log('First agent:', agentsData.features[0]);
-                agentsData.features.forEach(feature => {
-                    const latlng = [feature.geometry.coordinates[1], feature.geometry.coordinates[0]];
-                    const agentId = feature.properties.id;
-                    const isSelected = agentId === selectedAgentId;
-                    
+            if (data?.features?.length) {
+                data.features.forEach(f => {
+                    const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
+                    const id = f.properties.id;
+                    const isSelected = id === selectedAgentId;
                     const marker = L.circleMarker(latlng, {
                         radius: isSelected ? 10 : 6,
                         fillColor: isSelected ? '#FFD700' : '#ff7800',
-                        color: '#000000',
-                        weight: isSelected ? 3 : 1,
-                        fillOpacity: 1,
-                        zIndex: isSelected ? 3000 : 2000
+                        color: '#000', weight: isSelected ? 3 : 1,
+                        fillOpacity: 1, zIndex: isSelected ? 3000 : 2000
                     });
-                    
-                    marker.on('click', () => {
-                        selectAgent(agentId);
-                    });
-                    
+                    marker.on('click', () => selectAgent(id));
                     marker.addTo(layers.agents);
-                    agentMarkers[agentId] = marker;
+                    agentMarkers[id] = marker;
                 });
-                
-                if (selectedMarker) {
-                    selectedMarker.bringToFront();
-                }
-                
-                console.log('Agents added to map');
             }
         }
-        
+
+        // ── Street View Grid ────────────────────────────────
+        function escHtml(s) {
+            const d = document.createElement('div'); d.textContent = String(s || ''); return d.innerHTML;
+        }
+        function buildSvOverview(p) {
+            // Use scene_narrative if available; otherwise synthesize prose from available fields
+            if (p.scene_narrative && p.scene_narrative.trim()) return escHtml(p.scene_narrative);
+            const parts = [];
+            if (p.architectural_style) parts.push(p.architectural_style + ' architecture');
+            if (p.materials)           parts.push(p.materials + ' construction');
+            if (p.building_condition)  parts.push('in ' + p.building_condition + ' condition');
+            if (p.spatial_impression)  parts.push(p.spatial_impression + ' spatial feel');
+            if (parts.length)          return escHtml(parts.join(', ') + '.');
+            return null;
+        }
+        function buildSvPopup(apiUrl, p) {
+            const imgSrc = p.image_url ? `${apiUrl}${p.image_url}` : '';
+            const overview = buildSvOverview(p);
+            const jsonFile = p.filename
+                ? p.filename.replace(/\.jpg$/, '_analysis.json').replace(/^sv_/, '') : '';
+            const viewerLink = jsonFile
+                ? `<a href="${apiUrl}/api/streetview_grid/json/${jsonFile}" target="_blank">📄 Raw JSON</a>` : '';
+            return `
+            <div class="sv-popup">
+                ${imgSrc ? `<div class="sv-img-wrap">
+                    <img src="${imgSrc}" alt="Street View" loading="lazy"
+                         onerror="this.style.display='none'">
+                    ${p.heading != null ? `<span class="sv-heading-badge">🧭 ${p.heading}°</span>` : ''}
+                </div>` : ''}
+                ${overview
+                    ? `<p class="sv-overview">${overview}</p>`
+                    : `<p class="sv-overview muted">No description available.</p>`}
+                <div class="sv-footer">${viewerLink}</div>
+            </div>`;
+        }
+
+        async function loadStreetViewGrid(apiUrl) {
+            const res = await fetch(`${apiUrl}/api/streetview_grid`);
+            const data = await res.json();
+            if (data?.features?.length) {
+                const cameraIcon = L.divIcon({
+                    html: '📷',
+                    className: 'sv-marker',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+                data.features.forEach(f => {
+                    const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
+                    const p = f.properties;
+                    const marker = L.marker(latlng, { icon: cameraIcon });
+                    marker.bindPopup(buildSvPopup(apiUrl, p), { maxWidth: 360, minWidth: 280 });
+                    marker.addTo(layers.streetview);
+                });
+            }
+        }
+
+        // ── LLM Config ─────────────────────────────────────
+        async function loadLLMConfig(apiUrl) {
+            const res = await fetch(`${apiUrl}/api/config/frontend`);
+            const config = await res.json();
+
+            currentLLMProvider = config.llm_provider;
+            document.getElementById('llm-model').value = config.llm_model || '';
+
+            const container = document.getElementById('llm-options');
+            container.innerHTML = '';
+            (config.available_providers || []).forEach(prov => {
+                const div = document.createElement('div');
+                div.className = 'llm-option' + (prov.id === currentLLMProvider ? ' selected' : '');
+                div.dataset.provider = prov.id;
+                div.innerHTML = `<input type="radio" name="llm-provider" value="${prov.id}" ${prov.id === currentLLMProvider ? 'checked' : ''}>
+                    <div><div class="llm-name">${prov.name}</div><div class="llm-desc">${prov.description}</div></div>`;
+                div.addEventListener('click', () => {
+                    document.querySelectorAll('.llm-option').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    div.querySelector('input').checked = true;
+                    currentLLMProvider = prov.id;
+                });
+                container.appendChild(div);
+            });
+        }
+
+        document.getElementById('btn-apply-llm').addEventListener('click', async () => {
+            const apiUrl = getApiUrl();
+            const model = document.getElementById('llm-model').value.trim();
+            const statusEl = document.getElementById('llm-status');
+            statusEl.textContent = 'Applying...';
+            document.getElementById('sim-status').className = 'status-badge configuring';
+            document.getElementById('sim-status').textContent = 'Configuring';
+
+            try {
+                const res = await fetch(`${apiUrl}/api/config/llm?provider=${encodeURIComponent(currentLLMProvider)}&model=${encodeURIComponent(model)}`, { method: 'POST' });
+                const data = await res.json();
+                statusEl.textContent = `✅ ${data.provider} / ${data.model}`;
+                // Test connection with a quick stats call
+                try {
+                    const statsRes = await fetch(`${apiUrl}/api/llm/stats`);
+                    const stats = await statsRes.json();
+                    statusEl.textContent += ` | ${stats.total_calls} calls`;
+                } catch (_) {}
+                document.getElementById('sim-status').className = 'status-badge ready';
+                document.getElementById('sim-status').textContent = 'Ready';
+            } catch (e) {
+                statusEl.textContent = '❌ ' + e.message;
+                document.getElementById('sim-status').className = 'status-badge stopped';
+                document.getElementById('sim-status').textContent = 'Error';
+            }
+        });
+
+        // ── Agent selection ─────────────────────────────────
         async function selectAgent(agentId) {
             selectedAgentId = agentId;
-            await showAgentSummary(agentId);
-            await showStreetView(agentId); // Initial fetch
-            
-            // Start periodic updates every 5 seconds for both summary and street view
-            if (summaryUpdateInterval) {
-                clearInterval(summaryUpdateInterval);
-            }
+            document.getElementById('agent-info').classList.add('visible');
+
+            // Load structured data immediately (no LLM needed)
+            await showAgentDetails(agentId);
+            await showAgentStream(agentId);
+
+            // Load LLM narrative in background
+            showAgentNarrative(agentId);
+
+            if (summaryUpdateInterval) clearInterval(summaryUpdateInterval);
             summaryUpdateInterval = setInterval(() => {
                 if (selectedAgentId === agentId) {
-                    showAgentSummary(agentId);
-                    showStreetView(agentId);
+                    showAgentDetails(agentId);
+                    showAgentStream(agentId);
                 }
-            }, 5000);
-            
-            // Update marker styling
+            }, 3000);
+
             for (const [id, marker] of Object.entries(agentMarkers)) {
-                const isSelected = parseInt(id) === agentId;
+                const sel = parseInt(id) === agentId;
                 marker.setStyle({
-                    radius: isSelected ? 10 : 6,
-                    fillColor: isSelected ? '#FFD700' : '#ff7800',
-                    weight: isSelected ? 3 : 1,
-                    zIndex: isSelected ? 3000 : 2000
+                    radius: sel ? 10 : 6,
+                    fillColor: sel ? '#FFD700' : '#ff7800',
+                    weight: sel ? 3 : 1
                 });
-                if (isSelected) {
-                    selectedMarker = marker;
-                    marker.bringToFront();
-                }
+                if (sel) { selectedMarker = marker; marker.bringToFront(); }
             }
         }
-        
-        async function updateAgents(agentsData) {
-            // Update existing markers with new positions
-            let queryCount = 0;
-            agentsData.forEach(agent => {
-                const marker = agentMarkers[agent.id];
-                if (marker) {
-                    marker.setLatLng([agent.lat, agent.lon]);
-                    queryCount += agent.nearby_count || 0;
-                }
-            });
-            
-            // Update query count display
-            document.getElementById('query-count').innerText = queryCount;
-            
-            // Summary updates are handled by the interval, not here
+
+        function parseMarkdown(text) {
+            if (!text) return text;
+            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            text = text.replace(/\n/g, '<br>');
+            return text;
         }
-        
+
+        async function showAgentDetails(agentId) {
+            const apiUrl = getApiUrl();
+            try {
+                const res = await fetch(`${apiUrl}/api/agent/${agentId}/cognition`);
+                const data = await res.json();
+                if (data.error) return;
+
+                document.getElementById('agent-id').textContent = data.agent_id;
+                document.getElementById('agent-archetype').textContent = data.archetype || 'unknown';
+
+                // Needs bars
+                const needs = data.needs || {};
+                const hunger = needs.hunger ?? 0.5;
+                const energy = needs.energy ?? 1.0;
+                const social = needs.social ?? 0.5;
+                document.getElementById('need-hunger').style.width = (hunger * 100) + '%';
+                document.getElementById('need-hunger-val').textContent = hunger.toFixed(2);
+                document.getElementById('need-energy').style.width = (energy * 100) + '%';
+                document.getElementById('need-energy-val').textContent = energy.toFixed(2);
+                document.getElementById('need-social').style.width = (social * 100) + '%';
+                document.getElementById('need-social-val').textContent = social.toFixed(2);
+
+                // Cognition
+                const cog = data.cognition_state || {};
+                document.getElementById('cog-mood').textContent = cog.mood || 'neutral';
+                document.getElementById('cog-curiosity').textContent = (cog.curiosity ?? 0.7).toFixed(2);
+                document.getElementById('cog-fatigue').textContent = (cog.fatigue ?? 0).toFixed(2);
+
+                // Plan
+                const plan = data.current_plan || {};
+                document.getElementById('cog-goal').textContent = plan.goal || 'explore';
+
+                // Location (from agent endpoint)
+                const agentRes = await fetch(`${apiUrl}/api/agent/${agentId}`);
+                const agentData = await agentRes.json();
+                if (agentData.location) {
+                    document.getElementById('agent-location').textContent =
+                        agentData.location.lon.toFixed(5) + ', ' + agentData.location.lat.toFixed(5);
+                }
+                document.getElementById('agent-amenity-count').textContent = agentData.nearby_amenities?.length || 0;
+            } catch (e) {
+                console.error('Agent details error:', e);
+            }
+        }
+
+        async function showAgentStream(agentId) {
+            const apiUrl = getApiUrl();
+            try {
+                const res = await fetch(`${apiUrl}/api/agent/${agentId}/stream?n=15`);
+                const data = await res.json();
+                const container = document.getElementById('agent-stream');
+                if (!data.events || data.events.length === 0) {
+                    container.innerHTML = '<em style="color:#999; font-size:11px;">No thoughts yet — run a step</em>';
+                    return;
+                }
+                container.innerHTML = data.events.map(ev => {
+                    const topicClass = ev.topic || 'mobility';
+                    return `<div class="thought-event ${topicClass}">
+                        <span class="te-step">Step ${ev.step} · ${ev.topic}</span><br>
+                        <span class="te-desc">${ev.description}</span>
+                    </div>`;
+                }).join('');
+                container.scrollTop = container.scrollHeight;
+            } catch (e) {
+                console.error('Agent stream error:', e);
+            }
+        }
+
+        async function showAgentNarrative(agentId) {
+            const spinner = document.getElementById('llm-spinner');
+            const summaryEl = document.getElementById('agent-summary');
+            spinner.style.display = 'inline-block';
+            summaryEl.innerHTML = '<em style="color:#999;">Generating narrative...</em>';
+            const apiUrl = getApiUrl();
+            try {
+                const res = await fetch(`${apiUrl}/api/agent/${agentId}/summary`);
+                const data = await res.json();
+                if (data.error) {
+                    summaryEl.innerHTML = '<em style="color:#999;">Agent not found</em>';
+                } else if (!data.summary) {
+                    summaryEl.innerHTML = '<em style="color:#999;">LLM unavailable — start Ollama or vLLM first</em>';
+                } else {
+                    summaryEl.innerHTML = parseMarkdown(data.summary);
+                }
+            } catch (e) {
+                summaryEl.innerHTML = '<em style="color:#c00;">LLM not connected</em>';
+            }
+            spinner.style.display = 'none';
+        }
+
+        // ── Agent respawn ──────────────────────────────────
+        document.getElementById('btn-respawn').addEventListener('click', async () => {
+            const count = parseInt(document.getElementById('agent-count-input').value) || 15;
+            const apiUrl = getApiUrl();
+            try {
+                const res = await fetch(`${apiUrl}/api/agents/respawn?count=${count}`, { method: 'POST' });
+                const data = await res.json();
+                document.getElementById('agent-count').textContent = data.count;
+                document.getElementById('sim-step').textContent = data.step;
+                document.getElementById('llm-calls').textContent = '0';
+                await loadAgents();
+                selectedAgentId = null;
+                document.getElementById('agent-info').classList.remove('visible');
+            } catch (e) {
+                alert('Respawn failed: ' + e.message);
+            }
+        });
+
+
+        // ── Simulation ──────────────────────────────────────
         async function stepSimulation() {
             try {
                 const apiUrl = getApiUrl();
-                const response = await fetch(`${apiUrl}/api/step_continuous`, { method: 'POST' });
-                const data = await response.json();
-                
-                document.getElementById('sim-step').innerText = data.step;
-                
+                const res = await fetch(`${apiUrl}/api/step_continuous`, { method: 'POST' });
+                const data = await res.json();
+                document.getElementById('sim-step').textContent = data.step;
+                if (data.llm_stats) document.getElementById('llm-calls').textContent = data.llm_stats.total_calls;
                 if (data.agents) {
-                    await updateAgents(data.agents);
+                    data.agents.forEach(agent => {
+                        const marker = agentMarkers[agent.id];
+                        if (marker) marker.setLatLng([agent.lat, agent.lon]);
+                    });
                 }
-            } catch (error) {
-                console.error('Error stepping simulation:', error);
+            } catch (e) {
+                console.error('Step error:', e);
             }
         }
-        
+
         function startAnimation() {
             if (animationInterval) return;
-            
-            document.getElementById('btn-play').style.display = 'none';
-            document.getElementById('btn-pause').style.display = 'inline';
-            
+            document.getElementById('btn-run').style.display = 'none';
+            document.getElementById('btn-stop').style.display = 'inline';
+            document.getElementById('sim-status').className = 'status-badge running';
+            document.getElementById('sim-status').textContent = 'Running';
             animationInterval = setInterval(stepSimulation, animationSpeed);
         }
-        
+
         function pauseAnimation() {
-            if (animationInterval) {
-                clearInterval(animationInterval);
-                animationInterval = null;
-            }
-            
-            document.getElementById('btn-play').style.display = 'inline';
-            document.getElementById('btn-pause').style.display = 'none';
+            if (animationInterval) { clearInterval(animationInterval); animationInterval = null; }
+            document.getElementById('btn-run').style.display = 'inline';
+            document.getElementById('btn-stop').style.display = 'none';
+            document.getElementById('sim-status').className = 'status-badge ready';
+            document.getElementById('sim-status').textContent = 'Paused';
         }
-        
-        // Parse simple markdown to HTML (for LLM outputs)
-        function parseMarkdown(text) {
-            if (!text) return text;
-            
-            // Convert **bold** to <strong>bold</strong>
-            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            
-            // Convert *italic* to <em>italic</em>
-            text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
-            
-            // Convert line breaks to <br>
-            text = text.replace(/\n/g, '<br>');
-            
-            return text;
-        }
-        
-        async function showAgentSummary(agentId) {
-            const apiUrl = getApiUrl();
-            try {
-                console.log('Fetching LLM summary for agent:', agentId);
-                const response = await fetch(`${apiUrl}/api/agent/${agentId}/summary`);
-                const data = await response.json();
-                
-                if (data.error) {
-                    console.error('Agent not found:', agentId);
-                    return;
-                }
-                
-                // Update display
-                document.getElementById('agent-info').style.display = 'block';
-                document.getElementById('agent-id').innerText = data.agent_id;
-                document.getElementById('agent-location').innerText = 
-                    data.location.lon.toFixed(5) + ', ' + data.location.lat.toFixed(5);
-                document.getElementById('agent-amenity-count').innerText = data.amenity_count;
-                
-                // Display LLM-generated summary with markdown parsing
-                const summaryDiv = document.getElementById('agent-summary');
-                const formattedSummary = parseMarkdown(data.summary);
-                summaryDiv.innerHTML = formattedSummary;
-                
-            } catch (error) {
-                console.error('Error fetching agent summary:', error);
-                document.getElementById('agent-summary').innerHTML = 
-                    '<em style="color:#c00;">Error loading perspective. Is the backend running?</em>';
-            }
-        }
-        
-        async function showStreetView(agentId) {
-            const apiUrl = getApiUrl();
-            try {
-                console.log('Fetching Mapillary street view for agent:', agentId);
-                const response = await fetch(`${apiUrl}/api/agent/${agentId}/streetview`);
-                const data = await response.json();
-                
-                if (data.error) {
-                    console.error('Agent not found:', agentId);
-                    return;
-                }
-                
-                const imagesContainer = document.getElementById('streetview-images');
-                
-                if (data.images && data.images.length > 0) {
-                    // Display images - thumb_url contains 1024px resolution (optimal quality/performance)
-                    imagesContainer.innerHTML = '';
-                    data.images.forEach(img => {
-                        const imgElement = document.createElement('div');
-                        imgElement.style.cssText = 'flex: 0 0 calc(50% - 5px); cursor: pointer;';
-                        imgElement.innerHTML = `
-                            <img src="${img.thumb_url}" 
-                                 alt="Street view" 
-                                 style="width:100%; height:auto; border-radius:3px; border:1px solid #ddd;"
-                                 title="Captured: ${new Date(img.captured_at).toLocaleDateString()}"
-                                 onclick="window.open('https://www.mapillary.com/app/?pKey=${img.id}', '_blank')">
-                        `;
-                        imagesContainer.appendChild(imgElement);
-                    });
-                } else {
-                    imagesContainer.innerHTML = '<em style="color:#999; font-size:11px;">No street views available in this area</em>';
-                }
-                
-            } catch (error) {
-                console.error('Error fetching street view:', error);
-                document.getElementById('streetview-images').innerHTML = 
-                    '<em style="color:#c00; font-size:11px;">Error loading street views</em>';
-            }
-        }
-        
-        // Layer toggles
-        document.getElementById('layer-buildings').addEventListener('change', (e) => {
-            if (e.target.checked) map.addLayer(layers.buildings);
-            else map.removeLayer(layers.buildings);
-        });
-        
-        document.getElementById('layer-network').addEventListener('change', (e) => {
-            if (e.target.checked) map.addLayer(layers.network);
-            else map.removeLayer(layers.network);
-        });
-        
-        document.getElementById('layer-roads').addEventListener('change', (e) => {
-            if (e.target.checked) map.addLayer(layers.roads);
-            else map.removeLayer(layers.roads);
-        });
-        
-        document.getElementById('layer-amenities').addEventListener('change', (e) => {
-            if (e.target.checked) map.addLayer(layers.amenities);
-            else map.removeLayer(layers.amenities);
-        });
-        
-        document.getElementById('layer-agents').addEventListener('change', (e) => {
-            if (e.target.checked) map.addLayer(layers.agents);
-            else map.removeLayer(layers.agents);
-        });
-        
-        // Animation controls
-        document.getElementById('btn-play').addEventListener('click', startAnimation);
-        document.getElementById('btn-pause').addEventListener('click', pauseAnimation);
-        
-        // Speed control
-        document.getElementById('speed-slider').addEventListener('input', (e) => {
+
+        // ── Event listeners ─────────────────────────────────
+        document.getElementById('btn-run').addEventListener('click', startAnimation);
+        document.getElementById('btn-stop').addEventListener('click', pauseAnimation);
+        document.getElementById('btn-step').addEventListener('click', stepSimulation);
+
+        document.getElementById('speed-slider').addEventListener('input', e => {
             animationSpeed = parseFloat(e.target.value) * 1000;
-            document.getElementById('speed-value').innerText = e.target.value;
-            
-            // Restart animation with new speed if running
-            if (animationInterval) {
-                pauseAnimation();
-                startAnimation();
-            }
+            document.getElementById('speed-value').textContent = e.target.value;
+            if (animationInterval) { pauseAnimation(); startAnimation(); }
         });
-        
-        // Agent search
+
         document.getElementById('agent-search-btn').addEventListener('click', () => {
-            const agentId = parseInt(document.getElementById('agent-search-input').value);
-            if (!isNaN(agentId) && agentMarkers[agentId]) {
-                selectAgent(agentId);
-                // Pan to agent
-                const marker = agentMarkers[agentId];
-                map.panTo(marker.getLatLng());
-            } else {
-                alert('Agent ID not found: ' + agentId);
-            }
+            const id = parseInt(document.getElementById('agent-search-input').value);
+            if (!isNaN(id) && agentMarkers[id]) {
+                selectAgent(id);
+                map.panTo(agentMarkers[id].getLatLng());
+            } else { alert('Agent ID not found: ' + id); }
         });
-        
-        // Allow Enter key in search box
-        document.getElementById('agent-search-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('agent-search-btn').click();
-            }
+
+        document.getElementById('agent-search-input').addEventListener('keypress', e => {
+            if (e.key === 'Enter') document.getElementById('agent-search-btn').click();
         });
-        
+
+        // Layer toggles
+        ['buildings', 'network', 'roads', 'amenities', 'agents', 'streetview'].forEach(name => {
+            document.getElementById('layer-' + name).addEventListener('change', e => {
+                if (e.target.checked) map.addLayer(layers[name]);
+                else map.removeLayer(layers[name]);
+            });
+        });
+
+        // ── Boot ────────────────────────────────────────────
         loadAll();
     </script>
 </body>
