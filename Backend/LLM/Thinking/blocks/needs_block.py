@@ -6,8 +6,8 @@ Adapted from AgentSociety's NeedsBlock pattern.
 import logging
 from typing import Optional
 
-from Thinking.block import Block, BlockResult
-from Thinking.prompts import needs_evaluation_prompt
+from LLM.Thinking.block import Block, BlockResult
+from LLM.Thinking.prompts import needs_evaluation_prompt
 
 logger = logging.getLogger(__name__)
 
