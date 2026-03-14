@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223923",
+    "latitude": 41.3971037,
+    "longitude": 2.1625967000000004,
+    "heading": 350.29392548649184,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "f338db9c-29f4-4f30-8bb8-d39f14082977",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397104_2.162597_h350.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85464.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street through a large window, with a white wall to the right and a black shade pulled down over the window. The street is empty, with a few cars parked along the curb and a tree-lined sidewalk. A small cactus sits in a pot on the floor to the right of the window, and a white dresser with wheels is positioned against the wall.",
+    "buildings": "The buildings in the background are tall and modern, with clean lines and minimal ornamentation. They appear to be made of concrete or steel, with large windows that reflect the surrounding environment.",
+    "materials": "The walls are painted white, with some areas showing signs of wear and tear. The floor is made of polished concrete, with a subtle sheen that catches the light.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters scattered throughout the area, providing a place for people to sit and rest.",
+    "vegetation": "The trees and plants add a touch of greenery to the otherwise urban landscape, with some areas featuring lush foliage and others displaying vibrant flowers.",
+    "signage": "There are several signs posted along the street, including traffic lights, stop signs, and directional arrows.",
+    "ground_surfaces": "The ground is paved with smooth, gray concrete, with some areas featuring textured patterns or decorative elements.",
+    "spatial_enclosure": "The street is relatively open, with a clear path between the buildings and a few pedestrians visible in the distance.",
+    "pedestrian_activity": "There are a few people walking along the sidewalk, but the area appears to be relatively quiet and peaceful.",
+    "lighting_atmosphere": "The lighting is bright and even, with a mix of natural and artificial sources.",
+    "as_resident": "The street is likely used by locals and visitors alike, with a sense of community and activity.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is popular with tourists, who come to admire the architecture and enjoy the lively atmosphere.",
+    "as_student": "The street is also a hub for students, who come to study and socialize."
+  }
+}

@@ -5,7 +5,7 @@ REM ── Configuration ──────────────────�
 REM Use the HuggingFace model ID (not a Windows path).
 REM The HF cache is volume-mounted into the container, so the model
 REM resolves automatically via the HuggingFace hub cache layout.
-set "VLLM_MODEL=hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4"
+set "VLLM_MODEL=Qwen/Qwen2.5-3B-Instruct-AWQ"
 set "VLLM_HOST_PORT=8001"
 
 if not exist "%USERPROFILE%\.cache\huggingface" mkdir "%USERPROFILE%\.cache\huggingface"
@@ -44,22 +44,32 @@ echo [vLLM] Model:    %VLLM_MODEL%
 echo [vLLM] Endpoint: http://127.0.0.1:%VLLM_HOST_PORT%/v1
 echo.
 
+REM ── Stop any existing container on this port ───────────────────────
+for /f "tokens=*" %%c in ('docker ps -q --filter "publish=%VLLM_HOST_PORT%"') do (
+    echo [vLLM] Stopping existing container on port %VLLM_HOST_PORT%...
+    docker stop %%c >nul
+)
+
 REM ── Launch vLLM container with GPU ─────────────────────────────────
 REM Notes:
-REM   --gpus all    : expose all NVIDIA GPUs to the container
-REM   --ipc=host    : shared memory for multi-GPU / large batch inference
+REM   --gpus all      : expose all NVIDIA GPUs to the container
+REM   --ipc=host      : shared memory for multi-GPU / large batch inference
+REM   VLLM_USE_V1=0   : disable the V1 engine (which spawns a separate subprocess
+REM                     that loses CUDA access inside WSL2 / Docker Desktop on Windows)
 REM   The AWQ INT4 model bundles its own tokenizer; no --tokenizer needed.
 docker run --rm ^
   --gpus all ^
   --ipc=host ^
+  -e VLLM_USE_V1=0 ^
   -p %VLLM_HOST_PORT%:8000 ^
   -v "%USERPROFILE%\.cache\huggingface:/root/.cache/huggingface" ^
   vllm/vllm-openai:latest ^
-  --model %VLLM_MODEL% ^
+  %VLLM_MODEL% ^
   --host 0.0.0.0 ^
   --port 8000 ^
-  --max-model-len 8192 ^
-  --quantization awq
+  --max-model-len 4096 ^
+  --quantization awq_marlin ^
+  --gpu-memory-utilization 0.85
 
 if errorlevel 1 (
     echo.

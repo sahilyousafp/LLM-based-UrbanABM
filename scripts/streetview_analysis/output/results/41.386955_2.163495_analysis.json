@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_004528",
+    "latitude": 41.386955,
+    "longitude": 2.163495,
+    "heading": 321.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5014743b-45d1-45a7-9e59-33c16ae82328",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386955_2.163495_h321.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 31037.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street with a mix of old and new buildings, surrounded by trees and greenery. The street is paved with large square stones and has a few benches and planters along the sidewalk. There are several tall trees lining the street, including some with hanging branches. A small garden area is visible in the distance, with a few flowers blooming. The sky is overcast but bright enough to make everything look vibrant. The overall atmosphere is calm and peaceful, with a sense of history and character.",
+    "buildings": "The buildings in the background are mostly old, with some newer structures mixed in. They have a mix of stone and brick facades, with some having ornate details like columns and arches. Some of the buildings appear to be residential, while others may be commercial or government buildings. The buildings vary in height, with some being much taller than others.",
+    "materials": "The ground is made up of large, flat stones that are arranged in a grid pattern. The stones are a mix of gray and brown, with some having a rough texture. There are also some plants growing between the stones, adding a touch of green to the scene.",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and planters scattered throughout the area, providing places for people to sit and rest. Some of the benches are made of wood, while others are metal or concrete. The planters are filled with a variety of plants, including flowers, shrubs, and trees.",
+    "vegetation": "The vegetation in the area is lush and diverse, with a mix of trees, bushes, and flowers. There are several large trees that provide shade and add to the ambiance of the area. The plants are well-maintained and healthy-looking, with some having colorful blooms.",
+    "signage": "There are a few signs visible in the area, including a small sign near the entrance to a park or garden. The signs are colorful and easy to read, with clear text and images. There are also some street signs indicating directions and distances to nearby landmarks.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people visible in the area, but they are not crowded or busy. Some people are sitting on benches, while others are walking or standing. There are also a few children playing or running around.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would describe the area as quiet and peaceful. It's a place where people can relax and enjoy the outdoors. There are a few shops and cafes nearby, but it's not overly commercialized. The area is safe and clean, with plenty of greenery and fresh air.",
+    "as_commuter": "As a commuter, I would describe the area as convenient and accessible. The area is within walking distance of my home and work, and there are many public transportation options available. The area is also close to several parks and green spaces, making it easy to get out and enjoy the outdoors.",
+    "as_tourist": "As a tourist, I would describe the area as lively and vibrant. There are many interesting sights and attractions, including historic buildings, museums, and cultural events. The area is bustling with activity, especially during peak tourist season.",
+    "as_student": "As a student, I would describe the area as academic and intellectual. There are many libraries, universities, and research institutions nearby. The area is quiet and focused, with plenty of study spaces and resources available."
+  }
+}

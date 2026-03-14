@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_211129",
+    "latitude": 41.393263399999995,
+    "longitude": 2.157122300000001,
+    "heading": 2.221257070840636,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "286c9977-bae7-4f49-8b05-ba839615cf6f",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.393263_2.157122_h2.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85267.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street with buildings, including a large metal structure with a blue sign, a trash can, and a person in the distance. The scene has a gray ceiling, gray floor, and various objects such as a trash can, a blue sign, and a person in the background.",
+    "buildings": "The large metal structure is made of steel and has a rectangular shape. It is located on the left side of the image.",
+    "materials": "The metal structure has a smooth surface and is attached to a wall.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image.",
+    "vegetation": "There are no visible plants or trees in the image.",
+    "signage": "There is a small blue sign on the wall near the metal structure.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no visible pedestrians in the image.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A person is visible in the background, wearing a white shirt and dark pants.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area appears to be a public space, possibly a park or plaza.",
+    "as_student": "The area appears to be a quiet and peaceful spot."
+  }
+}

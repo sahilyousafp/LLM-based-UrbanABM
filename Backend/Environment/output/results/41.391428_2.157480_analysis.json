@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_234443",
+    "latitude": 41.39142789999998,
+    "longitude": 2.1574803000000005,
+    "heading": 48.353003923219944,
+    "street_name": "Carrer d'Enric Granados",
+    "highway_type": "road",
+    "edge_id": "5715aafa-cda5-4c9a-b188-3d3868e519b5",
+    "dist_along_edge_m": 13.4,
+    "source_image": "sv_41.391428_2.157480_h48.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43488.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A tree-lined city street with a mix of old and new buildings, featuring a prominent tree in the foreground and a bustling atmosphere with various activities such as dining, shopping, and commuting. The street is paved with cobblestone and has a few cars parked along the side, while pedestrians walk along the sidewalk. The surrounding buildings have a mix of modern and traditional architecture, with some featuring balconies and ornate facades. The overall atmosphere is lively and vibrant, with a sense of community and activity.",
+    "buildings": "The buildings in the background feature a mix of old and new styles, with some having balconies and ornate facades, while others have more modern designs. Some of the buildings appear to be residential, while others may be commercial or office spaces. The buildings vary in height, with some being taller than others.",
+    "materials": "The street is paved with cobblestone, which adds to the historic charm of the area. The buildings' facades are made of a combination of materials, including stone, brick, and possibly metal or wood. The streetlights are tall and slender, providing adequate lighting for both pedestrians and drivers.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, providing a place for people to rest and take in the surroundings. A few bicycles are also parked along the sidewalk, suggesting that cycling is a popular mode of transportation in the area.",
+    "vegetation": "The trees lining the street are lush and green, adding a touch of nature to the urban landscape. They provide shade and help to soften the edges of the buildings.",
+    "signage": "There are several signs visible, including street signs, directional signs, and advertisements. Some of the signs are mounted on poles, while others are attached to the buildings themselves.",
+    "ground_surfaces": "The ground surfaces in the area include a mix of asphalt, concrete, and brick. The cobblestone street adds a unique texture and character to the area.",
+    "spatial_enclosure": "The street feels relatively open and airy, with a clear view of the surrounding buildings and sky. However, there are some narrow alleys and side streets that can be found off the main thoroughfares.",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "The lighting in the area is bright and well-lit, with a warm glow emanating from the streetlights and building windows. The atmosphere is lively and inviting, making it a pleasant place to spend time.",
+    "as_resident": "As a local resident, I would appreciate the presence of outdoor seating areas and public art installations. I also enjoy the variety of shops and restaurants in the area, which cater to different tastes and preferences.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, I am drawn to the area's unique blend of history and culture. The street's charming architecture, beautiful trees, and lively atmosphere make it a great spot to explore and discover new places to visit.",
+    "as_student": "As a student, I appreciate the area's academic vibe and the opportunities for research and learning. The street's proximity to universities and other educational institutions makes it a convenient location for students."
+  }
+}

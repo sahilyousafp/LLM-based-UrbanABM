@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_225543",
+    "latitude": 41.39717360000001,
+    "longitude": 2.1610936,
+    "heading": 193.8342284716097,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "22fcdadd-1a72-430f-8944-bf3dcd7d3dc7",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397174_2.161094_h193.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85578.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings lining both sides, featuring a mix of residential and commercial properties, including apartments, shops, and restaurants. The street is lined with trees providing shade and greenery, and there are several parked scooters and bicycles along the sidewalk. The street is relatively quiet, with only a few pedestrians visible,",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "The street is lined with tall trees that provide shade and add to the aesthetic appeal of the area. There are also several flowerbeds and planters filled with colorful flowers and shrubs.",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people visible in the distance, including pedestrians walking along the sidewalk and cars driving down the street.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area is likely a popular spot for locals and tourists alike, with many amenities and attractions within walking distance. There are several parks and gardens in the area, as well as a number of restaurants and cafes.",
+    "as_commuter": "This area is also a busy spot for commuters, with several buses and trains passing through the area regularly. There are also several bike lanes and bike paths available for cyclists.",
+    "as_tourist": "This area is also a popular spot for tourists, with many shops, restaurants, and attractions within walking distance. There are several street performers and vendors selling local goods and souvenirs.",
+    "as_student": "This area is also a hub for students, with several universities and colleges located in the surrounding buildings. There are several student unions and study groups meeting in the area."
+  }
+}

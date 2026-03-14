@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_004549",
+    "latitude": 41.387079,
+    "longitude": 2.163455,
+    "heading": 137.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5014743b-45d1-45a7-9e59-33c16ae82328",
+    "dist_along_edge_m": 16.8,
+    "source_image": "sv_41.387079_2.163455_h137.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 20493.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A courtyard surrounded by buildings with a mix of beige and brown stone walls, featuring arched windows and doorways, with a large tree in the center and a paved area made of square stones and bricks in front of the buildings. The sky is overcast and gray.",
+    "buildings": "The main building has a tall tower with a clock face on its side, while the other two buildings have flat roofs and smaller towers. The left building has a balcony with arches and columns, and the right building has a row of small windows along its top floor.",
+    "materials": "The main building's facade is made of beige stone with darker accents, while the left building's facade is made of lighter-colored stone with some darker accents. The right building's facade is made of dark brown stone with lighter accents.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts scattered throughout the courtyard, but none appear to be particularly notable.",
+    "vegetation": "The courtyard is filled with various plants and trees, including a large tree in the center and several smaller shrubs and bushes along the edges.",
+    "signage": "There are no visible signs or advertisements in the courtyard, although there may be some subtle signage on the buildings' facades.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A few people can be seen walking around the courtyard, but they are not prominent in the image. A local resident might find this space pleasant and peaceful.",
+    "as_commuter": "This could be a convenient spot for commuters who live in the surrounding neighborhood, given its proximity to public transportation and amenities.",
+    "as_tourist": "This could be a popular spot for tourists, given its unique architecture and tranquil atmosphere. However, it may also be a bit isolated due to its location in a residential area.",
+    "as_student": "This could be a great place for students to study or relax, given its quiet and peaceful environment. It may also be a good spot for locals to meet up and socialize."
+  }
+}

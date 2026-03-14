@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_002115",
+    "latitude": 41.3992257,
+    "longitude": 2.1562955,
+    "heading": 318.9153816242242,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "40a36651-4c40-4982-bede-0587dba683ec",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399226_2.156296_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85653.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with buildings on both sides, lined with trees and featuring various businesses and pedestrians. The street has a white line down the middle separating the two lanes of traffic, with several large gray bins placed along the curb. A yellow car drives away from the camera, while a person sits on a bench on the right side of the street. The sky is bright and clear.",
+    "buildings": "The buildings on either side of the street are multi-story structures with balconies and windows. They appear to be made of stone or concrete and have a mix of modern and traditional architectural styles.",
+    "materials": "The street is paved with asphalt and has a smooth surface. There are also several large gray bins placed along the curb.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk.",
+    "vegetation": "The trees lining the street are tall and slender, with green leaves.",
+    "signage": "There are several signs posted on the buildings, including a sign reading 'Decathlon' and another reading 'Eixample'.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people walking along the sidewalk, but the area appears to be relatively quiet.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few shadows cast by the trees.",
+    "as_resident": "The street appears to be a popular spot for locals and tourists alike, with several shops and cafes visible.",
+    "as_commuter": "The street is a convenient location for commuters, with several bus stops and bike paths.",
+    "as_tourist": "The street is a great place to visit, with plenty of shops and restaurants to explore.",
+    "as_student": "The street is a vibrant and lively area, with a mix of cultures and activities."
+  }
+}

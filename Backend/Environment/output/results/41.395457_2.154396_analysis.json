@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_222153",
+    "latitude": 41.39545709999999,
+    "longitude": 2.1543959000000004,
+    "heading": 215.2776404304308,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "f599597a-7bcf-49c6-b481-becdbaecf686",
+    "dist_along_edge_m": 105.2,
+    "source_image": "sv_41.395457_2.154396_h215.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 84916.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, featuring a mix of cars, pedestrians, and palm trees along the sidewalk. The street is relatively wide, with a few cars parked along the curb and others driving by. People are walking on the sidewalk, some carrying bags or backpacks, while others are simply strolling along. The sky is overcast, casting a soft, diffused light over the scene. The buildings are tall and ornate, with balconies and windows that add texture and depth to the urban landscape. The palm trees provide a touch of greenery amidst the concrete jungle, their slender trunks and feathery leaves swaying gently in the breeze. The street itself is paved with asphalt, with white lines marking the lanes and pedestrian crossings. A few cars are parked along the curb, and a bus is making its way down the street, adding to the sense of movement and activity.",
+    "buildings": "The buildings are tall and ornate, with balconies and windows that add texture and depth to the urban landscape. They are made of stone or brick, with intricate carvings and moldings that suggest a rich history. Some have ornate facades, while others are more plain, but all share a similar aesthetic that reflects the city's architectural heritage. The buildings are spaced closely together, creating a sense of community and connection among the residents and visitors alike. The street is lined with palm trees, which provide shade and beauty to the area. The buildings are well-maintained, with clean sidewalks and neatly trimmed hedges that add to the overall sense of order and tidiness.",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

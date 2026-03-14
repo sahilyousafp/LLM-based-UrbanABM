@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_214046",
+    "latitude": 41.3923529,
+    "longitude": 2.1643582,
+    "heading": 133.91524395059582,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "8f62fd07-36a7-4b48-a75b-51c7265a4827",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392353_2.164358_h133.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85656.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with a bike lane, lined with tall buildings and trees, featuring a mix of cars, buses, and pedestrians. The street is paved with gray concrete and has a sidewalk made of gray pavers. A row of parked scooters lines the left side of the street, while a bus drives down the road. People ride bicycles along the bike lane, and others walk along the sidewalk. The sky is overcast with clouds.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and traditional designs. Some have balconies, while others feature large windows and ornate facades. The buildings appear well-maintained but show signs of wear and tear.",
+    "materials": "The street is paved with gray concrete, and the sidewalk is made of gray pavers. The buildings' facades are primarily composed of stone, brick, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for people to rest and dispose of waste.",
+    "vegetation": "Trees line the street, adding shade and beauty to the urban landscape. Some trees have lush green leaves, while others have bare branches.",
+    "signage": "Signs are posted throughout the area, directing pedestrians and drivers to various locations such as restaurants, shops, and public transportation hubs.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is home to a diverse community, with locals and tourists alike enjoying the sights and sounds of the city.",
+    "as_commuter": "The street is a bustling hub for daily life, with people going about their routines.",
+    "as_tourist": "The street is a popular destination for those looking to experience the city's culture and history.",
+    "as_student": "Students and young adults enjoy the street's relaxed atmosphere, taking time to appreciate the city's beauty."
+  }
+}

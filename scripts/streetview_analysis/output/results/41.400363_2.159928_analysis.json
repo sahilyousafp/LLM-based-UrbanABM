@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002025",
+    "latitude": 41.400363,
+    "longitude": 2.159928,
+    "heading": 314.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c4ff0f67-73b0-47ef-9e96-d5745a6949bd",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.400363_2.159928_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 13349.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a beige building with a black door and a red sign,",
+    "buildings": "The beige building has a cream-colored facade with a black door and a red sign,",
+    "materials": "The beige building has a cream-colored facade with a black door and a red sign,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches, streetlights, or other furniture visible in the image,",
+    "vegetation": "There are no trees, bushes, or plants visible in the image,",
+    "signage": "There is a red sign with a white line through it on the side of the building,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the image,",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might notice the building's unique architecture and the surrounding environment,",
+    "as_commuter": "unknown",
+    "as_tourist": "A tourist might notice the building's historic significance and its connection to the city's cultural heritage.",
+    "as_student": "unknown"
+  }
+}

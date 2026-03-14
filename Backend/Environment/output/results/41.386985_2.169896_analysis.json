@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_194350",
+    "latitude": 41.3869853,
+    "longitude": 2.1698959,
+    "heading": 91.2240432630939,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3a15b4c8-fe22-43e6-9131-a3caa38fbaf9",
+    "dist_along_edge_m": 5.7,
+    "source_image": "sv_41.386985_2.169896_h91.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85716.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city square with a large white building in the distance, featuring a mix of modern and older architecture, with people milling about and a few dogs roaming freely. The sky is clear and blue, suggesting a pleasant day,",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "Benches",
+    "vegetation": "Yes",
+    "signage": "Signs",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "Clear",
+    "as_resident": "Residents",
+    "as_commuter": "Commuters",
+    "as_tourist": "Tourists",
+    "as_student": "Students"
+  }
+}

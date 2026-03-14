@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_005057",
+    "latitude": 41.387487,
+    "longitude": 2.169663,
+    "heading": 145.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "db37a68b-c827-4212-b3d7-4d88db2d93b3",
+    "dist_along_edge_m": 36.6,
+    "source_image": "sv_41.387487_2.169663_h145.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48558.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city square with a fountain and statues in the middle,",
+    "buildings": "The buildings in the background are tall and modern, with a mix of glass and concrete facades.",
+    "materials": "The ground is made of large, flat stones, with some areas covered in water.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts scattered throughout the area.",
+    "vegetation": "There are several trees and bushes planted around the perimeter of the square.",
+    "signage": "There are several signs posted along the streets, including a large sign reading 'Casa de la Vella'.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people walking through the square, but it is not crowded.",
+    "lighting_atmosphere": "The sun is shining down on the square, casting long shadows across the ground.",
+    "as_resident": "The square appears to be a popular spot for locals and tourists alike.",
+    "as_commuter": "unknown",
+    "as_tourist": "The square is home to several shops and cafes, and there are many people taking photos.",
+    "as_student": "The square is also a popular spot for young people to hang out and socialize."
+  }
+}

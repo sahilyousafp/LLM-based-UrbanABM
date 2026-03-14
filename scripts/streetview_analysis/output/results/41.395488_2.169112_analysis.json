@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_030151",
+    "latitude": 41.395488,
+    "longitude": 2.169112,
+    "heading": 316.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2b1a3b6b-8396-4c06-9fed-034e7633f5d0",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395488_2.169112_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 19842.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long, covered walkway with a high ceiling and wooden beams, lined with shops on both sides. The floor is made of polished concrete and has a slight incline. A ramp leads down to the ground level.",
+    "buildings": "The buildings have a mix of modern and traditional designs, with some featuring large windows and others having more ornate facades. Some have balconies or terraces, while others appear to be more minimalist.",
+    "materials": "The main building has a wooden exterior with stone accents, while the adjacent structures have a more industrial look with metal and glass elements.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, as well as a few bicycles parked against the walls.",
+    "vegetation": "The surrounding area is relatively barren, with only a few small plants and trees visible.",
+    "signage": "There are several signs posted along the walkway, including directional signs and advertisements for local businesses.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people visible in the distance, but the area appears to be largely deserted.",
+    "lighting_atmosphere": "The lighting is bright and even, with a warm glow emanating from overhead fixtures.",
+    "as_resident": "Some locals seem to appreciate the area, with a few people stopping to chat or take photos. Others appear to be going about their daily business.",
+    "as_commuter": "The area is a popular spot for commuters, with many people coming and going throughout the day.",
+    "as_tourist": "The area is also a hub for food and drink vendors, offering everything from street food to coffee and pastries.",
+    "as_student": "Students often stop by to study or work, and the area is also home to a number of cafes and restaurants."
+  }
+}

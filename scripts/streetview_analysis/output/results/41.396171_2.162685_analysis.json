@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_013145",
+    "latitude": 41.396171,
+    "longitude": 2.162685,
+    "heading": 46.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "9665b754-e6b7-4639-a296-245f2fde20bb",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396171_2.162685_h46.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48582.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A bathroom with a large mirror and a shower stall,",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners.",
+    "materials": "The shower stall is made of marble.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture.",
+    "vegetation": "There are some plants in pots.",
+    "signage": "There are no visible signs.",
+    "ground_surfaces": "The ground is paved with concrete.",
+    "spatial_enclosure": "The shower stall is separated from the rest of the bathroom by a glass door.",
+    "pedestrian_activity": "There are no pedestrians visible.",
+    "lighting_atmosphere": "The lighting is bright and modern.",
+    "as_resident": "This area is quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are no visible tourists.",
+    "as_student": "There are no visible students."
+  }
+}

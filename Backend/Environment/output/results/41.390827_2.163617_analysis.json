@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_224710",
+    "latitude": 41.39082740000001,
+    "longitude": 2.1636174,
+    "heading": 309.92599848438465,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "cf568212-0f1a-4e2b-ae60-0ca671de5eb5",
+    "dist_along_edge_m": 158.7,
+    "source_image": "sv_41.390827_2.163617_h309.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43524.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings lining both sides, featuring a mix of cars, scooters, and bicycles parked along the curb, with trees providing shade and a few pedestrians strolling by. The street is relatively empty, with only a few vehicles moving through the area. The scene is set during daylight hours, with the sun casting shadows across the pavement.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and traditional architectural styles, featuring large windows, balconies, and ornate facades. Some have awnings or canopies over their entrances, while others display signs or advertisements.",
+    "materials": "The street is paved with asphalt, with a central median strip made of concrete and topped with small trees and decorative elements. The sidewalk is also paved with concrete, with benches and trash cans placed at regular intervals.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, as well as a few streetlights and utility poles. A few people can be seen walking or sitting on the benches, but there is no heavy foot traffic.",
+    "vegetation": "The trees are tall and leafy, providing shade for pedestrians and adding a touch of greenery to the urban landscape. They are spaced at regular intervals along the sidewalk, with some having small planters or other decorative elements.",
+    "signage": "There are several signs visible, including directional signs, business names, and informational signs. Some of the signs are mounted on poles or attached to buildings, while others are freestanding.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its mix of shops, restaurants, and public art installations. It is a vibrant and lively area, with a strong sense of community.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and nearby subway stations. It is also a popular spot for cyclists, with several bike lanes and designated parking areas.",
+    "as_tourist": "The street is well-suited for tourists, with its historic architecture, cultural attractions, and lively atmosphere. Visitors can explore the surrounding streets and landmarks, and enjoy the local cuisine and shopping.",
+    "as_student": "This street is a hub for students and young professionals, with its proximity to universities and office buildings. It is a great place to grab a coffee or meet up with friends before heading out for a stroll or study session."
+  }
+}

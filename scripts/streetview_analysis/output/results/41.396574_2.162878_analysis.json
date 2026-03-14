@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_013234",
+    "latitude": 41.396574,
+    "longitude": 2.162878,
+    "heading": 45.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "9665b754-e6b7-4639-a296-245f2fde20bb",
+    "dist_along_edge_m": 111.4,
+    "source_image": "sv_41.396574_2.162878_h45.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48992.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A small bathroom with white walls and a white sink, featuring a hair dryer mounted on the wall and two suitcases placed against the wall. The bathroom has a white shelf with three compartments, and a red suitcase is positioned in front of it. A black suitcase with a red stripe is situated to the left of the red suitcase. The bathroom also features a white toilet paper holder attached to the wall.",
+    "buildings": "The bathroom is part of a larger building with a white tiled wall, while the toilet paper holder is made of white plastic and is attached to the wall.",
+    "materials": "The bathroom features a white sink, a white shelf, a black hair dryer, a red suitcase, and a black suitcase with a red stripe.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image.",
+    "vegetation": "There are no visible plants or trees in the image.",
+    "signage": "There are no visible signs in the image.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no visible pedestrians in the image.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The bathroom appears to be a public restroom, as there are no personal items or decorations visible.",
+    "as_commuter": "unknown",
+    "as_tourist": "The bathroom is a great spot for those who like to practice self-compassion.",
+    "as_student": "The bathroom is a convenient location for students."
+  }
+}

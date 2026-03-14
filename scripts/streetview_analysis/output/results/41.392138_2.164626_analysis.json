@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_011309",
+    "latitude": 41.392138,
+    "longitude": 2.164626,
+    "heading": 138.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c8d7379e-5100-45e0-953c-757d16842006",
+    "dist_along_edge_m": 56.9,
+    "source_image": "sv_41.392138_2.164626_h138.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48782.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, featuring a mix of pedestrians, cyclists, and vehicles navigating through the area. The street is lined with trees and has a pedestrian crossing marked by white lines, while cars and buses move along the road. People are seen walking on the sidewalks and some are riding bicycles. The sky is overcast with clouds.",
+    "buildings": "The buildings on either side of the street have a mix of modern and traditional designs, with some featuring balconies and ornate facades. The street is paved with asphalt and has a central median with trees planted in it.",
+    "materials": "The street is paved with asphalt and has a central median with trees planted in it. The sidewalk is made of concrete pavers and has a slight incline.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk.",
+    "vegetation": "The street is lined with trees and has a few small gardens and planters.",
+    "signage": "There are several street signs and directional arrows indicating the direction of traffic flow.",
+    "ground_surfaces": "The ground is paved with asphalt and has a slight incline.",
+    "spatial_enclosure": "The street feels relatively open, with a clear view of the surrounding buildings.",
+    "pedestrian_activity": "People are walking in various directions, some carrying bags or backpacks.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a warm glow from the streetlights.",
+    "as_resident": "The street is bustling with activity, but there is a sense of calm and tranquility.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and cafes, and there are several street performers and vendors.",
+    "as_student": "The street is a fun and lively place to hang out."
+  }
+}

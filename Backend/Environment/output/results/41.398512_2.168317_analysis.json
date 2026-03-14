@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223215",
+    "latitude": 41.39851159999999,
+    "longitude": 2.1683168,
+    "heading": 318.35468061364594,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "1d06611e-9a7f-4f1b-bb3d-0aca3899cb9f",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.398512_2.168317_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85869.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street corner with a construction site in the middle of the intersection. The street is paved with asphalt and has white lines painted on it. There are two large buildings on either side of the street, one is a tall brown building with many windows and balconies, and the other is shorter and made of concrete with a flat roof. A tree stands in front of the shorter building, its branches stretching out over the sidewalk. A yellow caution tape blocks off the construction area, and a large excavator is parked behind it. The sky is cloudy and gray.",
+    "buildings": "The taller building has a curved shape and is made of brown bricks. It has many windows and balconies, some of which have plants growing on them. The shorter building is made of concrete and has a flat roof. Both buildings appear to be several stories high.",
+    "materials": "The excavator is red and silver, with a long arm and bucket attached to the end. It is parked behind the caution tape, facing towards the camera. The ground around the excavator is covered in dirt and debris.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few streetlights. The street itself is wide enough for two lanes of traffic, but there are no cars visible.",
+    "vegetation": "There are several trees lining the sidewalk, including a large oak tree in front of the shorter building. The leaves are sparse, suggesting that it may be winter or early spring.",
+    "signage": "There are several signs posted along the sidewalk, including a blue sign with white lettering and a yellow sign with black lettering. The signs appear to be advertising local businesses.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be quiet, with no people visible. However, there are several bicycles parked along the sidewalk.",
+    "as_commuter": "The street is a convenient location for commuters, with several buses and trains passing through the area.",
+    "as_tourist": "The street is a popular destination for tourists, with several shops and restaurants catering to visitors.",
+    "as_student": "The street is a great place to study economics, with several banks and financial institutions located in the area."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_231923",
+    "latitude": 41.394242899999995,
+    "longitude": 2.1518619,
+    "heading": 315.3479715569705,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "421a3947-43ed-45de-95bb-d6365559e563",
+    "dist_along_edge_m": 62.6,
+    "source_image": "sv_41.394243_2.151862_h315.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85560.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "unknown",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_031558",
+    "latitude": 41.386299,
+    "longitude": 2.163002,
+    "heading": 314.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "6ee8b71d-eb37-46e9-9593-34280d5ae1c8",
+    "dist_along_edge_m": 168.0,
+    "source_image": "sv_41.386299_2.163002_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49819.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large empty movie theater with a wide screen and rows of seats,",
+    "buildings": "The theater has a mix of old and new buildings, with some historic structures and more recent additions.",
+    "materials": "The theater has a combination of materials, including concrete, wood, and metal.",
+    "building_condition": "The theater appears to be well-maintained, but there are some signs of wear and tear.",
+    "street_furniture": "There are no benches or chairs in the main area, but there are some small tables and chairs along the sides.",
+    "vegetation": "There are no plants or trees in the area, but there are some small bushes near the entrance.",
+    "signage": "There are several signs posted around the theater, including a directional sign and a few advertisements.",
+    "ground_surfaces": "The ground is made of concrete, and there are some cracks and unevenness.",
+    "spatial_enclosure": "The theater is surrounded by a low wall, and there are some small gardens and courtyards beyond the wall.",
+    "pedestrian_activity": "There are no pedestrians visible in the image, but there are some people walking in the distance.",
+    "lighting_atmosphere": "The lighting is dim, with some spotlights shining down on the stage.",
+    "as_resident": "The theater appears to be quiet and peaceful, with only a few people milling about.",
+    "as_commuter": "unknown",
+    "as_tourist": "The theater looks like a popular tourist destination, with many visitors taking photos and admiring the architecture.",
+    "as_student": "The theater is a great place to relax and unwind after a long day."
+  }
+}

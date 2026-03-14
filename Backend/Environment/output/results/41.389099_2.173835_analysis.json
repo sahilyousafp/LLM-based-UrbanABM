@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_211255",
+    "latitude": 41.38909879999999,
+    "longitude": 2.1738349000000006,
+    "heading": 349.3724802491589,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1833d9eb-861e-41df-a78d-a249ca416b4c",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389099_2.173835_h349.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85496.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A busy city street with tall buildings and pedestrians walking along the sidewalk. The sky is overcast with clouds covering most of the sun. The street is paved with gray bricks and has a few trees lining the sides. There are several large buildings in the distance, including a tall skyscraper on the left and a shorter building with a blue awning on the right. People are walking in both directions, some carrying bags or backpacks. A woman in a plaid shirt walks towards the camera while others stand still or walk away. The ground is made of gray bricks and has a few benches and trash cans along the way. The overall atmosphere is lively but somewhat gloomy due to the cloudy sky.",
+    "buildings": "The buildings are primarily made of concrete and glass, with some having ornate facades. The taller building on the left has a modern design with a flat roof and a statue on top. The shorter building on the right has a more traditional look with a pitched roof and decorative trim. Both have multiple stories and appear to be commercial or office spaces. The street is lined with trees and has a few streetlights. There are also several shops and restaurants along the sidewalk, including a pharmacy on the right side of the image.",
+    "materials": "Materials used include concrete, brick, glass, metal, and wood. The street is paved with gray bricks and has a few benches and trash cans along the way. The buildings' facades are primarily made of concrete and glass, with some having ornate details such as carvings or moldings. Some of the buildings have a more modern look with flat roofs and minimal ornamentation. The street is lined with trees and has a few streetlights. There are also several shops and restaurants along the sidewalk, including a pharmacy on the right side of the image.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, providing places for people to sit and rest. There are also some streetlights and signs along the street, helping guide pedestrians and drivers. The street is relatively wide enough to accommodate cars and bicycles, but there are no vehicles visible in the image. The sidewalk is wide enough for people to walk comfortably, with some areas being more crowded than others.",
+    "vegetation": "There are a few trees and bushes along the sidewalk, adding some greenery to the urban landscape. The trees are mostly bare, suggesting that the image was taken during the winter months. There are also some plants and flowers in pots along the sidewalk, adding some color and vibrancy to the scene.",
+    "signage": "There are several signs along the street, including street names, directional signs, and advertisements. Some of the signs are digital, while others are printed on paper or cardboard. The signs provide important information such as street names, directions, and warnings. There are also some signs indicating parking restrictions or other regulations.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would describe the area as vibrant and bustling, with a mix of old and new architecture. The street is well-maintained, with clean sidewalks and clean streets. There are many shops and restaurants along the sidewalk, and the area seems to be popular with locals and tourists alike. The overall atmosphere is lively and welcoming, with a sense of community and activity.",
+    "as_commuter": "As a commuter, I would describe the area as busy and fast-paced, with a mix of people going about their daily routines. The street is wide enough for cars and bicycles, but there are no vehicles visible in the image. There are some people walking quickly, trying to get somewhere else. The overall atmosphere is fast-paced and energetic, with a sense of urgency and purpose.",
+    "as_tourist": "As a tourist, I would describe the area as lively and vibrant, with a mix of old and new architecture. The street is clean and well-maintained, with plenty of shops and restaurants. There are many people walking around, taking photos and enjoying the sights and sounds of the area. The overall atmosphere is lively and energetic, with a sense of excitement and curiosity.",
+    "as_student": "As a student, I would describe the area as quiet and studious, with a focus on learning and exploration. The street is relatively empty, with only a few people walking around. There are some students sitting on benches or studying outside the shops and restaurants. The overall atmosphere is calm and peaceful, with a sense of concentration and focus."
+  }
+}

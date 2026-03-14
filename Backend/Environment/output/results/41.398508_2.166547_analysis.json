@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_235120",
+    "latitude": 41.398507800000004,
+    "longitude": 2.1665472,
+    "heading": 138.86698896651666,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "ea41d7d0-29ac-44f0-8a13-28c4cdd24880",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.398508_2.166547_h138.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85766.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street corner with a tree in the middle,",
+    "buildings": "The buildings in the background have a mix of old and new architecture, with some featuring ornate facades and others having more modern designs.",
+    "materials": "The street is paved with asphalt and has a few trees planted along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans scattered throughout the area.",
+    "vegetation": "The trees provide shade and add a touch of greenery to the otherwise concrete landscape.",
+    "signage": "There are several street signs indicating traffic directions and pedestrian crossings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area seems quiet and peaceful, with a few people going about their daily business.",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The area is popular with students, who often stop to grab a coffee or snack before heading to class."
+  }
+}

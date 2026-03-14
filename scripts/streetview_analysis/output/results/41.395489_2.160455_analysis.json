@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023309",
+    "latitude": 41.395489,
+    "longitude": 2.160455,
+    "heading": 322.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "790d3326-1c53-4e37-9e20-110061d8dc98",
+    "dist_along_edge_m": 3.6,
+    "source_image": "sv_41.395489_2.160455_h322.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12601.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a bus stop with a black pole and a large building in the background,",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners and is several stories tall,",
+    "materials": "The bus stop has a glass enclosure with a red sign featuring a white letter M,",
+    "building_condition": "unknown",
+    "street_furniture": "There are two benches inside the bus stop,",
+    "vegetation": "There are trees and bushes along the sidewalk,",
+    "signage": "There are several signs including a red sign with a white letter M,",
+    "ground_surfaces": "The ground is made of gray concrete pavers,",
+    "spatial_enclosure": "The bus stop is surrounded by a small area of grass and trees,",
+    "pedestrian_activity": "People are walking on the sidewalk,",
+    "lighting_atmosphere": "The lighting is bright and sunny,",
+    "as_resident": "The bus stop is a popular spot for locals and tourists alike,",
+    "as_commuter": "It is close to a busy street with cars and buses passing by,",
+    "as_tourist": "It is a popular spot for taking photos.",
+    "as_student": "It is a quiet spot for students to wait for the bus,"
+  }
+}

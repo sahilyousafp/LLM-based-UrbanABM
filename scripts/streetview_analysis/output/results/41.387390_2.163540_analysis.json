@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002242",
+    "latitude": 41.38739,
+    "longitude": 2.16354,
+    "heading": 313.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "42774851-6740-4c6f-a2d4-8eabd3a8559e",
+    "dist_along_edge_m": 13.2,
+    "source_image": "sv_41.387390_2.163540_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48288.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a large white building with a black fence surrounding it, situated along a tree-lined sidewalk. The building has three stories and is made of stone and brick. It has several windows and a flat roof. There are two trees in front of the building, one on either side of the sidewalk. The sky is blue with some clouds. The ground is paved with asphalt and there are several potted plants along the sidewalk. A small section of the street is visible in the foreground.",
+    "buildings": "The building is cream-colored with a flat roof and has three stories. It has several windows and a decorative stone trim around the edges. The building is surrounded by a black metal fence with a gate.",
+    "materials": "The building's exterior is made of stone and brick. The ground is paved with asphalt.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "There are several trees and bushes along the sidewalk.",
+    "signage": "There are several signs along the sidewalk, including a street sign and a directional sign.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is scenic and picturesque.",
+    "as_student": "The area is clean and well-maintained."
+  }
+}

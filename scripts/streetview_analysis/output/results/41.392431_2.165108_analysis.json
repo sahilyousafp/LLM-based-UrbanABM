@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_014501",
+    "latitude": 41.392431,
+    "longitude": 2.165108,
+    "heading": 270.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b4a731c1-75a3-47a3-8673-f78e6f17989c",
+    "dist_along_edge_m": 17.3,
+    "source_image": "sv_41.392431_2.165108_h270.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48731.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of commercial and residential structures, including a large billboard on the left side of the street and a row of trees along the sidewalk on the right. The street is bustling with pedestrians and vehicles, including cars, trucks, and bicycles, creating a lively urban atmosphere. The clear blue sky adds to the vibrant ambiance of the scene.",
+    "buildings": "The buildings in the image feature a mix of modern and traditional architectural styles, with some having flat facades and others displaying ornate details such as balconies and decorative trim. Some buildings have large windows, while others have smaller ones, adding to the visual interest of the scene.",
+    "materials": "The street is paved with a combination of concrete and brick, with some areas featuring smooth surfaces and others displaying rougher textures. A few buildings have stone or brick walls, while others have more modern materials like metal or glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, providing a place for people to rest and take in the sights. Some buildings have outdoor seating areas, while others have small gardens or courtyards.",
+    "vegetation": "The trees lining the street are mostly deciduous, with some displaying autumnal colors. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs visible, including street signs, directional indicators, and advertisements. Some signs are brightly colored and eye-catching, while others are more subdued.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, offering a range of amenities and services. People seem to be enjoying the area, taking advantage of the pleasant weather and scenic views.",
+    "as_commuter": "The street is a convenient location for commuters, with several bus stops and bike lanes available. There are also several parking meters and pay-to-park zones.",
+    "as_tourist": "The street is a popular spot for families and couples, with many restaurants and cafes serving up delicious food and drinks. There are also several street performers and live music venues, adding to the area's entertainment options.",
+    "as_student": "Students and young professionals are also present, often studying or working in the area. The street is a great place to learn about new ideas and perspectives."
+  }
+}

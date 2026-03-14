@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174420",
+    "latitude": 41.3977718,
+    "longitude": 2.1578391999999997,
+    "heading": 86.2253420229896,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ee20fbbb-c085-4367-a37a-267390d72a36",
+    "dist_along_edge_m": 9.1,
+    "source_image": "sv_41.397772_2.157839_h86.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 5480.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a modern office space with a large window and a wooden desk,",
+    "buildings": "The building has a mix of old and new architecture, with a combination of brick and glass facades,",
+    "materials": "The interior features a combination of wood and metal accents, while the exterior has a sleek glass and steel façade,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several chairs and tables scattered throughout the area, as well as a few potted plants,",
+    "vegetation": "The surrounding area is relatively quiet and peaceful, with a few trees and flowers adding color and texture to the scene,",
+    "signage": "There are several signs posted around the area, including a directional sign and a few informational posters,",
+    "ground_surfaces": "The ground is made of concrete and asphalt, with a few cracks and unevenness,",
+    "spatial_enclosure": "The space feels open and airy, with plenty of natural light pouring in through the large windows,",
+    "pedestrian_activity": "There are a few people walking by, but the area is generally quiet and calm,",
+    "lighting_atmosphere": "The lighting is bright and even, with a mix of natural and artificial light sources,",
+    "as_resident": "The area appears to be a popular spot for locals and visitors alike, with a few shops and restaurants nearby,",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is also a popular spot for tourists, with many maps and brochures available,",
+    "as_student": "The area is also a hub for students, with a few study spaces and a coffee shop nearby."
+  }
+}

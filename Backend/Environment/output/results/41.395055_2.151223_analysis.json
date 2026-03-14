@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174858",
+    "latitude": 41.395055,
+    "longitude": 2.1512232000000004,
+    "heading": 0.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "df648aa2-2ed8-429f-be96-e516c175cd65",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395055_2.151223_h0.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21890.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a large building complex with a grassy area and sidewalk in front of it. The buildings have a mix of modern and older styles, with some having balconies and others featuring large windows. A streetlight stands along the sidewalk, and there are several cars parked along the street. The sky is overcast.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking on the sidewalk, but it's not crowded.",
+    "lighting_atmosphere": "Overcast",
+    "as_resident": "A quiet neighborhood with a mix of residential and commercial properties.",
+    "as_commuter": "A busy street with a mix of pedestrians and vehicles.",
+    "as_tourist": "The street is lined with historic landmarks and cultural attractions.",
+    "as_student": "They are enjoying the sights and sounds of the city."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_015958",
+    "latitude": 41.390631,
+    "longitude": 2.150718,
+    "heading": 348.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "41e31bd8-dcee-40d0-b9f6-d744595e122f",
+    "dist_along_edge_m": 126.4,
+    "source_image": "sv_41.390631_2.150718_h348.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49355.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A dark room with a black ceiling featuring white neon lights forming geometric shapes. The walls are gray, and there is a large white screen on the left wall. There is a black cabinet against the back wall with stacked black and red objects inside. A gray wall separates the two sides of the room. The floor is gray and smooth. The lighting is bright and even, with some shadows cast by the neon lights. The overall atmosphere is modern and sleek. }",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_014302",
+    "latitude": 41.395447,
+    "longitude": 2.155569,
+    "heading": 252.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "dd0aaced-be8b-4e55-a98d-640bbd3f1391",
+    "dist_along_edge_m": 50.0,
+    "source_image": "sv_41.395447_2.155569_h252.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48981.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large conference table with two black chairs on either side, set against a beige wall with a framed painting of a woman wearing a blue hat and holding a blue ball. The painting depicts a woman with her hand inside a blue circle, surrounded by abstract shapes in orange, blue, and red. A whiteboard stands to the right of the painting, with a small shelf above it. The room has a warm ambiance, with soft lighting casting shadows on the walls.",
+    "buildings": "The building is cream-colored with a smooth, glossy finish, featuring a mix of rectangular and square windows. The roofline is flat, with a slight overhang.",
+    "materials": "The floor is made of polished dark wood, reflecting the light from the overhead lamps.",
+    "building_condition": "unknown",
+    "street_furniture": "Two black chairs sit at the table, facing each other.",
+    "vegetation": "There are no plants or trees in the immediate vicinity.",
+    "signage": "A small sign is mounted on the wall near the whiteboard.",
+    "ground_surfaces": "The ground is covered in a smooth, dark gray material.",
+    "spatial_enclosure": "The room is relatively open, with a few narrow doorways leading out into adjacent rooms.",
+    "pedestrian_activity": "There are no pedestrians visible in the image.",
+    "lighting_atmosphere": "The lighting is soft and warm, with a gentle glow emanating from the overhead lamps.",
+    "as_resident": "The room appears to be empty, with no furniture or decorations visible.",
+    "as_commuter": "unknown",
+    "as_tourist": "The room is well-lit and inviting, with plenty of natural light pouring in through the windows.",
+    "as_student": "The room is a serene and calming space, filled with natural light and comfortable seating."
+  }
+}

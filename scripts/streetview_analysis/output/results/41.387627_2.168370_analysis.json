@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_032943",
+    "latitude": 41.387627,
+    "longitude": 2.16837,
+    "heading": 225.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b6b8c078-1772-439f-8609-259422a052b1",
+    "dist_along_edge_m": 4.3,
+    "source_image": "sv_41.387627_2.168370_h225.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50536.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings lining both sides, featuring a mix of pedestrians, vehicles, and various objects such as trash cans, bicycles, and street lights. The scene is set during daylight hours with clear skies.",
+    "buildings": "The buildings are multi-story structures with ornate facades, some featuring balconies and decorative elements. They appear well-maintained but show signs of wear and tear.",
+    "materials": "The ground is paved with large square stones, while the upper floors have a combination of smooth and textured surfaces.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, indicating a pedestrian-friendly environment.",
+    "vegetation": "The area is lined with small trees and bushes, adding a touch of greenery to the urban landscape.",
+    "signage": "Signs are posted on the buildings and along the street, providing information about businesses and services.",
+    "ground_surfaces": "The pavement is made of large, flat stones that provide traction and drainage.",
+    "spatial_enclosure": "The street is relatively open, allowing for easy movement between buildings.",
+    "pedestrian_activity": "People are walking in various directions, some stopping to chat or take photos.",
+    "lighting_atmosphere": "The lighting is bright and even, suggesting daytime hours.",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with a lively atmosphere.",
+    "as_commuter": "The area is a convenient location for those looking for a quick break.",
+    "as_tourist": "The area is a great spot for taking photos or exploring the surrounding area.",
+    "as_student": "The area is a great place to study or work."
+  }
+}

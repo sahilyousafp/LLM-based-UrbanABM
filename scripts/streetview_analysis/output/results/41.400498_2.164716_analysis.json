@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_013324",
+    "latitude": 41.400498,
+    "longitude": 2.164716,
+    "heading": 133.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2279166f-64d2-4ccf-9111-a3826ef3c9be",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.400498_2.164716_h133.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48749.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with buildings on both sides, featuring a mix of old and new architecture, including a large stone building with a balcony and a smaller beige building with a flat roof. The street is paved with cobblestones and has a few pedestrians walking along it. A black metal gate blocks off part of the street, with a sign indicating that it is closed to traffic. The sun shines brightly overhead, casting long shadows across the street and buildings. The atmosphere is quiet and peaceful, with a sense of history and character.",
+    "buildings": "The buildings on either side of the street are made of different materials, with the left building featuring a stone facade and the right building having a more modern design. The left building has a large window on the ground floor, while the right building has a smaller window on the top floor. Both buildings have balconies, with the left building having a small one and the right building having a larger one.",
+    "materials": "The street is paved with cobblestones, which are a mix of gray and brown colors. The buildings' facades are made of different materials, including stone, brick, and glass. The left building has a stone facade, while the right building has a more modern design with a glass frontage.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture, such as benches or trash cans, but there are several signs and advertisements posted on the buildings.",
+    "vegetation": "There are no visible plants or trees, but there are some bushes and shrubs growing near the buildings.",
+    "signage": "There are several signs posted on the buildings, including a blue sign with white lettering that reads 'Caixa d'Engle' and a white sign with black lettering that reads 'Casa de la Vella.' There are also several other signs and posters posted on the buildings, but they are not legible.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no visible pedestrians, but there are several people walking along the sidewalk.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might notice the historic charm of the street and appreciate its unique character.",
+    "as_commuter": "A commuter might notice the street's proximity to public transportation options, as well as the presence of shops and restaurants.",
+    "as_tourist": "A tourist might notice the street's unique character and charm, as well as the surrounding shops and cafes.",
+    "as_student": "A student might appreciate the street's educational atmosphere, with its mix of old and new buildings and the presence of students studying or working in the area."
+  }
+}

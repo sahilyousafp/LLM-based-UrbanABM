@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_231117",
+    "latitude": 41.39942659999999,
+    "longitude": 2.1701447000000003,
+    "heading": 138.6610666716203,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "f640a3bf-a4ea-4d57-b682-910f55b05242",
+    "dist_along_edge_m": 6.7,
+    "source_image": "sv_41.399427_2.170145_h138.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85606.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with a black sedan turning onto a main road, surrounded by tall buildings and trees. The sky is clear and blue, with no clouds in sight. The street is empty except for a few pedestrians and cyclists. The buildings are mostly white and beige, with some having ornate facades. The ground is paved with asphalt, and there are white lines painted on the road to guide traffic. There are also several trees lining the sidewalk, adding shade and greenery to the urban landscape.",
+    "buildings": "The buildings are primarily white and beige, with some having ornate facades. They vary in height, but most are around five stories high. Some have balconies, while others do not. The buildings appear well-maintained, with no visible signs of damage or neglect.",
+    "materials": "The car is made of dark-colored metal, possibly steel or aluminum. It has a sleek, modern design with a sloping front end and a curved roofline. The wheels are thin and silver, with a distinctive hubcap design.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, providing places for people to sit and rest. A few bicycles are parked near the curb, and there are also some trash cans and recycling bins.",
+    "vegetation": "The trees are tall and leafy, with a mix of deciduous and evergreen species. They provide shade and add a touch of greenery to the urban landscape.",
+    "signage": "There are several signs along the street, including traffic signs, directional signs, and informational signs. Some of the signs are mounted on poles, while others are attached to buildings or freestanding.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its central location and lively atmosphere. People seem to be enjoying the scenery and taking photos.",
+    "as_commuter": "The street is a busy spot for commuters, with several buses and trains passing through the area. The street is also a popular spot for cyclists, with several bike lanes and designated bike paths.",
+    "as_tourist": "The street is a great spot for tourists to take photos and admire the architecture. The street is also a great place to grab a bite to eat or drink, with several restaurants and cafes serving up delicious food and drinks.",
+    "as_student": "This street is a great spot for students to study or work, with several libraries and study areas available. The atmosphere is quiet and focused, with plenty of space to work or study."
+  }
+}

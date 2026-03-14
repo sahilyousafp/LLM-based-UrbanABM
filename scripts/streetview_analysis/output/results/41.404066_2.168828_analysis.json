@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_031416",
+    "latitude": 41.404066,
+    "longitude": 2.168828,
+    "heading": 157.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "49820477-57c7-4e03-8857-639b15dc874e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.404066_2.168828_h157.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50627.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large, open-air plaza with a series of columns supporting a white roof. The floor is made of concrete and has a smooth finish. The columns are spaced evenly apart and have a rounded top. The columns are tan and white, with some having a textured pattern. The sky is bright and overcast, casting a soft, diffused light over the area. There are palm trees visible in the distance, adding a touch of greenery to the otherwise barren landscape. The overall atmosphere is calm and serene, with a sense of openness and freedom.",
+    "buildings": "The buildings in the background are tall and imposing, with a mix of modern and traditional architectural styles. Some have flat roofs, while others have pitched roofs with tiles or shingles. The buildings appear to be well-maintained, with clean lines and minimal ornamentation. Some have balconies or terraces, providing outdoor spaces for residents or visitors to enjoy.",
+    "materials": "The columns are made of a combination of materials, including concrete, metal, and possibly wood. The texture of the columns varies, with some being smooth and others having a rougher, more rustic appearance. The columns are spaced at regular intervals, creating a sense of rhythm and harmony.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the plaza, providing places for people to sit and rest. Some of the benches are made of wood, while others are metal or plastic. There are also several trash cans and recycling bins placed throughout the area.",
+    "vegetation": "The plaza is surrounded by a low wall or barrier, with small plants and shrubs growing along the edges. There are also several trees and bushes visible in the distance, adding some color and texture to the scene.",
+    "signage": "There are several signs posted around the plaza, including directional signs, informational signs, and advertisements. Some of the signs are brightly colored and eye-catching, while others are more subdued and understated.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people visible in the plaza, including pedestrians walking, sitting, and socializing. Some people are taking photos or reading books, while others are simply enjoying the scenery.",
+    "lighting_atmosphere": "The lighting in the plaza is soft and diffused, with a warm glow from the setting sun. The sky is a pale blue-gray color, with a few wispy clouds scattered across it.",
+    "as_resident": "As a local resident, I would find this plaza to be a pleasant and welcoming space. It's a great place to relax, socialize, and take in the sights and sounds of the city.",
+    "as_commuter": "As a commuter, I would find this plaza to be a convenient and accessible place to get around the city. It's a short walk from many popular destinations, and the proximity to public transportation makes it easy to get to work or school.",
+    "as_tourist": "As a tourist, I would find this plaza to be a great place to explore and discover new things. It's a unique and interesting place to visit, with its own character and charm.",
+    "as_student": "As a student, I would find this plaza to be a great place to study and work. It's a quiet and peaceful space that allows me to focus on my studies without distractions."
+  }
+}

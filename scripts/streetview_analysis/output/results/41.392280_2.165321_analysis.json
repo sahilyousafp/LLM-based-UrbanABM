@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_004406",
+    "latitude": 41.39228,
+    "longitude": 2.165321,
+    "heading": 0.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0db619e3-11a0-4a3f-8da5-a0040de87afd",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392280_2.165321_h0.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48676.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large room with a wooden parquet floor and white walls, featuring a mirror on the left wall and a stained glass window on the right. The room has a high ceiling and a doorway leading to another room with a dark brown desk and a fire extinguisher. The room is empty except for a few pieces of furniture and some decorative items.",
+    "buildings": "The room has a unique, curved white wall with a wooden baseboard and a small, ornate mirror hanging on the left wall. The floor is made of wood parquet tiles arranged in a checkerboard pattern.",
+    "materials": "The room features a mix of materials, including wood, glass, and possibly metal.",
+    "building_condition": "The room appears to be well-maintained but shows signs of wear and tear, with some scratches and scuffs on the walls and floor.",
+    "street_furniture": "There are several pieces of furniture scattered throughout the room, including a desk, chairs, and tables.",
+    "vegetation": "The room has a few potted plants and some decorative items, such as vases and sculptures.",
+    "signage": "There are several signs posted around the room, including a sign that reads 'No Smoking' and another that says 'No Parking.'",
+    "ground_surfaces": "The floor is made of wood parquet tiles arranged in a checkerboard pattern.",
+    "spatial_enclosure": "The room has a high ceiling and a large window that lets in plenty of natural light.",
+    "pedestrian_activity": "There are no people visible in the room, but there are a few signs of recent foot traffic.",
+    "lighting_atmosphere": "The lighting in the room is bright and airy, with plenty of natural light pouring in through the windows.",
+    "as_resident": "The room appears to be a quiet, peaceful space that could be used for relaxation or work.",
+    "as_commuter": "unknown",
+    "as_tourist": "The room has a few interesting architectural features, including a large window with stained glass panes.",
+    "as_student": "The room is a popular spot for students to study or work."
+  }
+}

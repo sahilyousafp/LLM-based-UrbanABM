@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_021941",
+    "latitude": 41.397166,
+    "longitude": 2.154758,
+    "heading": 54.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "60f4ba47-958a-414a-86a5-a5d452b19c31",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397166_2.154758_h54.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49034.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long hallway with white walls and a white ceiling with square tiles. The floor is made of beige marble tiles. A wooden door with a silver handle is open, revealing a long hallway with more doors and windows. A black thermostat is mounted on the wall to the left of the door. A white sign with black text is affixed to the door. A white cart with a black handle is partially visible to the left of the door. A small window is visible in the distance. The hallway has a high ceiling with square tiles. The hallway is well-lit.",
+    "buildings": "The hallway has several doors leading off to either side. The walls are painted white. The floor is made of beige marble tiles. A black thermostat is mounted on the wall to the left of the door. A white sign with black text is affixed to the door. A white cart with a black handle is partially visible to the left of the door. A small window is visible in the distance. The hallway has a high ceiling with square tiles. The hallway is well-lit.",
+    "materials": "The building's exterior is constructed of red brick with a smooth texture. The building's interior is made of white plaster with a smooth texture. The building's exterior is constructed of red brick with a rough texture. The building's interior is made of white plaster with a smooth texture.",
+    "building_condition": "The building appears to be well-maintained. There are no visible signs of damage or wear. The building's exterior is constructed of red brick with a smooth texture. The building's interior is made of white plaster with a smooth texture.",
+    "street_furniture": "There are no visible street furniture in the image. There are no visible street furniture in the image.",
+    "vegetation": "There are no visible plants or trees in the image. There are no visible plants or trees in the image.",
+    "signage": "There are no visible signs in the image. There are no visible signs in the image.",
+    "ground_surfaces": "The ground is made of beige marble tiles. The ground is clean and well-maintained.",
+    "spatial_enclosure": "The hallway is open and well-lit. The hallway is wide and spacious. The hallway stretches out into the distance.",
+    "pedestrian_activity": "There are no visible pedestrians in the image. There are no visible pedestrians in the image.",
+    "lighting_atmosphere": "The lighting in the hallway is bright and well-lit. The lighting is warm and inviting.",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

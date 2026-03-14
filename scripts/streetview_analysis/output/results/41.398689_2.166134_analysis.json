@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_005838",
+    "latitude": 41.398689,
+    "longitude": 2.166134,
+    "heading": 312.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "19359be7-7f24-4bd5-baa7-6362fc202426",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.398689_2.166134_h312.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 37189.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow alleyway between two buildings with a mix of old and new architecture, featuring a mix of residential and commercial properties. The alleyway is lined with shops and cafes, and there are several pedestrians walking along the sidewalk. The atmosphere is lively and bustling, with a sense of community and activity. The lighting is warm and inviting, with a mix of natural and artificial light sources. The colors are muted, with a focus on earthy tones such as brown, beige, and gray. The overall mood is relaxed and casual, with a sense of everyday life unfolding in the alleyway.",
+    "buildings": "The buildings in the alleyway are a mix of old and new, with some featuring ornate facades and others having more modern designs. Some of the buildings have balconies or terraces, while others have large windows or doors that lead out onto the street. There are also several shops and cafes lining the alleyway, including a bakery, a clothing store, and a restaurant. The buildings are generally well-maintained, but there are some signs of wear and tear, such as peeling paint and rusty metalwork.",
+    "materials": "The alleyway is paved with cobblestones, and there are several large stones embedded in the ground that add to the historic feel of the area. The walls are made of brick, with some sections featuring decorative archways and columns. There are also several large wooden beams that run across the alleyway, adding to the sense of depth and texture. The floor is covered in a thin layer of dust and debris, giving the area a slightly neglected feel.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the alleyway, providing a place for people to sit and rest. There are also several trash cans and recycling bins, as well as a few bicycles parked against the wall. The alleyway is relatively quiet, with only a few people walking through it. There are also several streetlights and lanterns hanging from the ceiling, casting a warm glow over the area.",
+    "vegetation": "The vegetation in the alleyway is sparse, with only a few small plants and trees growing in pots or planters. There are also several large flowers blooming in the cracks of the pavement, adding a pop of color to the otherwise drab surroundings. The air is filled with the scent of fresh flowers and cooking food, creating a pleasant and inviting atmosphere.",
+    "signage": "There are several signs posted on the walls and buildings, advertising various businesses and services. There are also several street signs and directional arrows pointing to different locations, helping pedestrians navigate the area. The signs are colorful and eye-catching, with bold fonts and bright colors that stand out against the duller surroundings.",
+    "ground_surfaces": "The ground surfaces in the alleyway are made up of a mix of concrete, brick, and stone. There are several large cracks and potholes in the pavement, giving the area a worn and weathered look. The walls are painted a dull gray, with some areas showing signs of water damage or staining. There are also several large pipes and ductwork running along the ceiling, adding to the industrial feel of the area.",
+    "spatial_enclosure": "The alleyway is relatively narrow, with tall buildings on either side. The space is quite enclosed, with little room to move around. However, there are several doorways and windows that provide access to other parts of the city. The alleyway is generally quiet, with only a few people walking through it. There are also several streetlights and lanterns hanging from the ceiling, casting a warm glow over the area.",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a resident, I would describe the alleyway as a bustling and vibrant neighborhood with a strong sense of community. There are several shops and restaurants in the area, offering everything from food and drink to clothing and souvenirs. There are also several parks and gardens in the alleyway, providing a peaceful oasis in the midst of the hustle and bustle of the city. The alleyway is a popular spot for locals and tourists alike, with many people stopping to take photos and enjoy the sights and sounds of the area.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, I would describe the alleyway as a charming and historic neighborhood with a rich history and culture. There are several shops and restaurants in the area, offering a wide range of goods and services. There are also several museums and galleries, showcasing local art and artifacts. The alleyway is a great place to explore, with its narrow streets and winding alleys offering a unique and intimate experience.",
+    "as_student": "As a student, I would describe the alleyway as a quiet and peaceful space that is perfect for studying or working. There are several libraries and study areas, as well as comfortable seating areas where students can relax and take a break. There are also several quiet cafes and restaurants, offering a chance to grab a bite to eat or meet with friends. Overall, the alleyway is a great place to spend time alone or with friends."
+  }
+}

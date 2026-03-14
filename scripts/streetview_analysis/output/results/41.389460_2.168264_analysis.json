@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042742",
+    "latitude": 41.38946,
+    "longitude": 2.168264,
+    "heading": 41.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a3594a17-5d98-44c2-b0a1-c1cc77d792ea",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389460_2.168264_h41.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 24318.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, a large fountain in the distance, and a clear blue sky above. The street is empty except for a few bicycles parked along the sidewalk.",
+    "buildings": "The buildings are multi-story structures with ornate facades, featuring intricate details such as columns, arches, and balconies. They appear to be made of stone or brick, with some having a more modern glass and steel accents.",
+    "materials": "The street is paved with cobblestone, while the sidewalks are made of concrete. There are also several trees planted along the street, adding shade and greenery to the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts scattered throughout the area, providing a place for pedestrians to rest and take in the surroundings. Some of the benches are old and worn, while others are newer and more modern.",
+    "vegetation": "The trees are well-maintained, with lush green leaves and a variety of flowers blooming in the spring and summer months. They add a pop of color to the otherwise drab urban landscape.",
+    "signage": "There are several signs posted along the street, including directional signs indicating the location of nearby landmarks and businesses. Some of the signs are faded or worn, but still clearly visible.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of this quiet neighborhood, with its mix of old and new architecture and lively street life. They might enjoy strolling through the area, taking in the sights and sounds of the city.",
+    "as_commuter": "A commuter might prefer this area for its proximity to work or school, with easy access to public transportation. They could use the street as a quick stop during their daily commute, or grab a bite to eat at one of the nearby eateries.",
+    "as_tourist": "A tourist might find this spot appealing due to its unique blend of history and modernity. They could explore the surrounding streets and landmarks, taking in the local culture and cuisine.",
+    "as_student": "A student might appreciate the vibrant energy of this bustling neighborhood, with its diverse range of shops, cafes, and restaurants. They could spend hours exploring the area, discovering hidden gems and meeting new people."
+  }
+}

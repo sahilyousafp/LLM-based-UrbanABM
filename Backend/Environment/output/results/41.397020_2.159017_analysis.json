@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171345",
+    "latitude": 41.39702030000001,
+    "longitude": 2.1590172000000005,
+    "heading": 229.0784900649983,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "78dceea1-2488-49c5-84cc-d5113fc1eec6",
+    "dist_along_edge_m": 15.3,
+    "source_image": "sv_41.397020_2.159017_h229.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21971.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings, cars, and pedestrians. The sun shines brightly overhead, casting long shadows across the ground. A person sits on a bench, looking at their phone. Two women walk by, passing a row of trees and parked cars. The street is paved with asphalt and has a few patches of grass. The sky is bright white.",
+    "buildings": "The large gray building dominates the background, with a smaller white building to its right. The building has a flat roof and a large window on the front. There are several other buildings in the distance, including a tall skyscraper.",
+    "materials": "The sidewalk is made of concrete, with a few cracks and unevenness. The street is lined with trees, some of which have lost their leaves. There are also several parked cars along the curb.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two benches along the sidewalk, one occupied by a person sitting down and looking at their phone. There are also several trash cans and recycling bins scattered throughout the area.",
+    "vegetation": "The trees are mostly bare, with only a few leaves still clinging to their branches. There are also some small bushes and flowers growing in the median.",
+    "signage": "There are several signs along the street, including a large billboard and a few smaller signs advertising businesses.",
+    "ground_surfaces": "The ground is made of asphalt, with some cracks and unevenness. There are also several potholes and uneven surfaces.",
+    "spatial_enclosure": "The street feels relatively open, with a few narrow alleys and side streets leading off into the distance. The sky is bright white, but there are no clouds.",
+    "pedestrian_activity": "There are several people walking along the sidewalk, including a woman pushing a stroller and another woman carrying a bag. There are also several people sitting on benches or standing around.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few shadows cast by the trees and buildings. The sun is high in the sky, casting long shadows across the ground.",
+    "as_resident": "This street is likely a busy commercial area, with many shops and restaurants. There are also several residential buildings visible, including apartments and houses.",
+    "as_commuter": "This street is likely a convenient location for commuters, with easy access to public transportation. There are also several bike lanes and bike paths.",
+    "as_tourist": "This street is likely a popular spot for tourists, with many shops and restaurants catering to visitors. There are also several street performers and vendors selling souvenirs.",
+    "as_student": "This street is likely a quiet neighborhood, with a mix of residential and commercial properties. There are also several parks and green spaces visible, including a small park in the distance."
+  }
+}

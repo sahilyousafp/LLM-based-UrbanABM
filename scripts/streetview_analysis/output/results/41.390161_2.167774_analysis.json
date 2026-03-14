@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_033034",
+    "latitude": 41.390161,
+    "longitude": 2.167774,
+    "heading": 44.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "7483c573-770d-455f-8f98-28a5c0acfd10",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.390161_2.167774_h44.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50256.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides,",
+    "buildings": "unknown",
+    "materials": "hexagonal ceramic pavement tiles",
+    "building_condition": "polished granite shopfront",
+    "street_furniture": "benches, streetlights, bollards, bins, bike racks, etc.",
+    "vegetation": "trees, hedges, planters, and green areas",
+    "signage": "shop signs, traffic signs, plaques, awnings",
+    "ground_surfaces": "pavement materials, road surface, crosswalks, kerb types, and their positions",
+    "spatial_enclosure": "open",
+    "pedestrian_activity": "people walking",
+    "lighting_atmosphere": "daytime, sunny",
+    "as_resident": "a local resident",
+    "as_commuter": "unknown",
+    "as_tourist": "a tourist",
+    "as_student": "a student"
+  }
+}

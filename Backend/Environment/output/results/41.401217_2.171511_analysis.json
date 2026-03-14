@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_170547",
+    "latitude": 41.40121709999999,
+    "longitude": 2.1715112,
+    "heading": 48.55521038582947,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "72115f07-c754-4ef7-bca0-73c7b12ad8b5",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401217_2.171511_h48.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 11572.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a large beige building with multiple windows and a tall silver lamp post in front of it. The building has a cream-colored facade with stone quoins at the corners. There are two trees in front of the building, one on either side of the lamp post. A yellow sign hangs on a fence in front of the building, reading 'UCCIO D'D'UN ER ACOLOLLIR EISIS SOCIALS' in black text. The ground is paved with hexagonal ceramic tiles.",
+    "buildings": "The building has three stories with numerous windows, some of which have bars over them. The building is cream colored with stone quoins at the corners. There are two trees in front of the building, one on either side of the lamp post. A yellow sign hangs on a fence in front of the building, reading 'UCCIO D'D'UN ER ACOLOLLIR EISIS SOCIALS' in black text. The ground is paved with hexagonal ceramic tiles.",
+    "materials": "The building has a cream-colored facade with stone quoins at the corners. There are two trees in front of the building, one on either side of the lamp post. A yellow sign hangs on a fence in front of the building, reading 'UCCIO D'D'UN ER ACOLOLLIR EISIS SOCIALS' in black text. The ground is paved with hexagonal ceramic tiles.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk in front of the building. There are also several bike racks and a few potted plants scattered throughout the area. There is a small tree growing out of the sidewalk near the building.",
+    "vegetation": "There are several trees growing in the area, including a large tree near the building and a smaller tree near the streetlight. There are also several bushes and shrubs scattered throughout the area.",
+    "signage": "There are several signs posted along the sidewalk, including a large sign that reads 'UCCIO D'D'UN ER ACOLOLLIR EISIS SOCIALS' in black text. There are also several smaller signs that appear to be advertisements or informational signs.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful, with only a few people visible. There are several benches and trash cans scattered throughout the area.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area appears to be popular with tourists, with several people taking photos and admiring the architecture.",
+    "as_student": "The area appears to be bustling with activity, with several students walking to class."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_034136",
+    "latitude": 41.387217,
+    "longitude": 2.170685,
+    "heading": 347.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5149b919-05c2-4452-b4a1-f5f19ed810ef",
+    "dist_along_edge_m": 5.9,
+    "source_image": "sv_41.387217_2.170685_h347.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50418.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a blue sky and few clouds, featuring a large white building on the right side and a statue on the left side. The street has a few people walking along it, including a woman carrying a shopping bag and looking at her phone. There are also several buses parked along the street, as well as some trees and other buildings in the distance. The street itself is paved with asphalt and has a few cracks and markings.",
+    "buildings": "The large white building on the right side of the street has a curved roofline and a flat front facade. It appears to be made of concrete or stucco and has several windows and doors. The building on the left side of the street is made of stone and has a more ornate design, with carvings and statues adorning its facade. There are also several other buildings visible in the distance, including a tall skyscraper with a pointed roof.",
+    "materials": "The street is paved with asphalt and has a few cracks and markings. There are also several trees and other objects visible, including a lamppost and a bus stop.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the street, as well as a few bicycles parked against the curb.",
+    "vegetation": "There are several trees and bushes along the street, providing shade and greenery to the area.",
+    "signage": "There are several signs visible, including a bus stop sign and a pedestrian crossing signal. There are also several billboards and advertisements along the street.",
+    "ground_surfaces": "The ground is mostly smooth and flat, but there are a few cracks and uneven surfaces visible.",
+    "spatial_enclosure": "The street appears to be relatively open and spacious, with a clear path through the center.",
+    "pedestrian_activity": "There are several people visible, including a woman walking down the street while looking at her phone. There are also several others walking or standing along the sidewalk.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few shadows cast by the trees and buildings.",
+    "as_resident": "The street appears to be a popular spot for locals and tourists alike, with several people visible and a lively atmosphere.",
+    "as_commuter": "The street is a convenient location for commuting, with several buses and trains visible.",
+    "as_tourist": "The street is a great place to take photos or admire the scenery.",
+    "as_student": "The street is a great place to study architecture, with several interesting buildings and landmarks visible."
+  }
+}

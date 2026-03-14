@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_233700",
+    "latitude": 41.3925959,
+    "longitude": 2.1559512000000005,
+    "heading": 45.475815361867376,
+    "street_name": "Carrer d'Enric Granados",
+    "highway_type": "road",
+    "edge_id": "282d8497-64a9-4569-af44-5ecd2de74511",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392596_2.155951_h45.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 14009.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with a stop sign, a tree, and a parked motorcycle,",
+    "buildings": "Three-story buildings with balconies and windows,",
+    "materials": "The buildings have a mix of stone, brick, and metal railings,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables outside,",
+    "vegetation": "A few trees and bushes line the sidewalk,",
+    "signage": "A large sign reading 'MOTO RENTAL' is visible,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking in the distance,",
+    "lighting_atmosphere": "The sun is shining brightly,",
+    "as_resident": "The area appears quiet and peaceful,",
+    "as_commuter": "The street is not busy,",
+    "as_tourist": "The area has some historical significance.",
+    "as_student": "The area is popular with students,"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_170829",
+    "latitude": 41.39177879999999,
+    "longitude": 2.1652323000000004,
+    "heading": 46.86521709268857,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f6477225-c722-4f0c-9cf5-8a9d40889f3b",
+    "dist_along_edge_m": 6.0,
+    "source_image": "sv_41.391779_2.165232_h46.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21936.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A bright blue double-decker bus drives down a city street lined with tall buildings and trees. The bus has a colorful patterned exterior and is filled with passengers. The surrounding buildings have a mix of modern and older styles, with some featuring ornate facades and others displaying more contemporary designs. The street itself is paved with asphalt and has a few cars parked along the curb. A pedestrian crossing is visible in the distance, and several people can be seen walking along the sidewalk. The sky above is a brilliant blue, suggesting a sunny day.",
+    "buildings": "The buildings in the background feature a mix of architectural styles, including modern glass and steel structures alongside older buildings with ornate facades. Some of the buildings appear to be residential, while others may be commercial or office spaces. The buildings vary in height, with some towering above the rest of the street. The street is lined with trees that provide shade and add a touch of greenery to the urban landscape.",
+    "materials": "The bus has a distinctive color scheme, with a gradient of blues and purples that reflect off the windows and the surrounding environment. The bus's exterior is adorned with various logos and advertisements, adding a pop of color to the scene. The materials used in the construction of the bus include metal, plastic, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "The street is equipped with a range of furniture, including benches, trash cans, and bike racks. These items are strategically placed along the sidewalk to provide amenities for pedestrians and cyclists.",
+    "vegetation": "The trees lining the street are lush and green, providing shade and a natural oasis amidst the urban bustle. They are spaced at regular intervals, creating a sense of rhythm and harmony.",
+    "signage": "The street is home to a variety of signage, including directional signs, business names, and informational displays. These signs help guide pedestrians and drivers through the area, providing important information about local attractions and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would appreciate the presence of a community garden or park in the heart of the city. This would provide a peaceful oasis for residents to relax and enjoy nature.",
+    "as_commuter": "As a commuter, I am looking for a convenient and efficient way to get around the city. The street is well-connected to public transportation, making it easy to get to work, school, or other destinations.",
+    "as_tourist": "As a tourist, I am drawn to the unique cultural attractions and historical landmarks in the area. The street is a popular destination for visitors, offering a glimpse into the city's rich history and heritage.",
+    "as_student": "As a student, I am interested in the academic programs and research opportunities available in the area. The street is home to a range of colleges and universities, providing students with a convenient location for learning and growth."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_224215",
+    "latitude": 41.3978113,
+    "longitude": 2.1632395999999994,
+    "heading": 226.06340407892293,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "a04c0c10-d499-4b78-a436-5848fc05f816",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397811_2.163240_h226.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85694.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with a bus driving down the middle, lined with tall buildings and trees on both sides. The sun shines brightly overhead, casting shadows across the asphalt. A few cars are parked along the curb, and a bicycle rider pedals by on the sidewalk. The street is relatively empty, with only a few pedestrians strolling along the sidewalk. The sky is clear and blue, with a few wispy clouds drifting lazily across it. The overall atmosphere is calm and peaceful, with a sense of urban tranquility.",
+    "buildings": "The buildings on either side of the street are tall and imposing, with ornate facades and balconies. They appear to be residential, with large windows and doors that lead out onto the street. Some have awnings or umbrellas over their entrances, while others have potted plants or other decorative elements.",
+    "materials": "The street itself is made of dark gray concrete, with yellow lines painted on it to guide traffic flow. The pavement is smooth and well-maintained, with a subtle sheen to it. There are also several large trees planted along the sidewalk, their leaves rustling gently in the breeze.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables set up outside the buildings, providing a place for people to sit and rest. Some have umbrellas or canopies to provide shade, while others have potted plants or other decorative items.",
+    "vegetation": "The trees are lush and green, with leaves that rustle gently in the breeze. There are also several flowerbeds and planters filled with colorful flowers and shrubs.",
+    "signage": "There are several signs posted along the street, including street names, directional signs, and advertisements. Some of the signs are old and worn, while others are newer and more modern.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its beautiful architecture, lively atmosphere, and convenient location. It's a great place to grab a coffee or snack, or take a stroll through the surrounding streets.",
+    "as_commuter": "This street is a convenient and accessible route for commuters, with easy access to public transportation and nearby shops and restaurants. It's a great place to get around the city without having to worry about parking or traffic.",
+    "as_tourist": "This street is a great spot for tourists, with its beautiful architecture, charming shops, and lively atmosphere. It's a great place to explore, with plenty of interesting sights and experiences to discover.",
+    "as_student": "This street is a great place for students, with its quiet and peaceful atmosphere. It's a good spot to study, relax, or work."
+  }
+}

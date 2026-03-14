@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_033216",
+    "latitude": 41.391993,
+    "longitude": 2.164802,
+    "heading": 136.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "8d4c0d02-e158-4ffe-89fa-759f2cf0a40e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391993_2.164802_h136.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49733.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a large room with a high ceiling and wooden floor, featuring two arched doorways leading to other rooms. The walls are painted white and have decorative windows made of stained glass. A woman stands near the doorway, wearing a long coat and holding a camera. The room has a polished wood floor and a gray radiator along the wall.",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners. It is made of red brick and has a polished granite shopfront.",
+    "materials": "Materials include stained glass, wood, and stone.",
+    "building_condition": "The building is well-maintained but shows signs of wear and tear.",
+    "street_furniture": "There are no visible street furniture.",
+    "vegetation": "There are no visible plants or trees.",
+    "signage": "There are no visible signs.",
+    "ground_surfaces": "The ground is made of polished wood.",
+    "spatial_enclosure": "The space feels open and airy.",
+    "pedestrian_activity": "People are walking through the doorway.",
+    "lighting_atmosphere": "The lighting is bright and natural.",
+    "as_resident": "The area is quiet and peaceful.",
+    "as_commuter": "It is a busy street.",
+    "as_tourist": "It is a historic landmark.",
+    "as_student": "It is a popular tourist destination."
+  }
+}

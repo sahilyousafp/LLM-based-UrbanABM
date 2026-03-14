@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_231647",
+    "latitude": 41.39406919999999,
+    "longitude": 2.1516812,
+    "heading": 80.89466052345313,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "1f68b7e6-6149-4b24-bfd8-5b7bf8f5e88e",
+    "dist_along_edge_m": 132.3,
+    "source_image": "sv_41.394069_2.151681_h80.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43701.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings lining both sides, featuring a mix of modern and older structures, with a few trees scattered along the sidewalk and a clear blue sky above. The street is relatively empty, with only a few vehicles parked along the curb and a cyclist riding down the middle lane. A large tree stands out against the backdrop of the modern skyscraper, its branches stretching towards the sky like nature's own work of art. The street is well-maintained, with clean sidewalks and a smooth asphalt surface. The sun casts long shadows across the street, indicating a late morning or early afternoon setting.",
+    "buildings": "The buildings are primarily made of glass and steel, with sleek lines and angular shapes that reflect the city's contemporary vibe. Some have balconies or terraces, while others feature large windows that let in plenty of natural light. The most prominent building has a distinctive curved facade, adding visual interest to the street.",
+    "materials": "The street is paved with a combination of concrete and asphalt, with white markings and symbols painted on the ground to guide pedestrians and cyclists. The buildings' facades are clad in a mix of glass, metal, and stone, giving them a modern and sophisticated look.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, providing a place for people to rest and park their bikes. A few trash cans are also visible, helping keep the area tidy.",
+    "vegetation": "The trees are mostly bare, with a few leaves still clinging to the branches. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs posted along the street, including traffic signs and directional indicators. Some of the signs are illegible, but they help guide pedestrians and drivers through the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, offering a mix of shopping, dining, and entertainment options. It's a vibrant and lively area, with plenty of opportunities to explore and discover new places.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is a hub of activity, with many people milling about and taking photos. There are several shops and restaurants visible, as well as a few street performers and vendors.",
+    "as_student": "This street is a great place to study architecture, history, and culture. The buildings are a mix of old and new, with interesting details and features that make it a unique and fascinating destination."
+  }
+}

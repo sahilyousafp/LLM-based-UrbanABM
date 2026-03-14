@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171300",
+    "latitude": 41.3995093,
+    "longitude": 2.1609389000000006,
+    "heading": 47.958010947809385,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5ff45eff-c06b-49b5-878c-af6e4e7683c2",
+    "dist_along_edge_m": 4.1,
+    "source_image": "sv_41.399509_2.160939_h47.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21749.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides, featuring a mix of residential and commercial properties. The street is paved with asphalt and has a sidewalk on either side, with a few pedestrians strolling along. The buildings have a uniform beige color scheme, with some having balconies and others featuring large windows. A few streetlights are mounted on the walls, casting shadows on the ground below. The sky above is clear and blue, suggesting a sunny day. The street is relatively quiet, with only a few people visible, including two individuals walking together and another person walking alone. The overall atmosphere is calm and peaceful, with a sense of community and tranquility.",
+    "buildings": "Left building: cream rendered facade with stone quoins at the corners. Right: exposed red brick upper floors above a polished granite shopfront. Foreground: hexagonal ceramic pavement tiles.",
+    "materials": "Left building: cream rendered facade with stone quoins at the corners. Right: exposed red brick upper floors above a polished granite shopfront. Foreground: hexagonal ceramic pavement tiles.",
+    "building_condition": "unknown",
+    "street_furniture": "Left building: concrete steps leading up to the entrance. Right building: metal railing on the balcony.",
+    "vegetation": "Left building: small trees and bushes planted along the sidewalk. Right building: small trees and bushes planted along the sidewalk.",
+    "signage": "Left building: a sign reading 'Café' in bold letters. Right building: a sign reading 'Bar' in smaller letters.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "Left building: a person sitting on a bench. Right building: a person walking down the street.",
+    "as_commuter": "Left building: a person walking down the street. Right building: a person walking down the street.",
+    "as_tourist": "Left building: a person taking a photo. Right building: a person looking at a map.",
+    "as_student": "Left building: a person studying a map. Right building: a person looking at a map."
+  }
+}

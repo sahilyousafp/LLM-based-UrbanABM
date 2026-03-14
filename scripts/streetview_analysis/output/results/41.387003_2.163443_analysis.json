@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_030453",
+    "latitude": 41.387003,
+    "longitude": 2.163443,
+    "heading": 246.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d8271b85-f6cc-48e4-ba58-be378dda3283",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387003_2.163443_h246.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 15540.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a quiet neighborhood with a large tree providing shade over a small garden area with red flowers and a stone wall,",
+    "buildings": "The buildings have a mix of old and new architecture, with some having a more modern look while others appear older,",
+    "materials": "The walls are made of stone and brick, with some parts painted white and others left unpainted,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, but they are mostly empty,",
+    "vegetation": "The trees and bushes are lush and well-maintained, with a few flowers blooming in the foreground,",
+    "signage": "There are several signs posted along the sidewalk, including a directional sign pointing to a nearby park,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the immediate area, but there may be some in the distance,",
+    "lighting_atmosphere": "The sun is shining brightly, casting long shadows across the street,",
+    "as_resident": "The area appears to be quiet and peaceful, with only a few people visible in the distance,",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The area is popular with students, with several cafes and restaurants nearby,"
+  }
+}

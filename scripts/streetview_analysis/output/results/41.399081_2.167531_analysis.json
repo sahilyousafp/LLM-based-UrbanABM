@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_041452",
+    "latitude": 41.399081,
+    "longitude": 2.167531,
+    "heading": 275.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ce2d44f1-ba44-4630-ab36-7a4a54717a88",
+    "dist_along_edge_m": 8.6,
+    "source_image": "sv_41.399081_2.167531_h275.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49959.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings lining both sides,",
+    "buildings": "The buildings have a mix of old and new architecture, with some featuring ornate facades and others displaying more modern designs.",
+    "materials": "The street is paved with cobblestone and has a few trees planted along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed at regular intervals.",
+    "vegetation": "The street is lined with small gardens and flowerbeds.",
+    "signage": "There are several street signs indicating directions and warnings.",
+    "ground_surfaces": "The ground is made of concrete and has a few cracks.",
+    "spatial_enclosure": "The street is relatively narrow, but there are enough space for cars to drive through.",
+    "pedestrian_activity": "People are walking down the street, some stopping to look at the shops.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is quiet, with only a few pedestrians passing by.",
+    "as_commuter": "It's a busy area, with many people commuting to work.",
+    "as_tourist": "The street is a popular tourist destination, with many shops and restaurants.",
+    "as_student": "The street is well-maintained, with clean sidewalks and well-lit streets."
+  }
+}

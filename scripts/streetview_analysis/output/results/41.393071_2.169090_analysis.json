@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002323",
+    "latitude": 41.393071,
+    "longitude": 2.16909,
+    "heading": 40.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ea5642ff-a51c-4c28-af7f-1b10b257eddd",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.393071_2.169090_h40.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12942.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a quiet neighborhood with a tree in front of a white apartment building with balconies,",
+    "buildings": "The building has three floors with balconies on each floor,",
+    "materials": "The ground floor has a concrete facade with a large window and a door,",
+    "building_condition": "unknown",
+    "street_furniture": "There are two parked bicycles and a scooter in front of the building,",
+    "vegetation": "There are a few trees and bushes in front of the building,",
+    "signage": "There are several signs posted on the building,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible,",
+    "lighting_atmosphere": "The sun is shining brightly,",
+    "as_resident": "The area seems quiet and peaceful,",
+    "as_commuter": "unknown",
+    "as_tourist": "There are some interesting architectural details,",
+    "as_student": "I'm not sure what kind of school it is."
+  }
+}

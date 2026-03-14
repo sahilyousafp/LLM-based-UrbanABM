@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_035858",
+    "latitude": 41.386985,
+    "longitude": 2.169896,
+    "heading": 91.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3a15b4c8-fe22-43e6-9131-a3caa38fbaf9",
+    "dist_along_edge_m": 5.7,
+    "source_image": "sv_41.386985_2.169896_h91.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49832.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city square with a large white building in the background and several people walking around. The ground is made up of different colored stones and there are some trees and buildings in the distance. There are also some people walking around and a dog running around as well. The sky is clear and blue.",
+    "buildings": "The large white building has a tall tower on the left side and a flat roof. It has many windows and a few balconies. The building is made of stone and has a classic look to it. There are other buildings in the background but they are not as prominent.",
+    "materials": "The ground is made up of different colored stones including black, gray, and beige. There are also some trees and bushes scattered around the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and trash cans scattered around the area. They are all made of metal and have a modern look to them.",
+    "vegetation": "There are a few trees and bushes scattered around the area. They are all relatively small and well-maintained.",
+    "signage": "There are a few signs visible in the distance. They appear to be informational signs and are mounted on poles.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking around the area. Some are sitting on benches while others are walking.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area seems to be a popular spot for locals and tourists alike. There are a few shops and cafes visible.",
+    "as_commuter": "The area is a convenient spot for commuting. There are a few parks and gardens visible.",
+    "as_tourist": "The area is a great spot for sightseeing. There are many historical landmarks and attractions visible.",
+    "as_student": "The area is a great spot for studying. There are a few libraries and museums visible."
+  }
+}

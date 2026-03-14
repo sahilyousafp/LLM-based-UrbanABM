@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_234612",
+    "latitude": 41.394359699999995,
+    "longitude": 2.1540736,
+    "heading": 271.7930603853388,
+    "street_name": "Carrer d'Enric Granados",
+    "highway_type": "road",
+    "edge_id": "405a302a-cb47-40bb-9004-69a65f198602",
+    "dist_along_edge_m": 80.6,
+    "source_image": "sv_41.394360_2.154074_h271.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43768.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "unknown",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

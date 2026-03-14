@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002139",
+    "latitude": 41.394856,
+    "longitude": 2.170908,
+    "heading": 0.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2bacff2e-ee6c-4a64-b817-a58f1ea8d1f8",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394856_2.170908_h0.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 9157.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long, empty subway station with a train track running along its length, a person standing near the platform, and a few lights hanging from the ceiling. The walls are made of dark brown and beige tiles, and there are several windows along the wall, some of which have been covered with metal sheets. The floor is made of large square tiles in various shades of brown and beige, with white lines separating them. A small section of the platform is visible, with a person standing near the edge, wearing shorts and a t-shirt. The ceiling is made of metal panels, with several lights hanging from it. There are also several signs and advertisements along the walls, including a large blue sign with white text. The overall atmosphere is quiet and empty, with only a few people visible in the distance.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

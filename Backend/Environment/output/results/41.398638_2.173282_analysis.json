@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_224442",
+    "latitude": 41.3986379,
+    "longitude": 2.173282,
+    "heading": 134.89641168390006,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "cf5ddc44-c0c0-4d31-ac26-e18baeb45f2e",
+    "dist_along_edge_m": 25.3,
+    "source_image": "sv_41.398638_2.173282_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 6640.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a tall building with a mix of red and gray colors, featuring a large windowed facade, a red door, and a sign reading 'Automoviles Dimebaran' above it. The building has multiple levels, with a mix of windows and balconies. A person is seen walking on the sidewalk in front of the building. The street is empty except for a few cars parked along the curb. The sky is overcast.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

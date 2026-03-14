@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_004740",
+    "latitude": 41.402504,
+    "longitude": 2.154266,
+    "heading": 52.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c9d8a743-7dfb-4cca-ac93-1e12bc1f2967",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.402504_2.154266_h52.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 11817.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow alleyway between two buildings with a small opening in the middle,",
+    "buildings": "The building has a cream-colored facade with a large window on the top floor and a garage door on the bottom floor,",
+    "materials": "The garage door is made of concrete and has a rough texture,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the alleyway,",
+    "vegetation": "There are trees and bushes along the sidewalk,",
+    "signage": "There is a blue and white sign on the right side of the alleyway,",
+    "ground_surfaces": "The ground is paved with gray concrete,",
+    "spatial_enclosure": "The alleyway is relatively narrow and has a low ceiling,",
+    "pedestrian_activity": "There are no pedestrians in the alleyway,",
+    "lighting_atmosphere": "The lighting is bright and sunny,",
+    "as_resident": "The alleyway is quiet and peaceful,",
+    "as_commuter": "unknown",
+    "as_tourist": "The alleyway is not very popular with tourists.",
+    "as_student": "There are no students in the alleyway,"
+  }
+}

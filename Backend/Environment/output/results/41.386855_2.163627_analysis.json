@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171927",
+    "latitude": 41.3868549,
+    "longitude": 2.1636271000000002,
+    "heading": 310.2420491426216,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "10893a18-3529-41ec-b2e3-85a8c21f2308",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386855_2.163627_h310.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 3377.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a forested area through a window with a blue sky,",
+    "buildings": "The building has a cream-colored wall with a black metal grate over the windows,",
+    "materials": "The building has a cream-colored wall with a black metal grate over the windows,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image,",
+    "vegetation": "There are trees and bushes outside the window,",
+    "signage": "There are no visible signs in the image,",
+    "ground_surfaces": "The ground is paved with concrete,",
+    "spatial_enclosure": "The space between the buildings is open and airy,",
+    "pedestrian_activity": "There are no visible pedestrians,",
+    "lighting_atmosphere": "The lighting is bright and sunny,",
+    "as_resident": "This area is quiet and peaceful,",
+    "as_commuter": "There are no visible commuters,",
+    "as_tourist": "There are no visible tourists.",
+    "as_student": "There are no visible students,"
+  }
+}

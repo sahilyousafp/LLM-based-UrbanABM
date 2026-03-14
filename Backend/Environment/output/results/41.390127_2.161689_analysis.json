@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_214908",
+    "latitude": 41.390127,
+    "longitude": 2.1616888,
+    "heading": 129.07677744941884,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "56164250-d31b-497a-b9f2-f7561c082537",
+    "dist_along_edge_m": 181.4,
+    "source_image": "sv_41.390127_2.161689_h129.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 9689.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with cars driving down it, lined with buildings on both sides. The sky is blue with a few white clouds. There are several cars parked along the side of the street, as well as some motorcycles and bicycles. A large white van is stopped at a stoplight, while a smaller white car drives away from the camera. The street is paved with asphalt and has a crosswalk marked by white lines. The buildings on either side of the street are multi-story structures made of brown stone and have many windows. Some of the buildings have balconies, and there are trees growing out of the sidewalk. The street is busy with various vehicles, including cars, vans, and motorcycles. The sun is shining brightly overhead.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

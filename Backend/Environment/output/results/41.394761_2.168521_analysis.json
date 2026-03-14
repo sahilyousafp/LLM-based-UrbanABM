@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223539",
+    "latitude": 41.3947606,
+    "longitude": 2.1685211,
+    "heading": 316.7796945498762,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "bbccc8e0-1763-41cc-ba2f-7928642414d8",
+    "dist_along_edge_m": 23.5,
+    "source_image": "sv_41.394761_2.168521_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43631.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A cityscape view of a street with tall buildings, trees, and mountains in the distance under a blue sky with white clouds. The buildings have various architectural styles, including modern and historic structures, and feature different materials such as concrete, brick, and glass. The street has a mix of pedestrian and vehicular traffic, with some cars parked along the curb and others driving by. Trees line the sidewalk, providing shade and adding to the urban landscape. In the distance, mountains rise up, creating a picturesque backdrop for the bustling city scene.",
+    "buildings": "Left building",
+    "materials": "Left building",
+    "building_condition": "unknown",
+    "street_furniture": "Left building",
+    "vegetation": "Left building",
+    "signage": "Left building",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "Left building",
+    "as_commuter": "Left building",
+    "as_tourist": "Left building",
+    "as_student": "Left building"
+  }
+}

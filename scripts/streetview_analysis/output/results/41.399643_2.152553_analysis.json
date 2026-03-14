@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002831",
+    "latitude": 41.399643,
+    "longitude": 2.152553,
+    "heading": 53.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "97f33e6b-f505-4783-9381-6f80afb1cd50",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399643_2.152553_h53.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48909.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides,",
+    "buildings": "The left side has a cream-colored building with a red sign reading 'G. TALIS' and a tree in front; the right side has a red brick building with a large poster on its second floor.",
+    "materials": "The left side has a cream-colored building with a red sign reading 'G. TALIS' and a tree in front; the right side has a red brick building with a large poster on its second floor.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two gray trash cans on the left side of the street.",
+    "vegetation": "There are two trees on either side of the street.",
+    "signage": "There are several signs on the left side, including a stop sign and a red sign reading 'G. TALIS'.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A person is walking down the street.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and cafes.",
+    "as_student": "The street is clean and well-maintained."
+  }
+}

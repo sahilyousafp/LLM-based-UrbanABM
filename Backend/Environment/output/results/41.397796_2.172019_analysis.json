@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_215206",
+    "latitude": 41.397796199999995,
+    "longitude": 2.1720192000000003,
+    "heading": 139.3088768366614,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "0e3a8bbb-df93-490c-bbfc-c7e58e108ad8",
+    "dist_along_edge_m": 11.8,
+    "source_image": "sv_41.397796_2.172019_h139.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43431.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, featuring a mix of old and new architecture, including a large white building with a flat roof and a smaller yellow building with a pitched roof, as well as several trees and parked cars along the sidewalk.",
+    "buildings": "The buildings have a mix of old and new styles, with some featuring ornate facades and others having more modern designs. The larger building has a flat roof, while the smaller one has a pitched roof. There are also several trees lining the sidewalk, adding shade and greenery to the area.",
+    "materials": "The buildings' materials include a combination of stone, brick, and concrete. The larger building has a stone facade, while the smaller one has a brick exterior. Additionally, there are several trees planted along the sidewalk, which add a touch of nature to the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks scattered throughout the area, providing a place for pedestrians to rest and park their bicycles. A few trash cans are also visible, helping to keep the area clean.",
+    "vegetation": "The trees are healthy and lush, with green leaves and branches that provide shade and beauty to the area. There are also several potted plants placed along the sidewalk, adding color and texture to the scene.",
+    "signage": "There are several signs posted along the street, including traffic signs, directional signs, and informational signs. These help guide pedestrians and drivers through the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people visible in the distance, going about their daily business. Some are walking alone, while others are in groups chatting or taking photos.",
+    "lighting_atmosphere": "The lighting in the area is bright and sunny, with a warm glow cast by the sun. The shadows are long and deep, indicating that the sun is high in the sky.",
+    "as_resident": "A local resident might appreciate the peaceful and welcoming atmosphere of this street, with its mix of old and new architecture, greenery, and lively pedestrian activity. They might enjoy the convenience of being able to walk or bike through the area, without the hustle and bustle of city life.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, the street could benefit from more amenities like restaurants, cafes, or shops. The area might also have more events or festivals happening during certain times of the year.",
+    "as_student": "As a student, the street might be a popular spot for studying or working out. The presence of benches and bike racks suggests that students often stop by to take a break or grab a snack."
+  }
+}

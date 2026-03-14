@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_170631",
+    "latitude": 41.3996431,
+    "longitude": 2.1525532000000003,
+    "heading": 53.66368052779501,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "97f33e6b-f505-4783-9381-6f80afb1cd50",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399643_2.152553_h53.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21970.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with buildings on both sides, paved with gray bricks, and lined with trees,",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "none",
+    "lighting_atmosphere": "bright and clear",
+    "as_resident": "no people or vehicles",
+    "as_commuter": "no people or vehicles",
+    "as_tourist": "no people or vehicles",
+    "as_student": "no people or vehicles"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_001240",
+    "latitude": 41.40162289999999,
+    "longitude": 2.1509233,
+    "heading": 134.64348701407005,
+    "street_name": "Avinguda de la Riera de Cassoles",
+    "highway_type": "road",
+    "edge_id": "7ad5e195-4ed3-41d4-91c8-50588d111bb6",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401623_2.150923_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 20681.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a corner building with a pedestrian crossing signal, parked motorcycles, and a red truck,",
+    "buildings": "The buildings are tall and have multiple stories, with a mix of old and new architecture,",
+    "materials": "The building has a concrete base with a smooth, gray facade and a red sign reading 'Crelle' on its side,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several parked motorcycles along the sidewalk, as well as a few pedestrians walking by,",
+    "vegetation": "There are a few trees and bushes along the sidewalk, adding some greenery to the urban landscape,",
+    "signage": "There are several signs posted on the buildings, including a large red sign reading 'Crelle' and a smaller white sign with illegible text,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds in the sky,",
+    "as_resident": "The area appears to be a quiet residential neighborhood with a mix of apartments and shops,",
+    "as_commuter": "unknown",
+    "as_tourist": "There are a few tourists taking photos of the street view,",
+    "as_student": "The area is popular with students, with several young people sitting outside cafes and restaurants."
+  }
+}

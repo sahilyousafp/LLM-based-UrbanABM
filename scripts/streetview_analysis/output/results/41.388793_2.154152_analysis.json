@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_015855",
+    "latitude": 41.388793,
+    "longitude": 2.154152,
+    "heading": 222.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c121f159-4afd-48e2-9941-ed103cf16d91",
+    "dist_along_edge_m": 43.9,
+    "source_image": "sv_41.388793_2.154152_h222.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48886.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a bike lane and a person riding a bike in the distance. The street is lined with trees and has a few buildings in the background. There are several red bike racks along the sidewalk, with a few bikes parked in them. A person walks down the sidewalk on the right side of the image. The sky is blue with some clouds.",
+    "buildings": "The buildings in the background are mostly low-rise, with a mix of old and new architecture. Some have ornate facades, while others are more modern and sleek. The buildings appear to be residential, commercial, and possibly mixed-use.",
+    "materials": "The street is paved with gray concrete, and there are several large trees planted along the sidewalk. The bike racks are made of metal and have a sleek, modern design. They are painted bright red and have black seats and handlebars.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, as well as a few bike racks and bike locks. The area appears to be safe and welcoming.",
+    "vegetation": "The trees are tall and leafy, providing shade for pedestrians and cyclists. There are also several flowerbeds and gardens along the sidewalk, adding color and texture to the scene.",
+    "signage": "There are several signs posted along the street, including a large sign indicating the name of the street and a smaller sign warning of parking restrictions.",
+    "ground_surfaces": "The ground is made of concrete, with a smooth finish. There are several cracks and uneven spots, but overall the surface is well-maintained.",
+    "spatial_enclosure": "The street is relatively narrow, with a slight curve to it. The buildings line both sides of the street, creating a sense of depth and perspective.",
+    "pedestrian_activity": "There are several people walking along the sidewalk, including a woman pushing a stroller and a man walking a dog. The atmosphere is lively and bustling, with people going about their daily business.",
+    "lighting_atmosphere": "The lighting is soft and natural, with dappled shadows cast by the trees. The sun is shining down, casting long shadows across the street.",
+    "as_resident": "The residents of this neighborhood seem to appreciate the beauty of the street and its surroundings. They take pride in their community and enjoy spending time outdoors.",
+    "as_commuter": "The commuters who live and work in this neighborhood are likely to appreciate the convenience and accessibility of the street. They may use the bike lane to get to work or school.",
+    "as_tourist": "This street is a hub of activity, with people from all over the world coming to visit. It's a great place to experience the culture and history of the city.",
+    "as_student": "The students of this university are likely to appreciate the academic rigor and intellectual pursuits of the city. They may attend classes on campus and then head out to explore the surrounding neighborhoods."
+  }
+}

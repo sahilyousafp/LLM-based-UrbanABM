@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_193006",
+    "latitude": 41.3875898,
+    "longitude": 2.1702768,
+    "heading": 234.38473652073563,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b2b16b64-72fe-4831-ad01-33c3b818173b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387590_2.170277_h234.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12108.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings lining both sides,",
+    "buildings": "The buildings are mostly white and beige, with some having ornate facades and others being more modern,",
+    "materials": "The street is paved with asphalt and has a few cracks,",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and trash cans along the sidewalk,",
+    "vegetation": "There are several trees and bushes planted along the street,",
+    "signage": "There are several street signs and billboards,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking in the distance,",
+    "lighting_atmosphere": "The lighting is bright and sunny,",
+    "as_resident": "The area seems quiet and peaceful,",
+    "as_commuter": "It's a busy street during rush hour,",
+    "as_tourist": "The area is popular with tourists,",
+    "as_student": "There are a few shops and restaurants in the area."
+  }
+}

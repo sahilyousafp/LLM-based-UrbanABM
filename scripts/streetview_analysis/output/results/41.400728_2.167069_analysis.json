@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_014740",
+    "latitude": 41.400728,
+    "longitude": 2.167069,
+    "heading": 315.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f346d8d7-00f4-4047-b64d-47e1db8e0ad6",
+    "dist_along_edge_m": 120.3,
+    "source_image": "sv_41.400728_2.167069_h315.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48610.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings, trees, and cars parked along the sidewalk. The street has a white line down the middle and a tree growing out of the sidewalk. There is a scooter parked near the curb. A parking garage is on the left side of the street. The sky is overcast.",
+    "buildings": "The buildings have balconies with blue curtains and windows. Some have signs on them. One building has a sign that says 'P' in blue letters.",
+    "materials": "The ground is made of concrete and asphalt. The sidewalk is made of stone pavers. The street is paved with asphalt and has a white line down the middle.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables and chairs outside of a café. There is also a trash can.",
+    "vegetation": "There are several trees and bushes along the sidewalk. There is a large tree in front of the parking garage.",
+    "signage": "There are several signs on the buildings, including a sign that says 'P' in blue letters.",
+    "ground_surfaces": "The ground is mostly flat and smooth. There are some cracks in the asphalt.",
+    "spatial_enclosure": "The street feels open and wide. The buildings rise up on either side of the street.",
+    "pedestrian_activity": "There are no people visible in the image.",
+    "lighting_atmosphere": "The lighting is bright but not overly harsh. It is daytime.",
+    "as_resident": "The area looks like a quiet neighborhood.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is scenic and picturesque.",
+    "as_student": "The area is clean and well-maintained."
+  }
+}

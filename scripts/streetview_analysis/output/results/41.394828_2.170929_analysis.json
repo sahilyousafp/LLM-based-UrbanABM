@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_043159",
+    "latitude": 41.394828,
+    "longitude": 2.170929,
+    "heading": 270.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a54db497-a8aa-4d26-8f7a-aa176c874b1a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394828_2.170929_h270.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50325.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of residential and commercial properties, including a large white building with brown accents and numerous windows, as well as several parked bicycles along the sidewalk and a few pedestrians strolling by. The street itself is marked with white lines and has a bike lane, while the sky above is clear and blue.",
+    "buildings": "The smaller buildings on either side add to the urban landscape, creating a sense of depth and texture.",
+    "materials": "The street is paved with asphalt, featuring white markings and a bike lane, while the surrounding buildings have a mix of materials, including concrete, brick, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "Bicycles are parked along the sidewalk, with a few people sitting on them, while others walk by.",
+    "vegetation": "Trees line the sidewalk, providing shade and a touch of nature amidst the urban environment.",
+    "signage": "Signs are posted along the street, although the text is too small to read.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, with some stopping to sit on benches.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with shadows cast by the trees.",
+    "as_resident": "The street appears quiet, with only a few people visible.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and cafes, offering a range of amenities.",
+    "as_student": "The street is bustling with students, with many bicycles parked along the sidewalk."
+  }
+}

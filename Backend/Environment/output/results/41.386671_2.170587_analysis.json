@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_181940",
+    "latitude": 41.38667130000001,
+    "longitude": 2.1705867000000003,
+    "heading": 309.5972528760418,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "7f7916b9-1e01-4551-9e6b-a7705a8b9ad1",
+    "dist_along_edge_m": 59.0,
+    "source_image": "sv_41.386671_2.170587_h309.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64268.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a large white building with many windows, surrounded by trees and bushes, with a paved area in front of it. The sky is clear and blue, with a few clouds visible in the distance. The ground is made of concrete and has a few cracks and stains. There are several trees and bushes along the sides of the building, as well as some streetlights and trash cans. In the foreground, there is a small patch of grass and a few birds scattered about. The overall atmosphere is calm and peaceful, with a sense of serenity and tranquility.",
+    "buildings": "The building is a large, white structure with many windows and a flat roof. It has a symmetrical facade with a central entrance and two wings extending out to either side. The building appears to be made of stone or concrete, with a smooth finish. There are several chimneys and vents visible on the roof.",
+    "materials": "The building's exterior is clad in a combination of stone and concrete, with a smooth, textured surface. The windows are framed in metal, with a subtle pattern of horizontal lines. The roof is covered in a layer of dark gray slate tiles.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the plaza, as well as a few chairs and umbrellas. The furniture is modern and sleek, with clean lines and minimal ornamentation.",
+    "vegetation": "The plaza is surrounded by tall trees and bushes, which provide shade and privacy for those sitting or walking through the area. There are also several flowerbeds and planters filled with colorful flowers and shrubs.",
+    "signage": "There are several signs posted around the plaza, including a large banner advertising a local business or event. The signs are colorful and eye-catching, with bold fonts and bright colors.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people visible in the plaza, including a few individuals sitting on benches or walking through the area. The atmosphere is lively and bustling, with a sense of community and activity.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would describe the plaza as a vibrant and welcoming space that is perfect for socializing and relaxation. There are several benches and tables scattered throughout the area, and the atmosphere is lively and bustling.",
+    "as_commuter": "As a commuter, I would describe the plaza as a convenient and accessible location for getting around the city. There are several public transportation options available, including buses and trains.",
+    "as_tourist": "As a tourist, I would describe the plaza as a great spot for exploring the city. There are several restaurants and cafes visible in the background, and the atmosphere is lively and vibrant.",
+    "as_student": "As a student, I would describe the plaza as a great place to study or work. There are several libraries and research facilities available, and the atmosphere is quiet and focused."
+  }
+}

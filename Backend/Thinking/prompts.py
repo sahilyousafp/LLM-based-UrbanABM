@@ -28,21 +28,48 @@ def mobility_decision_prompt(
     recent_history: str,
     current_position: dict,
     candidates: list[dict],
+    street_perception: dict | None = None,
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
     candidates: list of {"edge_id": int, "direction": str, "amenities": list[str], "description": str}
+    street_perception: optional dict with walkability, vegetation, pedestrian_activity, etc.
     """
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
-        f"amenities=[{', '.join(c.get('amenities', [])[:3])}] desc={c.get('description', '')}"
+        f"amenities=[{', '.join(c.get('amenities', [])[:3])}] "
+        f"{'env=[' + c['perception'] + '] ' if c.get('perception') else ''}"
+        f"desc={c.get('description', '')}"
         for i, c in enumerate(candidates)
     )
+
+    # Build scene description block from text fields
+    perception_text = ""
+    if street_perception:
+        scene_fields = [
+            ("scene_overview",      "Scene"),
+            ("buildings",           "Buildings"),
+            ("vegetation",          "Vegetation"),
+            ("pedestrian_activity", "Pedestrian activity"),
+            ("lighting_atmosphere", "Lighting/atmosphere"),
+            ("as_resident",         "Resident perspective"),
+            ("as_commuter",         "Commuter perspective"),
+            ("as_tourist",          "Tourist perspective"),
+            ("as_student",          "Student perspective"),
+        ]
+        lines = []
+        for key, label in scene_fields:
+            val = street_perception.get(key, "")
+            if val and val.strip().lower() != "unknown":
+                lines.append(f"  {label}: {val}")
+        if lines:
+            perception_text = "\n\nScene description at current location (from visual analysis):\n" + "\n".join(lines)
+
     user_content = f"""Agent Profile:
   Archetype: {archetype}
   Needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}
   Mood: {cognition.get('mood', 'neutral')}, Curiosity: {cognition.get('curiosity', 0.7):.2f}, Fatigue: {cognition.get('fatigue', 0.0):.2f}
-  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}
+  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{perception_text}
 
 Recent Movement History:
 {recent_history}
@@ -56,6 +83,7 @@ Consider the agent's archetype behaviour:
   - commuter: moves efficiently, prefers direct routes with less revisiting
   - tourist: prefers new/unvisited streets, cafes, attractions, interesting areas
   - student: social, prefers cafes, parks, libraries, lively streets
+Also consider the street environment: agents respond to the scene around them. Tourists are drawn to lively, green, interesting areas; tired agents prefer quieter, less stimulating streets; residents seek familiar comfortable surroundings.
 
 Respond with JSON:
 {{"choice": <index 0-{len(candidates)-1}>, "reasoning": "<one sentence why>"}}"""
@@ -102,19 +130,29 @@ def cognition_update_prompt(
     current_cognition: dict,
     recent_history: str,
     step: int,
+    streetview_perception: str = "",
 ) -> list[dict]:
     """Prompt to update agent's cognitive/emotional state based on recent experiences."""
+    perception_section = ""
+    if streetview_perception:
+        perception_section = f"""
+Scene description at current location (from visual analysis):
+{streetview_perception}
+"""
+
     user_content = f"""Agent archetype: {archetype}
 Simulation step: {step}
 Current mental state:
   mood: {current_cognition.get('mood', 'neutral')}
   curiosity: {current_cognition.get('curiosity', 0.7):.2f}
   fatigue: {current_cognition.get('fatigue', 0.0):.2f}
-
+{perception_section}
 Recent experiences:
 {recent_history}
 
-Update the agent's mental state based on these experiences.
+Update the agent's mental state based on these experiences and the surrounding environment.
+A lively, green, well-maintained scene may improve mood and curiosity; an empty, run-down, or monotonous environment may increase boredom or fatigue.
+Different archetypes respond differently: tourists are energised by interesting architecture and activity; residents find comfort in familiar, quiet streets; students seek social, lively areas.
 Mood options: happy, neutral, tired, curious, bored, energised, social, focused
 Curiosity and fatigue are floats 0.0-1.0.
 

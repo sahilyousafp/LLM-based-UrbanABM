@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174443",
+    "latitude": 41.395150400000006,
+    "longitude": 2.1553756,
+    "heading": 182.48758339134469,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5ede0967-c728-4256-a27f-cc2a5a28cd3e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395150_2.155376_h182.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21852.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A room with a brown wall and a black table with four chairs around it. The walls have a picture hanging on them. There is a lamp on the wall and a cabinet against the wall with some papers on top of it. The floor has a herringbone pattern made of wood. The ceiling is white and there are two lights hanging from it. The lighting is bright.",
+    "buildings": "The building is brown and has a white border at the bottom. It has a picture hanging on it. The picture is of a duck. The building is tall and narrow.",
+    "materials": "The building has a white border at the bottom. It has a picture hanging on it. The picture is of a duck. The building is tall and narrow.",
+    "building_condition": "unknown",
+    "street_furniture": "There are four chairs around the table. They are black and have a simple design.",
+    "vegetation": "There are no plants or trees in the room. There are no bushes or flowers.",
+    "signage": "There are no signs or posters on the wall.",
+    "ground_surfaces": "The ground is made of wood. It has a herringbone pattern.",
+    "spatial_enclosure": "The space feels open and airy. The building is tall and narrow.",
+    "pedestrian_activity": "There are no people in the room.",
+    "lighting_atmosphere": "The lighting is bright and warm.",
+    "as_resident": "The room is empty.",
+    "as_commuter": "unknown",
+    "as_tourist": "The room is empty.",
+    "as_student": "The room is empty."
+  }
+}

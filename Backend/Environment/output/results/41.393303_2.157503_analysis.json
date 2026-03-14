@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_202435",
+    "latitude": 41.3933028,
+    "longitude": 2.1575027999999996,
+    "heading": 136.0845021039163,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ae065fe4-378a-412a-b6ff-4893f12de33b",
+    "dist_along_edge_m": 29.6,
+    "source_image": "sv_41.393303_2.157503_h136.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 19712.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides,",
+    "buildings": "The buildings have a mix of old and new architecture, with some featuring ornate facades and others having more modern designs.",
+    "materials": "The street is paved with asphalt and has a few cracks and potholes.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "The street is lined with trees and flowers, adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs advertising local businesses and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to chat or take photos.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful, with only a few people out and about.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with historic landmarks and points of interest.",
+    "as_student": "The street is also home to a number of restaurants and cafes, offering a range of food and drink options."
+  }
+}

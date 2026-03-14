@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_013627",
+    "latitude": 41.386738,
+    "longitude": 2.16953,
+    "heading": 55.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "4e54e67f-3074-4add-89c5-c38a27b1a905",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386738_2.169530_h55.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 22400.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a large white building in the distance, surrounded by trees and bushes. The street is empty except for a few people walking along the sidewalk.",
+    "buildings": "The large white building has a modern design with clean lines and a flat roof. It appears to be made of concrete or stone and has several windows and doors. There are also some smaller buildings and structures around it, including a small park or garden area with benches and trees.",
+    "materials": "The street is paved with asphalt and has a smooth surface. There are no visible markings or signs, but there are some streetlights and utility poles along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few streetlights and utility poles. The street itself is relatively wide and straight, with a slight curve in the middle.",
+    "vegetation": "The trees and bushes surrounding the street are lush and green, providing shade and a pleasant atmosphere. There are also some flowers and plants growing in the median strip between the two lanes of traffic.",
+    "signage": "There are no visible signs or advertisements along the street, although there may be some subtle branding or logos on the buildings or other objects.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the street, enjoying the fresh air and sunshine. They might find the lack of traffic and noise a welcome respite from the hustle and bustle of city life.",
+    "as_commuter": "A commuter might be interested in the street's accessibility and convenience, with its proximity to public transportation and amenities like cafes and restaurants. They might appreciate the street's role as a hub for local activity.",
+    "as_tourist": "A tourist might be drawn to the street's historic architecture and charming atmosphere. They might enjoy taking photos or admiring the street art or murals.",
+    "as_student": "A student might appreciate the street's educational potential, with its mix of old and new buildings and public art installations. They might enjoy studying the street's history and architecture."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_024146",
+    "latitude": 41.389206,
+    "longitude": 2.152815,
+    "heading": 225.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c53df0ba-7edd-43ed-a8e4-8ffec376ccd9",
+    "dist_along_edge_m": 241.9,
+    "source_image": "sv_41.389206_2.152815_h225.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49814.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long white hallway with a black and white checkered floor and two doors at the end. The walls are painted white and there are two paintings hanging on the wall to the right. There are windows on both sides of the hall. The ceiling is white and has a grid pattern. The floor is made up of black and white squares. The walls have a grey baseboard. The door at the end of the hall is brown. The painting on the left is gold and depicts a man wearing a yellow shirt. The painting on the right is also gold and depicts a man wearing a black suit jacket. The lighting in the hall is bright and even. The overall atmosphere is calm and peaceful.},",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

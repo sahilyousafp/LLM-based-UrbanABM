@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_034439",
+    "latitude": 41.396816,
+    "longitude": 2.171203,
+    "heading": 314.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b7428fd2-133f-4938-a354-efc210873aa1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396816_2.171203_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 11455.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings, trees, and cars,",
+    "buildings": "The buildings have beige facades with balconies and windows,",
+    "materials": "The ground is made of concrete and has a smooth texture,",
+    "building_condition": "unknown",
+    "street_furniture": "There are benches and tables outside cafes,",
+    "vegetation": "Trees line the sidewalk,",
+    "signage": "There are several signs, including a yellow sign with black text,",
+    "ground_surfaces": "The ground is paved with asphalt,",
+    "spatial_enclosure": "The street is relatively wide and open,",
+    "pedestrian_activity": "People are walking and riding bikes,",
+    "lighting_atmosphere": "It is daytime with overcast skies,",
+    "as_resident": "The area is quiet and peaceful,",
+    "as_commuter": "The street is busy with cars and pedestrians,",
+    "as_tourist": "The area is scenic and historic.",
+    "as_student": "The area is popular with students,"
+  }
+}

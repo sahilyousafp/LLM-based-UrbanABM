@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_222142",
+    "latitude": 41.39519309999999,
+    "longitude": 2.1683185,
+    "heading": 133.49953224732667,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "15670aeb-59bf-422c-82b1-2f13696dccf8",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395193_2.168318_h133.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44105.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a mix of cars and motorcycles parked along the sidewalk. The street has a crosswalk with white markings and a yellow line down the middle, with a few pedestrians strolling along the sidewalk. A large tree stands in front of the camera, casting dappled shadows across the street. The sky is clear and blue.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and traditional facades, featuring balconies and ornate details. Some have awnings or shutters, while others have large windows or decorative trim.",
+    "materials": "The street is paved with asphalt and has a smooth texture, with some cracks and unevenness visible in certain areas. There are also several potted plants and trees along the sidewalk, adding a touch of greenery to the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for pedestrians to rest and dispose of waste. A few bicycles are parked near the curb, suggesting that cycling is a popular mode of transportation in the area.",
+    "vegetation": "The trees lining the street are tall and leafy, providing shade and a sense of tranquility to the bustling urban environment. They are spaced at regular intervals, creating a sense of rhythm and harmony.",
+    "signage": "There are several signs posted along the street, including traffic lights, pedestrian crossing signals, and directional signs. These help guide pedestrians and drivers through the area.",
+    "ground_surfaces": "The ground surfaces are made of concrete, with a rough texture and varying shades of gray. There are also some cobblestone or brick pavers visible in certain areas.",
+    "spatial_enclosure": "The street feels relatively open and airy, with a clear view of the surrounding buildings and sky. However, there are some narrow alleys and dead ends, suggesting that the area may be less densely populated.",
+    "pedestrian_activity": "There are a few people visible in the distance, walking or standing on the sidewalk. They appear to be going about their daily business, unaware of the camera's presence.",
+    "lighting_atmosphere": "The lighting in the image is bright and sunny, with a warm glow that suggests a pleasant afternoon or early evening.",
+    "as_resident": "A local resident might appreciate the street's lively atmosphere, with its mix of shops, cafes, and restaurants. They might enjoy the outdoor seating areas and the sense of community that comes with living in a vibrant urban neighborhood.",
+    "as_commuter": "unknown",
+    "as_tourist": "A tourist might find the street charming and inviting, with its historic architecture, street art, and lively atmosphere. They might appreciate the unique character of the area and the opportunity to explore its hidden gems.",
+    "as_student": "A student might find the street appealing due to its proximity to educational institutions, cultural attractions, and public transportation options. They might enjoy the street's energy and diversity, and appreciate the opportunities for learning and growth."
+  }
+}

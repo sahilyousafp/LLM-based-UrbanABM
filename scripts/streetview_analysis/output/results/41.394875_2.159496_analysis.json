@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042535",
+    "latitude": 41.394875,
+    "longitude": 2.159496,
+    "heading": 47.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "93ebf553-d0fb-4bf0-8069-b78750a7d800",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394875_2.159496_h47.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50070.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and cars parked along the curb. The street is empty, with no pedestrians or vehicles in sight. The sky is clear and blue, with a few clouds visible in the distance. The sun casts long shadows across the street, indicating that it is midday.",
+    "buildings": "The buildings on either side of the street are multi-story structures with balconies and windows. They appear to be residential or commercial properties, with some having shops or restaurants on the ground floor. The facades are made of stone or brick, with ornate details such as columns and arches.",
+    "materials": "The street itself is paved with asphalt, with white lines marking the lanes and yellow lines indicating parking spaces. There are also several trees planted along the sidewalk, providing shade and adding to the aesthetic appeal of the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for people to rest and dispose of waste. A few bicycles are parked near the curb, suggesting that cycling is a popular mode of transportation in the area.",
+    "vegetation": "The trees are bare, indicating that it may be winter or early spring. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs posted on the buildings, including street names, business names, and directional signs. Some of the signs are faded or worn, while others are more modern and colorful.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its mix of shops, cafes, and restaurants. It is a vibrant and lively area, with plenty of opportunities for dining, shopping, and entertainment.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and a range of shops and services. It is a great place to live, work, and play.",
+    "as_tourist": "The street is a popular tourist destination, with its unique blend of history, culture, and entertainment options. It is a great place to visit, with plenty of things to see and do.",
+    "as_student": "This street is a great place for students to study abroad, with its international atmosphere and diverse student body. It is a fantastic location for those looking to immerse themselves in a new culture."
+  }
+}

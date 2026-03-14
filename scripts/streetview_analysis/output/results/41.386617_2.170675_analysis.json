@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_011716",
+    "latitude": 41.386617,
+    "longitude": 2.170675,
+    "heading": 309.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3e5c0fcc-6367-4b81-819e-82731528c83b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386617_2.170675_h309.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48893.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a large staircase leading up to a white building in the distance. The sky is partly cloudy and blue. There are two large stone pillars on either side of the stairs, with statues on top. People are milling about on the stairs and in front of them. A woman walks towards the camera in the foreground wearing a dark blue jacket and jeans. The ground is paved and there are trees on both sides of the stairs.}",
+    "buildings": "unknown",
+    "materials": "The pillars are made of stone and have a classical style. They are topped with statues of people. The base of the pillars is decorated with carvings. The stairs are made of concrete and have a smooth finish. The pavement is paved with asphalt and has a slight incline. The trees are leafy and well-maintained. The ground is paved with asphalt and has a slight incline. The sky is partly cloudy and blue. The building is well-maintained and clean. There are no visible signs of damage or neglect.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables visible. There are no trash cans or recycling bins visible. There are no bike racks or bike paths visible. There are no streetlights or other infrastructure visible. There are no cars or other vehicles visible. There are no pedestrians or cyclists visible. There are no other notable features visible.",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

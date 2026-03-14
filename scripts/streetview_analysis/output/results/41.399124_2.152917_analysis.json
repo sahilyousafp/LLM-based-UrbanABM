@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_031909",
+    "latitude": 41.399124,
+    "longitude": 2.152917,
+    "heading": 236.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b6c5a757-9c91-4d41-b898-64ad18a2767a",
+    "dist_along_edge_m": 9.1,
+    "source_image": "sv_41.399124_2.152917_h236.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 30246.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings lining both sides, featuring a mix of modern and older structures, including a large white building with a flat roof and a smaller brown building with balconies, as well as several trees and parked motorcycles along the sidewalk.",
+    "buildings": "The buildings have varying heights and styles, with some featuring ornate facades and others having more minimalist designs. The larger building has a flat roof, while the smaller one has a pitched roof with multiple windows and balconies. There are also several trees scattered throughout the area, adding shade and greenery to the urban landscape.",
+    "materials": "The ground is paved with gray bricks, with some areas featuring decorative patterns and textures. A few trees are planted along the sidewalk, providing shade and a touch of nature amidst the concrete jungle.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for pedestrians to rest and dispose of waste. Some trees are also present, offering shade and a bit of greenery to the otherwise concrete-dominated environment.",
+    "vegetation": "The trees are mostly deciduous, with leaves that are starting to change colors, indicating the onset of autumn. They add a pop of color to the scene, with shades of orange, yellow, and red visible among the branches.",
+    "signage": "There are several signs posted along the street, including traffic signs, directional arrows, and informational posters. These signs provide important information to pedestrians and drivers alike, helping them navigate the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people visible in the distance, going about their daily business. Some are walking alone, while others are in groups chatting or taking photos.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a warm glow emanating from the setting sun. This creates a cozy and inviting atmosphere, making the area feel welcoming to visitors.",
+    "as_resident": "As a local resident, I would appreciate seeing more green spaces and community areas in the area. I'd love to see more parks and public art installations that reflect the neighborhood's character.",
+    "as_commuter": "As a commuter, I'm always looking for ways to save money and reduce my environmental impact. I'd consider using public transportation, walking, or biking to get around the area, and I'd appreciate seeing more affordable housing options and sustainable living arrangements.",
+    "as_tourist": "I'm curious about the area's history and cultural significance. I'd love to visit local museums, galleries, and other attractions, and learn more about the neighborhood's heritage.",
+    "as_student": "As a student, I'm interested in learning more about the area's academic institutions and research opportunities. I'd look into programs and courses offered by local universities and colleges, and explore the area's proximity to educational resources."
+  }
+}

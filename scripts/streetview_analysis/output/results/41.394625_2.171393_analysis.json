@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_020509",
+    "latitude": 41.394625,
+    "longitude": 2.171393,
+    "heading": 53.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "6a070cb8-9e4c-40e1-a601-7f0909d08f16",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394625_2.171393_h53.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48827.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street with a large building in the background and a wooden platform in the foreground. The building has a cream-colored facade with yellow accents and multiple windows. A tree stands in front of the building, and two people are seen near the entrance. The wooden platform is made up of long planks of wood and is situated in front of the building. The ground is paved with gray concrete.",
+    "buildings": "The building has a cream-colored facade with yellow accents and multiple windows. It has a modern design with a flat roof and a large entrance.",
+    "materials": "The building's exterior is primarily composed of cream-colored stone with yellow accents. The windows are rectangular and evenly spaced.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables placed around the area, providing seating for pedestrians.",
+    "vegetation": "The tree in front of the building adds a touch of greenery to the urban landscape.",
+    "signage": "There are several signs posted along the sidewalk, including a red sign with white lettering.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "Two people are seen walking near the entrance, while others are sitting on the benches.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area is also a popular spot for residents, with its proximity to parks and other community facilities.",
+    "as_commuter": "The area is also a convenient spot for commuters, with easy access to public transportation.",
+    "as_tourist": "The area is also a popular spot for tourists, with its unique architecture and scenic views.",
+    "as_student": "The area is also a popular spot for students, with its proximity to universities and other educational institutions."
+  }
+}

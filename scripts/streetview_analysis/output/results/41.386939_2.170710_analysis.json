@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_010748",
+    "latitude": 41.386939,
+    "longitude": 2.17071,
+    "heading": 280.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "899dbeea-7ebc-4448-b1b8-4bbfff4de81e",
+    "dist_along_edge_m": 26.1,
+    "source_image": "sv_41.386939_2.170710_h280.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 37299.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with people walking and a bird flying overhead. The sun shines brightly in the top left corner, casting long shadows across the asphalt. A large tree stands tall in the middle of the street, its branches stretching out towards the right. People walk along the sidewalk, some carrying bags or backpacks, while others stroll leisurely. In the distance, several buildings rise up, including a white structure with a clock tower. The sky is clear and blue, with only a few wispy clouds visible. The overall atmosphere is lively and bustling, with a sense of energy emanating from the people and the vibrant colors of the surroundings.",
+    "buildings": "The buildings in the background are primarily white, with some featuring ornate facades and others displaying more modern designs. Some have balconies or terraces, adding to the visual interest. The clock tower rises high into the air, its face gleaming in the sunlight. The surrounding buildings are mostly low-rise, with some taller structures visible in the distance. The architecture is diverse, reflecting the city's history and cultural influences.",
+    "materials": "The ground is paved with asphalt, with some areas featuring decorative patterns or textures. The sidewalk is made of concrete, with some sections showing signs of wear and tear. The streetlights are spaced at regular intervals, providing illumination for pedestrians and vehicles alike. The pavement is clean and well-maintained, with no visible litter or debris.",
+    "building_condition": "unknown",
+    "street_furniture": "Benches and other outdoor furniture are scattered throughout the area, providing seating for pedestrians and offering a place to rest. Streetlights line the sidewalk, casting long shadows across the pavement. The presence of trash cans and recycling bins adds to the sense of community and civic responsibility.",
+    "vegetation": "Trees and bushes dot the landscape, providing shade and beauty to the area. Some trees are tall and leafy, while others are shorter and more compact. The vegetation is lush and green, with some areas featuring colorful flowers or plants. The overall effect is one of vibrancy and life, with the natural world blending seamlessly into the urban environment.",
+    "signage": "Signs and advertisements are posted throughout the area, providing information and entertainment options for visitors. Some signs feature bold graphics and bright colors, while others are more subdued and elegant. The presence of street signs and directional arrows helps guide pedestrians and drivers through the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As locals, residents take pride in their neighborhood, with many people stopping to chat or admire the scenery. They appreciate the unique character of the area, with its mix of old and new buildings, and its vibrant street life. The overall impression is one of a thriving community, with a strong sense of identity and belonging.",
+    "as_commuter": "unknown",
+    "as_tourist": "Tourists are drawn to the area, drawn by its historic charm and cultural attractions. They take photos and admire the architecture, and enjoy the lively atmosphere. The presence of street performers and vendors adds to the excitement, with music and food wafting through the air. The overall impression is one of a popular destination, with a rich history and a strong sense of place.",
+    "as_student": "Students are present, taking advantage of the area's educational opportunities. They sit on benches or stand outside classes, listening to lectures or studying. The atmosphere is quiet and focused, with a sense of concentration and engagement. The overall impression is one of academic rigor and dedication, with a strong emphasis on learning and personal growth."
+  }
+}

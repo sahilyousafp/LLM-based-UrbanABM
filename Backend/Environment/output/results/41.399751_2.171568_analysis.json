@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_220604",
+    "latitude": 41.39975129999999,
+    "longitude": 2.1715684000000004,
+    "heading": 137.8130048775074,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "2c151250-ed15-45db-acf4-501d08a7a503",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399751_2.171568_h137.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 23654.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings on both sides, featuring a mix of modern and traditional architecture, with a clear blue sky and a few trees lining the sidewalk.",
+    "buildings": "The buildings are primarily beige-colored, with some having balconies and ornate facades, while others have more minimalist designs.",
+    "materials": "The street is paved with asphalt, with white markings indicating pedestrian crossings and bike lanes.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few streetlights and utility poles.",
+    "vegetation": "The trees are lush and green, providing shade and adding to the aesthetic appeal of the area.",
+    "signage": "There are several signs posted along the street, including traffic signs and directional indicators.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street seems to be a popular spot for locals and tourists alike, with a lively atmosphere and plenty of amenities.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops, cafes, and restaurants, making it easy to explore and enjoy the local culture.",
+    "as_student": "Overall, the street has a vibrant and welcoming atmosphere, perfect for a casual stroll or a quick bite to eat."
+  }
+}

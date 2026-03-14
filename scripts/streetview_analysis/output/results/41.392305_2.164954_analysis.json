@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_030040",
+    "latitude": 41.392305,
+    "longitude": 2.164954,
+    "heading": 318.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "378a611a-7532-4308-a9a3-f5133eafd2a5",
+    "dist_along_edge_m": 16.9,
+    "source_image": "sv_41.392305_2.164954_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50004.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a bus parked along the curb, pedestrians strolling along the sidewalk, and a few cars driving down the road. The sky is partly cloudy with patches of blue peeking through.",
+    "buildings": "The buildings are primarily white with some having ornate facades, while others have more modern designs. Some have balconies, and there are several windows visible.",
+    "materials": "The street is paved with asphalt, and there are yellow lines painted on the road to guide traffic flow. There are also concrete sidewalks and pedestrian crossings.",
+    "building_condition": "unknown",
+    "street_furniture": "There are benches and trash cans placed along the sidewalk, and a bike rack near the bus stop.",
+    "vegetation": "The trees are lush and green, providing shade for pedestrians.",
+    "signage": "There are several signs posted along the street, including directional signs and informational signs.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be residential, with shops and cafes lining the street.",
+    "as_commuter": "The street is a convenient location for those looking for a quick bite to eat or coffee.",
+    "as_tourist": "The area is a must-see for anyone visiting Barcelona.",
+    "as_student": "The area is a great spot for studying abroad, with plenty of resources and opportunities for learning."
+  }
+}

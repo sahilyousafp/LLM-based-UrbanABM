@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_212853",
+    "latitude": 41.402607999999994,
+    "longitude": 2.1524674000000004,
+    "heading": 153.348625928361,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "3ec87250-cb42-469e-8926-0ac2b6a25081",
+    "dist_along_edge_m": 70.8,
+    "source_image": "sv_41.402608_2.152467_h153.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43869.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with buildings on both sides, featuring a mix of old and new architecture, including a tall yellow building on the left and a beige building on the right with a black garage door covered in graffiti. The street is paved with cobblestones and has a few pedestrians walking along the sidewalk. A man stands on the corner, waiting to cross the street, while another person walks down the sidewalk. The sky is blue with white clouds.",
+    "buildings": "The beige building on the right has a large window on the second floor and a smaller one on the first floor, both covered in graffiti. The yellow building on the left has balconies on each floor.",
+    "materials": "The beige building has a stone facade with a decorative metal lamp post attached to its side. The yellow building has a smooth concrete facade.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few potted plants.",
+    "vegetation": "The street is lined with trees and bushes, adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs posted along the street, including a stop sign, a pedestrian crossing signal, and a directional sign.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be residential, with a few shops and cafes nearby.",
+    "as_commuter": "The area is a great place to grab a bite to eat.",
+    "as_tourist": "The area is a great place to visit.",
+    "as_student": "The area is a great place to hang out with friends."
+  }
+}

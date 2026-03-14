@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_014018",
+    "latitude": 41.38767,
+    "longitude": 2.170097,
+    "heading": 184.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f7376a6f-eefb-4895-b5de-06954e10e92f",
+    "dist_along_edge_m": 73.9,
+    "source_image": "sv_41.387670_2.170097_h184.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 19259.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide paved road with a low metal railing along its edge, lined with trees and buildings, including a large white building with a rounded top on the right side of the image. The sun shines brightly overhead, casting long shadows across the road and sidewalk.",
+    "buildings": "The large white building has a rounded top and is situated on the right side of the image. It has multiple stories and is made of concrete and glass. There are several other buildings in the distance, but they are not as prominent as the main building.",
+    "materials": "The road is paved with asphalt and has a low metal railing along its edge. The railing is made of thin metal bars and is attached to the ground with concrete posts. The road itself is smooth and well-maintained.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or other objects on the road, but there are some people walking along the sidewalk.",
+    "vegetation": "There are several trees and bushes along the road, including a large tree with yellow flowers on the right side of the image. There are also some smaller plants and shrubs along the sidewalk.",
+    "signage": "There are no visible signs on the road or surrounding buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The road is relatively open, with a few small trees and bushes along the edges. There are no other notable features or landmarks in the immediate area.",
+    "pedestrian_activity": "There are several people walking along the sidewalk, but they are not densely packed. Some people are sitting on benches, while others are walking alone or in pairs.",
+    "lighting_atmosphere": "The sun is shining brightly overhead, casting long shadows across the road and sidewalk. The lighting is bright and clear, with no visible glare or haze.",
+    "as_resident": "A few people are visible in the distance, but they are not clearly defined. They appear to be going about their daily business.",
+    "as_commuter": "There are no visible commuters or office workers in the image. However, there may be some people who work in the nearby buildings.",
+    "as_tourist": "There are no obvious tourist attractions or landmarks in the immediate area. However, there may be some interesting architecture or historical significance in the background.",
+    "as_student": "There are no visible students or young adults in the image. However, there may be some younger individuals who are out for a stroll or studying."
+  }
+}

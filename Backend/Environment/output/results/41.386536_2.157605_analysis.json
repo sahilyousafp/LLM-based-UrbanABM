@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_224222",
+    "latitude": 41.3865361,
+    "longitude": 2.1576051000000005,
+    "heading": 318.84300020002956,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "37f98906-1e2d-4670-8a3c-0e4fe4b84900",
+    "dist_along_edge_m": 25.6,
+    "source_image": "sv_41.386536_2.157605_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43727.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with tall buildings and trees lining the sidewalk. The street has a bike lane painted on it with white lines and yellow markings. There are several cars parked along the curb, including a black car with a yellow license plate in the foreground. People are walking on the sidewalk, some carrying bags or backpacks. A few bicycles are parked near the curb.",
+    "buildings": "The buildings in the background are multi-story apartment buildings with balconies and windows. They have a mix of beige and brown facades.",
+    "materials": "The ground is paved with concrete and asphalt. The bike lane has a smooth texture.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "The trees are lush and green, providing shade for pedestrians.",
+    "signage": "There are several signs posted along the sidewalk, including a red sign with white lettering.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking in both directions, some stopping to look at their phones or chat with friends.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and restaurants, offering a range of amenities.",
+    "as_student": "The street is clean and safe, with plenty of parking available."
+  }
+}

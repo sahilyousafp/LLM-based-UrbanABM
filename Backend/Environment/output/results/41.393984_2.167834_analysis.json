@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223753",
+    "latitude": 41.3939844,
+    "longitude": 2.1678337000000005,
+    "heading": 315.5432616935747,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "9f6322cb-88f8-4ae0-8dd3-90340ab53a3f",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.393984_2.167834_h315.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44031.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a mix of cars and pedestrians. The street is paved with asphalt and has white markings indicating pedestrian crossings and bike lanes. A person wearing an orange shirt rides a bicycle down the street, passing by a yellow car parked along the curb.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and traditional facades. Some have balconies, while others feature large windows and ornate details.",
+    "materials": "The street is paved with asphalt and features white markings indicating pedestrian crossings and bike lanes. The sidewalk is made of concrete and has a few trees planted along its length.",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and trash cans placed along the sidewalk, but the area is generally clean and free of litter.",
+    "vegetation": "The trees lining the street are tall and leafy, providing shade for pedestrians and adding to the street's aesthetic appeal.",
+    "signage": "There are several signs posted along the street, including traffic lights, street names, and directional signs.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking along the sidewalk, but the area is generally quiet and peaceful.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be a popular spot for locals and tourists alike, with a mix of shops, cafes, and restaurants.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and a range of amenities.",
+    "as_tourist": "The street is a popular destination for visitors, offering stunning views of the city skyline and a lively atmosphere.",
+    "as_student": "The street is a vibrant and dynamic space, with a mix of cultures and activities."
+  }
+}

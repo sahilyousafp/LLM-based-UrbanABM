@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_222836",
+    "latitude": 41.3871035,
+    "longitude": 2.1583347,
+    "heading": 316.9378041015201,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "2361e434-8133-4e80-8a7c-b26648441171",
+    "dist_along_edge_m": 23.2,
+    "source_image": "sv_41.387104_2.158335_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43624.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a tall beige building with many windows and balconies, situated along a busy street with cars parked on both sides. The building has a mix of old and new architectural styles, with some sections featuring ornate details such as arches and columns, while others have more modern elements like large glass windows and sleek metal accents. The street is lined with trees and other buildings, creating a lively urban atmosphere. A few pedestrians can be seen walking along the sidewalk, adding to the bustling energy of the scene. In the distance, a white SUV is parked on the side of the road, its driver's door open, suggesting that someone may have recently exited the vehicle. The overall scene exudes a sense of urban vitality and activity.",
+    "buildings": "The building is a multi-story structure with a mix of old and new architectural styles, featuring a combination of beige stone and glass facades. It has multiple levels, with balconies and windows that add visual interest to the exterior. The building's design suggests a blend of traditional and contemporary elements, giving it a unique character.",
+    "materials": "The building's exterior is clad in a combination of beige stone and glass, with a smooth, polished finish. The stone sections feature intricate carvings and ornate details, while the glass panels provide a sleek, modern touch. The building's façade is well-maintained, with no visible signs of wear or damage.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for pedestrians to rest and dispose of waste. A few potted plants are also scattered throughout the area, adding a touch of greenery to the urban landscape.",
+    "vegetation": "The street is lined with trees that provide shade and aesthetic appeal, adding a natural element to the urban environment. The trees are well-maintained, with lush foliage and healthy growth.",
+    "signage": "There are several signs posted along the street, including a large banner advertising a local business and a smaller sign indicating the location of a nearby restaurant. The signs are clear and easy to read, making it simple for passersby to navigate the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would appreciate the convenience and accessibility of this street, with its proximity to shops, restaurants, and public transportation options. I'd love to explore the area and take advantage of all the amenities available.",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

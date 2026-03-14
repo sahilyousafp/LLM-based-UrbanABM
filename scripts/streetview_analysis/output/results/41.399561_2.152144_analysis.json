@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_041256",
+    "latitude": 41.399561,
+    "longitude": 2.152144,
+    "heading": 232.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c5354479-1b58-4e52-a098-06f5cf4b8442",
+    "dist_along_edge_m": 2.8,
+    "source_image": "sv_41.399561_2.152144_h232.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 13699.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a commercial area with tall buildings, pedestrians, and various businesses,",
+    "buildings": "The buildings have a mix of modern and traditional architecture, with large windows and balconies,",
+    "materials": "The buildings' facades are made of a combination of brick, concrete, and glass,",
+    "building_condition": "The buildings appear well-maintained but show signs of wear and tear,",
+    "street_furniture": "There are several benches and tables outside cafes and restaurants,",
+    "vegetation": "The street is lined with trees and has a few potted plants,",
+    "signage": "There are several signs advertising local businesses and services,",
+    "ground_surfaces": "The ground is paved with asphalt and has a few cracks,",
+    "spatial_enclosure": "The street is relatively narrow and has a few dead ends,",
+    "pedestrian_activity": "People are walking along the sidewalk, some sitting at outdoor cafes,",
+    "lighting_atmosphere": "The lighting is bright and sunny,",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike,",
+    "as_commuter": "The street is busy during rush hour, but not overly crowded,",
+    "as_tourist": "The area has a lively atmosphere, with many shops and restaurants,",
+    "as_student": "The area is home to many young professionals and students."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_032617",
+    "latitude": 41.38839,
+    "longitude": 2.150628,
+    "heading": 54.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ade3f0a3-dd26-48d8-8dd5-59f47fa7a684",
+    "dist_along_edge_m": 5.8,
+    "source_image": "sv_41.388390_2.150628_h54.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50271.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, lined with parked motorcycles and cars, and featuring various businesses and outdoor seating areas. The street is relatively empty, with a few pedestrians visible in the distance. The sky is clear and blue, suggesting a sunny day.",
+    "buildings": "The buildings on either side of the street are multi-story structures with balconies and windows, constructed from a mix of materials including brick, concrete, and glass. Some have ornate facades while others appear more modern.",
+    "materials": "The street itself is paved with asphalt and features white markings indicating pedestrian crossings and bike lanes. A silver car is parked along the curb, and several motorcycles are parked along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside cafes and restaurants, as well as bike racks and trash cans.",
+    "vegetation": "The street is lined with potted plants and trees, adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs visible, including directional signs and advertisements for local businesses.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are only a few people visible, mostly walking or standing near the street.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears quiet and peaceful, with a sense of calm and tranquility.",
+    "as_commuter": "The street is a convenient stop for commuters, with easy access to public transportation.",
+    "as_tourist": "The street is a popular spot for families and couples.",
+    "as_student": "The street is a great place to relax and unwind."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_213330",
+    "latitude": 41.4013588,
+    "longitude": 2.1535784,
+    "heading": 319.3665581327887,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "57287700-b2dd-40c6-a449-7df0ad1972ea",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401359_2.153578_h319.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 16428.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a McDonald's restaurant in a city, with a modern glass frontage and a curved roofline,",
+    "buildings": "The building has a cream-colored facade with a flat roof and a large windowed frontage,",
+    "materials": "The exterior walls are made of dark green metal and glass, while the floor is tiled in beige,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no outdoor furniture visible in the image,",
+    "vegetation": "There are tall trees and bushes along the sidewalk,",
+    "signage": "A yellow sign with black text reading 'McDonald's' is mounted on the wall next to the entrance,",
+    "ground_surfaces": "The ground is paved with gray concrete pavers,",
+    "spatial_enclosure": "The street is relatively narrow and has a slight incline,",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or backpacks,",
+    "lighting_atmosphere": "The lighting is bright and well-lit,",
+    "as_resident": "This area is likely a busy commercial district with a mix of residential and retail properties,",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is lined with shops and restaurants, including a McDonald's,",
+    "as_student": "The area is popular with students and young professionals."
+  }
+}

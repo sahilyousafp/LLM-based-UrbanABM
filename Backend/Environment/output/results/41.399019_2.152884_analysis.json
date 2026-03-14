@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172304",
+    "latitude": 41.399018999999996,
+    "longitude": 2.1528835,
+    "heading": 37.29642249185741,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "18130e5b-9d0d-4b09-b92d-1c04e6ae329d",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399019_2.152884_h37.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 5098.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with a sidewalk, buildings, and trees along the side of the road.",
+    "buildings": "The buildings are tall and modern, with a mix of glass and concrete facades.",
+    "materials": "The street is paved with asphalt and has a yellow line down the middle.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters along the sidewalk.",
+    "vegetation": "There are several trees planted in small planters along the sidewalk.",
+    "signage": "There are several signs posted along the sidewalk, including a large yellow sign with black text.",
+    "ground_surfaces": "The ground is made up of asphalt and concrete.",
+    "spatial_enclosure": "The street is relatively narrow, but there are enough space between the buildings and the sidewalk to walk comfortably.",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or backpacks.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with shadows cast by the trees.",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike.",
+    "as_commuter": "The street is busy during rush hour, with many cars and pedestrians moving through the area.",
+    "as_tourist": "The area is also a popular spot for foodies and photographers, with many restaurants and cafes serving up delicious food and drinks.",
+    "as_student": "The area is also a great place to take photos, with its unique architecture and scenic views."
+  }
+}

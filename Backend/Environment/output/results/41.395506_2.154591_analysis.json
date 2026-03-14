@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_232629",
+    "latitude": 41.39550609999998,
+    "longitude": 2.1545913,
+    "heading": 95.54692837867043,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "2cfb8097-7f85-438a-8909-055a48da3d2a",
+    "dist_along_edge_m": 79.7,
+    "source_image": "sv_41.395506_2.154591_h95.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 84125.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with palm trees and other vegetation. The street is busy with cars and pedestrians. The sky is blue with white clouds.",
+    "buildings": "The buildings are mostly beige and brown, with some having balconies and others being more modern skyscrapers. Some have signs reading 'Sabadell' and 'Santander'.",
+    "materials": "The ground surfaces include concrete, asphalt, and possibly granite. There are also various types of pavement and road markings.",
+    "building_condition": "unknown",
+    "street_furniture": "There are benches, trash cans, and bike racks along the sidewalk. A few people are walking or riding bicycles.",
+    "vegetation": "Palm trees line the street, as well as other types of trees and bushes. There are also several flowerbeds and small gardens.",
+    "signage": "There are several signs, including directional signs, business signs, and informational signs. Some are illegible.",
+    "ground_surfaces": "Materials: Asphalt, concrete, and asphalt. Materials: Asphalt, concrete, and asphalt.",
+    "spatial_enclosure": "The street feels relatively open, with a clear view of the sky. There are no visible barriers or obstructions.",
+    "pedestrian_activity": "People are walking in both directions, some carrying bags or pushing strollers. There are also a few cyclists and motorcyclists.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is moderately busy, with people going about their daily business. There are some shops and cafes, but most of the area appears to be residential.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with interesting architecture and has a lively atmosphere. There are many tourists taking photos and admiring the scenery.",
+    "as_student": "The street is relatively quiet, with only a few students walking around. There are some young adults studying or working on laptops."
+  }
+}

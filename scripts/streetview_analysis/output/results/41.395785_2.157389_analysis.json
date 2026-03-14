@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_011358",
+    "latitude": 41.395785,
+    "longitude": 2.157389,
+    "heading": 133.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5d59ec5a-16f5-4764-80c3-1229bec5d72b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395785_2.157389_h133.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48702.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a large building on the left side and a smaller building on the right side. The street is paved with gray concrete and has a few pedestrians walking along it. There are two flags flying in front of the buildings, one yellow and red and the other blue and white. A tree with yellow leaves hangs over the street, casting shadows on the ground. The sky is bright and clear.",
+    "buildings": "The larger building on the left has a curved glass facade and a flat roof. It has several stories and a large entranceway. The smaller building on the right has a more traditional stone façade and a pitched roof. Both buildings have multiple windows and doors.",
+    "materials": "The larger building has a mix of glass, metal, and stone materials. The smaller building has a combination of brick, stucco, and wood.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk. Some people are sitting on the benches, while others are walking by.",
+    "vegetation": "The tree with yellow leaves adds a pop of color to the scene. There are also some small bushes and plants along the sidewalk.",
+    "signage": "There are several signs along the street, including a stop sign, a directional sign, and a street name sign. They are all clearly visible and easy to read.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking in both directions, some alone and some in groups. They seem to be going about their daily business.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area seems like a popular spot for locals and tourists alike. People are enjoying the scenery and taking photos.",
+    "as_commuter": "The area is a convenient location for commuters, with several bus stops and train stations nearby.",
+    "as_tourist": "The area is a popular spot for families with children, with plenty of parks and playgrounds.",
+    "as_student": "This area is a great place to study or work, with plenty of quiet spots to sit and relax."
+  }
+}

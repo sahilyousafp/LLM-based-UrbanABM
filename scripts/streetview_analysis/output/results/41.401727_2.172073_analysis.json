@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_011220",
+    "latitude": 41.401727,
+    "longitude": 2.172073,
+    "heading": 241.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ff27c8d9-899b-4349-a4b8-53c766c1e4e4",
+    "dist_along_edge_m": 59.9,
+    "source_image": "sv_41.401727_2.172073_h241.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48993.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A dimly lit bar with a rustic decor, featuring wooden tables and chairs, a large screen TV mounted on the wall, and a fireplace with a roaring fire pit. The walls are adorned with various decorations, including a large painting and several plates displayed on a shelf. A speaker hangs from the ceiling, casting a warm glow over the space. The floor is made of dark wood planks, and the room is illuminated by a combination of overhead lighting and table lamps. The atmosphere is cozy and inviting, perfect for a casual gathering or a night out with friends.",
+    "buildings": "The building has a unique, rustic charm, with a mix of old and new elements. The exterior walls are constructed from a combination of stone and wood, giving the structure a sense of history and character. The roof is covered in straw, adding a touch of warmth and texture to the overall aesthetic. Inside, the interior boasts a warm and welcoming ambiance, with comfortable seating areas and decorative accents throughout.",
+    "materials": "Materials used in the construction of the building include a combination of stone, wood, and metal. The walls feature a mix of rough-hewn stone and smooth wood paneling, while the floor is made of polished concrete. The roof is covered in straw, and the furniture is crafted from sturdy wood and metal.",
+    "building_condition": "unknown",
+    "street_furniture": "Street furniture is scattered throughout the space, including wooden tables and chairs, as well as a few stools and benches. The tables are made from high-quality wood and feature intricate carvings and ornate designs. The chairs are sturdy and comfortable, with cushioned seats and backs.",
+    "vegetation": "Vegetation is minimal in the area, with only a few potted plants and a small tree adding some greenery to the space. The surrounding streetscape is quiet and peaceful, with a few buildings and trees visible in the distance.",
+    "signage": "Signage is present in the form of a few posters and signs on the walls, advertising local businesses and events. The signs are colorful and eye-catching, with bold fonts and bright colors.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "Pedestrian activity in the area is limited, with only a few people visible in the distance. The atmosphere is calm and relaxed, with a few individuals strolling along the sidewalk or sitting at outdoor tables.",
+    "lighting_atmosphere": "Lighting in the area is warm and inviting, with a mix of overhead lighting and table lamps providing a cozy glow. The atmosphere is peaceful and relaxing, making it an ideal spot to unwind after a long day.",
+    "as_resident": "As residents, visitors may find the area appealing due to its charming atmosphere and convenient location. The space is well-lit and safe, making it an attractive spot for both locals and tourists.",
+    "as_commuter": "As commuters, visitors may appreciate the area's convenience and accessibility. The space is within walking distance to the nearest bus stop and train station, making it easy to get around.",
+    "as_tourist": "As tourists, visitors may enjoy the area's lively atmosphere and diverse range of activities. The space offers a mix of shopping, dining, and entertainment options, making it a great spot to explore and have fun.",
+    "as_student": "As students, visitors may appreciate the area's academic atmosphere and study resources. The space is quiet and focused, making it an ideal spot for those looking to concentrate and learn."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_222633",
+    "latitude": 41.3975107,
+    "longitude": 2.1628447999999993,
+    "heading": 128.91581199536557,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "d4a648c0-2a15-4a5e-b6e3-815052d75501",
+    "dist_along_edge_m": 30.7,
+    "source_image": "sv_41.397511_2.162845_h128.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 86129.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a person riding a bicycle on the left side of the road and another person crossing the street in front of a large building on the right side. The sky is clear and blue with a few clouds in the distance. The street has a red bike lane on the left side with white markings and a yellow traffic signal on the right side. There are several buildings lining the street, including a large tan building with many windows and balconies on the right side. A tree line runs along the left side of the street with some bare trees and a few evergreen trees. The ground is made of concrete with a red stripe running down the middle of the street. The sidewalk is made of gray concrete with a curb separating it from the street. The sun is shining brightly casting shadows on the ground.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

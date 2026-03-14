@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023255",
+    "latitude": 41.395514,
+    "longitude": 2.160428,
+    "heading": 142.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "790d3326-1c53-4e37-9e20-110061d8dc98",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395514_2.160428_h142.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50325.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a bike lane and pedestrian path. The sun shines down on the scene, casting shadows across the street and sidewalk. A few people are visible, including two individuals standing near the edge of the sidewalk and a person sitting on a bench. The street is relatively empty, with only a few cars parked along the curb.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and traditional facades. Some have balconies, while others feature large windows and ornate details. The street itself is paved with asphalt and has a smooth, even texture.",
+    "materials": "The street is lined with trees that have lost their leaves, suggesting it may be autumn or winter. The pavement is made of concrete and has a rough, textured surface. There are also several large planters and benches along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, providing a place for pedestrians to rest and dispose of waste. There are also several streetlights and utility poles, which add to the overall sense of urban infrastructure.",
+    "vegetation": "The trees are sparse and leafless, with only a few branches still bearing a hint of greenery. The planters and benches provide a small oasis amidst the otherwise barren landscape.",
+    "signage": "There are several signs visible, including a large billboard advertising a local business and a smaller sign indicating a bus stop. There are also several street signs and directional markers, which help guide pedestrians and drivers through the area.",
+    "ground_surfaces": "The pavement is smooth and even, with a subtle sheen that suggests it has been recently cleaned. The road surface is free of potholes and cracks, but there are some slight unevenness in the texture.",
+    "spatial_enclosure": "The street feels relatively open and airy, with plenty of space between buildings and pedestrians. However, there are some narrow alleys and dead ends, which can make navigation more challenging.",
+    "pedestrian_activity": "There are several people visible, including a couple strolling hand in hand and a group of friends chatting on the sidewalk. There are also several individuals walking alone, going about their daily business.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow that suggests it may be late afternoon or early evening. The shadows cast by the trees and buildings add depth and interest to the scene.",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of this quiet street, which offers a respite from the hustle and bustle of city life. They might enjoy the opportunity to sit and read a book or take a stroll.",
+    "as_commuter": "A commuter might find this street convenient and accessible, with easy access to public transportation and nearby shops and restaurants. They might appreciate the proximity to the city center and the opportunities for exploration.",
+    "as_tourist": "A tourist might find this street attractive and interesting, with its unique blend of old and new architecture and lively atmosphere. They might enjoy the opportunity to explore the surrounding neighborhood and discover hidden gems.",
+    "as_student": "A student might find this street appealing as a place to study or work, with its quiet and peaceful environment. They might appreciate the opportunity to focus on their studies or projects without distractions."
+  }
+}

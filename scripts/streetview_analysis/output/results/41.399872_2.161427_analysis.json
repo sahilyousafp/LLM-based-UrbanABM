@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_025341",
+    "latitude": 41.399872,
+    "longitude": 2.161427,
+    "heading": 224.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "6b115300-c097-4150-9f31-ae3716ef63f5",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399872_2.161427_h224.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 11919.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow street in a European city lined with buildings on both sides,",
+    "buildings": "The buildings have cream-colored facades with balconies and windows,",
+    "materials": "The ground floor has a mix of concrete and brick,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture,",
+    "vegetation": "There are some potted plants on the balconies,",
+    "signage": "There are several signs and awnings,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area seems quiet and peaceful,",
+    "as_commuter": "The street is not very busy,",
+    "as_tourist": "The architecture is interesting,",
+    "as_student": "The street is not very touristy."
+  }
+}

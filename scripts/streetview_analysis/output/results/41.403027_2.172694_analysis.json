@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_010057",
+    "latitude": 41.403027,
+    "longitude": 2.172694,
+    "heading": 138.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a947194a-5398-42b6-8dcc-732133b17308",
+    "dist_along_edge_m": 22.8,
+    "source_image": "sv_41.403027_2.172694_h138.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12394.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a park with a few people walking around,",
+    "buildings": "The buildings are mostly low-rise, with some taller ones in the distance,",
+    "materials": "The ground is paved with concrete and has some grassy areas,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk,",
+    "vegetation": "There are many trees and bushes throughout the area,",
+    "signage": "There are several signs indicating parking restrictions and pedestrian crossings,",
+    "ground_surfaces": "The ground is made of concrete and has some cracks,",
+    "spatial_enclosure": "The park is surrounded by a low wall,",
+    "pedestrian_activity": "People are walking in different directions,",
+    "lighting_atmosphere": "The sun is shining brightly,",
+    "as_resident": "The park is a popular spot for locals and tourists alike,",
+    "as_commuter": "It's a busy area with a lot of foot traffic,",
+    "as_tourist": "The park is a popular tourist destination.",
+    "as_student": "The park is a great place for students to study or relax,"
+  }
+}

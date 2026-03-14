@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_173018",
+    "latitude": 41.39611399999998,
+    "longitude": 2.1598070000000003,
+    "heading": 235.3869404766616,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d4231635-2f6f-4e5c-afb7-063555feaf47",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396114_2.159807_h235.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21925.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a historic building with a mix of old and new architecture, featuring a large arched entranceway and ornate details such as balconies and decorative trim. The surrounding buildings are tall and modern, with a mix of glass and stone facades. The street is paved with cobblestones and lined with streetlights, and there are several pedestrians walking along the sidewalk. A few people are visible in the distance, going about their daily business. The sky above is clear and blue, suggesting a pleasant day.",
+    "buildings": "The main building has a classic stone façade with a large arched doorway and ornate details such as balconies and decorative trim. It is flanked by two smaller buildings, one with a more modern glass façade and the other with a traditional stone exterior. The building's architecture suggests a blend of old and new styles.",
+    "materials": "The main building's façade is made of a combination of stone and brick, with a smooth glass frontage on the second floor. The surrounding buildings have a mix of materials, including stone, brick, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans scattered throughout the area, providing a place for people to rest and dispose of waste. A few bicycles are parked against the wall, and there are also some streetlights and signs.",
+    "vegetation": "There are a few small trees and shrubs planted along the sidewalk, adding some greenery to the urban landscape. The plants are well-maintained and add a touch of color to the otherwise drab concrete surroundings.",
+    "signage": "There are several signs posted along the street, advertising various businesses and services. Some of the signs are brightly colored and eye-catching, while others are more subdued.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with a mix of shops, cafes, and restaurants. There are also some residential units visible, with balconies and windows that offer views of the surrounding neighborhood.",
+    "as_commuter": "The area is a busy and dynamic space, with a mix of students, young professionals, and families. There are also some older residents who call the area home, enjoying the lively atmosphere.",
+    "as_tourist": "The area is a great spot for families, with a range of amenities catering to different ages and interests. There are also some family-friendly attractions, such as playgrounds and parks.",
+    "as_student": "The area is a great spot for students, with a mix of academic institutions and research centers. There are also some student organizations and clubs, offering opportunities for socialization and networking."
+  }
+}

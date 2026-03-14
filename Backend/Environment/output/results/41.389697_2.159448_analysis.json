@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_233645",
+    "latitude": 41.3896971,
+    "longitude": 2.1594483,
+    "heading": 76.47146942726448,
+    "street_name": "Carrer d'Enric Granados",
+    "highway_type": "road",
+    "edge_id": "b27b8c15-1811-482b-8e7a-5ed8ba73ffbe",
+    "dist_along_edge_m": 71.6,
+    "source_image": "sv_41.389697_2.159448_h76.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43592.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a mix of commercial and residential properties. The street is relatively empty, with only a few pedestrians and vehicles present. The sky is clear and blue, suggesting a sunny day.",
+    "buildings": "Left building: Cream-colored with a flat roof and a row of balconies on each floor. Right building: Exposed red brick with a rounded corner and a large window on the top floor.",
+    "materials": "Left building: Stone walls with ornate ironwork.",
+    "building_condition": "unknown",
+    "street_furniture": "Bollard",
+    "vegetation": "Tree",
+    "signage": "Sign",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "Resident",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

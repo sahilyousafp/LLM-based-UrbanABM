@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002114",
+    "latitude": 41.395342,
+    "longitude": 2.151918,
+    "heading": 314.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0869d81a-5281-49db-8d24-5da99f9c41b0",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395342_2.151918_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48533.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A white van is parked in front of a brown wall in a city street. The van has two black bars on top of it. There is a tall building behind the van and another building to its right. A red car is partially visible to the left of the van. The sky is overcast.",
+    "buildings": "The building to the left is a tall, rectangular structure with many windows. It is made of concrete and has a flat roof. The building to the right is shorter and has a more modern design with a sloping roof. It is made of red brick and has a few windows.",
+    "materials": "The building to the right is made of red brick.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image.",
+    "vegetation": "There are no visible plants or trees in the image.",
+    "signage": "There are no visible signs in the image.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the image.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are no notable tourist attractions in the image.",
+    "as_student": "The area appears to be commercial."
+  }
+}

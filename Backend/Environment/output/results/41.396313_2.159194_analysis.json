@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_175242",
+    "latitude": 41.396313499999984,
+    "longitude": 2.1591936000000005,
+    "heading": 137.7799167925766,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "890704c4-1518-469d-baca-042a9888bc2c",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396313_2.159194_h137.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21985.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large beige building with a flat roof and multiple windows, stands prominently in the center of the image. The building has a symmetrical facade with three stories, featuring arched windows on the first floor and rectangular ones on the second and third floors. A small Christmas tree is placed in front of the building, adding a touch of festive cheer to the scene. The ground is paved with gray stone tiles, and several pedestrians can be seen walking along the sidewalk, some wearing face masks as they go about their daily business. The sky above is overcast, casting a soft, diffused light over the entire scene.",
+    "buildings": "The building is constructed from light-colored stone, with a flat roof and a decorative railing along the top. It has three stories, each with a row of windows, including arched windows on the first floor and rectangular ones on the second and third floors. The building's facade is adorned with a small balcony on the second floor, adding a touch of elegance to its design. The surrounding area is paved with gray stone tiles, creating a clean and modern look.",
+    "materials": "The building's exterior is made of light-colored stone, giving it a classic and timeless appearance. The flat roof and decorative railing add a touch of sophistication, while the arched windows provide a sense of grandeur. The building's façade is also adorned with a small balcony on the second floor, which adds a touch of elegance to its design.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the immediate vicinity, but there may be some hidden behind the building or out of view.",
+    "vegetation": "The street is lined with trees and bushes, which add a touch of greenery to the urban landscape. The trees are spaced evenly apart, providing shade and beauty to the area.",
+    "signage": "There are no visible signs or advertisements in the immediate vicinity, although there may be some in the distance.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be a quiet and peaceful place, with a sense of calm and serenity.",
+    "as_commuter": "The street is a convenient location for people who want to get to work or school, with easy access to public transportation and nearby attractions.",
+    "as_tourist": "The street is a great spot for people who want to explore the city, with plenty of historical landmarks and cultural attractions nearby.",
+    "as_student": "The street is a great place for students to study and work, with plenty of quiet spots to focus and concentrate."
+  }
+}

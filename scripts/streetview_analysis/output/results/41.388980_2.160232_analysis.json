@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042800",
+    "latitude": 41.38898,
+    "longitude": 2.160232,
+    "heading": 179.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "bbce836c-446d-4f6e-a715-9ec4d0c95327",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.388980_2.160232_h179.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 17964.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, featuring a mix of old and new architecture, including a large white building with balconies and a smaller beige building with a rounded top, set against a clear blue sky with a few trees and a pedestrian path running down the middle of the street.",
+    "buildings": "The beige building has a rounded top and is three stories high, while the white building has four stories and features balconies on each floor.",
+    "materials": "The beige building has a smooth, beige exterior with a rounded top, while the white building has a rougher texture with a flat roof and a series of windows on each floor.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the curb.",
+    "vegetation": "The street is lined with small trees and bushes, adding some greenery to the urban landscape.",
+    "signage": "There are several signs posted along the street, including a blue sign indicating a one-way street and a yellow sign warning of construction work ahead.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is likely a popular spot for locals and tourists alike, with its unique blend of old and new architecture and lively atmosphere.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and nearby shops and restaurants.",
+    "as_tourist": "The street is also a great place to take photos, with its picturesque views and interesting architecture.",
+    "as_student": "The street is a hub for students and young professionals, with its modern amenities and lively atmosphere."
+  }
+}

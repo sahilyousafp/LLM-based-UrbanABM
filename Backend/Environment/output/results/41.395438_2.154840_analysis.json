@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_185632",
+    "latitude": 41.395437900000005,
+    "longitude": 2.1548399,
+    "heading": 71.67301088837655,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5c9a0e05-099f-4c26-bc70-5b5caa2ee1ef",
+    "dist_along_edge_m": 56.7,
+    "source_image": "sv_41.395438_2.154840_h71.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64154.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, featuring a mix of residential and commercial properties, including apartments, shops, and restaurants. The street is relatively quiet, with only a few pedestrians and vehicles present. A bus stop is located on the right side of the street, with a bus parked next to it. The street is lined with palm trees and other vegetation, adding a touch of greenery to the urban landscape. The sky above is overcast, casting a soft, diffused light over the scene.",
+    "buildings": "The buildings along the street are primarily residential, with some commercial establishments such as shops and restaurants. They vary in height, with some being taller than others, and feature a mix of modern and traditional architectural styles. Some have balconies, while others have large windows that allow natural light to pour in.",
+    "materials": "Materials used in the construction of the buildings include concrete, brick, and glass. The street itself is paved with asphalt, and there are also cobblestone sidewalks and decorative elements like pavers and planters.",
+    "building_condition": "unknown",
+    "street_furniture": "Street furniture includes benches, trash cans, and bike racks, providing amenities for pedestrians and cyclists. There are also several trees and plants along the sidewalk, adding shade and beauty to the area.",
+    "vegetation": "Vegetation is sparse, with only a few palm trees and other small plants scattered throughout the area. The trees are mostly bare, suggesting that the image was taken during the winter months.",
+    "signage": "Signage includes street signs, directional signs, and advertisements. There are also several billboards and posters on the buildings, promoting local businesses and events.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the street's tranquility, finding it a pleasant place to relax and enjoy the surroundings. The street is clean and well-maintained, with minimal litter or debris.",
+    "as_commuter": "Commuters might find the street practical, with easy access to public transportation and nearby amenities. The street is a convenient location for those who need to get around the city.",
+    "as_tourist": "Tourists might find the street attractive, taking advantage of its unique character and charm. The street is a great place to explore and discover new places.",
+    "as_student": "Students might find the street useful, appreciating the opportunities for academic work and research. The street is a hub for students, with many educational institutions nearby."
+  }
+}

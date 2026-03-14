@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_190328",
+    "latitude": 41.388390099999995,
+    "longitude": 2.150628,
+    "heading": 54.614058545956425,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ade3f0a3-dd26-48d8-8dd5-59f47fa7a684",
+    "dist_along_edge_m": 5.8,
+    "source_image": "sv_41.388390_2.150628_h54.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64021.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, lined with parked motorcycles and cars, and featuring various businesses along the sidewalk. The street has white markings and a crosswalk, with a clear blue sky overhead. The scene is well-lit, with sunlight casting shadows across the street. The buildings have balconies and windows, and there are potted plants and other objects along the sidewalk.",
+    "buildings": "The street is lined with a mix of old and new buildings, featuring a range of architectural styles.",
+    "materials": "The street is paved with asphalt, and the sidewalks are made of concrete.",
+    "building_condition": "The buildings are well-maintained, with some showing signs of wear and tear but still looking sturdy.",
+    "street_furniture": "There are several benches and tables outside the businesses, as well as bike racks and trash cans.",
+    "vegetation": "The street is lined with trees and shrubs, adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs indicating street names, directions, and business names.",
+    "ground_surfaces": "The ground is mostly flat, with some slight inclines and declines.",
+    "spatial_enclosure": "The street is relatively open, with a few narrow alleys and side streets.",
+    "pedestrian_activity": "There are a few pedestrians walking along the sidewalk, but the area is generally quiet.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow.",
+    "as_resident": "The street is home to a mix of locals and tourists, with people going about their daily business.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is popular with visitors, who come to admire the architecture and enjoy the lively atmosphere.",
+    "as_student": "The street is a hub for students and young professionals, with many cafes and restaurants catering to their needs."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_033344",
+    "latitude": 41.402898,
+    "longitude": 2.157921,
+    "heading": 142.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1fa9960d-4890-45e9-8052-66ebc6f3bc4b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.402898_2.157921_h142.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 16917.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, lined with trees and outdoor seating areas, featuring three large trash cans in the foreground and several people sitting outside cafes and walking along the sidewalk.",
+    "buildings": "The buildings are multi-story structures with balconies and windows, constructed from various materials including brick, concrete, and glass.",
+    "materials": "The ground is paved with large square tiles, while the upper floors have smooth surfaces made of red brick and granite.",
+    "building_condition": "unknown",
+    "street_furniture": "Benches and tables are placed under the shade of trees, providing a comfortable spot for people to sit and enjoy the surroundings.",
+    "vegetation": "Trees line the street, adding shade and beauty to the area.",
+    "signage": "Signs are posted on the buildings and along the street, indicating business names and directions.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, enjoying the scenery and taking in the sights.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is bustling with activity, with people going about their daily business.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is a popular destination for tourists, with its unique architecture and lively atmosphere drawing visitors from around the world.",
+    "as_student": "The street is a vibrant and dynamic space, with a mix of old and new buildings and a lively atmosphere."
+  }
+}

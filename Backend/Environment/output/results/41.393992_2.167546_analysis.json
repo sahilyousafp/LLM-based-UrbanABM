@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_195932",
+    "latitude": 41.393992100000006,
+    "longitude": 2.1675456000000004,
+    "heading": 265.1601122649338,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5b7cef36-dab6-48a3-ac87-2501bf74b39e",
+    "dist_along_edge_m": 11.2,
+    "source_image": "sv_41.393992_2.167546_h265.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85732.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings lining both sides, featuring a mix of modern and older structures, including a large glass-fronted office building and several smaller residential apartments. The street is relatively empty, with only a few motorcyclists and pedestrians present. A tree stands prominently in the foreground, casting dappled shadows across the asphalt. The sky above is overcast, casting long shadows across the scene.",
+    "buildings": "The buildings along the street are primarily made of glass and concrete, with some featuring ornate facades and others displaying more minimalist designs. Some have balconies, while others have large windows that reflect the surrounding environment. The street itself is paved with dark gray asphalt, punctuated by white lines and markings that guide traffic flow.",
+    "materials": "The street is lined with a variety of materials, including cobblestone sidewalks, metal railings, and decorative elements such as lampposts and street signs. The buildings' facades are constructed from a range of materials, including glass, brick, and concrete.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters placed along the sidewalk, providing a place for pedestrians to rest and take in the surroundings. A few bicycles are parked near the curb, adding to the lively atmosphere.",
+    "vegetation": "The street is lined with trees and shrubs, which provide shade and add a touch of greenery to the urban landscape. The foliage is dense and healthy, with a mix of deciduous and evergreen species.",
+    "signage": "There are several signs posted along the street, including directional signs, warning signs, and informational signs. Some of the signs are mounted on poles, while others are attached to buildings or freestanding.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and visitors alike, offering a pleasant place to relax and enjoy the surroundings. The area is well-lit and safe, with a sense of community and connection among those who frequent the space.",
+    "as_commuter": "The street is a convenient option for commuters, with easy access to public transportation and nearby attractions. It's a great spot to start or end a day, with plenty of options for dining, shopping, and entertainment.",
+    "as_tourist": "The street is a popular destination for tourists, offering stunning views of the city skyline and a glimpse into the local culture. Visitors can explore the surrounding neighborhoods, take in the unique architecture and vibrant street life.",
+    "as_student": "This street is a great place for students to get involved in campus activities, with opportunities to participate in events, join clubs and organizations, and connect with peers."
+  }
+}

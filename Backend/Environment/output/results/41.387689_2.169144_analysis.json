@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_212758",
+    "latitude": 41.3876891,
+    "longitude": 2.1691441000000005,
+    "heading": 65.1064401329333,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "569d4ae5-0bca-454f-aeaa-1e35a439bab7",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387689_2.169144_h65.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85528.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with buildings on both sides, featuring a mix of old and new architecture, including a large white building with many windows on the left and a modern glass-fronted building on the right. The street is lined with trees and has a few cars parked along the curb, as well as some pedestrians walking along the sidewalk. A bus is driving down the street, and there are several other vehicles parked along the curb. The sky is blue with scattered clouds.",
+    "buildings": "The large white building on the left has a classic, ornate facade with columns and arches, while the modern glass-fronted building on the right has a sleek, minimalist design. Both buildings have multiple stories and feature large windows that reflect the surrounding environment.",
+    "materials": "The street is paved with asphalt and has a smooth, even texture. The sidewalk is made of concrete and has a slight incline, with a few cracks and unevenness.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for people to rest and dispose of waste.",
+    "vegetation": "The trees lining the street are tall and leafy, with a mix of deciduous and evergreen species. They provide shade and add a touch of greenery to the urban landscape.",
+    "signage": "There are several signs posted along the street, including directional signs, business signs, and informational signs. Some of the signs are mounted on poles, while others are attached to the buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or backpacks, while others are simply strolling or chatting with friends.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its central location and lively atmosphere making it a great place to grab a coffee or snack.",
+    "as_commuter": "The street is a convenient stop for commuters, with easy access to public transportation and nearby shopping and dining options.",
+    "as_tourist": "The street is a popular destination for tourists, with its rich history and cultural attractions.",
+    "as_student": "The street is a great place for students to relax and unwind, with its peaceful atmosphere and nearby parks and gardens."
+  }
+}

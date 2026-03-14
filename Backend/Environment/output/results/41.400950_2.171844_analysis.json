@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_194642",
+    "latitude": 41.4009504,
+    "longitude": 2.1718437,
+    "heading": 179.68924688048583,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "193ffa4c-8784-4ce1-a5ed-ff857a2db4ae",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.400950_2.171844_h179.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 86276.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a mix of pedestrian and vehicular traffic. The street is relatively empty, with only a few people visible, including two individuals near the intersection and several others further down the street. The buildings are primarily residential, with some commercial establishments visible along the sidewalk. The street is paved with asphalt and features white markings indicating pedestrian crossings and bike lanes.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and traditional architectural styles, featuring balconies and ornate facades. The left side of the street has a more uniform appearance, while the right side has a greater diversity of architectural styles and materials.",
+    "materials": "The street is paved with asphalt and features white markings indicating pedestrian crossings and bike lanes. The buildings' facades are primarily made of brick, stucco, and glass, with some sections featuring decorative elements such as columns and arches.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, providing seating and storage options for pedestrians and cyclists. A few trash cans are also visible.",
+    "vegetation": "The street is lined with trees and other vegetation, adding shade and aesthetic appeal to the area.",
+    "signage": "There are several signs visible, including directional signs, business signs, and informational signs. Some of the signs are mounted on poles, while others are attached to the buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the street's lively atmosphere, with its mix of shops, restaurants, and public art installations. They might enjoy the convenience of being close to the city center and the opportunity to explore the surrounding neighborhoods.",
+    "as_commuter": "A commuter might appreciate the street's accessibility and convenience, with its proximity to public transportation and shopping centers. They might enjoy the opportunity to commute to work or school.",
+    "as_tourist": "A tourist might find the street appealing due to its unique blend of old and new architecture, as well as its vibrant street life. They might enjoy the opportunity to take photos and admire the historic buildings.",
+    "as_student": "A student might appreciate the street's proximity to educational institutions and cultural attractions. They might enjoy the opportunity to study or work in the area."
+  }
+}

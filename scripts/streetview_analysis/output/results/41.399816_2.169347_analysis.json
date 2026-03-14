@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_024453",
+    "latitude": 41.399816,
+    "longitude": 2.169347,
+    "heading": 52.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "00294e48-b42e-4a10-b700-06b81cf9f4fe",
+    "dist_along_edge_m": 110.1,
+    "source_image": "sv_41.399816_2.169347_h52.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 15901.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a European city, with a large white building featuring ornate stonework and a red door,",
+    "buildings": "The building has a mix of old and new elements, with a modern entrance and a historic facade,",
+    "materials": "The building's exterior is made of a combination of stone, brick, and metal,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the building, as well as a few bicycles parked nearby,",
+    "vegetation": "The surrounding area is relatively quiet, with a few trees and plants adding some color to the scene,",
+    "signage": "There are several signs posted around the building, including a large sign reading 'Casa de la Vella' and a smaller sign indicating the building's address,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking in the area, but it's not overly crowded,",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow coming from the sun,",
+    "as_resident": "The building seems to be a popular spot for locals and tourists alike, with a few people sitting outside enjoying the view,",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The building is home to several students, who often gather outside to study or hang out."
+  }
+}

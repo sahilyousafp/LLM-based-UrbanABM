@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_021610",
+    "latitude": 41.399596,
+    "longitude": 2.151854,
+    "heading": 320.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d28b7934-d40a-4adf-86b2-06b8c9d0f03c",
+    "dist_along_edge_m": 13.5,
+    "source_image": "sv_41.399596_2.151854_h320.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12765.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a modern building with a tree in front of it,",
+    "buildings": "The building has a cream-colored facade with gray pillars and a flat roof,",
+    "materials": "The building's exterior is made of concrete and stone,",
+    "building_condition": "The building appears well-maintained but shows some signs of wear,",
+    "street_furniture": "There are several benches and trash cans along the sidewalk,",
+    "vegetation": "A small tree grows out of a planter in front of the building,",
+    "signage": "There are several signs posted on the building, including a large sign that reads 'Café' in bold letters,",
+    "ground_surfaces": "The ground is paved with gray stone tiles,",
+    "spatial_enclosure": "The street is relatively narrow and has a low wall on one side,",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or briefcases,",
+    "lighting_atmosphere": "The sun shines down on the scene, casting shadows on the ground,",
+    "as_resident": "The area appears to be a quiet neighborhood with a mix of residential and commercial properties,",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The area is home to several young professionals who live and work in the surrounding buildings."
+  }
+}

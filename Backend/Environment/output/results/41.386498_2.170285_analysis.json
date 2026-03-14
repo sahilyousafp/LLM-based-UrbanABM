@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_184158",
+    "latitude": 41.3864983,
+    "longitude": 2.1702849,
+    "heading": 157.20625368135143,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1e746e7c-6b0c-4740-9400-2b5620691fdb",
+    "dist_along_edge_m": 12.1,
+    "source_image": "sv_41.386498_2.170285_h157.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64919.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a large square with a few buildings surrounding it. The sky is clear and blue with some white clouds. There are several tall buildings around the square, including a brown building with many windows and a sign reading 'Hotel Aragona' on top. There are also several motorcycles parked along the side of the street. A group of pigeons are scattered across the ground near the bottom left corner of the image. The ground is made up of concrete and asphalt, with a few cracks and potholes. There are also several trees planted in the area, as well as a small garden bed with grass and flowers. In the distance, there is a large crane visible behind the buildings.",
+    "buildings": "The Hotel Aragona has a modern design with a flat roof and a large number of windows. It is situated on the left side of the street, with a smaller building next to it. The building has a beige facade with a few columns and arches. To the right of the hotel is another building with a more traditional design, featuring a pitched roof and ornate details. Further down the street, there is a third building with a similar design to the first two but with a slightly different color scheme. The buildings all have a mix of old and new architecture, with some having been restored while others appear to be older and more worn down.",
+    "materials": "The ground is made up of concrete and asphalt, with a few cracks and potholes. There are also several trees planted in the area, as well as a small garden bed with grass and flowers. In the distance, there is a large crane visible behind the buildings.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and streetlights along the sidewalk. There are also several trash cans and bike racks scattered throughout the area. There are no cars or other vehicles visible in the image.",
+    "vegetation": "There are several trees planted in the area, as well as a small garden bed with grass and flowers. In the distance, there is a large crane visible behind the buildings.",
+    "signage": "There are several signs visible in the image, including a large sign reading 'Hotel Aragona' on the top of the Hotel Aragona. There are also several smaller signs and advertisements along the street.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people visible in the image, including pedestrians walking along the sidewalk and sitting on benches. There are also several people visible in the distance, including those walking towards the camera.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might comment on the cleanliness of the area, noting that it is generally clean and well-maintained. They might also mention the presence of street art or murals, or the availability of public transportation options such as buses or trains.",
+    "as_commuter": "A commuter might comment on the convenience of the area, noting the proximity to public transportation options and the availability of amenities such as grocery stores, parks, and restaurants.",
+    "as_tourist": "A tourist might comment on the scenic views of the surrounding landscape, noting the beauty of the mountains or waterways in the distance. They might also mention the availability of outdoor recreational activities such as hiking or skiing.",
+    "as_student": "A student might comment on the academic atmosphere of the area, noting the presence of libraries, research facilities, and study spaces. They might also mention the availability of academic programs and courses offered by nearby universities."
+  }
+}

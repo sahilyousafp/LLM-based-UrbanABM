@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_181836",
+    "latitude": 41.4038343,
+    "longitude": 2.1666838,
+    "heading": 311.1160102484789,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "e5e2fd00-7805-4a28-a884-8de33764a1f6",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403834_2.166684_h311.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 63909.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings, cars parked along the curb, and pedestrians strolling by. The sun casts long shadows across the sidewalk and street, indicating a late morning or early afternoon setting. A white van and a red SUV are parked along the curb, while a tree stands tall in the middle of the street. The surrounding buildings feature balconies and windows, with some displaying signs and advertisements. The street is lined with various shops and restaurants, including a cafe and a store selling artwork. The atmosphere is lively, with people going about their daily business.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and traditional architectural styles. Some have balconies with potted plants, while others display colorful signs and advertisements. The facades are made of stone, brick, and glass, adding texture and depth to the scene. The buildings appear well-maintained, with clean streets and sidewalks.",
+    "materials": "Materials used in construction include concrete, brick, and glass. The street is paved with asphalt, and the sidewalk is made of stone or concrete. The buildings' facades are adorned with various materials, such as stone, brick, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "Street furniture includes benches, trash cans, and bike racks. These items are strategically placed along the sidewalk to provide a comfortable place for pedestrians to rest and store their belongings.",
+    "vegetation": "Vegetation is sparse, with only a few trees scattered throughout the area. The trees are bare, suggesting that the image was taken during the winter months.",
+    "signage": "Signage includes street signs, directional signs, and advertisements. These signs provide important information to pedestrians and drivers, helping them navigate the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As residents, people go about their daily routines, enjoying the convenience of being close to home and community. They appreciate the quiet, laid-back vibe of the neighborhood.",
+    "as_commuter": "Commuters use the street as a quick stopover before heading to work or school.",
+    "as_tourist": "Tourists take advantage of the area's unique character, visiting shops and restaurants to experience the local culture.",
+    "as_student": "Students come to the area to learn and grow, attending classes and working on projects."
+  }
+}

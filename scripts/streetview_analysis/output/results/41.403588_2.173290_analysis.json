@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_012826",
+    "latitude": 41.403588,
+    "longitude": 2.17329,
+    "heading": 45.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5ce85812-7ba4-4dd2-9293-86c73052c36d",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403588_2.173290_h45.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 20942.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a mix of old and new buildings, including a large cathedral on the right side of the street and a modern apartment building on the left,",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

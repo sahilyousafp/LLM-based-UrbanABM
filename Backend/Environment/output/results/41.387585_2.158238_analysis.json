@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_220658",
+    "latitude": 41.38758549999999,
+    "longitude": 2.1582380999999997,
+    "heading": 135.4167826345834,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "adb6906c-356c-4b27-b23f-dd453bf3086e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387585_2.158238_h135.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43388.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with cars driving down it, lined with tall buildings and trees on both sides. The street is paved with asphalt and has a yellow dividing line in the middle. There are several cars parked along the curb, including a black and yellow taxi cab, a white van, and a motorcycle. The buildings are multi-story structures with balconies and windows. Trees line the street, casting dappled shadows on the ground. The sky is bright and overcast.",
+    "buildings": "The buildings are made of concrete and have a modern design. They are painted in various colors, including beige, brown, and gray. Some have balconies with railings, while others have large windows. The buildings appear to be residential, with some having shops or restaurants on the ground floor.",
+    "materials": "The street is paved with asphalt and has a yellow dividing line in the middle. The buildings are constructed from a combination of concrete and brick. The street is lined with trees, which provide shade and add to the aesthetic appeal of the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk. A few bicycles are parked near the curb.",
+    "vegetation": "The trees are lush and green, providing shade and adding to the ambiance of the area. They are spaced evenly apart, allowing pedestrians to walk comfortably between them.",
+    "signage": "There are several signs posted along the street, including street signs, directional signs, and advertisements. Some of the signs are illegible, but others are clear.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The residents of this neighborhood seem to appreciate the beauty of the area. Some people are out and about, enjoying the fresh air and sunshine.",
+    "as_commuter": "The commuters who use this street are likely to be busy during peak hours. They may be commuting to work or school.",
+    "as_tourist": "The tourists who visit this street are likely to be drawn to its charm and character. They may be taking photos of the historic buildings and scenic views.",
+    "as_student": "The students who study here are likely to appreciate the academic atmosphere. They may be working on assignments or studying for exams."
+  }
+}

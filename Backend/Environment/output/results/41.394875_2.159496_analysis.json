@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_203221",
+    "latitude": 41.3948745,
+    "longitude": 2.1594964,
+    "heading": 47.09993478030225,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "93ebf553-d0fb-4bf0-8069-b78750a7d800",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394875_2.159496_h47.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85974.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and cars parked along the curb. The street is empty, with no pedestrians or vehicles in sight. The sky is clear and blue, with a few clouds visible in the distance. The sun casts long shadows across the street, indicating that it is midday.",
+    "buildings": "The buildings on either side of the street are multi-story structures with balconies and windows. They appear to be residential or commercial properties, with some having shops or restaurants on the ground floor. The facades are made of stone or brick, with ornate details such as columns and arches.",
+    "materials": "The street itself is paved with asphalt, with white lines marking the lanes and yellow lines indicating parking spaces. There are also several trees planted along the sidewalk, providing shade and adding to the aesthetic appeal of the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for people to rest and dispose of waste. A few bicycles are parked near the curb, suggesting that cycling is a popular mode of transportation in the area.",
+    "vegetation": "The trees lining the street are mostly bare, with only a few leaves still clinging to the branches. This suggests that the area may experience harsh winters, with limited vegetation during the colder months.",
+    "signage": "There are several signs posted along the street, including street names, directional signs, and advertisements. Some of the signs are faded or worn, while others appear more modern and well-maintained.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area appears to be a quiet, residential neighborhood, with a mix of old and new buildings. There are several shops and cafes visible, suggesting that it is a vibrant and active community.",
+    "as_commuter": "The area is a convenient location for commuters, with several bus stops and train stations nearby. There are also several bike paths and pedestrian routes, making it easy to get around without a car.",
+    "as_tourist": "The area is a popular spot for tourists, with many shops, restaurants, and attractions visible. There are several street performers and vendors, adding to the lively atmosphere.",
+    "as_student": "The area is a great place to study abroad, with several universities and colleges located nearby. There are also several outdoor cafes and restaurants, catering to the needs of students and young professionals."
+  }
+}

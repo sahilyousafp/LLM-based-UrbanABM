@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171932",
+    "latitude": 41.3904668,
+    "longitude": 2.153459,
+    "heading": 314.4442139421587,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "84fc4750-79ec-45b5-a90b-874e83317c14",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.390467_2.153459_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 4290.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with a black car parked along the curb, a person walking down the sidewalk, and a large white building with many windows in the background.",
+    "buildings": "The building has a modern design with a mix of concrete and glass facades",
+    "materials": "The building's exterior is made of a combination of concrete and glass",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk",
+    "vegetation": "There are some trees and bushes planted along the sidewalk",
+    "signage": "There are several signs posted on the street, including a parking sign and a directional sign",
+    "ground_surfaces": "The ground is paved with asphalt and has a few cracks",
+    "spatial_enclosure": "The street is relatively wide and open",
+    "pedestrian_activity": "People are walking in both directions on the sidewalk",
+    "lighting_atmosphere": "The sun is shining brightly, casting shadows on the buildings and sidewalk",
+    "as_resident": "The area appears to be quiet and peaceful",
+    "as_commuter": "The street is moderately busy with cars driving by",
+    "as_tourist": "The area is popular with tourists visiting the nearby shops and restaurants",
+    "as_student": "There are a few students walking on the sidewalk"
+  }
+}

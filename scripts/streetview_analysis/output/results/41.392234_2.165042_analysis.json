@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_032834",
+    "latitude": 41.392234,
+    "longitude": 2.165042,
+    "heading": 318.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2630449c-11fb-47a1-895b-308b7c937bd0",
+    "dist_along_edge_m": 9.5,
+    "source_image": "sv_41.392234_2.165042_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50244.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a train car interior with stairs leading down to the platform,",
+    "buildings": "The train car has a cream-colored wall with a metal railing and a door with a sign that says 'Google' on it.",
+    "materials": "The building has a modern design.",
+    "building_condition": "The building looks old but well-maintained.",
+    "street_furniture": "There are several chairs and tables.",
+    "vegetation": "There are some small trees and bushes.",
+    "signage": "There are several signs posted on the wall.",
+    "ground_surfaces": "The ground is made of concrete.",
+    "spatial_enclosure": "The train car is surrounded by a metal railing.",
+    "pedestrian_activity": "There are no people visible.",
+    "lighting_atmosphere": "The lighting is bright and even.",
+    "as_resident": "This area is quiet and peaceful.",
+    "as_commuter": "It's a long distance between the train station and the surrounding buildings.",
+    "as_tourist": "unknown",
+    "as_student": "I don't know how many students are present."
+  }
+}

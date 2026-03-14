@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_170806",
+    "latitude": 41.391816899999995,
+    "longitude": 2.1652607999999995,
+    "heading": 138.14728765729114,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f6477225-c722-4f0c-9cf5-8a9d40889f3b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391817_2.165261_h138.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21933.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow, curved hallway with a sloping ceiling and wooden parquet flooring. The walls are painted beige, and there is a small window on the left wall. A white radiator is against the back wall, and a sign stands in front of it. The floor is made of hexagonal tiles arranged in a pattern. There is a doorway on the right side of the room, and a light fixture is mounted on the left wall. The lighting is dim, but there is a warm glow emanating from the light fixture.",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners. It is two stories tall, with a flat roof. The second story has a large window on the left side, while the first story has a smaller window on the right side. The building appears to be well-maintained, with no visible signs of damage or wear.",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

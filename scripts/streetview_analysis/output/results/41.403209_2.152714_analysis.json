@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023505",
+    "latitude": 41.403209,
+    "longitude": 2.152714,
+    "heading": 160.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "23e9b06e-ba3c-4147-949c-405e927b0553",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403209_2.152714_h160.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50070.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street with tall buildings and cars parked along the side of the road. The sun is shining brightly, casting shadows across the sidewalk and pavement. People are walking along the sidewalk, some carrying bags or briefcases. There are several shops and cafes along the street, including a coffee shop with outdoor seating and a restaurant with a large sign reading 'Café Central'. The street is lined with trees and flowers, adding color and vibrancy to the scene. The sky is blue and clear, with only a few clouds visible.",
+    "buildings": "The buildings in the background are made of stone and have a mix of modern and traditional architectural styles. Some have balconies or terraces, while others have large windows or ornate facades. The buildings appear to be well-maintained, with clean streets and sidewalks.",
+    "materials": "The ground is paved with cobblestones, and there are several planters filled with flowers and shrubs along the sidewalk. The pavement is smooth and well-maintained, with a few cracks and unevenness here and there.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the café, as well as a few chairs and stools. A bicycle rack is also visible near the entrance to the coffee shop.",
+    "vegetation": "The trees and flowers add a touch of greenery to the scene, with leaves rustling gently in the breeze. The flowers are blooming in shades of pink, yellow, and purple.",
+    "signage": "The sign for Café Central is prominently displayed above the entrance, featuring a colorful logo and the words 'Café Central' in bold letters. There are also several other signs and advertisements along the street, including a large billboard advertising a local business.",
+    "ground_surfaces": "The ground is made of concrete, with a few cracks and unevenness here and there. There are also several manhole covers and utility boxes along the sidewalk.",
+    "spatial_enclosure": "The street is relatively narrow, with a few cars parked along the curb. The pavement is smooth and well-maintained, with a few cracks and unevenness here and there.",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or briefcases. There are also a few bicycles parked along the curb.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow cast over the scene. The sun is high in the sky, casting long shadows across the pavement.",
+    "as_resident": "A few people are sitting at tables outside Café Central, enjoying their drinks and snacks. Others are walking by, chatting or looking at their phones.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is bustling with activity, with people taking photos and admiring the architecture. There are also several tourists stopping to take pictures or admire the scenery.",
+    "as_student": "The street is lively and vibrant, with people of all ages and backgrounds going about their daily business. There are also several students walking along the sidewalk, some carrying books or laptops."
+  }
+}

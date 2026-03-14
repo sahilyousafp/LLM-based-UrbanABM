@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_191616",
+    "latitude": 41.3922043,
+    "longitude": 2.1645095999999997,
+    "heading": 47.27064757488972,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3835e299-3f97-4500-9678-b02bdae00e71",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392204_2.164510_h47.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64379.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a city street with tall buildings lining both sides,",
+    "buildings": "The buildings are primarily residential, with some commercial properties mixed in.",
+    "materials": "The street is paved with cobblestone, while the sidewalks are made of concrete.",
+    "building_condition": "Some of the buildings appear to be well-maintained, with clean windows and doors, but there are also signs of wear and tear, such as peeling paint and broken windows.",
+    "street_furniture": "There are several benches and trash cans scattered along the sidewalk.",
+    "vegetation": "The street is lined with trees and flowers, adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs advertising businesses, including a large billboard for Generali, a well-known Italian insurance company.",
+    "ground_surfaces": "The ground is made up of asphalt and concrete, with some areas showing signs of wear and tear.",
+    "spatial_enclosure": "The street is relatively narrow, with a few cars parked along the curb.",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to chat or take photos.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with shadows cast by the buildings.",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with many shops and restaurants nearby.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is bustling with activity, with people taking photos and admiring the architecture.",
+    "as_student": "The area is also a hub for students, who come to study and work in the nearby universities."
+  }
+}

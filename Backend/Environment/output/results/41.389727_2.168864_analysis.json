@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_204727",
+    "latitude": 41.3897269,
+    "longitude": 2.1688641999999994,
+    "heading": 220.84711882831658,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a9b2508d-5ea0-4a9f-a036-424a36087602",
+    "dist_along_edge_m": 7.0,
+    "source_image": "sv_41.389727_2.168864_h220.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 86041.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, featuring a mix of commercial and residential structures, including a prominent Zara store on the left and a row of parked scooters on the right. The street is bustling with pedestrians and vehicles, creating a lively urban atmosphere. The scene is set against a backdrop of blue skies with scattered clouds.",
+    "buildings": "The Zara store has a sleek, modern façade with large windows and a flat roof, while the surrounding buildings display a range of architectural styles, from historic to contemporary. A few trees add a touch of greenery to the urban landscape.",
+    "materials": "The Zara store's exterior is clad in smooth, light-colored stone, while the adjacent buildings feature a mix of materials, including brick, concrete, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "Bollards line the sidewalk, providing a sense of structure and order amidst the bustling activity.",
+    "vegetation": "Trees and bushes dot the street, adding a splash of color and texture to the urban environment.",
+    "signage": "Signs and advertisements adorn the buildings, drawing attention to local businesses and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is home to a diverse range of residents, from young professionals to families with children.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is popular with tourists, who come to admire the architecture and soak up the vibrant atmosphere.",
+    "as_student": "Students and commuters alike enjoy the street's proximity to educational institutions and public transportation."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_043217",
+    "latitude": 41.389679,
+    "longitude": 2.16881,
+    "heading": 40.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a9b2508d-5ea0-4a9f-a036-424a36087602",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389679_2.168810_h40.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 18132.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, lined with trees and featuring a bike lane and parking area along the left side. The street is relatively empty, with only a few cars and pedestrians visible. The sky is clear and blue, suggesting a sunny day.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and traditional architectural styles. They have large windows and ornate facades.",
+    "materials": "The street itself is paved with asphalt and has a bike lane marked by white lines. There are also several parked motorcycles and bicycles along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few streetlights.",
+    "vegetation": "The trees lining the street are tall and leafy, providing shade for pedestrians.",
+    "signage": "There are several signs posted along the street, including a blue sign indicating parking restrictions.",
+    "ground_surfaces": "The ground is made up of asphalt and concrete, with some areas of grass and dirt visible near the sidewalk.",
+    "spatial_enclosure": "The street is relatively narrow, but there are enough space between buildings to allow for easy passage.",
+    "pedestrian_activity": "There are a few people walking along the sidewalk, but the street is generally quiet.",
+    "lighting_atmosphere": "The lighting is bright and even, with no harsh shadows or glare.",
+    "as_resident": "The street appears to be a popular spot for locals, with several shops and cafes visible.",
+    "as_commuter": "The street is a convenient location for commuters, with several public transportation options available.",
+    "as_tourist": "The street offers a pleasant atmosphere for visitors, with plenty of outdoor seating areas and scenic views.",
+    "as_student": "The street is a great place to study urban planning and design."
+  }
+}

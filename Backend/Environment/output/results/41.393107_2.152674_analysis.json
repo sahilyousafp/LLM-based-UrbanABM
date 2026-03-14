@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_225104",
+    "latitude": 41.3931072,
+    "longitude": 2.1526738999999995,
+    "heading": 36.702957365061025,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "c6c3a2a8-64df-409c-9135-bbd0b5539df7",
+    "dist_along_edge_m": 144.4,
+    "source_image": "sv_41.393107_2.152674_h36.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44096.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with buildings on both sides, cars parked along the curb, and a few pedestrians walking on the sidewalk. The sky is clear and blue, with a few clouds visible in the distance.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

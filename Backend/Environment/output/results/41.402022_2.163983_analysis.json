@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_001606",
+    "latitude": 41.4020222,
+    "longitude": 2.1639833000000004,
+    "heading": 221.94503364629358,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "road",
+    "edge_id": "980a8833-877c-4b46-b5ab-677f876a7389",
+    "dist_along_edge_m": 13.3,
+    "source_image": "sv_41.402022_2.163983_h221.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43411.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides, lined with trees and featuring a man riding a bicycle down the middle of the road. The street is paved with cobblestones and has a few leaves scattered about. The buildings have balconies and windows, and there are several traffic lights along the sidewalk. The sky is overcast.",
+    "buildings": "The buildings are multi-story structures with ornate facades and balconies. They appear to be residential or commercial properties.",
+    "materials": "The street is paved with cobblestones, and the buildings' facades are made of stone and brick.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture such as benches, trash cans, or bike racks.",
+    "vegetation": "The trees lining the street are leafy and well-maintained.",
+    "signage": "There are several traffic lights and signs along the sidewalk.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be quiet and peaceful, with no visible signs of activity or noise pollution.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with interesting architectural details, including ornate balconies and decorative trim.",
+    "as_student": "The street is a convenient location for students to run errands or do chores."
+  }
+}

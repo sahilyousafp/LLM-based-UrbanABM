@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_215037",
+    "latitude": 41.3880363,
+    "longitude": 2.159932,
+    "heading": 313.72227181720035,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "175fc035-e791-4554-810a-31c1ff52f407",
+    "dist_along_edge_m": 81.3,
+    "source_image": "sv_41.388036_2.159932_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43606.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with buildings on both sides, lined with trees and featuring various vehicles and pedestrians. The street is relatively empty, with only a few cars and a motorcycle present. The sky is clear and blue, suggesting a sunny day.",
+    "buildings": "Left building: A large, multi-story structure with a cream-colored facade and brown accents. It has a flat roof and numerous windows.",
+    "materials": "Left building condition",
+    "building_condition": "unknown",
+    "street_furniture": "Benches",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

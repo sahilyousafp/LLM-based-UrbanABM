@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_012738",
+    "latitude": 41.386453,
+    "longitude": 2.170351,
+    "heading": 252.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "8eee9c92-0015-4d52-8b61-09b9d7f639c4",
+    "dist_along_edge_m": 3.1,
+    "source_image": "sv_41.386453_2.170351_h252.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48555.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city square with a fountain in the middle surrounded by buildings and trees. The sky is blue with some clouds. There are two large buildings in the background, one white and one beige. The white building has a clock tower. The beige building has a flat roof. The fountain is made of gray stone and has a statue of a horse on top. The ground is paved with gray bricks and there are several trees around the square. There are also some pigeons on the ground. The overall atmosphere is calm and peaceful.",
+    "buildings": "The white building has a modern design with many windows and a flat roof. It has a clock tower on top. The beige building has a more traditional design with a pitched roof. Both buildings have a mix of stone and concrete materials. The white building has a more ornate entrance with columns. The beige building has a simple entrance with a small window.",
+    "materials": "The fountain is made of gray stone. The white building has a smooth, polished finish. The beige building has a rougher texture. The ground is paved with gray bricks. The trees are tall and leafy. The pigeons are small and brown. The sky is blue with some white clouds.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the square. There are also some trash cans and recycling bins. The streetlights are old-fashioned and not very bright.",
+    "vegetation": "The trees are tall and leafy. They provide shade and beauty to the area. The pigeons are small and brown. The flowers are blooming and colorful.",
+    "signage": "There are several signs posted around the square. They are mostly illegible but appear to be informational signs. There are also some advertisements posted on the buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people walking through the square. Some are sitting on benches. Others are taking photos or chatting with friends.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area is popular with locals and tourists alike. People come here to relax and enjoy the scenery. There are several cafes and restaurants in the area. The area is safe and welcoming.",
+    "as_commuter": "This area is convenient for commuting. The area is close to public transportation. There are several buses and trains in the area. The area is safe and accessible.",
+    "as_tourist": "This area is popular with tourists. There are several shops and restaurants in the area. The area is lively and bustling. There are several street performers and artists in the area.",
+    "as_student": "This area is popular with students. There are several cafes and restaurants in the area. The area is quiet and peaceful. There are several bookstores and libraries in the area."
+  }
+}

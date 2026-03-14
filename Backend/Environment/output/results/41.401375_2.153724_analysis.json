@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_213949",
+    "latitude": 41.401375200000004,
+    "longitude": 2.1537239,
+    "heading": 141.11320216811032,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "102b0e28-44a7-47f7-aede-317bf0bf67f0",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401375_2.153724_h141.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43090.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, lined with trees and featuring a mix of cars, pedestrians, and parked motorcycles. The street has a crosswalk and a stop sign, with a few people sitting on the sidewalk and others walking along the street. The sky is clear and blue.",
+    "buildings": "The buildings are primarily beige and cream-colored, with some having balconies and ornate details. Some have graffiti on them.",
+    "materials": "The street is paved with asphalt and has white markings indicating pedestrian crossings and bike lanes.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "The trees are leafy and well-maintained.",
+    "signage": "There are various signs, including a stop sign, a yellow traffic light, and a few business signs.",
+    "ground_surfaces": "The ground is mostly smooth asphalt with some cracks and unevenness.",
+    "spatial_enclosure": "The street feels relatively open, with a slight curve to the right.",
+    "pedestrian_activity": "People are walking in small groups or alone, with some sitting on the sidewalk.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with shadows cast by the trees.",
+    "as_resident": "The area appears to be residential, with a few shops and cafes.",
+    "as_commuter": "The street is a convenient location for commuting to work or school.",
+    "as_tourist": "The area is a unique blend of art and culture.",
+    "as_student": "The area is a great place to meet new people."
+  }
+}

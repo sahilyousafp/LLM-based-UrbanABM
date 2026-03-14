@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_173728",
+    "latitude": 41.389947,
+    "longitude": 2.1678705999999996,
+    "heading": 227.49119055324408,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "4d0e8903-ae92-42f7-98db-b61730c6a429",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389947_2.167871_h227.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21923.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a bus stop with a car parked next to it, surrounded by buildings and trees. The sky is clear and blue. The sun is shining brightly, casting shadows on the ground. The bus stop has a yellow sign with green writing on it. There are several buildings in the background, including a tall white building with many windows and a shorter brown building with a sloping roof. There are also some trees with no leaves. A dark gray car is parked next to the bus stop.",
+    "buildings": "The buildings in the background are made of stone and have different shapes and sizes. Some have balconies and others do not. The tallest building has a flat roof and a large window on the top floor. The brown building has a sloping roof and a small balcony on the second floor. The white building has a rectangular shape and a large window on the front.",
+    "materials": "The bus stop has a metal frame and a glass enclosure. The sign is attached to the side of the bus stop. The car is parked next to the bus stop. The buildings in the background have various materials such as stone, brick, and concrete.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two benches inside the bus stop. One is on the left side and the other is on the right side. There are also two trash cans near the bus stop.",
+    "vegetation": "There are several trees in the background, but they are mostly bare. They have lost their leaves due to the season.",
+    "signage": "There are several signs in the background, including a yellow sign with black text. It appears to be an advertisement for a business.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful. There are no people visible.",
+    "as_commuter": "The area appears to be busy and crowded. There are several people visible in the distance.",
+    "as_tourist": "The area appears to be popular with tourists. There are several people visible in the distance.",
+    "as_student": "The area appears to be busy and active. There are several people visible in the distance."
+  }
+}

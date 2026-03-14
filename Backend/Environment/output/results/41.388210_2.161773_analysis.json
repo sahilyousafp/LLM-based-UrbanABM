@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_233803",
+    "latitude": 41.38820989999999,
+    "longitude": 2.1617729,
+    "heading": 151.8931982219279,
+    "street_name": "Carrer d'Enric Granados",
+    "highway_type": "road",
+    "edge_id": "a52a1a96-4691-44cf-8e6b-af3ace79f9da",
+    "dist_along_edge_m": 28.8,
+    "source_image": "sv_41.388210_2.161773_h151.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 16326.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a quiet neighborhood with a few people walking around,",
+    "buildings": "The buildings have a mix of old and new architecture, with some having balconies and others being more minimalist,",
+    "materials": "The streets are paved with cobblestone and have a few trees planted along the sidewalk,",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and tables outside cafes,",
+    "vegetation": "The trees provide shade and add a touch of greenery to the area,",
+    "signage": "There are several street signs and advertisements,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area seems quiet and peaceful,",
+    "as_commuter": "unknown",
+    "as_tourist": "There are a few shops and restaurants,",
+    "as_student": "The area is popular with students."
+  }
+}

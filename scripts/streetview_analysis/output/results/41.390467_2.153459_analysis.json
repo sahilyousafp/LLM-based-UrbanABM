@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_005709",
+    "latitude": 41.390467,
+    "longitude": 2.153459,
+    "heading": 314.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "84fc4750-79ec-45b5-a90b-874e83317c14",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.390467_2.153459_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48822.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with a black car parked along the curb, a person walking down the sidewalk, and a large white building with many windows and columns in the background. The building has a parking sign on a pole in front of it.",
+    "buildings": "The building has a cream-colored facade with brown accents and a flat roof.",
+    "materials": "The building's exterior is made of concrete and brick.",
+    "building_condition": "The building appears well-maintained but shows some signs of wear and tear.",
+    "street_furniture": "There are several scooters parked along the sidewalk.",
+    "vegetation": "There are no plants or trees in the immediate area.",
+    "signage": "There are two signs on the pole, one blue and one white.",
+    "ground_surfaces": "The ground is paved with asphalt.",
+    "spatial_enclosure": "The street is relatively narrow and has a slight incline.",
+    "pedestrian_activity": "A person is walking down the sidewalk.",
+    "lighting_atmosphere": "The sun is shining brightly, casting long shadows across the street.",
+    "as_resident": "The building appears to be a commercial or office space.",
+    "as_commuter": "unknown",
+    "as_tourist": "The building has a modern design and appears to be a popular spot for tourists.",
+    "as_student": "The building has a clean and professional appearance."
+  }
+}

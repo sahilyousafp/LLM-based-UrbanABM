@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_021416",
+    "latitude": 41.396261,
+    "longitude": 2.159259,
+    "heading": 317.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "890704c4-1518-469d-baca-042a9888bc2c",
+    "dist_along_edge_m": 8.0,
+    "source_image": "sv_41.396261_2.159259_h317.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48835.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings, cars, buses, and motorcycles. The street is paved with asphalt and has white lines painted on it. There are several vehicles moving along the street, including cars, buses, and motorcycles. A large building stands out in the background, featuring a modern design with many windows. Trees line the street, adding some greenery to the urban landscape. The sky is blue with some clouds.",
+    "buildings": "The buildings in the background are all different styles and sizes.",
+    "materials": "The left building has a glass facade with a metal frame.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture such as benches, trash cans, or bike racks.",
+    "vegetation": "The trees in the background have yellow leaves.",
+    "signage": "There are no visible signs or advertisements.",
+    "ground_surfaces": "The ground is made of asphalt and has a rough texture.",
+    "spatial_enclosure": "The street feels open and airy due to its width and lack of obstructions.",
+    "pedestrian_activity": "There are no pedestrians visible in the image.",
+    "lighting_atmosphere": "The lighting is bright and natural, with sunlight casting shadows on the street.",
+    "as_resident": "The street is relatively quiet, with only a few cars parked along the side of the road.",
+    "as_commuter": "The street is a hub of activity, with people going about their daily business.",
+    "as_tourist": "The street is lined with tall buildings and has a mix of shops and restaurants.",
+    "as_student": "The street is a popular spot for students to hang out and socialize."
+  }
+}

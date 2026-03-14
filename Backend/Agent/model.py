@@ -23,7 +23,7 @@ from Thinking.dispatcher import BlockDispatcher, reset_step_counter
 
 # Path to the DuckDB database (Overture Maps data)
 PROJECT_ROOT = Path(__file__).parent.parent.parent
-DB_PATH = PROJECT_ROOT / "eixample_overture.duckdb"
+DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
 
 class CityAgent(mg.GeoAgent):
     """
@@ -38,6 +38,7 @@ class CityAgent(mg.GeoAgent):
         super().__init__(model=model, geometry=geometry, crs=crs)
         self.agent_type = "CityAgent"
         self.nearby_amenities = []
+        self.street_perception = None
 
         # Network movement attributes
         self.current_edge_id = edge_id
@@ -132,12 +133,22 @@ class CityAgent(mg.GeoAgent):
         # Query DuckDB for nearby amenities
         self.nearby_amenities = self.model.get_nearby_amenities(self.geometry)
 
+        # Query nearest street view perception data
+        self.street_perception = self.model.get_nearby_perception(self.geometry)
+
         # Update position in memory
         await self.memory.status.update("position", {
             "lon": self.geometry.x,
             "lat": self.geometry.y,
             "edge_id": self.current_edge_id,
         })
+
+        # Only evaluate a new edge if we've reached the end of the current one
+        # or if we don't have an edge yet.
+        needs_new_edge = (
+            self.current_edge_id is None or 
+            self.position_along_edge >= 1.0
+        )
 
         # Build candidate edges for mobility decision
         candidate_edges = self._get_candidate_edges()
@@ -147,10 +158,12 @@ class CityAgent(mg.GeoAgent):
             step=self.model.steps,
             candidate_edges=candidate_edges,
             nearby_amenities=self.nearby_amenities,
+            street_perception=self.street_perception,
+            needs_new_edge=needs_new_edge,
         )
 
         # Apply mobility decision — move to chosen edge
-        if result.mobility.action == "move_to_edge":
+        if needs_new_edge and result.mobility.action == "move_to_edge":
             self._apply_mobility(result.mobility.params)
         elif result.mobility.action == "stay":
             pass  # Stay on current edge
@@ -184,14 +197,16 @@ class CityAgent(mg.GeoAgent):
 
         result = []
         for eid, geom, direction in candidates:
-            # Annotate each candidate with nearby amenity types for the prompt
+            # Annotate each candidate with nearby amenity types and perception for the prompt
             midpoint = Point(geom.coords[len(geom.coords) // 2])
             amenity_types = [a.get("type", "") for a in self.model.get_nearby_amenities(midpoint)[:3]]
+            perception = self.model.get_streetview_perception(midpoint)
             result.append({
                 "edge_id": eid,
                 "geom": geom,
                 "direction": direction,
                 "amenities": [{"type": t} for t in amenity_types],
+                "perception": perception,
                 "description": f"{direction} edge",
             })
         return result
@@ -217,9 +232,17 @@ class CityAgent(mg.GeoAgent):
         """Move agent forward along the current edge geometry."""
         if self.current_edge_geom is None:
             return
-        self.position_along_edge += self.move_speed
+        
+        # Don't move if we're already at the end waiting for a new edge
         if self.position_along_edge >= 1.0:
-            self.position_along_edge = 0.0  # MobilityBlock will handle next selection
+            return
+
+        self.position_along_edge += self.move_speed
+        
+        # Cap at 1.0 so we stop at intersections until a new decision is made
+        if self.position_along_edge >= 1.0:
+            self.position_along_edge = 1.0
+
         coords = list(self.current_edge_geom.coords)
         if len(coords) >= 2:
             idx = min(int(self.position_along_edge * (len(coords) - 1)), len(coords) - 2)
@@ -347,8 +370,32 @@ class CityModel(mesa.Model):
             self.node_to_edges = defaultdict(list)
         
         print(f"Spawning {num_agents} agents on network...")
+
+        # Load street view scene analysis JSON cache for agent perception
+        import json as _json_mod
+        import re as _re_mod
+        _sv_results = PROJECT_ROOT / "Backend" / "Environment" / "output" / "results"
+        self._sv_cache = []
+        if _sv_results.is_dir():
+            for _jf in sorted(_sv_results.glob("*_analysis.json")):
+                _m = _re_mod.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", _jf.name)
+                if not _m:
+                    continue
+                try:
+                    _data = _json_mod.loads(_jf.read_text(encoding="utf-8"))
+                    self._sv_cache.append({
+                        "lat": float(_m.group(1)),
+                        "lon": float(_m.group(2)),
+                        "scene_analysis": _data.get("scene_analysis", {}),
+                    })
+                except Exception:
+                    continue
+            print(f"[OK] Loaded {len(self._sv_cache)} street view scene analysis points")
+        else:
+            print("[WARN] Street view results directory not found; scene perception disabled")
+
         edge_ids = list(self.edges.keys())
-        
+
         if not edge_ids:
             print("[ERROR] No edges available for spawning!")
             return
@@ -395,6 +442,37 @@ class CityModel(mesa.Model):
         point_key = (round(point.x, 6), round(point.y, 6))
         return self.node_to_edges.get(point_key, [])
     
+    def get_streetview_perception(self, point_geom) -> str:
+        """
+        Find the nearest street view scene analysis within ~150m.
+        Returns a prose paragraph summarising the scene, or empty string if none nearby.
+        """
+        scene = self.get_nearby_perception(point_geom)
+        if not scene:
+            return ""
+        field_labels = [
+            ("scene_overview",      "Scene"),
+            ("buildings",           "Buildings"),
+            ("materials",           "Materials"),
+            ("vegetation",          "Vegetation"),
+            ("street_furniture",    "Street furniture"),
+            ("signage",             "Signage"),
+            ("ground_surfaces",     "Ground"),
+            ("spatial_enclosure",   "Spatial enclosure"),
+            ("pedestrian_activity", "Pedestrian activity"),
+            ("lighting_atmosphere", "Lighting"),
+            ("as_resident",         "For residents"),
+            ("as_commuter",         "For commuters"),
+            ("as_tourist",          "For tourists"),
+            ("as_student",          "For students"),
+        ]
+        parts = []
+        for key, label in field_labels:
+            val = scene.get(key, "")
+            if val and val.strip().lower() != "unknown":
+                parts.append(f"{label}: {val}")
+        return " | ".join(parts) if parts else ""
+
     def get_nearby_amenities(self, point_geom):
         """
         Query DuckDB for amenities within ~50m of the point.
@@ -419,7 +497,26 @@ class CityModel(mesa.Model):
             print(f"Query Error: {e}")
             print(f"  Point: lon={point_geom.x}, lat={point_geom.y}")
             return []
-    
+
+    def get_nearby_perception(self, point_geom):
+        """
+        Find the nearest street view scene analysis point within ~150m.
+        Returns the full scene_analysis dict from the JSON file, or None if nothing nearby.
+        """
+        _THRESHOLD_DEG = 0.0015  # ~150m at Barcelona latitude
+        best = None
+        best_dist = _THRESHOLD_DEG
+        for entry in self._sv_cache:
+            dx = entry["lon"] - point_geom.x
+            dy = entry["lat"] - point_geom.y
+            dist = (dx * dx + dy * dy) ** 0.5
+            if dist < best_dist:
+                best_dist = dist
+                best = entry
+        if best is None:
+            return None
+        return dict(best["scene_analysis"])
+
     def step(self):
         self.steps += 1
         reset_step_counter(self.steps)

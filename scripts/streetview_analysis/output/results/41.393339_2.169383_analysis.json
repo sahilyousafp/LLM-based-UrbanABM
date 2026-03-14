@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002412",
+    "latitude": 41.393339,
+    "longitude": 2.169383,
+    "heading": 220.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ea5642ff-a51c-4c28-af7f-1b10b257eddd",
+    "dist_along_edge_m": 38.6,
+    "source_image": "sv_41.393339_2.169383_h220.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48759.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long, narrow corridor with a smooth concrete floor and rough stone walls, lit by small lights along the ceiling. The walls are made of rough-hewn stones, with some sections covered in smooth concrete. The corridor stretches out into the distance, with a few windows visible at the far end. The atmosphere is quiet and peaceful, with a sense of history and age. The lighting is soft and warm, casting long shadows across the floor. The overall mood is calm and contemplative.",
+    "buildings": "The corridor is lined with old buildings, some of which have been restored or renovated. Some have large windows, while others have smaller ones. The buildings appear to be made of a combination of stone and brick, with some having wooden beams and others having metal accents. Some of the buildings have signs or advertisements on them, but most are plain.",
+    "materials": "The materials used in the construction of the corridor include stone, brick, and concrete. The stone walls are rough-hewn and weathered, while the floor is smooth and polished. The ceiling is made of metal and has a series of pipes and ductwork running along it.",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and trash cans scattered throughout the corridor, as well as some streetlights and other objects that suggest the area is used for both pedestrian and vehicular traffic.",
+    "vegetation": "There are a few plants and trees growing along the corridor, including some potted plants and a small garden bed near the entrance.",
+    "signage": "There are several signs posted along the corridor, including a large sign that reads 'Eixample' in bold letters. There are also several smaller signs that appear to be advertising local businesses or services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a resident, I would find this corridor to be a pleasant place to spend time. It's a quiet and peaceful spot to take a stroll, enjoy the architecture, or sit and read a book.",
+    "as_commuter": "As a commuter, I would find this corridor to be a convenient and efficient way to get around the city. It's a short walk from my office or school, and the proximity to public transportation makes it easy to get to other parts of the city.",
+    "as_tourist": "As a tourist, I would find this corridor to be a great place to visit. It's a charming and historic neighborhood with plenty of interesting buildings and landmarks, and there are plenty of things to see and do.",
+    "as_student": "As a student, I would find this corridor to be a great place to study or work. It's a quiet and peaceful environment, with plenty of natural light and comfortable seating areas."
+  }
+}

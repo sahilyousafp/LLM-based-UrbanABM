@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_001650",
+    "latitude": 41.3959786,
+    "longitude": 2.1717628000000007,
+    "heading": 138.38198630591137,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "road",
+    "edge_id": "784b5494-543b-43ae-8eab-875fe7238bf7",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395979_2.171763_h138.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44061.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with a car and a motorcycle driving down it, lined with tall buildings and trees on both sides. The street has a crosswalk and a median strip with trees and plants. There are no pedestrians or other vehicles visible. The sky is overcast.",
+    "buildings": "The buildings on either side of the street are a mix of old and new, with some featuring ornate facades and others having more modern designs.",
+    "materials": "The street is paved with a combination of asphalt and concrete.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area.",
+    "vegetation": "The trees provide shade and add a touch of greenery to the urban landscape.",
+    "signage": "There are several signs posted along the street, including a stop sign and a pedestrian crossing signal.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "The street is quiet and peaceful, with no visible noise pollution.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a slight haze in the air.",
+    "as_resident": "The street appears to be quiet and peaceful, with no visible noise pollution.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with interesting architectural features, such as the ornate facades and decorative details.",
+    "as_student": "The street is a popular spot for students, with several cafes and restaurants nearby."
+  }
+}

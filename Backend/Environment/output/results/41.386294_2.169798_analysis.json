@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174240",
+    "latitude": 41.386293899999984,
+    "longitude": 2.1697976,
+    "heading": 24.09813031478012,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "e0908b36-f83a-4ac0-a37d-7ab4a2393b4b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386294_2.169798_h24.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21891.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a large open space in the middle, lined with trees and buildings on both sides. The sky is clear and blue, with a few birds flying overhead. A person walks along the sidewalk on the left side of the street, while others stand near the trees. The street is empty except for two trash cans on the right side. The ground is paved with concrete, and there are several large buildings in the distance. The overall atmosphere is calm and peaceful.",
+    "buildings": "The buildings in the background are tall and modern, with a mix of white and beige facades. They have multiple stories and feature large windows and balconies. Some have decorative elements such as columns and arches. The buildings appear well-maintained and clean.",
+    "materials": "The street is paved with gray concrete, and there are several large trees planted along the sidewalk. The trees are leafy and green, providing shade for pedestrians. There are also several large planters filled with flowers and shrubs.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, providing places for people to sit and rest. There are also several trash cans and recycling bins placed along the sidewalk.",
+    "vegetation": "The trees and plants add a touch of nature to the urban landscape. There are several large trees with green leaves, as well as smaller bushes and flowers. The plants are well-maintained and add color to the scene.",
+    "signage": "There are several signs posted along the street, including traffic signs and directional signs. Some of the signs are illegible, but they appear to provide important information to pedestrians and drivers.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the street, with its abundance of greenery and comfortable seating areas. They might enjoy the sound of birds chirping and the smell of fresh air.",
+    "as_commuter": "A commuter might use the street as a way to connect with others, meeting friends or colleagues on the go.",
+    "as_tourist": "A tourist might take a moment to appreciate the street's unique character, taking photos and learning about the local culture and history.",
+    "as_student": "A student might use the street as a place to learn and grow, taking notes and asking questions about the local environment and community."
+  }
+}

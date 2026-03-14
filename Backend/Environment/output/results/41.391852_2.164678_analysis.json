@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223807",
+    "latitude": 41.39185249999999,
+    "longitude": 2.1646781,
+    "heading": 314.46258589266097,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "fdcbf39a-6ef2-4509-8a53-2d23362c3d59",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391852_2.164678_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 14056.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with pedestrians and buildings along the sidewalk,",
+    "buildings": "A large brown building with balconies and windows,",
+    "materials": "The building has a mix of stone and brick exterior walls,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk,",
+    "vegetation": "There are trees and bushes along the sidewalk,",
+    "signage": "There are several signs indicating bus stops and pedestrian crossings,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area is likely residential,",
+    "as_commuter": "It is a busy commercial area,",
+    "as_tourist": "It is a scenic spot for tourists.",
+    "as_student": "It is a popular spot for students,"
+  }
+}

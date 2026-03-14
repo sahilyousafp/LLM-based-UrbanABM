@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_014212",
+    "latitude": 41.395306,
+    "longitude": 2.155001,
+    "heading": 72.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "dd0aaced-be8b-4e55-a98d-640bbd3f1391",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395306_2.155001_h72.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48649.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, palm trees planted along the sidewalk, and a bike lane separated by a metal railing. The street is busy with cars and pedestrians, and there are several motorcycles parked along the curb. A pedestrian crossing signal is visible, and a person is sitting on a bench on the right side of the street. The sky is partly cloudy.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and older styles, featuring large windows and balconies. Some have ornate facades, while others appear more minimalist.",
+    "materials": "The street is paved with asphalt, and the sidewalk is made of concrete. There are also some decorative elements like pavers and planters.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, as well as a few trash cans and recycling bins.",
+    "vegetation": "Palm trees line the street, providing shade and adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs indicating traffic rules and directions, including a pedestrian crossing signal and a no-parking sign.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, offering a pleasant place to relax and enjoy the surroundings.",
+    "as_commuter": "The street is a popular spot for those who want to get around without a car.",
+    "as_tourist": "The street is a great place to visit for those who want to experience the best of Barcelona's urban culture.",
+    "as_student": "The area is a great spot for students to study abroad."
+  }
+}

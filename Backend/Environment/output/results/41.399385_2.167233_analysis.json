@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_000231",
+    "latitude": 41.3993853,
+    "longitude": 2.1672325000000003,
+    "heading": 44.09499669439981,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "road",
+    "edge_id": "fade6246-6f21-4b08-90a2-35778dc41cd2",
+    "dist_along_edge_m": 12.3,
+    "source_image": "sv_41.399385_2.167233_h44.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 4639.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings, trees, and a white van parked along the curb. The street has yellow lines painted on it, indicating parking spaces. There are potted plants lining the sidewalk, and a few people can be seen walking down the street. The sky is overcast.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

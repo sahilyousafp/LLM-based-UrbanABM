@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_011626",
+    "latitude": 41.388976,
+    "longitude": 2.160856,
+    "heading": 138.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2ab7cd1d-0da3-44ab-8537-5a831a7fa4cc",
+    "dist_along_edge_m": 40.9,
+    "source_image": "sv_41.388976_2.160856_h138.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48881.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, featuring a mix of modern and older structures, including a large beige building with many windows and a smaller yellow building with a flat roof, surrounded by lush greenery and palm trees. The street is empty except for two people walking in the distance, with a few cars parked along the curb. The sky is overcast with clouds.",
+    "buildings": "The beige building has a classic design with a symmetrical facade, while the yellow building has a more contemporary look with clean lines and minimal ornamentation. Both have multiple stories and appear to be residential or commercial properties.",
+    "materials": "The beige building's exterior is clad in a combination of stone and brick, while the yellow building's facade is made of smooth concrete and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans scattered throughout the area, providing a place for pedestrians to rest and dispose of waste.",
+    "vegetation": "The street is lined with tall trees and bushes, creating a peaceful oasis amidst the urban landscape.",
+    "signage": "There are several signs posted along the street, including a directional sign pointing to a nearby park and a utility company logo.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is a vibrant community hub, with a strong sense of history and culture.",
+    "as_commuter": "The street is a busy hub of activity, with people going about their daily business.",
+    "as_tourist": "The street is a popular destination for foodies and photographers.",
+    "as_student": "The street is a great place to learn about urban development and sustainability."
+  }
+}

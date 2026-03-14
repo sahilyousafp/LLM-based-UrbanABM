@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_221458",
+    "latitude": 41.3948148,
+    "longitude": 2.168992,
+    "heading": 320.8447230964841,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "67dfa1cb-6e93-4ed4-9c95-738702c9fc52",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394815_2.168992_h320.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43880.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, featuring a mix of old and new architecture, including a large white van parked on the left side of the street and a tall tree casting a shadow over the area. The street is relatively empty, with only a few cars parked along the curb and a small group of people visible in the distance. The sky is clear and blue, with a few clouds scattered across it.",
+    "buildings": "The buildings on either side of the street are multi-story structures with ornate facades, featuring balconies, archways, and decorative details such as columns and pediments. The buildings appear to be well-maintained, with some showing signs of wear and tear but still retaining much of their original charm.",
+    "materials": "The street itself is paved with asphalt, with a smooth texture and a subtle sheen. The sidewalk is made of concrete, with a slight incline leading up to the buildings.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for pedestrians to rest and dispose of waste. A few bicycles are also parked near the curb.",
+    "vegetation": "The trees are tall and leafy, with branches stretching out over the street and providing shade for those who sit beneath them. The leaves are a vibrant green, adding a pop of color to the otherwise drab urban landscape.",
+    "signage": "There are several signs posted along the street, including street signs, directional signs, and informational signs. Some of the signs are mounted on poles, while others are attached to buildings or freestanding.",
+    "ground_surfaces": "The ground surfaces are made of asphalt, with a rough texture and a subtle sheen. The sidewalk is made of concrete, with a slight incline leading up to the buildings.",
+    "spatial_enclosure": "The street is relatively open, with a clear path through the center. The buildings on either side of the street create a sense of enclosure, but there are still plenty of space between the buildings and the street.",
+    "pedestrian_activity": "There are a few people visible in the distance, walking along the sidewalk or sitting on benches. They appear to be going about their daily business, unaware of the camera capturing their activities.",
+    "lighting_atmosphere": "The lighting in the image is bright and sunny, with a warm glow cast by the sun. The shadows are long and deep, indicating that the sun is high in the sky.",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the street, enjoying the fresh air and sunshine. They might find the street charming and inviting, despite its urban setting.",
+    "as_commuter": "unknown",
+    "as_tourist": "A tourist might be drawn to the street's historic architecture and lively atmosphere. They might take photos and admire the unique features of the buildings and streetscape.",
+    "as_student": "A student might appreciate the street's educational value, finding interesting historical landmarks and cultural attractions. They might explore the surrounding area, taking in the sights and sounds of the city."
+  }
+}

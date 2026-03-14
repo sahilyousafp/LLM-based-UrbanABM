@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_031105",
+    "latitude": 41.389074,
+    "longitude": 2.167822,
+    "heading": 134.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "44cab5b7-0d83-4827-8680-7ee72b72734c",
+    "dist_along_edge_m": 4.9,
+    "source_image": "sv_41.389074_2.167822_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50690.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with tall buildings, trees, and a blue car parked along the curb. The street is wide and empty, with a few pedestrians walking around. There are several large buildings lining the street, including a white building with many windows and a blue awning. A statue stands in front of the building, and there are several trees and bushes along the sidewalk. The sky is clear and blue.",
+    "buildings": "The white building has a modern design with a flat roof and a large number of windows. It appears to be a commercial or office building, possibly a hotel or apartment complex. The building is surrounded by other similar structures, but it stands out due to its size and design.",
+    "materials": "The statue is made of stone and has a classical design. It depicts a person or figure, but the details are not clear. The statue is placed on a pedestal and is surrounded by small bushes and trees.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a bike rack with several bicycles attached. The street itself is paved with asphalt and has a smooth surface.",
+    "vegetation": "The trees are tall and have green leaves, providing shade for pedestrians and adding to the aesthetic appeal of the area. The bushes are neatly trimmed and add some color to the scene.",
+    "signage": "There are several signs posted along the street, including a large sign that reads 'Café' and another that says 'Hotel'. There are also several smaller signs advertising local businesses.",
+    "ground_surfaces": "The ground is paved with asphalt and has a smooth surface. There are several cracks and potholes visible, but they do not appear to be major issues.",
+    "spatial_enclosure": "The street feels relatively open and spacious, with plenty of room for pedestrians to move around. However, there are some narrow alleys and side streets that can be found off the main thoroughfares.",
+    "pedestrian_activity": "There are several people visible in the distance, walking along the sidewalk or sitting on benches. Some are engaged in conversation, while others are reading or simply enjoying the scenery.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow that suggests a pleasant day. The sun is high in the sky, casting long shadows across the street.",
+    "as_resident": "This area appears to be a popular spot for locals and tourists alike, with several shops and cafes catering to visitors. There are also several restaurants and bars, offering a range of food and drink options.",
+    "as_commuter": "The area is a convenient location for commuters, with several bus stops and train stations nearby. There are also several bike paths and bike lanes, making it easy for commuters to get around without cars.",
+    "as_tourist": "The area is a popular spot for tourists, with several attractions and landmarks visible in the distance. There are several restaurants and shops catering to tourists, as well as several hotels and bed and breakfasts.",
+    "as_student": "This area is a great place to live, with several apartments and houses located nearby. There are also several parks and gardens, making it a desirable place to call home."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_001949",
+    "latitude": 41.40300150000001,
+    "longitude": 2.152264,
+    "heading": 77.95559110379583,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "0888d7b3-6c93-4887-b920-623711e0ca59",
+    "dist_along_edge_m": 12.0,
+    "source_image": "sv_41.403002_2.152264_h77.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85964.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow alleyway between two buildings with a small window on the right side,",
+    "buildings": "The building on the left has a wooden facade with a large window, while the building on the right has a blue wall with a metal hand dryer mounted on it.",
+    "materials": "The wooden building has a smooth, light-colored wood exterior, while the blue building has a rougher texture and a metal hand dryer attached to its wall.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the alleyway.",
+    "vegetation": "There are no visible plants or trees in the alleyway.",
+    "signage": "There are no visible signs in the alleyway.",
+    "ground_surfaces": "The ground is made of concrete.",
+    "spatial_enclosure": "The alleyway is relatively narrow, with a slight curve to the right.",
+    "pedestrian_activity": "There are no pedestrians visible.",
+    "lighting_atmosphere": "The lighting is dim, with a pinkish hue.",
+    "as_resident": "The alleyway is quiet and empty.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are no visible tourists.",
+    "as_student": "There are no visible students."
+  }
+}

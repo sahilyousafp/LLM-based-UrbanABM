@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_175515",
+    "latitude": 41.3924607,
+    "longitude": 2.1650774,
+    "heading": 59.32633388854566,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "749e8e10-2c13-4357-adc0-d02e104804d4",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392461_2.165077_h59.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 4325.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a busy shopping area with pedestrians and cars,",
+    "buildings": "A row of tall buildings with a mix of old and new architecture,",
+    "materials": "The buildings have a combination of stone, brick, and glass facades,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk,",
+    "vegetation": "There are some small trees and bushes planted in planters,",
+    "signage": "There are several signs advertising businesses and directions,",
+    "ground_surfaces": "The ground is made of cobblestone,",
+    "spatial_enclosure": "The street is relatively narrow and winding,",
+    "pedestrian_activity": "People are walking in both directions,",
+    "lighting_atmosphere": "The sun is shining down on the street,",
+    "as_resident": "The street is bustling with activity,",
+    "as_commuter": "It's a popular spot for locals and tourists alike,",
+    "as_tourist": "The area has a lively atmosphere,",
+    "as_student": "The area is also home to many artists and creatives."
+  }
+}

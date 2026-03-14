@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_175916",
+    "latitude": 41.3953693,
+    "longitude": 2.160563100000001,
+    "heading": 318.13455748868535,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "69eb9bc8-2372-419e-9089-4d17a4ea7aa1",
+    "dist_along_edge_m": 30.1,
+    "source_image": "sv_41.395369_2.160563_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 22076.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with buildings on both sides, paved with cobblestone and lined with trees, featuring a mix of old and new architecture, including a large beige building with many windows and balconies on the left, and a modern glass-fronted building on the right. The street is relatively empty, with only a few pedestrians and vehicles visible. A bus stop and a bus stop shelter are present along the sidewalk, and a small canal runs along the right side of the street. The sky is clear and blue, suggesting a sunny day.",
+    "buildings": "The beige building has a classic European look with ornate details such as carved stone archways and decorative ironwork. It stands out against the more modern glass-fronted building across the street. The building's facade is made of a combination of stone and brick, with a warm, earthy tone. The building's height is around three stories, with multiple windows and balconies on each floor.",
+    "materials": "The street is paved with cobblestone, which adds to its historic charm. The buildings' facades are constructed from a mix of materials, including stone, brick, and glass. The street itself is clean and well-maintained, with no visible litter or debris.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and streetlights along the sidewalk, providing shade and lighting for pedestrians. A bus stop shelter is also present, offering protection from the elements. The street is relatively quiet, with only a few people visible.",
+    "vegetation": "The street is lined with trees, which provide shade and add to the area's aesthetic appeal. There are also some potted plants and flowers along the sidewalk, adding color and vibrancy to the scene.",
+    "signage": "There are several signs visible, including a large sign on the left side of the street that reads 'Casa de la Vella' in bold letters. There are also smaller signs on the right side of the street, but they are not clearly legible.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the street's charm and character, noting the historic buildings and quaint atmosphere. They might enjoy the area's proximity to shops, restaurants, and cultural attractions.",
+    "as_commuter": "A commuter might appreciate the street's convenience, with easy access to public transportation and nearby shopping and dining options. They might enjoy the street's lively atmosphere and the opportunity to meet locals and fellow students.",
+    "as_tourist": "A tourist might find the street appealing due to its unique blend of old and new architecture, as well as its lively atmosphere. They might enjoy exploring the surrounding streets and taking in the sights and sounds of the area.",
+    "as_student": "A student might appreciate the street's academic vibe, noting the presence of universities and research institutions in the area. They might enjoy the street's proximity to campus life and the opportunity to explore the local culture."
+  }
+}

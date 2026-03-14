@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_003921",
+    "latitude": 41.392191,
+    "longitude": 2.16515,
+    "heading": 137.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1b4bea02-1b51-4c10-b28a-c9130f88f42a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392191_2.165150_h137.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12435.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with a taxi stand, pedestrians, and various vehicles,",
+    "buildings": "A row of buildings with different styles and ages,",
+    "materials": "The sidewalk is made of concrete pavers with a patterned texture,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk,",
+    "vegetation": "There are tall trees lining the street,",
+    "signage": "There are several signs indicating taxi stands and bus stops,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The street is relatively open with some narrow alleys between buildings,",
+    "pedestrian_activity": "People are walking and riding bicycles along the sidewalk,",
+    "lighting_atmosphere": "The lighting is bright and sunny,",
+    "as_resident": "The area is busy with people going about their daily business,",
+    "as_commuter": "The street is wide enough for cars and buses to pass through,",
+    "as_tourist": "unknown",
+    "as_student": "The area is lively with people enjoying the outdoors."
+  }
+}

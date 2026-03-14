@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_003521",
+    "latitude": 41.396475,
+    "longitude": 2.170764,
+    "heading": 321.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "44d1d32f-208c-4b29-84d9-340609efd921",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396475_2.170764_h321.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48900.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A bright and airy cafe with large windows and wooden bar stools, situated along a quiet street in a European city. The cafe has a minimalist aesthetic with white walls and a polished concrete floor. The interior is well-lit by natural light pouring in through the large windows, creating a welcoming atmosphere. The cafe is empty, but there are several wooden bar stools lined up against the wall, ready for customers to sit and enjoy their coffee or meals. The exterior of the cafe is simple yet elegant, with a clean and modern design that blends seamlessly into the surrounding architecture.",
+    "buildings": "The cafe is situated in a historic neighborhood with tall buildings and narrow streets. The building's façade is made of stone and features ornate details such as carved arches and decorative moldings. The building's age is evident in its worn and weathered appearance, giving it a charming and rustic charm.",
+    "materials": "The cafe's interior features a mix of materials, including wood, metal, and glass. The wooden bar stools are sturdy and comfortable, while the metal chairs have a sleek and modern look. The glass tables and shelves add a touch of sophistication to the space.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several wooden bar stools placed along the length of the cafe, providing ample seating for customers. The stools are sturdy and comfortable, with a classic design that fits perfectly with the cafe's theme.",
+    "vegetation": "The cafe is surrounded by lush greenery, with potted plants and flowers adding a pop of color to the space. The plants are well-maintained and healthy, contributing to the cafe's welcoming atmosphere.",
+    "signage": "The cafe has a few signs and posters displayed on the walls, advertising the cafe's menu and promotions. The signs are clear and easy to read, making it easy for customers to navigate the cafe.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "The cafe is bustling with activity, with several people milling about outside. Some are sitting at tables, chatting and laughing, while others are walking by, taking in the sights and sounds of the city.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would appreciate the cafe's proximity to the city center, offering easy access to public transportation and amenities. I also value the cafe's commitment to sustainability, with eco-friendly practices and energy-efficient equipment.",
+    "as_commuter": "As a commuter, I'm impressed by the cafe's convenient location, with its proximity to public transportation and shopping districts. The cafe's relaxed atmosphere makes it an ideal spot to grab a quick bite or meet with friends before heading out for a stroll.",
+    "as_tourist": "As a tourist, I'm excited to explore the cafe's unique blend of history and culture, with its historic architecture and lively atmosphere. The cafe's commitment to sustainability and community engagement makes it a great spot to learn more about the local area.",
+    "as_student": "As a student, I appreciate the cafe's academic atmosphere, with its quiet and studious vibe. The cafe's focus on sustainability and community engagement makes it a great spot to study and relax."
+  }
+}

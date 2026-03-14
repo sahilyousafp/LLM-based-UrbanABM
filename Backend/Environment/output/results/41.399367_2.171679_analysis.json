@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_230202",
+    "latitude": 41.399366699999995,
+    "longitude": 2.1716785000000005,
+    "heading": 317.9819001199596,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "cb00da74-b5b8-4581-818e-31a20f9544d0",
+    "dist_along_edge_m": 48.9,
+    "source_image": "sv_41.399367_2.171679_h317.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85575.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings lining both sides, featuring a mix of residential and commercial properties, including apartments, shops, and restaurants. The street is relatively empty, with only a few pedestrians visible in the distance. The sky is overcast, casting a soft, diffused light over the scene. The buildings are constructed from a combination of stone and brick, with ornate facades and balconies adding a touch of elegance to the urban landscape. The street itself is paved with asphalt, featuring a central median strip and pedestrian crossings marked by white lines and signs. A few trees are scattered throughout the area, providing shade and a sense of tranquility amidst the bustling city environment. The overall atmosphere is calm and peaceful, with a sense of community and activity in the distance.",
+    "buildings": "The buildings are primarily residential, with some commercial establishments on the ground floor. They vary in height, with some being taller than others, but all share a similar architectural style, characterized by ornate facades and balconies. The buildings appear well-maintained, with clean windows and doors. Some have decorative elements such as shutters and flower boxes, while others feature more modern designs. The street is lined with trees, which add a touch of greenery to the urban landscape.",
+    "materials": "The street is paved with asphalt, featuring a central median strip and pedestrian crossings marked by white lines and signs. The buildings' facades are constructed from a combination of stone and brick, with ornate details such as balconies and decorative elements. The street is also lined with trees, which provide shade and a sense of tranquility.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and streetlights along the sidewalk, providing a place for pedestrians to rest and take in the surroundings. There are also bike racks and other outdoor furniture, suggesting that the area is popular with cyclists and commuters.",
+    "vegetation": "The street is lined with trees, which provide shade and a sense of tranquility. The trees are well-maintained and healthy, with lush foliage and colorful flowers.",
+    "signage": "There are several signs along the street, including traffic signs and directional signs. These signs provide important information to pedestrians and drivers, helping them navigate the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would appreciate the presence of a park or garden in the area, as well as the availability of outdoor seating and recreational facilities. I would also like to see more shops and restaurants catering to tourists.",
+    "as_commuter": "As a commuter, I am looking for convenient transportation options, including public transportation and parking facilities. I would like to see more bike lanes and pedestrian-friendly infrastructure.",
+    "as_tourist": "I am drawn to the unique cultural attractions in this area, including the historic buildings and public art installations. I would like to explore the local markets and try the local cuisine.",
+    "as_student": "As a student, I am interested in the academic opportunities available in the area, including research facilities and study spaces. I would like to attend events and conferences held in the area."
+  }
+}

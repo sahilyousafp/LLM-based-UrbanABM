@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_202911",
+    "latitude": 41.397488300000006,
+    "longitude": 2.1724113999999997,
+    "heading": 313.7695540130518,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "9c7d33a2-f99f-4df9-bc3c-de14d0293c42",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397488_2.172411_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 86202.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, featuring outdoor seating areas for cafes and restaurants, pedestrians, and cars parked along the street. The sky is partly cloudy with a few wispy clouds.",
+    "buildings": "The buildings are multi-story structures with varied facades, some with ornate details and others with more modern designs. Some have balconies, while others have large windows.",
+    "materials": "The ground is paved with gray concrete blocks, with some areas featuring decorative patterns. The streetlights are tall and slender, with a simple design.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several tables and chairs set up outside cafes and restaurants, some with umbrellas for shade. A few people are seated at the tables, enjoying their meals or drinks.",
+    "vegetation": "Trees line the sidewalk, providing shade and adding a touch of greenery to the urban landscape. Some have leaves, while others appear bare.",
+    "signage": "There are several signs visible, including directional signs and advertisements for local businesses.",
+    "ground_surfaces": "The pavement is made of gray concrete blocks, with some areas featuring decorative patterns.",
+    "spatial_enclosure": "The street feels relatively open, with a clear path between buildings and a few small gaps between the sidewalk and the road.",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to take photos or chat with friends.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow cast by the sun.",
+    "as_resident": "The area is a great place to live, with plenty of amenities and activities available.",
+    "as_commuter": "The street is a convenient stop for commuters, with easy access to public transportation.",
+    "as_tourist": "The area is a popular spot for families, with its family-friendly atmosphere and outdoor spaces.",
+    "as_student": "The area is a great spot for young professionals, with plenty of job opportunities."
+  }
+}

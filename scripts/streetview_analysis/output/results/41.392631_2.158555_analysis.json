@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_022721",
+    "latitude": 41.392631,
+    "longitude": 2.158555,
+    "heading": 357.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "fa6ca09c-4b09-429f-bd46-42ea6d5d80fe",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392631_2.158555_h357.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 19042.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a city street with buildings on both sides, featuring a mix of old and new architecture, including a cafe with a sign reading 'Moon' and a row of parked motorcycles along the sidewalk.",
+    "buildings": "The buildings have a mix of old and new facades, with some featuring ornate balconies and others having more modern designs. The cafe has a black sign with white lettering, while the surrounding buildings display various architectural styles.",
+    "materials": "The street is paved with gray cobblestones, and the buildings have a combination of stone and concrete facades. A few trees line the sidewalk, adding a touch of greenery to the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the cafe, as well as a few trash cans and recycling bins along the sidewalk.",
+    "vegetation": "The street is lined with tall trees, providing shade and a sense of tranquility amidst the bustling city.",
+    "signage": "There are several signs posted along the street, including a blue sign indicating parking restrictions and a white sign with illegible text.",
+    "ground_surfaces": "The ground is made up of gray cobblestones, with a slight incline leading up to the buildings.",
+    "spatial_enclosure": "The street feels relatively open, with a clear path between the buildings and a few pedestrians strolling along.",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to chat or take photos, while others continue on their way.",
+    "lighting_atmosphere": "The lighting is soft and warm, with a mix of natural and artificial light sources casting long shadows across the street.",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with a lively atmosphere and plenty of foot traffic.",
+    "as_commuter": "The street is within walking distance of several major landmarks, including a large park and a historic landmark statue.",
+    "as_tourist": "The area is also home to a number of restaurants and bars, offering a range of dining and drinking options for visitors.",
+    "as_student": "The area is also home to a number of student cafes and universities, making it a hub for young people."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_222551",
+    "latitude": 41.3871881,
+    "longitude": 2.1587812999999993,
+    "heading": 324.14035834759716,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "e87c386f-bcba-4eff-9111-fd4e19e2e389",
+    "dist_along_edge_m": 143.1,
+    "source_image": "sv_41.387188_2.158781_h324.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43983.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with buildings on both sides, lined with trees and cars parked along the curb. The street is empty except for a few vehicles in the distance. The sky is overcast.",
+    "buildings": "The buildings are tall and beige, with balconies and windows. They have a mix of flat and pitched roofs.",
+    "materials": "The street has a smooth asphalt surface with white painted lines marking the lanes. There are no visible signs or advertisements.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "The trees are leafy and green, providing shade for pedestrians.",
+    "signage": "There are no visible signs or billboards.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no people visible.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The area is quiet and peaceful."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_021840",
+    "latitude": 41.388716,
+    "longitude": 2.15406,
+    "heading": 225.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0d2a6089-49b4-42a3-ad25-54a92384d2f5",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.388716_2.154060_h225.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49170.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a person riding a bicycle in the distance, lined with trees and buildings, and featuring several red bicycles parked along the sidewalk.",
+    "buildings": "The buildings in the background have a mix of modern and traditional styles, with some having flat roofs and others having pitched roofs. The buildings appear to be made of stone, brick, and concrete.",
+    "materials": "The street is paved with cobblestone, while the sidewalks are made of smooth concrete. There are also several large trees planted along the sidewalk, providing shade and adding to the aesthetic appeal of the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several red bike racks and benches placed along the sidewalk, as well as a few trash cans and recycling bins. A person is seen riding a bicycle down the street, heading towards the camera.",
+    "vegetation": "The trees are tall and leafy, with branches stretching out over the sidewalk and street. There are also several flowerbeds and gardens along the street, adding color and texture to the scene.",
+    "signage": "There are several signs posted along the street, including a large sign indicating the name of the street and a smaller sign advertising a local business.",
+    "ground_surfaces": "The ground is made up of a combination of concrete and asphalt, with some areas showing signs of wear and tear. There are also several cracks and potholes visible.",
+    "spatial_enclosure": "The street has a relatively narrow width, with a slight curve to the right. The buildings on either side of the street are close together, creating a sense of intimacy and community.",
+    "pedestrian_activity": "There are several people visible in the distance, walking along the sidewalk or standing near the street. Some are engaged in conversation, while others appear to be going about their daily business.",
+    "lighting_atmosphere": "The lighting in the scene is bright and sunny, with a warm glow cast by the sun. The shadows are long and deep, suggesting that the sun is high in the sky.",
+    "as_resident": "A local resident might notice the presence of a small park or garden area near the street, with flowers and plants adding a touch of color and beauty to the urban landscape. They may also notice the presence of a coffee shop or cafe, with outdoor seating and a welcoming atmosphere.",
+    "as_commuter": "A commuter might notice the convenience of the street, with easy access to public transportation and a range of amenities such as restaurants, cafes, and shops. They may also notice the presence of a bike lane or bike path, making it easy to get around without cars.",
+    "as_tourist": "A tourist might notice the historic charm of the street, with old buildings and landmarks that date back centuries. They may also notice the presence of street art or murals, adding to the area's character and personality.",
+    "as_student": "A student might notice the presence of a student union or academic building, with a large entrance and a prominent sign. They may also notice the presence of a library or study space, with rows of desks and chairs."
+  }
+}

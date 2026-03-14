@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_175023",
+    "latitude": 41.3925026,
+    "longitude": 2.1582589000000003,
+    "heading": 278.733777127844,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b1cd5fed-66a6-4591-a4a6-9a007b0e0905",
+    "dist_along_edge_m": 2.3,
+    "source_image": "sv_41.392503_2.158259_h278.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 6699.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "Describe the overall scene -- street type, width, dominant features, and general atmosphere.",
+    "buildings": "Describe EACH building visible -- style, height, use. State whether it is on the left, right, center, or background.",
+    "materials": "Name specific facade materials and textures you can see, stating which building each belongs to.",
+    "building_condition": "Describe the maintenance state of each visible facade -- restoration, weathering, damage, graffiti, etc.",
+    "street_furniture": "List benches, streetlights, bollards, bins, bike racks, etc. and state exactly where each one sits in the frame.",
+    "vegetation": "Describe trees, hedges, planters, and green areas. Note species if recognizable and their position in the image.",
+    "signage": "Describe shop signs, traffic signs, plaques, awnings -- note their position and what they say if legible.",
+    "ground_surfaces": "Describe pavement materials, road surface, crosswalks, kerb types, and their positions.",
+    "spatial_enclosure": "How enclosed or open does the street feel? Mention building heights relative to street width and sky visibility.",
+    "pedestrian_activity": "Describe any people visible -- what they are doing, where they are standing or walking, and the overall density.",
+    "lighting_atmosphere": "Describe time of day, shadow direction, light quality, and overall mood of the scene.",
+    "as_resident": "What would a local resident notice or value about this street? Mention specific amenities or comfort features visible.",
+    "as_commuter": "unknown",
+    "as_tourist": "What would catch a visitor's eye? Mention architectural highlights, photo-worthy details, or cultural cues.",
+    "as_student": "Comment on social spaces, seating availability, nearby shops or cafes, and overall affordability cues visible."
+  }
+}

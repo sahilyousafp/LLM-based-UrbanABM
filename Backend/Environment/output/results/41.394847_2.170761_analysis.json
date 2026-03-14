@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174908",
+    "latitude": 41.39484699999999,
+    "longitude": 2.1707608,
+    "heading": 121.89209478527414,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d291401d-483f-4ca2-a4f0-c96aefd53f26",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394847_2.170761_h121.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 4375.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides,",
+    "buildings": "The buildings have a mix of old and new architecture, with some having balconies and others having large windows,",
+    "materials": "The street has a combination of concrete, brick, and stone facades,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the buildings,",
+    "vegetation": "There are a few trees and plants along the sidewalk,",
+    "signage": "There are several signs indicating street names and directions,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be residential, with people going about their daily business,",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is popular with tourists, with many shops and restaurants nearby,",
+    "as_student": "The area is quiet and peaceful, with a few students studying or working nearby."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_184703",
+    "latitude": 41.389113099999996,
+    "longitude": 2.160591,
+    "heading": 136.31596163641586,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "68bfdfe2-6ec3-4ef0-ad59-35545ecd294f",
+    "dist_along_edge_m": 26.4,
+    "source_image": "sv_41.389113_2.160591_h136.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64234.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, featuring a mix of modern and older structures, including a large apartment complex and a commercial building with a yellow facade, surrounded by lush greenery and palm trees. The street is relatively empty, with only two pedestrians visible, one walking towards the camera and another further down the street. The sky is overcast with clouds.",
+    "buildings": "unknown",
+    "materials": "Cemented facade with stone quoins at the corners",
+    "building_condition": "Good",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "Open",
+    "pedestrian_activity": "Two people walking",
+    "lighting_atmosphere": "Natural daylight",
+    "as_resident": "Not very busy",
+    "as_commuter": "Not very busy",
+    "as_tourist": "Not very busy",
+    "as_student": "Not very busy"
+  }
+}

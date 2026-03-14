@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_221627",
+    "latitude": 41.38871000000001,
+    "longitude": 2.1600782,
+    "heading": 134.0649599764729,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "21991b1d-f481-4945-9c16-17543c6f7ee5",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.388710_2.160078_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43704.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a large building with a tree planted in front of it. The building has a beige stone facade with balconies on each floor. There are people walking on the sidewalk and a black canopy set up in front of the building. The street is paved with asphalt and has white markings indicating pedestrian crossings and bike lanes. A small tree is planted in the median between the two streets. The sky is overcast.",
+    "buildings": "The building has a beige stone facade with balconies on each floor. It is at least five stories tall. The ground floor has a large wooden door with a rounded archway. The second through fifth floors have windows with brown shutters. The top floor has a balcony with a railing.",
+    "materials": "The building's facade is made of beige stone with decorative carvings around the windows and doors. The ground floor has a smooth granite base. The second through fifth floors have a rougher texture. The top floor has a metal railing.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the building. They are placed under the canopy. There are also several trash cans along the sidewalk.",
+    "vegetation": "There is a small tree planted in the median between the two streets. It is surrounded by a small patch of grass and flowers.",
+    "signage": "There are several signs posted on the building, including a sign that says 'Café' and another that says 'Bar'. There are also several street signs and traffic lights.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area is likely a popular spot for locals and tourists alike. People seem to be enjoying the outdoor seating area.",
+    "as_commuter": "This area is likely a busy spot for commuters. The café and seating area provide a convenient spot to grab a coffee or snack before heading to work.",
+    "as_tourist": "This area is likely a popular spot for tourists. The architecture and landscaping make it a pleasant place to visit.",
+    "as_student": "This area is likely a popular spot for students. The café and seating area provide a comfortable spot to study or relax."
+  }
+}

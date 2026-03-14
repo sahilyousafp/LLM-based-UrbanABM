@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172214",
+    "latitude": 41.40128800000001,
+    "longitude": 2.1591037,
+    "heading": 53.11748235359374,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2be229fa-ed54-4620-9039-caed1800f7c1",
+    "dist_along_edge_m": 58.0,
+    "source_image": "sv_41.401288_2.159104_h53.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21749.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A gym with white walls and dark brown wooden beams, featuring a large blue exercise ball, a black tire, and various pieces of equipment such as punching bags and helmets mounted on the wall. The room has a black rubber mat covering the floor and a red cabinet with silver handles. A fan is also present.",
+    "buildings": "The building on the left side of the image is taller than the one on the right.",
+    "materials": "The building on the left has a more modern look, while the one on the right has a more traditional appearance.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two benches and a few chairs.",
+    "vegetation": "There are no plants or trees in the immediate vicinity.",
+    "signage": "There are several signs posted on the wall, including a green sign with a white heart symbol and a yellow sign with black text.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the image.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is not very touristy.",
+    "as_student": "The area is clean and safe."
+  }
+}

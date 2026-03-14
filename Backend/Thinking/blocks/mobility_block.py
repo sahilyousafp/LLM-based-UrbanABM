@@ -28,11 +28,14 @@ class MobilityBlock(Block):
         Args:
             step: current simulation step
             candidate_edges: list of {"edge_id", "geom", "direction", "amenities", "description"}
+            street_perception: optional dict with walkability, vegetation, pedestrian_activity, etc.
         Returns:
             BlockResult with action="move_to_edge", params={"edge_id", "direction", "geom"}
         """
         if not candidate_edges:
             return BlockResult(action="stay", params={}, reasoning="No candidate edges available", fallback=True)
+
+        street_perception = kwargs.get("street_perception")
 
         # Read relevant memory
         position = await self.memory.status.get("position", {})
@@ -52,9 +55,10 @@ class MobilityBlock(Block):
                 "edge_id": c["edge_id"],
                 "direction": c.get("direction", "forward"),
                 "amenities": [a.get("type", "") for a in c.get("amenities", [])],
+                "perception": c.get("perception", ""),
                 "description": c.get("description", ""),
             }
-            for c in prompt_cands
+            for c in prompt_candidates
         ]
 
         messages = mobility_decision_prompt(
@@ -64,6 +68,7 @@ class MobilityBlock(Block):
             recent_history=history_text,
             current_position=position,
             candidates=prompt_cands,
+            street_perception=street_perception,
         )
 
         response = await self.llm.chat_json(messages)

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_034738",
+    "latitude": 41.387592,
+    "longitude": 2.169455,
+    "heading": 145.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c9daa9bb-596b-451b-b526-4ed00bc08bfa",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387592_2.169455_h145.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49965.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city square with a large open space surrounded by buildings and trees. The sun is shining brightly overhead casting long shadows across the ground. People are scattered throughout the area, some sitting on benches and others walking around. A few people are gathered near a small fountain in the distance. The sky is mostly cloudy but there are patches of blue sky peeking through. The buildings surrounding the square have a mix of modern and older architecture. The ground is made of concrete and has a few cracks and uneven surfaces. There are several signs and advertisements along the edges of the square. The overall atmosphere is lively and bustling with activity.",
+    "buildings": "The buildings in the background are tall and varied in style, with some having ornate facades and others being more modern and sleek. Some have balconies and windows, while others have flat roofs. The buildings appear to be well-maintained, with clean lines and minimal ornamentation. The tallest building in the distance has a distinctive tower-like structure.",
+    "materials": "The ground is made of concrete and has a rough texture. There are a few cracks and uneven surfaces, giving it a worn look. The pavement is smooth in some areas, but there are also patches of dirt and debris scattered about. The ground is generally clean, but there are a few stains and scuff marks.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the square, providing places for people to sit and rest. Some of the benches are made of wood, while others are metal or plastic. There are also a few trash cans and recycling bins placed throughout the area.",
+    "vegetation": "There are several trees and bushes planted around the square, adding some greenery to the otherwise urban landscape. The trees are relatively small, but they provide shade and help to soften the harsh sunlight.",
+    "signage": "There are several signs posted around the square, including directional signs and informational signs. Some of the signs are mounted on poles, while others are attached to buildings or freestanding.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would describe the square as vibrant and lively. It's a popular spot for both locals and tourists, with plenty of amenities and attractions nearby. The square is well-maintained, with clean streets and sidewalks. There are a few shops and cafes nearby, and the atmosphere is relaxed and welcoming.",
+    "as_commuter": "As a commuter, I would describe the square as a convenient and efficient way to get around the city. It's a short walk from my office building and public transportation hub. The square is well-connected to other parts of the city, with easy access to shopping and dining options. The atmosphere is lively and vibrant, with plenty of people going about their daily business.",
+    "as_tourist": "As a tourist, I would describe the square as a great place to explore. It's a historic and culturally rich area, with plenty of interesting landmarks and attractions. The square is well-maintained, with clean streets and sidewalks. There are a few shops and restaurants nearby, and the atmosphere is lively and welcoming.",
+    "as_student": "As a student, I would describe the square as a peaceful and focused environment. It's a great place to study and work, with plenty of quiet spaces and resources available. The square is well-maintained, with clean streets and sidewalks. There are a few benches and reading areas scattered throughout the area, providing a place for students to relax and focus."
+  }
+}

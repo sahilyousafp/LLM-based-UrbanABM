@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_213730",
+    "latitude": 41.401334200000015,
+    "longitude": 2.1536140999999995,
+    "heading": 131.67784086899144,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "a07cb806-c925-4c84-a973-aaed73e7ec18",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401334_2.153614_h131.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 16556.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a corner store,",
+    "buildings": "The building has a beige stone facade with a large window displaying a butcher shop,",
+    "materials": "The building's exterior is made of beige stone with a large window displaying a butcher shop,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture such as benches or trash cans,",
+    "vegetation": "There are trees and bushes along the sidewalk,",
+    "signage": "There is a sign reading 'Carrer de Sant Marc' above the entrance,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The street is relatively narrow and has a slight incline,",
+    "pedestrian_activity": "People are walking on the sidewalk,",
+    "lighting_atmosphere": "The lighting is bright and clear,",
+    "as_resident": "The area is quiet and peaceful,",
+    "as_commuter": "The area is busy with pedestrians and cars.",
+    "as_tourist": "The area is popular with tourists,",
+    "as_student": "There are no students visible,"
+  }
+}

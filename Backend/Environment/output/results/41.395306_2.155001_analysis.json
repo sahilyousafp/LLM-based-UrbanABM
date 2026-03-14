@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174007",
+    "latitude": 41.39530619999999,
+    "longitude": 2.1550011,
+    "heading": 72.3252896893872,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "dd0aaced-be8b-4e55-a98d-640bbd3f1391",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395306_2.155001_h72.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 22122.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, palm trees and other vegetation along the sidewalk, and a bike lane separated by a metal railing. The street is relatively empty, with only a few cars driving by and a few pedestrians walking along the sidewalk. The sky is partly cloudy.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and older architectural styles, featuring large windows and balconies. Some have ornate facades, while others are more minimalist.",
+    "materials": "The street is paved with asphalt, and there are several large concrete planters filled with palm trees and other greenery. There are also several parked scooters and bicycles along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few streetlights and signs.",
+    "vegetation": "The palm trees are tall and slender, with long, feathery leaves that sway gently in the breeze.",
+    "signage": "There are several signs posted along the street, including a pedestrian crossing sign and a no-parking sign.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is quiet and peaceful, with a few people going about their daily business.",
+    "as_commuter": "The street is a great place to grab a cup of coffee.",
+    "as_tourist": "The street is a great place to take a break.",
+    "as_student": "The street is a great place to study."
+  }
+}

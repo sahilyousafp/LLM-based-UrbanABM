@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_025130",
+    "latitude": 41.387305,
+    "longitude": 2.170515,
+    "heading": 230.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c5e64ab5-1062-4c0c-91fb-86d20edb84d1",
+    "dist_along_edge_m": 51.9,
+    "source_image": "sv_41.387305_2.170515_h230.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49699.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide, empty city street with tall buildings on both sides and trees lining the edges. The street is paved with asphalt and has a manhole cover in the middle. There are no cars or pedestrians present. The sky is clear and blue. The sun is shining brightly, casting shadows on the ground. The trees have green leaves and are spaced evenly apart. The buildings are mostly white with some having brown accents. The street is lined with small bushes and plants along the sidewalk. A few streetlights are visible along the street. The overall atmosphere is calm and peaceful.",
+    "buildings": "The buildings are mostly white with some having brown accents. They are all different shapes and sizes. Some have balconies, while others do not. The windows are rectangular and have a reflective glass finish. The roofs are flat and made of dark gray slate. The buildings appear to be well-maintained but show signs of wear and tear. Some have cracks in the walls, while others have broken windows. The doors are all closed, and there are no visible signs of recent activity. The buildings seem to be residential, with some having balconies and others having large windows.",
+    "materials": "The street is paved with asphalt. The manhole covers are circular and made of metal. The streetlights are tall and slender, with a rounded top. The streetlights are spaced at regular intervals along the street. The street is clean and well-maintained. There are no visible potholes or cracks in the pavement. The street is free of debris or litter.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the street. The benches are made of wood and have a simple design. The trash cans are made of metal and have a cylindrical shape. There are also several streetlights along the street. The streetlights are tall and slender, with a rounded top. The streetlights are spaced at regular intervals along the street.",
+    "vegetation": "The trees are tall and have green leaves. They are spaced evenly apart and provide shade for the street. The trees are well-maintained and appear healthy. There are also several bushes and plants along the sidewalk. The bushes are short and dense, and the plants are well-maintained. The vegetation adds a touch of nature to the urban landscape.",
+    "signage": "There are several signs along the street. The signs are rectangular and made of metal. They are placed at regular intervals along the street. The signs are clear and easy to read. There are also several street signs that indicate directions and distances to nearby landmarks.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is a popular spot for locals and tourists alike. People are drawn to its charm and character. The street is well-maintained and clean. There are several shops and cafes along the street, offering a range of goods and services.",
+    "as_commuter": "The street is a convenient location for commuters. Commuters are drawn to its proximity to public transportation. The street is well-maintained and clean. There are several shops and cafes along the street, offering a range of goods and services.",
+    "as_tourist": "The street is a popular spot for tourists. Tourists are drawn to its unique architecture and charming atmosphere. The street is well-maintained and clean. There are several shops and cafes along the street, offering a range of goods and services.",
+    "as_student": "The street is a great place to study. Students are drawn to its academic atmosphere. The street is well-maintained and clean. There are several shops and cafes along the street, offering a range of goods and services."
+  }
+}

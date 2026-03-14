@@ -44,8 +44,11 @@ class AgentTracker:
     def _initialize_database(self):
         """Initialize database connection and create tables with spatial indexing."""
         try:
-            # Connect to database (creates if doesn't exist)
-            self.con = duckdb.connect(str(self.db_path))
+            # Connect to database (creates if doesn't exist).
+            # read_only=False is the default but we make it explicit; if another
+            # uvicorn worker process already holds the write lock, the connect()
+            # call will raise an IOException which is caught below.
+            self.con = duckdb.connect(str(self.db_path), read_only=False)
             
             # Install and load spatial extension
             self.con.execute("INSTALL spatial;")

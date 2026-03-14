@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223242",
+    "latitude": 41.39429109999998,
+    "longitude": 2.1672578000000002,
+    "heading": 176.40374700432596,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "15c6da00-bbc4-4779-b7f5-c33374e30b4a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394291_2.167258_h176.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43482.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings on both sides, featuring a mix of commercial and residential properties. The street is lined with trees and has a few pedestrians strolling along the sidewalk. A car drives down the street, passing by a group of people standing near a tree. The sky is clear and blue.",
+    "buildings": "The buildings on either side of the street have a modern design with large windows and sleek facades. Some have balconies or terraces, while others have storefronts or offices. The buildings appear well-maintained but show signs of wear and tear.",
+    "materials": "The street is paved with asphalt and has a central median with trees planted in it. The sidewalks are made of concrete and have a smooth finish. There are also several benches and trash cans placed along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, providing a place for people to sit and rest. There are also several bike racks and bike lanes, indicating that cycling is a popular mode of transportation in the area.",
+    "vegetation": "The trees lining the street are tall and leafy, providing shade and adding to the aesthetic appeal of the area. They are spaced evenly apart, creating a sense of rhythm and harmony.",
+    "signage": "There are several signs posted along the street, including traffic signs, directional signs, and advertisements. These signs provide important information to drivers and pedestrians alike.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the area, enjoying the fresh air and scenic views. They might also enjoy the convenience of being close to shops and restaurants.",
+    "as_commuter": "A commuter might find the area convenient due to its proximity to public transportation and shopping centers. They might also appreciate the scenic views and pleasant weather.",
+    "as_tourist": "A tourist might find the area interesting due to its unique architecture and cultural significance. They might also enjoy the opportunity to explore the surrounding neighborhood and discover new places to visit.",
+    "as_student": "A student might find the area appealing due to its proximity to academic institutions and research facilities. They might also enjoy the relaxed atmosphere and opportunities for study."
+  }
+}

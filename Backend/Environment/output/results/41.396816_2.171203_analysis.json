@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_192721",
+    "latitude": 41.396816,
+    "longitude": 2.1712032000000003,
+    "heading": 314.4188187850509,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b7428fd2-133f-4938-a354-efc210873aa1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396816_2.171203_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64208.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, featuring a mix of residential and commercial properties, including a cafe with outdoor seating and a white van parked along the curb. The street is lined with trees and has a pedestrian crossing marked by white lines. A white SUV drives down the street, while pedestrians walk along the sidewalk and a person rides a bicycle. The sky is overcast.",
+    "buildings": "The buildings are multi-story structures with balconies and windows, some with flower boxes and potted plants. The facades are made of stone and have a warm, earthy tone.",
+    "materials": "The street is paved with asphalt and has a smooth texture. The sidewalk is made of concrete and has a rougher texture.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the cafe, as well as a few bicycles parked along the sidewalk.",
+    "vegetation": "The trees are tall and leafy, providing shade for pedestrians and adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs posted on the buildings, including a large sign reading 'Café' and smaller signs advertising local businesses.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is bustling with activity, with people going about their daily business.",
+    "as_commuter": "The street is a popular spot for those looking for a quick break from the city.",
+    "as_tourist": "The street is a great spot for taking in the views of the surrounding neighborhood.",
+    "as_student": "The street is a great place for studying the local culture and community."
+  }
+}

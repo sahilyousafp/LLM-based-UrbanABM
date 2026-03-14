@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_212214",
+    "latitude": 41.3892737,
+    "longitude": 2.1739097000000003,
+    "heading": 244.2328858233157,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c0715539-86be-4761-a905-c17b39a168f7",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389274_2.173910_h244.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85337.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with pedestrians and outdoor cafe seating along the sidewalk. The buildings are tall and varied in style, with some having ornate facades and others appearing more modern. The street is paved with gray tiles and has a few trees lining the sidewalk. There are several people walking along the sidewalk, some sitting at tables outside cafes and restaurants. A blue awning covers a small outdoor seating area with red chairs and tables.",
+    "buildings": "The buildings are primarily made of stone and brick, with some featuring ornate details such as carved stone carvings and decorative trim. Some have large windows, while others have smaller ones. The roofs are mostly flat, with some sloping sections.",
+    "materials": "The ground is paved with gray tiles, and there are several trees lining the sidewalk. The street is relatively wide, allowing for easy passage between buildings. There are also several bike racks and trash cans along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several tables and chairs set up outside cafes and restaurants, with some patrons enjoying drinks and meals. The seating areas are covered by blue awnings, providing shade from the sun.",
+    "vegetation": "The trees are bare, suggesting that it may be winter or early spring. They are spaced evenly apart, creating a sense of order and symmetry.",
+    "signage": "There are several signs posted along the street, including directional signs and advertisements. Some of the signs are illegible, but others appear to be informational or promotional.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or backpacks. Others are sitting at tables, chatting or reading.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, given the presence of cafes and restaurants. People seem to be enjoying themselves, taking advantage of the pleasant weather.",
+    "as_commuter": "The street is a busy thoroughfare, with many people going about their daily business. Some are walking, while others are driving or riding bicycles.",
+    "as_tourist": "The street is a popular spot for sightseeing, with many interesting landmarks and attractions within walking distance. The atmosphere is relaxed and welcoming, making it a great place to take a break from the hustle and bustle of daily life.",
+    "as_student": "The street is a great place to study urban planning and design, with many examples of good design and functionality. The layout and infrastructure of the street are well-planned and efficient."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171208",
+    "latitude": 41.3920633,
+    "longitude": 2.1653072,
+    "heading": 317.73307915986663,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1b4bea02-1b51-4c10-b28a-c9130f88f42a",
+    "dist_along_edge_m": 19.4,
+    "source_image": "sv_41.392063_2.165307_h317.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21869.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with buildings on both sides, lined with trees and featuring a mix of old and new architecture, including a large white building with columns and a smaller brown building with a glass front, under a blue sky with wispy clouds. The street is paved with cobblestones and has a few cars and buses parked along the curb, as well as pedestrians walking in both directions. A bus stop is visible on the left side of the street, with a few people waiting for the next bus. The street is relatively empty, but there are some leaves scattered on the ground.",
+    "buildings": "The large white building has a classical style with tall windows and a flat roof, while the smaller brown building has a more modern design with a sloping roof and a large window on the top floor. Both buildings have a similar height and are made of different materials, with the white building having a smooth exterior and the brown building having a rougher texture.",
+    "materials": "The street is paved with cobblestones, and the sidewalk is made of concrete pavers. There are also several trees planted along the street, adding shade and greenery to the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for people to rest and dispose of waste.",
+    "vegetation": "The trees are tall and leafy, casting dappled shadows on the sidewalk below. There are also several flowerbeds and planters filled with colorful flowers and shrubs.",
+    "signage": "There are several signs posted along the street, including a large digital display showing the current time and temperature. There are also several smaller signs advertising local businesses and events.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its central location and lively atmosphere. It is a great place to grab a coffee or snack before heading out into the city.",
+    "as_commuter": "The street is a convenient and accessible route for commuters, with easy access to public transportation and nearby subway stations. There are also several bike lanes and pedestrian paths, making it a safe and enjoyable ride.",
+    "as_tourist": "The street is a popular destination for tourists, with its historic architecture and lively atmosphere. It is a great place to explore and take in the sights and sounds of the city.",
+    "as_student": "This street is a great place for students to study and work, with its quiet and peaceful atmosphere. There are also several libraries and study spaces available, making it a great spot for those looking to focus on their studies."
+  }
+}

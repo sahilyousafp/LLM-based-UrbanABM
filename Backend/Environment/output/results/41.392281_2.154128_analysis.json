@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_230009",
+    "latitude": 41.3922812,
+    "longitude": 2.1541277000000005,
+    "heading": 50.48890118885811,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "427d536f-010a-4b67-b1ee-bf426a6d4410",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392281_2.154128_h50.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43796.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street with buildings, cars, and pedestrians visible through large windows. The scene is bright and sunny with a few clouds in the sky. The street is lined with tall buildings, some of which have balconies or other architectural features. There are several cars parked along the curb, and a few people can be seen walking down the sidewalk. In the distance, there are more buildings and trees visible. The overall atmosphere is lively and bustling, with a sense of activity and energy.",
+    "buildings": "The main building has a modern, sleek design with large windows and a flat roof. It appears to be made of glass and steel, with a minimalist aesthetic. To the left of the main building, there is a smaller structure with a pitched roof and a more traditional design. This building has a mix of brick and stucco exterior walls, with decorative trim and molding. There are also several other buildings visible in the background, including a tall skyscraper and a historic landmark. The buildings are all different shapes and sizes, but they share a similar color palette of grays, browns, and whites.",
+    "materials": "The main building's exterior is clad in a combination of glass, metal, and concrete. The windows are large and rectangular, with a grid pattern of smaller panes. The roof is flat and covered in solar panels. The building's foundation is made of concrete, with a smooth, gray surface. The walls are painted a light blue-gray color, with white trim and accents.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several pieces of furniture visible in the scene, including a bench, a table, and a chair. The bench is made of wood and has a simple, minimalist design. The table is made of glass and has a sleek, modern look. The chair is upholstered in a bold, colorful fabric and has a curved backrest. There are also several other objects visible, including a trash can, a fire extinguisher, and a first aid kit.",
+    "vegetation": "There are several plants visible in the scene, including a small tree and a few potted plants. The tree is tall and slender, with green leaves and a few branches. The potted plants are placed on tables and shelves, adding a touch of color and texture to the space. There are also several other plants visible in the background, including a large fern and a few succulents.",
+    "signage": "There are several signs visible in the scene, including a street sign, a directional sign, and a business sign. The street sign is mounted on a pole and reads",
+    "ground_surfaces": "The ground is made up of a variety of surfaces, including tile, concrete, and asphalt. The tile is arranged in a geometric pattern, with alternating rows of different colors and textures. The concrete is smooth and gray, with a few cracks and imperfections. The asphalt is dark gray and has a rough texture.",
+    "spatial_enclosure": "The street is relatively narrow, with a width of around 20 feet. The enclosure is defined by a low wall or barrier, with a gate or door at one end. The gate is made of metal and has a simple, functional design. The wall is made of concrete and has a rough texture, with a few cracks and imperfections.",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

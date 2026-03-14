@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_030333",
+    "latitude": 41.396028,
+    "longitude": 2.151186,
+    "heading": 313.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "af87db6f-15e7-4c5e-9291-0ecb62d00a8e",
+    "dist_along_edge_m": 7.5,
+    "source_image": "sv_41.396028_2.151186_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50158.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A woman walks away from the camera carrying a shopping basket and umbrella, while a man walks towards the camera holding a bag, set against a blurred background of a city street with buildings and pavement. The woman wears a dark dress and carries a large basket over her shoulder, while the man wears casual clothing and holds a small bag in his hand.",
+    "buildings": "The woman's building has a cream-colored facade with stone quoins at the corners, while the man's building is made of red brick with a polished granite frontage.",
+    "materials": "The woman's building features a textured concrete exterior, while the man's building boasts a smooth, modern finish.",
+    "building_condition": "unknown",
+    "street_furniture": "The woman stands near a bench, while the man walks past a row of trash cans.",
+    "vegetation": "The street is lined with tall trees and potted plants, adding a touch of greenery to the urban landscape.",
+    "signage": "A sign reading 'Eixample' hangs above the street, indicating the location.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "The woman walks alone, while the man passes by, both going about their daily business.",
+    "lighting_atmosphere": "The scene is bathed in soft, diffused light, with a warm glow emanating from the streetlights.",
+    "as_resident": "The woman seems lost in thought, while the man walks purposefully ahead.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is bustling with activity, with people milling about and taking photos.",
+    "as_student": "The woman wears a backpack, while the man sports a messenger bag."
+  }
+}

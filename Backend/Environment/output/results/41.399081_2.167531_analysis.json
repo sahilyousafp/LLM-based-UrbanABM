@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_201439",
+    "latitude": 41.399080599999984,
+    "longitude": 2.1675307000000004,
+    "heading": 275.21718287156403,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ce2d44f1-ba44-4630-ab36-7a4a54717a88",
+    "dist_along_edge_m": 8.6,
+    "source_image": "sv_41.399081_2.167531_h275.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 84858.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings lining both sides, featuring a mix of modern and traditional architecture, including ornate facades and historic landmarks. The street is bustling with pedestrians and cars, but there are also several parks and gardens along the way, providing shade and tranquility amidst the hustle and bustle of the city. The street is well-lit, with a combination of overhead lighting and streetlights illuminating the area. The air is filled with the sounds of car horns, chatter, and music, creating a lively and vibrant atmosphere.",
+    "buildings": "The buildings in the image are primarily made of stone and brick, with some featuring ornate facades and intricate carvings. Some have large windows, while others have smaller ones, allowing for plenty of natural light to enter the rooms. The buildings appear to be well-maintained, with clean walls and floors.",
+    "materials": "The materials used in the construction of the buildings include stone, brick, and concrete. The roofs are made of metal and tile, and the walls are constructed from a combination of stone and brick.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the street, providing a place for people to sit and rest. There are also several trash cans and recycling bins placed along the sidewalk.",
+    "vegetation": "The vegetation in the image includes trees, bushes, and flowers. The trees provide shade and beauty to the area, while the bushes add a touch of greenery to the urban landscape. The flowers are colorful and vibrant, adding a pop of color to the otherwise drab surroundings.",
+    "signage": "There are several signs posted along the street, including street signs, directional signs, and advertisements. The signs are clear and easy to read, making it simple for drivers and pedestrians to navigate the area.",
+    "ground_surfaces": "The ground surfaces in the image include asphalt, concrete, and brick. The asphalt is smooth and flat, while the concrete is rough and uneven. The brick is laid out in a pattern, with some areas featuring a more rustic look than others.",
+    "spatial_enclosure": "The street has a relatively small enclosure, with buildings on either side. The buildings create a sense of intimacy and community, with narrow alleys and courtyards between them.",
+    "pedestrian_activity": "There are several people visible in the image, including pedestrians walking down the street, sitting on benches, and riding bicycles. The pedestrian activity is moderate, with people going about their daily business.",
+    "lighting_atmosphere": "The lighting in the image is bright and cheerful, with sunlight casting shadows and highlighting the colors of the buildings and vegetation. The lighting is warm and inviting, making the area feel welcoming and comfortable.",
+    "as_resident": "I am a resident, and I would appreciate seeing more green spaces and public art installations in the area. I would like to see more restaurants and cafes, as well as community events and festivals.",
+    "as_commuter": "I am a commuter, and I would appreciate seeing more bike lanes and parking options. I would like to see more public transportation options, such as buses and trains.",
+    "as_tourist": "I am a tourist, and I would appreciate seeing more green spaces and public art installations in the area. I would like to see more restaurants and cafes, as well as community events and festivals.",
+    "as_student": "I am a student, and I would appreciate seeing more academic resources and study spaces. I would like to see more libraries, bookstores, and research facilities."
+  }
+}

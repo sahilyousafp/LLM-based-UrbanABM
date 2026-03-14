@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_015237",
+    "latitude": 41.397781,
+    "longitude": 2.157947,
+    "heading": 262.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ee20fbbb-c085-4367-a37a-267390d72a36",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397781_2.157947_h262.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49029.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "Street view of a modern hotel lobby with a high ceiling, large windows, and a polished black floor. The room has a mix of red couches and chairs arranged around a central pillar, with a few small tables scattered throughout. The walls are made of marble and have arched windows. The ceiling is gold and shiny, reflecting the light from the windows. There are several large windows along the back wall, allowing natural light to pour in. The room is well-lit, but there are some dark shadows cast by the furniture and pillars. The atmosphere is calm and inviting, with a sense of luxury and sophistication.",
+    "buildings": "The building has a classic, elegant look, with a mix of old and new elements. The exterior is made of marble, with a warm, golden color. The windows are tall and narrow, with a decorative arch at the top. The roof is flat, with a slight slope to allow water to run off easily. The interior is equally impressive, with a high ceiling and a polished black floor. The walls are made of marble, with a warm, golden color. The windows are large and arched, with a decorative arch at the top. The room is well-lit, but there are some dark shadows cast by the furniture and pillars. The atmosphere is calm and inviting, with a sense of luxury and sophistication.",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

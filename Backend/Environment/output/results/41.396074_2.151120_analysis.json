@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_183400",
+    "latitude": 41.3960743,
+    "longitude": 2.1511201000000004,
+    "heading": 133.3728495512197,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "af87db6f-15e7-4c5e-9291-0ecb62d00a8e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396074_2.151120_h133.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64766.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A white wall with blue lettering,",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners.",
+    "materials": "The building has a cream-colored facade with stone quoins at the corners.",
+    "building_condition": "The building is well-maintained.",
+    "street_furniture": "There are no visible street furniture.",
+    "vegetation": "There are no visible plants or trees.",
+    "signage": "There are no visible signs.",
+    "ground_surfaces": "The ground is made of dark gray concrete.",
+    "spatial_enclosure": "The area is open and accessible.",
+    "pedestrian_activity": "There are no pedestrians.",
+    "lighting_atmosphere": "The lighting is bright.",
+    "as_resident": "This area is quiet.",
+    "as_commuter": "There are no people.",
+    "as_tourist": "There are no tourists.",
+    "as_student": "There are no students."
+  }
+}

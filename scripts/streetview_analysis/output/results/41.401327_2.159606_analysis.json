@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_010111",
+    "latitude": 41.401327,
+    "longitude": 2.159606,
+    "heading": 233.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2be229fa-ed54-4620-9039-caed1800f7c1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401327_2.159606_h233.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 13435.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow alleyway between two buildings,",
+    "buildings": "The left side has a peach-colored wall with a large garage door, while the right side has a white wall with a small window and a satellite dish.",
+    "materials": "The left side has a concrete wall with graffiti, while the right side has a stone wall with a satellite dish.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several motorcycles parked along the left side of the alleyway.",
+    "vegetation": "There are no visible plants or trees.",
+    "signage": "There are several signs posted on the walls, including a sign that reads 'Private Property' and another that says 'No Parking'.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible.",
+    "lighting_atmosphere": "The lighting is dim, with some sunlight peeking through the windows of the buildings.",
+    "as_resident": "The area appears quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are no tourists or visitors visible.",
+    "as_student": "There are no students visible."
+  }
+}

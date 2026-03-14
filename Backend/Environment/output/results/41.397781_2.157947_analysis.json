@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174414",
+    "latitude": 41.397781,
+    "longitude": 2.1579471,
+    "heading": 262.08799811532026,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ee20fbbb-c085-4367-a37a-267390d72a36",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397781_2.157947_h262.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21810.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large, open lobby with a high ceiling and arched windows, featuring a mix of modern and traditional elements such as red couches, yellow pillows, and a polished black floor. The space is well-lit, with a warm glow emanating from the golden ceiling and soft lighting fixtures. The walls are adorned with large windows that allow natural light to pour in, while the floor is made of polished black marble. A few decorative elements, including a large column and several small tables, add to the space's sophistication.",
+    "buildings": "The buildings surrounding the lobby are tall and sleek, with a mix of modern and traditional architectural styles. The facades are primarily made of glass and steel, with some sections featuring ornate details such as carved stone and intricate moldings. The buildings appear to be well-maintained, with clean lines and minimal ornamentation.",
+    "materials": "The materials used in the lobby include a combination of materials such as concrete, brick, and polished stone. The columns supporting the ceiling are made of polished stone, while the walls feature a mix of glass and metal. The floor is made of polished black marble, adding a touch of luxury to the space.",
+    "building_condition": "unknown",
+    "street_furniture": "The furniture in the lobby includes a mix of modern and traditional pieces, such as red couches, yellow pillows, and small tables. The couches are arranged in a conversational circle, creating a cozy and inviting atmosphere.",
+    "vegetation": "There are no visible plants or trees in the lobby, but there are several potted plants placed around the perimeter of the room.",
+    "signage": "There are no visible signs or advertisements in the lobby, although there may be some subtle branding or logos visible in the distance.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the lobby's comfortable seating area, which could be used for relaxation or conversation.",
+    "as_commuter": "A commuter might appreciate the lobby's accessibility, as well as its proximity to public transportation options.",
+    "as_tourist": "A tourist might appreciate the lobby's unique architecture and design, as well as its potential for socializing and taking photos.",
+    "as_student": "A student might appreciate the lobby's modern aesthetic, as well as its proximity to educational institutions and public transportation."
+  }
+}

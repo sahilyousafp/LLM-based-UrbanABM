@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023806",
+    "latitude": 41.395417,
+    "longitude": 2.150191,
+    "heading": 45.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1221cbc6-1920-4b8a-8341-d80faf7d815b",
+    "dist_along_edge_m": 142.8,
+    "source_image": "sv_41.395417_2.150191_h45.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50179.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large room with white walls and a high ceiling, featuring a red floor and a white partitioned wall with multiple hooks for hanging items. A black chair sits in the corner, accompanied by a small table with a sink on top. The room has a bright window at the top.",
+    "buildings": "The white partitioned wall is situated between two white walls, with a high ceiling and a large window at the top.",
+    "materials": "The white partitioned wall is divided into sections, each section containing a hook for hanging items such as jackets or bags.",
+    "building_condition": "The wall appears to be well-maintained, with no visible signs of wear or damage.",
+    "street_furniture": "There is a single black chair positioned in the corner of the room, accompanied by a small table with a sink on top.",
+    "vegetation": "There are no visible plants or trees in the room.",
+    "signage": "There are no visible signs or advertisements in the room.",
+    "ground_surfaces": "The floor is made of red tiles.",
+    "spatial_enclosure": "The room is relatively open, with a clear view of the outside through the large window.",
+    "pedestrian_activity": "There are no pedestrians visible in the room.",
+    "lighting_atmosphere": "The lighting in the room is bright and well-lit.",
+    "as_resident": "The room appears to be empty and quiet.",
+    "as_commuter": "unknown",
+    "as_tourist": "The room is not a popular tourist destination.",
+    "as_student": "The room is not a good place to study."
+  }
+}

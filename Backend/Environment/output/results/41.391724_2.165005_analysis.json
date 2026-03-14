@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172501",
+    "latitude": 41.3917239,
+    "longitude": 2.1650048000000006,
+    "heading": 317.2412882459821,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2bf9d92c-7e35-4fc9-9cbc-bc75f888edae",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391724_2.165005_h317.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21905.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large room with a high ceiling and a skylight, featuring a wooden floor and white walls with a unique design. The room has several doors leading out of it, including a large arched doorway with stained glass windows and a smaller door with a rounded top. A long black cabinet sits against the back wall, and there are no other notable objects or features in the room.",
+    "buildings": "The building on the left side of the room has a cream-colored facade with stone quoins at the corners, while the building on the right side has a polished granite frontage.",
+    "materials": "The room's flooring is made of polished concrete.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the room, although there may be some behind the cabinet.",
+    "vegetation": "There are no visible plants or trees in the room.",
+    "signage": "There are no visible signs or advertisements in the room.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The room feels relatively open, with a high ceiling and a large skylight allowing plenty of natural light to enter.",
+    "pedestrian_activity": "There are no visible pedestrians in the room.",
+    "lighting_atmosphere": "The lighting in the room is bright and airy, with plenty of natural light coming in through the skylight.",
+    "as_resident": "The room appears to be a public space, possibly used for events or gatherings.",
+    "as_commuter": "unknown",
+    "as_tourist": "The room is not particularly touristy, but it could be a good spot for locals to relax or work.",
+    "as_student": "The room is not particularly busy, but it could be a good spot for students to study or work."
+  }
+}

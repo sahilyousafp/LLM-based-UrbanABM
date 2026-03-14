@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_180357",
+    "latitude": 41.3954888,
+    "longitude": 2.1604548,
+    "heading": 322.2024906248149,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "790d3326-1c53-4e37-9e20-110061d8dc98",
+    "dist_along_edge_m": 3.6,
+    "source_image": "sv_41.395489_2.160455_h322.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21936.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a bus stop with a black pole and a large building in the background. The bus stop has a red sign with a white M on it. There are people walking around the area. The street is paved with gray concrete and there are cars parked along the side of the road. The sky is blue with some clouds.",
+    "buildings": "The building is tan colored with many windows and balconies. It has a flat roof and a large archway in the front. The building is several stories tall.",
+    "materials": "The bus stop has a glass enclosure with a metal frame. The floor is made of gray concrete pavers. The pole is black and has a decorative top.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two benches inside the bus stop. They are red and have a simple design.",
+    "vegetation": "There are trees and bushes along the sidewalk. They are green and leafy.",
+    "signage": "There are several signs along the street. One is a red sign with a white M on it. Another is a yellow sign with black text.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk. Some are sitting on the benches.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is busy but not crowded. People are going about their daily business.",
+    "as_commuter": "The street is safe and secure. There are many security cameras.",
+    "as_tourist": "The street is scenic and picturesque. There are many beautiful views.",
+    "as_student": "The street is educational. There are many schools and universities."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_235244",
+    "latitude": 41.39786720000001,
+    "longitude": 2.1649691,
+    "heading": 71.96346747834309,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "83a066ac-feaf-4fa5-a9b6-5f75654f76a7",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397867_2.164969_h71.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 84593.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a mix of commercial and residential properties. The street is relatively empty, with only a few cars parked along the curb and a single car driving away from the camera. The sky is clear and blue, suggesting a sunny day.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and traditional architectural styles. Some have balconies, while others feature large windows and ornate facades.",
+    "materials": "The buildings on the left side of the street are primarily made of concrete and glass, while those on the right are constructed from a combination of brick and stone.",
+    "building_condition": "Some of the buildings show signs of wear and tear, with peeling paint and crumbling stonework.",
+    "street_furniture": "Benches and trash cans line the sidewalk, providing a place for pedestrians to sit and dispose of waste.",
+    "vegetation": "Trees and shrubs are planted along the sidewalk, adding some greenery to the urban landscape.",
+    "signage": "Traffic signs and directional indicators are posted along the street, helping pedestrians navigate.",
+    "ground_surfaces": "The ground surfaces are smooth and even, with a slight incline towards the center of the street.",
+    "spatial_enclosure": "The street feels relatively open, with a clear view of the surrounding buildings and sky.",
+    "pedestrian_activity": "There are no pedestrians visible in the immediate area, but there may be more in the distance.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow cast by the sun.",
+    "as_resident": "The street appears to be quiet and peaceful, with no visible signs of activity or noise pollution.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street could be a popular spot for tourists, given its scenic views and historic architecture.",
+    "as_student": "The street is likely to be busy during peak hours, especially during school breaks or lunchtime."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_003856",
+    "latitude": 41.401922,
+    "longitude": 2.157464,
+    "heading": 222.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c4e33b59-40a9-47f7-ad7f-3651dff3bfe2",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401922_2.157464_h222.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 16466.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow street with a pedestrian crossing and two buildings, one cream-colored and one red, with a person walking on the sidewalk and a man standing next to a scooter parked on the side of the street.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "None",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "One person walking",
+    "lighting_atmosphere": "Overcast",
+    "as_resident": "Not very busy",
+    "as_commuter": "unknown",
+    "as_tourist": "Not very touristy",
+    "as_student": "unknown"
+  }
+}

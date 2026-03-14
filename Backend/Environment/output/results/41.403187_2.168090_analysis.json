@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_000218",
+    "latitude": 41.40318739999999,
+    "longitude": 2.1680901999999995,
+    "heading": 313.88528521675164,
+    "street_name": "Carrer d'en Grassot",
+    "highway_type": "road",
+    "edge_id": "6505cf02-c923-45fa-9253-86b1aee200a7",
+    "dist_along_edge_m": 121.7,
+    "source_image": "sv_41.403187_2.168090_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 18685.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides,",
+    "buildings": "The left side has a red brick facade with white balconies, while the right side has a tan stucco exterior with balconies,",
+    "materials": "The left side has a mix of materials including concrete, brick, and glass,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture such as benches or trash cans,",
+    "vegetation": "There are small trees and bushes along the sidewalk,",
+    "signage": "There are several signs indicating pedestrian crossings and traffic rules,",
+    "ground_surfaces": "The ground is made of gray stone pavers,",
+    "spatial_enclosure": "The street is relatively narrow, with a slight incline,",
+    "pedestrian_activity": "People are walking in both directions, but there is little foot traffic,",
+    "lighting_atmosphere": "The sun is shining down, casting shadows on the street,",
+    "as_resident": "This area is likely residential, with apartments and shops lining the street,",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is also a popular spot for tourists, with its unique architecture and historic charm.",
+    "as_student": "This area is popular with students, with many young people walking to class or studying,"
+  }
+}

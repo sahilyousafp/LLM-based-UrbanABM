@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_212937",
+    "latitude": 41.401350400000005,
+    "longitude": 2.153751,
+    "heading": 233.37982222793008,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "5d1434ec-69f4-468e-9855-8f5779326f6c",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401350_2.153751_h233.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43237.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with a mix of old and new buildings, featuring a large graffiti-covered wall and a modern storefront with a black awning,",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People walking",
+    "lighting_atmosphere": "Daytime",
+    "as_resident": "Local residents",
+    "as_commuter": "Travelers",
+    "as_tourist": "unknown",
+    "as_student": "Students"
+  }
+}

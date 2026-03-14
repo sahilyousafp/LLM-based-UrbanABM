@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174700",
+    "latitude": 41.388793,
+    "longitude": 2.1541521,
+    "heading": 222.36139279738669,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c121f159-4afd-48e2-9941-ed103cf16d91",
+    "dist_along_edge_m": 43.9,
+    "source_image": "sv_41.388793_2.154152_h222.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 8671.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a person riding a bicycle in the distance, lined with trees and buildings, and featuring several red bike racks along the sidewalk.",
+    "buildings": "The buildings in the background have a mix of modern and traditional styles, with some having flat roofs and others having pitched roofs. The buildings appear to be made of stone, brick, and concrete.",
+    "materials": "The street is paved with cobblestone, while the bike racks are made of metal and plastic. There are also several trees planted along the sidewalk, adding shade and greenery to the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing places for pedestrians to rest and dispose of waste.",
+    "vegetation": "The trees are tall and leafy, with branches stretching up towards the sky. There are also several flowerbeds and gardens along the sidewalk, adding color and texture to the area.",
+    "signage": "There are several signs posted along the street, including a large sign indicating the name of the street and a smaller sign warning of parking restrictions.",
+    "ground_surfaces": "The ground is made of cobblestone, with a slight incline leading up to the street. There are also several cracks and unevennesses in the pavement.",
+    "spatial_enclosure": "The street feels relatively open, with a few trees and plants scattered throughout. However, there are also several narrow alleys and side streets that branch off from the main street.",
+    "pedestrian_activity": "There are several people walking along the sidewalk, including a woman pushing a stroller and a man walking alone. There are also several bicycles parked along the curb.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds in the sky. The sun is shining down on the scene, casting shadows on the ground.",
+    "as_resident": "A local resident might notice the presence of a small park or garden along the street, as well as the various shops and cafes. They might also notice the fact that the street is relatively quiet, with only a few cars parked along the curb.",
+    "as_commuter": "A commuter might notice the convenience of the bike racks and the proximity to public transportation. They might also notice the fact that the street is relatively safe, with no visible crime or disorder.",
+    "as_tourist": "A tourist might notice the unique architecture of the buildings, as well as the vibrant colors and patterns on the street furniture. They might also notice the fact that the street is relatively empty, with only a few people walking around.",
+    "as_student": "A student might notice the presence of a university or college campus in the background, as well as the various academic buildings and classrooms. They might also notice the fact that the street is relatively quiet, with only a few students walking around."
+  }
+}

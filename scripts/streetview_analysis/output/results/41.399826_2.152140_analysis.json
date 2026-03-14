@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_011855",
+    "latitude": 41.399826,
+    "longitude": 2.15214,
+    "heading": 234.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b3427521-c1df-45d5-bad1-4911069f3a23",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399826_2.152140_h234.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49202.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a subway station with two ticket machines and a clock mounted on the wall. The station has a tiled floor and white walls. A man walks by carrying bags. There is a trashcan and a digital screen displaying information. The ticket machines have yellow fronts with black text and buttons. The clock shows 12:00.",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners. It is a tall structure with a flat roof.",
+    "materials": "The ticket machines have a yellow front with black text and buttons.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or other furniture visible.",
+    "vegetation": "There are no plants or trees visible.",
+    "signage": "There are no visible signs.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area is quiet.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are no tourists visible.",
+    "as_student": "There are no students."
+  }
+}

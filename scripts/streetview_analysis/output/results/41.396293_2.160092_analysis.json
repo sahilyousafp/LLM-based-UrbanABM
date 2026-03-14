@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_013958",
+    "latitude": 41.396293,
+    "longitude": 2.160092,
+    "heading": 233.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "6caafb66-bebf-4528-b796-34395413d38d",
+    "dist_along_edge_m": 5.4,
+    "source_image": "sv_41.396293_2.160092_h233.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48745.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city with a large building in the background and several motorcycles parked along the sidewalk in front of it. The street is busy with cars and buses passing by. There are also some trees and flower pots with plants in them. The sky is blue with some white clouds.",
+    "buildings": "The building has a tall rectangular shape with many windows and a flat roof. It is made of brown stone and has a few balconies. There are two other buildings in the background, one with a similar style but smaller. The ground floor of the main building has a black metal railing around it.",
+    "materials": "The building's facade is made of brown stone with a smooth texture. The windows have a dark tinted glass. The balconies are small and have a simple railing.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several motorcycles parked along the sidewalk, as well as a few cars and a bus. There are also some trees and flower pots with plants in them.",
+    "vegetation": "There are several trees with bare branches and a few flowers in the flower pots. The trees are spaced out along the sidewalk.",
+    "signage": "There are several signs posted along the street, including a red sign with a white arrow pointing down.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people walking along the sidewalk, but there is no crowd.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area is quiet and peaceful, with only a few people visible.",
+    "as_commuter": "The area is busy with commuters.",
+    "as_tourist": "The area is popular with tourists, with several shops and cafes visible.",
+    "as_student": "The area is popular with students."
+  }
+}

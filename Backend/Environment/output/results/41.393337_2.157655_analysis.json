@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_195640",
+    "latitude": 41.39333729999999,
+    "longitude": 2.1576546,
+    "heading": 181.5778310615964,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3fadf007-4176-4362-a837-a964ad052e30",
+    "dist_along_edge_m": 10.8,
+    "source_image": "sv_41.393337_2.157655_h181.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85857.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of commercial and residential structures. The street is relatively empty, with only a few vehicles parked along the curb. A black van is prominently featured in the foreground, while a large beige building dominates the background.",
+    "buildings": "The beige building has a classic European-style architecture with ornate details such as balconies and decorative trim. It stands out against the more modern high-rise buildings on either side.",
+    "materials": "The beige building's facade is constructed from a combination of stone and stucco, giving it a warm, earthy appearance. The windows are framed in dark metal, adding a touch of contrast to the otherwise muted color palette.",
+    "building_condition": "unknown",
+    "street_furniture": "The street is lined with a mix of outdoor seating areas, including tables and chairs, as well as bike racks and trash cans. These elements suggest that the area is pedestrian-friendly and encourages outdoor activities.",
+    "vegetation": "The street is flanked by small trees and shrubs, which add a touch of greenery to the urban landscape. The foliage is sparse but adds a pop of color to the scene.",
+    "signage": "There are several signs visible, including a large banner advertising a local business and a smaller sign indicating parking restrictions. These signs help guide pedestrians and drivers through the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is home to a mix of locals and tourists, who come to enjoy the area's unique blend of culture and commerce. Residents take pride in the area, often gathering in the outdoor cafes and restaurants.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and nearby attractions. The area is also close to several major universities and research institutions, making it a great base for studying and learning.",
+    "as_tourist": "The street is a popular destination for tourists, who come to admire the historic architecture and soak up the local culture. The area is also known for its beautiful parks and gardens, making it a great place to relax and unwind.",
+    "as_student": "The street is a great place for students to study and work, with plenty of libraries, cafes, and other educational resources available. The area is also home to several cultural events and festivals, making it a vibrant and engaging community."
+  }
+}

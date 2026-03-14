@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171407",
+    "latitude": 41.392367400000005,
+    "longitude": 2.1649244000000003,
+    "heading": 1.5416789786886511,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ea926c15-62b4-49de-bdbd-5eaa1444879c",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392367_2.164924_h1.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21789.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street corner with a large white building featuring a rounded corner and multiple stories, surrounded by pedestrians and vehicles. The building has a mix of arched and rectangular windows, with a prominent entranceway flanked by columns. A large orange truck is parked along the curb, while several people walk along the sidewalk and cross the street. The surrounding area is lined with trees and other buildings, creating a bustling urban environment.",
+    "buildings": "The building is a large, multi-story structure with a curved corner and numerous windows. It features a mix of arched and rectangular windows, as well as a prominent entranceway flanked by columns. The building's exterior is primarily composed of white stone, with some sections appearing to be made of red brick. The building's design suggests a blend of modern and traditional architectural styles.",
+    "materials": "The building's facade is constructed from a combination of materials, including white stone, red brick, and possibly metal or glass. The building's exterior features a mix of smooth and textured surfaces, with some areas appearing to be painted or coated with a protective layer.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and other outdoor furniture pieces scattered throughout the area, providing seating and shade for pedestrians. Some of the benches appear to be made of wood or metal, while others may be plastic or composite materials.",
+    "vegetation": "The surrounding area is lined with trees and other vegetation, adding a touch of greenery to the urban landscape. The trees are tall and leafy, with some branches extending over the sidewalk and street.",
+    "signage": "There are several signs visible in the area, including street signs, directional signs, and advertisements. Some of the signs appear to be digital, while others are printed on paper or vinyl.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A few locals can be seen going about their daily business, with some stopping to chat or take photos. Others are out shopping or running errands.",
+    "as_commuter": "The street is a busy thoroughfare, with cars and buses passing through the area. Pedestrians are crossing the street, and there are several bicycles parked along the sidewalk.",
+    "as_tourist": "The area is a popular destination, with many people taking photos and admiring the architecture. The street is lined with shops and restaurants, and there are several street performers and vendors present.",
+    "as_student": "Students and young adults are present, some sitting on benches or studying. The atmosphere is quiet and focused, with a sense of academic rigor."
+  }
+}

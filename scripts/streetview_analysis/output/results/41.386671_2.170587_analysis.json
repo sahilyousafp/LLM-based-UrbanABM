@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_025311",
+    "latitude": 41.386671,
+    "longitude": 2.170587,
+    "heading": 309.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "7f7916b9-1e01-4551-9e6b-a7705a8b9ad1",
+    "dist_along_edge_m": 59.0,
+    "source_image": "sv_41.386671_2.170587_h309.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50079.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a large white building with many windows, surrounded by trees and bushes, with a paved area in front of it. The building has a flat roof and a symmetrical facade with evenly spaced windows. There are several trees and bushes around the building, and a few birds are scattered across the paved area in front of it. The sky is clear and blue.",
+    "buildings": "The building is a large, white structure with a flat roof and a symmetrical facade featuring evenly spaced windows.",
+    "materials": "The building's exterior is made of white stone or concrete, with a smooth finish.",
+    "building_condition": "The building appears well-maintained, with no visible signs of damage or wear.",
+    "street_furniture": "There are several benches and lampposts along the sidewalk, as well as a few trash cans and recycling bins.",
+    "vegetation": "The trees surrounding the building are tall and leafy, providing shade and a sense of tranquility.",
+    "signage": "There are several signs posted along the sidewalk, including a directional sign pointing to the main entrance of the building.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the image.",
+    "lighting_atmosphere": "The scene is peaceful and serene, with a sense of calm and tranquility.",
+    "as_resident": "The building appears to be a public space, possibly a government office or community center.",
+    "as_commuter": "unknown",
+    "as_tourist": "The building is a popular tourist destination, with several visitors milling about outside.",
+    "as_student": "The building is a hub for students, with several classrooms and study areas visible."
+  }
+}

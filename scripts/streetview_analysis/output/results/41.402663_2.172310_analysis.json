@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_013055",
+    "latitude": 41.402663,
+    "longitude": 2.17231,
+    "heading": 91.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b8c5cd80-b8f3-4016-8b24-e18fce65da2d",
+    "dist_along_edge_m": 98.2,
+    "source_image": "sv_41.402663_2.172310_h91.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48750.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide, tree-lined path stretches into the distance, flanked by low black metal fences and lined with tall trees and bushes. The path is made of dirt and gravel, with a few benches and lampposts along its length. A few people can be seen walking along the path, but there are no cars or other vehicles present. The sky above is mostly cloudy, with patches of blue visible through the gaps in the clouds.",
+    "buildings": "The buildings along the path are primarily residential, with some commercial establishments visible in the distance. They are all relatively low-rise, with a mix of modern and traditional architectural styles. Some have balconies or terraces, while others have large windows or ornate facades.",
+    "materials": "The materials used in the construction of the buildings include concrete, brick, and wood. The roofs are mostly flat, with some featuring pitched roofs or tile.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts along the path, providing shade and lighting for pedestrians. Some of the benches are made of wood, while others are metal.",
+    "vegetation": "The trees and bushes along the path are lush and green, with some displaying autumnal colors. There are also some small flowers and shrubs scattered throughout the area.",
+    "signage": "There are several signs along the path, including directional signs and informational signs. Some of the signs are mounted on poles, while others are attached to buildings or freestanding.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people visible in the distance, walking along the path or sitting on benches. Some are engaged in conversation, while others are reading or simply enjoying the scenery.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area appears to be a popular spot for locals and tourists alike, with a mix of families and couples strolling along the path. There are also some street performers and vendors visible, adding to the lively atmosphere.",
+    "as_commuter": "This area is a convenient location for commuters, with easy access to public transportation and nearby shopping centers. There are also some bike paths and bike lanes, making it a great option for those who prefer alternative modes of transportation.",
+    "as_tourist": "This area is a popular spot for families with children, with many strollers and baby carriers visible. There are also some playgrounds and parks along the path, providing a safe and enjoyable environment for kids to play.",
+    "as_student": "This area is a great spot for students, with many libraries and study spaces available. There are also some quiet areas for studying or working, as well as some outdoor seating areas for taking a break."
+  }
+}

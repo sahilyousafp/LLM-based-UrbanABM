@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_184540",
+    "latitude": 41.4019404,
+    "longitude": 2.1549328,
+    "heading": 60.91024032578832,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "39dc8e10-c7ba-4d33-9d51-20049c29c4be",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401940_2.154933_h60.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 15760.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a building with a mix of old and new architecture,",
+    "buildings": "The building has a combination of old and new elements - a modern balcony on the top floor and a traditional stone wall below,",
+    "materials": "The building's exterior is made of a combination of old and new materials - the top floor is constructed from red bricks, while the bottom half is made of stone blocks,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture such as benches, trash cans, or bike racks,",
+    "vegetation": "There are no visible plants or trees in the immediate vicinity,",
+    "signage": "There are several signs posted along the sidewalk, including a large sign that reads 'Café' and another that says 'Bar,' but there are no other notable signs,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no visible pedestrians in the immediate area,",
+    "lighting_atmosphere": "The lighting is soft and diffused, suggesting a cloudy day,",
+    "as_resident": "This area seems to be a quiet residential neighborhood with a mix of old and new buildings,",
+    "as_commuter": "There are no visible commuters or public transportation options in the immediate area,",
+    "as_tourist": "The area may be a popular spot for tourists due to its historic charm and unique architecture.",
+    "as_student": "This area may be a popular spot for students due to its proximity to the university,"
+  }
+}

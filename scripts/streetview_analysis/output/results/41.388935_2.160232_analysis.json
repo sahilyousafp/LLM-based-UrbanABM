@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042851",
+    "latitude": 41.388935,
+    "longitude": 2.160232,
+    "heading": 359.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "bbce836c-446d-4f6e-a715-9ec4d0c95327",
+    "dist_along_edge_m": 4.9,
+    "source_image": "sv_41.388935_2.160232_h359.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50406.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street lined with tall buildings and trees, featuring a mix of commercial and residential properties. The street is relatively empty, with only a few pedestrians and parked motorcycles along the sidewalk. The sky is clear and blue, suggesting a sunny day.",
+    "buildings": "The buildings on either side of the street are modern and sleek, with large windows and balconies. They appear to be office or residential buildings, with some having outdoor seating areas.",
+    "materials": "The street is paved with asphalt, with white lines marking parking spaces and pedestrian crossings. There are also several trees planted along the sidewalk, providing shade and adding to the aesthetic appeal of the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, as well as bike racks and other public art installations.",
+    "vegetation": "The trees are mostly deciduous, with some evergreen foliage visible in the distance. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs posted along the street, including directional signs and advertisements. Some of the signs are illegible, but others are clear.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people visible, mostly walking or standing near the buildings. Some are engaged in conversation, while others seem lost in thought.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be a quiet, residential area, with a few shops and cafes catering to locals. It's a pleasant place to live, work, or visit.",
+    "as_commuter": "The street is a popular spot for commuters, with many people coming and going throughout the day.",
+    "as_tourist": "The street is a great place to explore, with many shops, restaurants, and attractions to discover.",
+    "as_student": "The street is a great place to study or work, with plenty of quiet spots to focus and get work done."
+  }
+}

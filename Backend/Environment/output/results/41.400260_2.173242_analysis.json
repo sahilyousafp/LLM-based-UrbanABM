@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_225233",
+    "latitude": 41.40026009999999,
+    "longitude": 2.173242,
+    "heading": 261.1281539267012,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "921f565f-17f2-4efe-a9c2-6649df70367f",
+    "dist_along_edge_m": 10.9,
+    "source_image": "sv_41.400260_2.173242_h261.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85350.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with a car turning into a crosswalk, surrounded by tall buildings and trees. The sky is overcast with clouds covering most of the sun. The street has a smooth asphalt surface with white markings, including a crosswalk and pedestrian crossing lines. A white car is driving away from the camera, while a person rides a bicycle towards the camera. The buildings surrounding the street have various architectural styles, with some featuring balconies and others having flat roofs. Trees line the sidewalk, adding shade and greenery to the urban landscape. The overall atmosphere is calm and peaceful, with a sense of everyday life unfolding along the street.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and traditional designs. Some have balconies, while others feature large windows and sleek facades. The buildings vary in height, with some being taller than others. The street is lined with trees, providing shade and a touch of nature amidst the urban environment.",
+    "materials": "The street is paved with asphalt, and the buildings' facades are made of a combination of materials, including concrete, brick, and glass. The trees add a natural element to the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, providing places for pedestrians and cyclists to rest and park their vehicles. The streetlights are spaced at regular intervals, ensuring safety and visibility.",
+    "vegetation": "The trees are lush and green, with leaves rustling gently in the breeze. They provide shade and a natural barrier between the street and the surrounding buildings.",
+    "signage": "There are several signs visible, including traffic lights, street signs, and advertisements. They are placed at regular intervals, guiding pedestrians and drivers through the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, offering a quiet and peaceful atmosphere. It is a hub for community activity, with people gathering in small groups to chat and enjoy the surroundings.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and nearby shops and restaurants. It is a great spot for those looking for a quick bite to eat or a place to grab a coffee.",
+    "as_tourist": "The street is a popular spot for tourists, with its historic charm and cultural significance. It is a great place to visit and learn about the local culture and history.",
+    "as_student": "This street is a great spot for students, with its proximity to universities and other educational institutions. It offers a relaxed and welcoming atmosphere, perfect for studying and socializing."
+  }
+}

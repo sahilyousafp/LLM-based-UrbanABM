@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_003329",
+    "latitude": 41.387219,
+    "longitude": 2.163265,
+    "heading": 242.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ba36baaf-0f47-4f0d-8d68-dd4424ce278b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387219_2.163265_h242.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48794.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A dark and gloomy view of a city street with tall buildings and lush vegetation surrounding it. The street is empty, with no cars or pedestrians in sight. The sky is overcast, casting long shadows across the ground. The buildings have a mix of modern and traditional architecture, with some featuring ornate facades and others having more minimalist designs. The vegetation is dense and varied, with palm trees, bushes, and other plants growing close together. The street itself is made of cobblestone, with a few cracks and uneven surfaces. There are no visible street furniture or signage, but there are some small signs and advertisements posted along the sidewalk. The overall atmosphere is quiet and peaceful, with a sense of history and character.",
+    "buildings": "The buildings in the background are mostly two- to three-story structures with a mix of modern and traditional styles. Some have balconies or terraces, while others have large windows and ornate facades. The buildings appear to be well-maintained, with clean walls and roofs. There are no visible signs of damage or neglect.",
+    "materials": "The buildings in the background are mostly two- to three-story structures with a mix of modern and traditional styles. Some have balconies or terraces, while others have large windows and ornate facades. The buildings appear to be well-maintained, with clean walls and roofs.",
+    "building_condition": "The buildings appear to be well-maintained, with no visible signs of damage or neglect. However, there are some signs of wear and tear, such as cracks in the cobblestone streets and peeling paint on some of the buildings.",
+    "street_furniture": "There are no visible street furniture, including benches, trash cans, or other objects. However, there are some signs of recent maintenance, such as freshly painted signs and newly installed streetlights.",
+    "vegetation": "The vegetation in the area is dense and varied, with a mix of palm trees, bushes, and other plants. There are also some smaller plants and flowers growing in pots and planters along the sidewalk.",
+    "signage": "There are several signs visible in the distance, including a large sign on the side of one of the buildings. The signs appear to be advertising local businesses or services, but the text is too small to read.",
+    "ground_surfaces": "The ground surfaces in the area are primarily composed of cobblestone, which is worn smooth in places but still provides good traction. There are also some paved areas, including sidewalks and parking lots.",
+    "spatial_enclosure": "The street feels relatively open and airy, with a clear path through the vegetation. However, there are some narrow alleys and dead ends that can make navigation challenging.",
+    "pedestrian_activity": "There are no visible pedestrians in the area, although there may be some activity in the distance. The street appears to be quiet and peaceful, with no signs of heavy foot traffic.",
+    "lighting_atmosphere": "The lighting in the area is dim and subdued, with a mix of natural and artificial light sources. The sky is overcast, which adds to the overall gloomy atmosphere.",
+    "as_resident": "As a local resident, I would describe the area as quiet and peaceful, with a strong sense of community. There are several amenities visible, including a park or garden in the distance, as well as some shops and cafes.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, I would describe the area as quiet and peaceful, with a strong sense of history and culture. There are several landmarks and attractions visible, including a historic building or monument in the distance.",
+    "as_student": "As a student, I would describe the area as quiet and peaceful, with a focus on academic pursuits. There are several libraries and study areas visible, as well as a campus cafeteria and other facilities."
+  }
+}

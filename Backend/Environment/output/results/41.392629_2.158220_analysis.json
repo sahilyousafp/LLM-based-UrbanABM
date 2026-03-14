@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_213200",
+    "latitude": 41.392628699999996,
+    "longitude": 2.1582203,
+    "heading": 137.61921031869576,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2791bee2-3076-4fb5-8e6c-bc81487458d5",
+    "dist_along_edge_m": 19.2,
+    "source_image": "sv_41.392629_2.158220_h137.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 58410.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A dimly lit subway station with a long platform stretching into the distance, flanked by advertisements on the wall to the right and train tracks to the left. The ceiling is made of concrete and has fluorescent lights running along its length. A blue sign hangs over the platform, reading 'La Pedrera' in white letters. The walls are constructed of brown stone blocks, while the floor is composed of small square tiles in various shades of gray and beige. The platform itself is made of large rectangular tiles in different shades of gray, with a yellow line running down the middle. The train tracks are visible to the left, with gravel between them. A person stands on the far side of the tracks, near a set of stairs leading up to the platform. The overall atmosphere is dark and quiet, with only a few faint lights illuminating the area. }",
+    "buildings": "unknown",
+    "materials": "The materials used in the construction of the buildings are primarily stone, with some sections featuring a smooth, polished finish. The facades are adorned with intricate carvings and ornate details, adding a touch of elegance and sophistication. The stone used is a warm, earthy color, with a subtle texture that adds depth and character to the buildings. The overall material palette is muted, with a focus on natural materials rather than modern or industrial elements.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several pieces of street furniture visible in the image, including benches, trash cans, and bike racks. These items are placed strategically throughout the platform, providing a sense of functionality and practicality. The benches are simple and unadorned, while the bike racks are sturdy and secure. The trash cans are placed at regular intervals, with clear signage indicating their purpose.",
+    "vegetation": "The vegetation in the image is sparse, with only a few plants and trees visible. The plants are mostly low-growing, with some larger trees scattered throughout the area. The foliage is mostly leafy and green, with some areas showing signs of decay or neglect. The overall effect is one of simplicity and understated beauty, with a focus on the natural world rather than elaborate landscaping.",
+    "signage": "There are several signs visible in the image, including directional signs, informational signs, and advertising signs. The directional signs are clear and easy to read, with bold lettering and bright colors. The information signs provide detailed information about the surrounding area, including schedules, maps, and other important details. The advertising signs are colorful and eye-catching, with bold graphics and catchy slogans. Overall, the signage is effective in communicating important information to visitors and commuters alike.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

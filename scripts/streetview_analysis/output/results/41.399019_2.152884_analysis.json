@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_010242",
+    "latitude": 41.399019,
+    "longitude": 2.152884,
+    "heading": 37.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "18130e5b-9d0d-4b09-b92d-1c04e6ae329d",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399019_2.152884_h37.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 8521.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with a mix of buildings, trees, and pedestrians. The street is paved with asphalt and has a yellow line down the middle. There are two people walking on the sidewalk, one wearing white pants and a black shirt, and the other wearing blue jeans and a black jacket. A large metal fence runs along the side of the street, covered in graffiti. Trees are planted in small squares along the sidewalk, and there are several streetlights and utility poles. In the distance, there are several tall buildings, including a yellow billboard with illegible text. The sky is clear and blue.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_214219",
+    "latitude": 41.398064399999996,
+    "longitude": 2.157672,
+    "heading": 236.60712043054505,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "4698d013-696c-46f8-b967-a508350df002",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.398064_2.157672_h236.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43714.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city square with tall buildings, palm trees, and pedestrians crossing the street. The sun shines brightly overhead, casting shadows across the ground. A few people are walking around, some sitting on benches, and others standing near the buildings. The buildings have a mix of old and new architecture, with some having balconies and others featuring large windows. The street is paved with cobblestones and has a few cars parked along the side. There are also several trees and plants scattered throughout the area, adding some greenery to the urban landscape. The overall atmosphere is lively and bustling, with people going about their daily business.",
+    "buildings": "The buildings in the background are primarily made of stone and brick, with some modern glass and steel accents. They vary in height, with some being much taller than others. Some have ornate facades, while others are more minimalist. The buildings appear to be well-maintained, with clean windows and doors.",
+    "materials": "The materials used in the construction of the buildings include stone, brick, and metal. The streets are paved with cobblestones, and there are also some concrete sidewalks. The buildings' facades feature a mix of stone, brick, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, providing a place for people to sit and rest. Some of the benches are made of wood, while others are metal or plastic. There are also some trash cans and recycling bins placed throughout the area.",
+    "vegetation": "The trees and plants add a touch of greenery to the urban landscape. There are several palm trees, as well as some smaller shrubs and flowers. The trees provide shade and help to soften the urban environment.",
+    "signage": "There are several signs posted throughout the area, including street signs, directional signs, and advertisements. Some of the signs are colorful and eye-catching, while others are more subdued.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would say that this area is a hub of activity and energy. People come here to socialize, shop, and enjoy the outdoors. It's a vibrant and lively neighborhood that offers something for everyone.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, I would say that this area is a popular destination for visitors. The architecture, scenery, and atmosphere make it a great spot to explore and take photos. It's a unique and interesting place to visit.",
+    "as_student": "unknown"
+  }
+}

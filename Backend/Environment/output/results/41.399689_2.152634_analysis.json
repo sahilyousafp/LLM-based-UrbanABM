@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_170635",
+    "latitude": 41.399689,
+    "longitude": 2.152634400000001,
+    "heading": 233.663680527795,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "97f33e6b-f505-4783-9381-6f80afb1cd50",
+    "dist_along_edge_m": 8.5,
+    "source_image": "sv_41.399689_2.152634_h233.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 4143.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides,",
+    "buildings": "The buildings are multi-story apartment complexes with balconies and windows,",
+    "materials": "The ground is paved with concrete and has large round stones placed throughout,",
+    "building_condition": "unknown",
+    "street_furniture": "Benches and trashcans line the sidewalk,",
+    "vegetation": "There are small gardens and trees along the sidewalk,",
+    "signage": "Signs are posted on the buildings and along the street,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be residential with a mix of apartments and shops,",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is also popular with tourists who come to admire the architecture and take photos,",
+    "as_student": "The area is also home to students who live and study in the surrounding buildings."
+  }
+}

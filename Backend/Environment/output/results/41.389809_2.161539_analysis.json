@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_215311",
+    "latitude": 41.389809099999994,
+    "longitude": 2.1615386000000005,
+    "heading": 134.68386956709838,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "54452242-5113-42fc-8185-def8db022a48",
+    "dist_along_edge_m": 23.5,
+    "source_image": "sv_41.389809_2.161539_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 20150.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a European-style building with a mix of old and new architecture,",
+    "buildings": "The building has a beige façade with a mix of old and new elements, including a large glass frontage and balconies,",
+    "materials": "The building's façade is made of a combination of stone, brick, and glass,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the building, as well as a few potted plants,",
+    "vegetation": "The street is lined with trees and shrubs, adding a touch of greenery to the urban landscape,",
+    "signage": "There are several signs advertising local businesses, including a coffee shop and a restaurant,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area is quiet and peaceful, with a few locals strolling around,",
+    "as_commuter": "The street is moderately busy during the day, with a few commuters going about their daily routines,",
+    "as_tourist": "The area is popular among tourists, who come to admire the architecture and enjoy the local culture,",
+    "as_student": "The area is also home to several educational institutions, making it a great place to study."
+  }
+}

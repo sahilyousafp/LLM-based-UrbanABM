@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174103",
+    "latitude": 41.3924314,
+    "longitude": 2.1651075000000004,
+    "heading": 270.790223084371,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b4a731c1-75a3-47a3-8673-f78e6f17989c",
+    "dist_along_edge_m": 17.3,
+    "source_image": "sv_41.392431_2.165108_h270.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21885.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with a mix of commercial and residential buildings, featuring a large billboard, pedestrians, and vehicles. The scene is set against a clear blue sky with a few trees lining the sidewalk. The street is paved with gray concrete pavers and has a slight incline. A white van and a white truck are parked along the curb, while several people walk along the sidewalk. A large billboard dominates the left side of the image, displaying an advertisement for a product or service. In the distance, a tall building stands out with its modern design and numerous windows. The scene exudes a sense of urban bustle and activity, with people going about their daily business amidst the hustle and bustle of city life.",
+    "buildings": "The buildings in the image feature a mix of architectural styles, including modern glass and steel structures alongside older, more traditional facades. The large billboard adds a pop of color and visual interest to the scene. The street itself is well-maintained, with clean sidewalks and a smooth road surface. The presence of trees and greenery adds a touch of natural beauty to the otherwise urban landscape.",
+    "materials": "The buildings' facades are constructed from a combination of materials, including glass, metal, and stone. The billboard's exterior is clad in a sleek, modern material that reflects the surrounding environment. The street's pavement is made of durable, gray concrete that has been designed to withstand heavy foot traffic.",
+    "building_condition": "unknown",
+    "street_furniture": "The street is lined with a variety of furniture, including benches, trash cans, and bike racks. These items are strategically placed to provide amenities for pedestrians and cyclists.",
+    "vegetation": "The trees in the image add a touch of greenery to the urban landscape. They are spaced at regular intervals, providing shade and aesthetic appeal.",
+    "signage": "The signage in the image includes a mix of digital and printed displays. The billboard features a prominent advertisement, while smaller signs are placed along the sidewalk and on buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the convenience of having a nearby park or outdoor seating area, as well as the proximity to shops and restaurants. The street's cleanliness and maintenance suggest a safe and welcoming community.",
+    "as_commuter": "Commuters may find the street convenient for their daily commutes, with ample parking options and easy access to public transportation. The street's proximity to shopping and dining areas makes it a popular destination for locals and visitors alike.",
+    "as_tourist": "Tourists may enjoy the street's unique character, as well as its cultural attractions and historical significance. The street's mix of old and new architecture creates a visually interesting and dynamic atmosphere.",
+    "as_student": "Students may appreciate the street's academic environment, as well as the opportunities for research and collaboration. The street's proximity to universities and other educational institutions suggests a hub of intellectual activity."
+  }
+}

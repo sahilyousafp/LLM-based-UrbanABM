@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023400",
+    "latitude": 41.403453,
+    "longitude": 2.172189,
+    "heading": 314.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b6936c14-eb56-4be7-9bba-419fc5bdf356",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403453_2.172189_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50100.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a modern office space with a large window overlooking a smaller office area. The main room has a white wall with a staircase leading up to the left and a counter with a computer monitor in front of it. There are two people working at desks inside the smaller office area. The ceiling is high with exposed beams and fluorescent lighting. The floor is made of large square tiles. A doorway to another room is visible to the right of the counter. The overall atmosphere is bright and clean.",
+    "buildings": "The main building has a cream-colored facade with stone quoins at the corners. It is a modern office space with a large window overlooking a smaller office area. The smaller office area has a white wall with a desk and a person sitting behind it. The ceiling is high with exposed beams and fluorescent lighting. The floor is made of large square tiles. A doorway to another room is visible to the right of the counter.",
+    "materials": "The main building has a cream-colored facade with stone quoins at the corners. It is a modern office space with a large window overlooking a smaller office area. The smaller office area has a white wall with a desk and a person sitting behind it. The ceiling is high with exposed beams and fluorescent lighting. The floor is made of large square tiles. A doorway to another room is visible to the right of the counter.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no street furniture visible in the image.",
+    "vegetation": "There are no visible plants or trees in the image.",
+    "signage": "There are no visible signs in the image.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might notice the modern architecture and clean appearance of the building.",
+    "as_commuter": "A commuter might notice the clean and modern appearance of the building.",
+    "as_tourist": "A tourist might notice the clean and modern appearance of the building.",
+    "as_student": "A student might notice the clean and modern appearance of the building."
+  }
+}

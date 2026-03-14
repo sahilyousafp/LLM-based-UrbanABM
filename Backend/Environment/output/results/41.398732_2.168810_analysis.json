@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_235601",
+    "latitude": 41.39873242191686,
+    "longitude": 2.1688099721265433,
+    "heading": 72.67744622800865,
+    "street_name": "Avinguda de la Diagonal",
+    "highway_type": "road",
+    "edge_id": "65000cd7-2301-4a8c-a3b1-b38025c4acb3",
+    "dist_along_edge_m": 500,
+    "source_image": "sv_41.398732_2.168810_h72.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85661.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a bike path on the left side. The street is empty, with no cars or pedestrians in sight. The sky is overcast.",
+    "buildings": "The buildings are tall and beige, with balconies and windows. They have a mix of modern and traditional architectural styles.",
+    "materials": "The street is paved with asphalt, with white lines marking lanes and pedestrian crossings. There are also large planters filled with greenery along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the curb.",
+    "vegetation": "The trees are tall and leafy, providing shade for pedestrians and adding to the street's aesthetic appeal.",
+    "signage": "There are several signs posted along the street, including a blue sign indicating a bus stop and a yellow sign warning of construction ahead.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears quiet and peaceful, with a sense of stillness and calm.",
+    "as_commuter": "The street is a convenient and accessible location, with easy access to public transportation.",
+    "as_tourist": "The street has a unique and eclectic vibe, with a mix of old and new.",
+    "as_student": "The street is a great place to meet new people and make friends."
+  }
+}

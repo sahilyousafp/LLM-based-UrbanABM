@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_183152",
+    "latitude": 41.3932307,
+    "longitude": 2.1571175,
+    "heading": 273.41538789052964,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a8b28000-983b-4940-9378-c6e827aa3d17",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.393231_2.157118_h273.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64126.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street with buildings on both sides, including a large white building with a flat roof and a smaller building with a sloping roof, as well as a few trees and a bench in front of the larger building. The street is paved with gray concrete and has a few cars parked along the side. There are also some pedestrians walking down the sidewalk.",
+    "buildings": "unknown",
+    "materials": "Concrete,",
+    "building_condition": "Good,",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

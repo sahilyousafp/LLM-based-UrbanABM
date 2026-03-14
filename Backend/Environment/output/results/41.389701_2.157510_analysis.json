@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_230138",
+    "latitude": 41.389701,
+    "longitude": 2.1575095,
+    "heading": 46.29761706399313,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "b065ae65-e202-4d47-96a0-bdaae9110d28",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389701_2.157510_h46.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44058.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street corner with a tall building featuring a mix of beige stucco and red brick facades, surrounded by pedestrians and parked motorcycles along the sidewalk. The street is paved with hexagonal tiles and has a few trees planted in the median. A white canopy covers a small outdoor cafe area, while a large gray trash bin sits on the curb.",
+    "buildings": "The building has five stories, with balconies on each floor and a mix of windows and doors. The ground floor has a large arched doorway and several smaller windows.",
+    "materials": "The building's facade is made of a combination of beige stucco and red brick, with decorative elements such as carved stone accents and ornate ironwork.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the cafe, as well as a few bicycles parked along the sidewalk.",
+    "vegetation": "The trees are bare, suggesting it may be winter or early spring.",
+    "signage": "There are several signs visible, including a large sign reading 'Café' and a smaller sign indicating parking restrictions.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is lined with shops and cafes, and there are several people visible inside.",
+    "as_commuter": "The street is wide enough for cars to drive through, but there are no vehicles currently present.",
+    "as_tourist": "The street is lined with shops and cafes, and there are several people visible inside.",
+    "as_student": "The street is relatively empty, with only a few people visible."
+  }
+}

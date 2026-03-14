@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_015342",
+    "latitude": 41.39515,
+    "longitude": 2.155376,
+    "heading": 182.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5ede0967-c728-4256-a27f-cc2a5a28cd3e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395150_2.155376_h182.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48960.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A room with a brown wall and a black table with four chairs around it. The walls have a picture hanging on them. There is a lamp on the wall and a cabinet with some papers on top of it. The floor has a herringbone pattern made of wood.",
+    "buildings": "The building is brown and has a white border at the bottom. It has a picture hanging on the wall.",
+    "materials": "The picture is framed in white and has a black and white drawing of a duck on it.",
+    "building_condition": "The building looks old and worn out.",
+    "street_furniture": "There are two chairs and a table in the room.",
+    "vegetation": "There are no plants or trees in the room.",
+    "signage": "There is a sign on the wall that says 'Eixample'.",
+    "ground_surfaces": "The ground is made of wood.",
+    "spatial_enclosure": "The room is small and narrow.",
+    "pedestrian_activity": "There are no people in the room.",
+    "lighting_atmosphere": "It is daytime.",
+    "as_resident": "The room is empty.",
+    "as_commuter": "unknown",
+    "as_tourist": "The room is interesting.",
+    "as_student": "The room is empty."
+  }
+}

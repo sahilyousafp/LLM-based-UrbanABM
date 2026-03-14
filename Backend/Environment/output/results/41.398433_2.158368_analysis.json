@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_214814",
+    "latitude": 41.398433399999995,
+    "longitude": 2.1583680000000003,
+    "heading": 326.6817253714076,
+    "street_name": "Carrer d'Apel·les Fenosa",
+    "highway_type": "road",
+    "edge_id": "08b652ec-3076-407c-b333-65965d370e4e",
+    "dist_along_edge_m": 13.3,
+    "source_image": "sv_41.398433_2.158368_h326.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43946.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides, lined with palm trees and featuring a mix of commercial and residential properties. The street is relatively empty, with only a few people visible in the distance. The buildings have a modern aesthetic, with clean lines and minimal ornamentation. The street itself is paved with cobblestones and has a slight incline, giving it a sense of depth and perspective.",
+    "buildings": "The buildings on either side of the street are primarily white or beige, with some featuring large windows and balconies. Some have decorative elements such as shutters or ornate facades, while others appear more minimalist. The buildings vary in height, with some being several stories high and others being shorter.",
+    "materials": "The street is paved with cobblestones, which adds to its historic charm. The buildings' facades are made of a combination of materials, including stone, brick, and stucco. Some of the buildings feature decorative elements such as carvings or moldings.",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and chairs scattered along the sidewalk, providing a place for pedestrians to rest and take in the surroundings. A few trash cans are also present, but they do not obstruct the view.",
+    "vegetation": "Palm trees line the street, adding a touch of greenery to the otherwise urban landscape. They are spaced at regular intervals, creating a sense of rhythm and harmony.",
+    "signage": "There are a few signs visible, including a small sign on the left side of the street that reads 'Casa de la Vella' in bold letters. There are also several smaller signs and advertisements posted on the buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the street's quiet, peaceful atmosphere. They might enjoy the opportunity to sit and read a book or take a stroll.",
+    "as_commuter": "A commuter might appreciate the street's convenience, with its proximity to public transportation and amenities. They might find the street easy to navigate, with clear signage and pedestrian-friendly infrastructure.",
+    "as_tourist": "A tourist might find the street charming and inviting, with its unique blend of old and new architecture. They might be drawn to the street's historic charm and the opportunity to explore the surrounding neighborhood.",
+    "as_student": "A student might appreciate the street's academic atmosphere. They might enjoy the opportunity to study or work in a quiet, peaceful environment."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_033850",
+    "latitude": 41.39884,
+    "longitude": 2.172699,
+    "heading": 43.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3b4714ee-58a4-449e-a7e9-f8c8df466845",
+    "dist_along_edge_m": 49.3,
+    "source_image": "sv_41.398840_2.172699_h43.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50518.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with a white van parked on the left side of the road and a gray car parked on the right side of the road. The street is lined with tall buildings and trees. There are two people walking on the sidewalk in front of the white van. A blue parking sign is posted on a pole next to the gray car. The street has a few cracks and uneven surfaces. The ground is made of concrete and asphalt. The sky is overcast.",
+    "buildings": "The white van is parked in front of a large building with a flat roof and rectangular windows. The gray car is parked in front of a building with a sloping roof and rectangular windows. The building has a large entranceway with columns.",
+    "materials": "The white van has a black bumper and trim, while the gray car has a black stripe along its side. The white van has a small window on the back door, while the gray car has a small window on the passenger side.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or other objects on the sidewalk near the white van. There are several bikes parked in front of the building behind the gray car.",
+    "vegetation": "There are a few trees growing out of the sidewalk near the white van. They have thin trunks and sparse leaves.",
+    "signage": "There is a blue sign with a white",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be quiet and peaceful. There are no cars or pedestrians in the immediate vicinity.",
+    "as_commuter": "The street is busy and active. There are many people walking and riding bicycles.",
+    "as_tourist": "The street is lively and interesting. There are many shops and restaurants.",
+    "as_student": "The street is clean and well-maintained. There are several benches and tables outside the shops."
+  }
+}

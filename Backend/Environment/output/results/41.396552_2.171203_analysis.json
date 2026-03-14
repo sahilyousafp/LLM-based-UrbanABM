@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_221711",
+    "latitude": 41.39655239999999,
+    "longitude": 2.1712033,
+    "heading": 309.4089257349727,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "0e879322-fbb4-4f4f-845c-3115699c2ac5",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396552_2.171203_h309.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43783.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings on both sides, lined with trees and cars parked along the curb. The sky is partly cloudy with patches of blue peeking through.",
+    "buildings": "The buildings are multi-story structures with balconies and windows, featuring a mix of modern and traditional architectural styles. Some have ornate facades, while others appear more minimalist.",
+    "materials": "The street is paved with asphalt, with white lines marking pedestrian crossings and bike lanes. The sidewalk is made of concrete, with some areas showing signs of wear and tear.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans scattered throughout the area, providing a place for pedestrians to rest and dispose of waste.",
+    "vegetation": "Trees line the street, casting dappled shadows on the ground below. Some have blooming flowers or leaves, adding a touch of color to the otherwise drab urban landscape.",
+    "signage": "There are several signs posted along the street, including directional signs and informational notices. Some are mounted on poles, while others are attached to buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people visible, mostly walking or standing near the buildings. Some are engaged in conversation, while others seem lost in thought.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A few locals can be seen going about their daily business, enjoying the quiet morning air. Others are out shopping or running errands.",
+    "as_commuter": "The street is a popular spot for commuters, with many people taking the bus or train to get to work or school. However, there are also plenty of opportunities for walking or cycling.",
+    "as_tourist": "This area is a popular destination for tourists, who come to admire the historic architecture and soak up the local culture. Many visitors take photos and leave behind souvenirs to remember their trip.",
+    "as_student": "Students and young professionals are also drawn to this area, seeking out the academic atmosphere and intellectual pursuits. They often spend hours studying or working on projects in the nearby libraries and cafes."
+  }
+}

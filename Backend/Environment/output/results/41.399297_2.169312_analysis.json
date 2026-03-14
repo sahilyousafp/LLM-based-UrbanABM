@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_215626",
+    "latitude": 41.3992966,
+    "longitude": 2.1693115000000005,
+    "heading": 161.6077665234484,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "0cfdf6ac-b2d1-4dec-9b8d-72f478fed9c5",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399297_2.169312_h161.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85221.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with a large white building in the background, surrounded by trees and other buildings, with a few cars and pedestrians crossing the street. The street has a bike lane and pedestrian crossings, and there are several trees lining the sidewalk.",
+    "buildings": "The large white building has a classic European-style architecture with many windows and balconies, and is at least five stories tall. It has a flat roof and a decorative cornice along the top.",
+    "materials": "The building's facade is made of white stone or concrete, with a smooth finish. There are several windows and doors, as well as some decorative elements such as columns and arches.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the curb.",
+    "vegetation": "The trees surrounding the building are tall and leafy, providing shade and adding to the street's aesthetic appeal.",
+    "signage": "There are several signs posted along the street, including a blue sign indicating a one-way street and a yellow sign warning of construction work ahead.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is quiet and peaceful, with only a few people visible.",
+    "as_commuter": "The street is a convenient location for commuting, with several bus stops and bike lanes available.",
+    "as_tourist": "The street is a great spot for sightseeing, with plenty of things to see and do.",
+    "as_student": "The street is a great place to study architecture, with plenty of interesting buildings and landmarks to explore."
+  }
+}

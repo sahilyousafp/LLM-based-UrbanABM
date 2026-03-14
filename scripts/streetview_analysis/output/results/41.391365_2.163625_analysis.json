@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_035334",
+    "latitude": 41.391365,
+    "longitude": 2.163625,
+    "heading": 134.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "05a09388-c76f-462e-9e3c-ccca9611a414",
+    "dist_along_edge_m": 23.1,
+    "source_image": "sv_41.391365_2.163625_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49957.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a man waiting to cross the street, with a tall building under construction in the background and a bus driving by in the distance. The man is wearing blue jeans, black shoes, and a backpack, and he is standing on a gray sidewalk next to a pole with a red stop sign and yellow lights. The street has a white crosswalk and a yellow line down the middle, and there are trees and other buildings in the background.",
+    "buildings": "The building under construction is covered in scaffolding and has a modern design with large windows. It is taller than the surrounding buildings and has a flat roof.",
+    "materials": "The man's backpack is made of dark-colored fabric, and his jeans are a faded blue color. He is also wearing black shoes.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few trees and streetlights.",
+    "vegetation": "The trees are tall and have green leaves, and there are some bushes and flowers along the sidewalk.",
+    "signage": "There are several signs along the street, including a red stop sign, a yellow sign with a white arrow, and a blue sign with white text.",
+    "ground_surfaces": "The ground is paved with gray concrete, and there are several cracks and potholes.",
+    "spatial_enclosure": "The street is relatively wide and has a slight curve to it.",
+    "pedestrian_activity": "There are several people walking along the sidewalk, but they are all blurred due to motion.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds in the sky.",
+    "as_resident": "The street is quiet and peaceful, with only a few cars parked along the curb.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are several shops and restaurants along the street, including a coffee shop and a bookstore.",
+    "as_student": "The street is a great spot for families to connect with their community."
+  }
+}

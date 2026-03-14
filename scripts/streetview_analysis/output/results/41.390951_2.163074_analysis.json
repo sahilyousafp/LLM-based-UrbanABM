@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_024650",
+    "latitude": 41.390951,
+    "longitude": 2.163074,
+    "heading": 134.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d32a808e-e124-4df4-8051-b51340994fd4",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.390951_2.163074_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50235.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a four-story building with a mix of old and new architecture, featuring a curved corner section with balconies and a flat roof, situated along a tree-lined sidewalk with outdoor seating areas and a bike rack. The street is paved with cobblestone and has a bike lane marked by white lines and symbols. A person stands near the curb, while another walks down the sidewalk. The surrounding buildings have a mix of modern and historic facades, with some displaying ornate details such as carved stone and wrought ironwork. The sky is overcast.",
+    "buildings": "The building has a beige stone façade with a mix of rectangular and arched windows, and a flat roof with a small balcony on the top floor. The ground floor features large windows and doors, with a sign reading'média' above the entrance. The second and third floors have balconies with black metal railings, and the fourth floor has a large window with a decorative stone surround. The building's exterior is made of a combination of stone and brick, with a mix of smooth and textured surfaces.",
+    "materials": "The building's façade is constructed from a combination of stone and brick, with a mix of smooth and textured surfaces. The ground floor features large windows and doors, while the upper floors have balconies with black metal railings. The building's exterior is adorned with decorative elements such as carved stone and wrought ironwork.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the building, as well as a few potted plants and a bike rack. The street is paved with cobblestones and has a bike lane marked by white lines and symbols.",
+    "vegetation": "The area around the building is lined with trees and shrubs, adding a touch of greenery to the urban landscape. There are also several planters containing flowers and other plants.",
+    "signage": "There are several signs visible, including a blue and white sign indicating parking restrictions and a black awning with yellow lettering advertising a café or restaurant.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the area's charm and character, noting the mix of old and new architecture and the lively atmosphere. They might enjoy the outdoor seating areas and the variety of shops and cafes.",
+    "as_commuter": "A commuter might find the area convenient for getting around, with easy access to public transportation and nearby shops and restaurants. They might appreciate the area's accessibility and amenities.",
+    "as_tourist": "A tourist might find the area interesting due to its unique blend of old and new architecture, as well as its lively atmosphere and cultural attractions. They might enjoy exploring the area and taking in the sights and sounds.",
+    "as_student": "A student might find the area appealing due to its proximity to educational institutions and cultural attractions. They might appreciate the area's vibrant atmosphere and opportunities for socializing and learning."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_211546",
+    "latitude": 41.39350290000001,
+    "longitude": 2.1662348999999996,
+    "heading": 89.71432049801979,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "596f23b8-7f66-403f-a672-15237fa6f3e8",
+    "dist_along_edge_m": 7.6,
+    "source_image": "sv_41.393503_2.166235_h89.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 84683.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a modern office building with a glass elevator in front of it. The building has a cream-colored facade with arched windows and a sign reading 'CARRER' above the entrance. A large windowed building stands across the street, while a smaller building with a flat roof and a red logo sits further down the street. The sky is clear and blue.",
+    "buildings": "The buildings are primarily made of glass and concrete, with some featuring balconies and ornate ironwork. The street is paved with gray stone and lined with cars parked along both sides.",
+    "materials": "The main building has a cream-colored facade with a mix of smooth and textured surfaces, while the adjacent building features a sleek glass exterior with a flat roof.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans scattered throughout the area, as well as a few streetlights and a bike rack.",
+    "vegetation": "The street is lined with small trees and bushes, adding a touch of greenery to the otherwise urban landscape.",
+    "signage": "A large digital billboard displays an advertisement for a video game, while a smaller sign on the sidewalk reads 'CARRER' in bold letters.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "The street is moderately busy, with a few pedestrians strolling along the sidewalk.",
+    "lighting_atmosphere": "The sun casts long shadows across the street, creating a sense of depth and dimensionality.",
+    "as_resident": "The street is home to a mix of residential and commercial properties, including apartments, offices, and retail stores.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and nearby attractions.",
+    "as_tourist": "The street is a popular destination for tourists, offering a unique blend of culture, history, and entertainment options.",
+    "as_student": "The street is a great place to study the local architecture and learn about the area's rich history."
+  }
+}
