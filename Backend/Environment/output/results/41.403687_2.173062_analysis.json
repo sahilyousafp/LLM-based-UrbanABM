@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174040",
+    "latitude": 41.40368680000001,
+    "longitude": 2.1730622,
+    "heading": 0.31867953691562434,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "bcea75d9-0730-4dd2-8aad-08244814f45e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403687_2.173062_h0.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 3515.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A man sitting outside in a red chair on a sunny day,",
+    "buildings": "A tall white building with yellow balconies,",
+    "materials": "The man wears a white shirt with red trim and black pants,",
+    "building_condition": "unknown",
+    "street_furniture": "There are two red chairs and a table behind him,",
+    "vegetation": "There are trees and bushes in the background,",
+    "signage": "There are several signs including a stop sign,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking by,",
+    "lighting_atmosphere": "It is daytime with clear skies,",
+    "as_resident": "The man seems relaxed,",
+    "as_commuter": "He is waiting for someone,",
+    "as_tourist": "He is taking photos.",
+    "as_student": "He is studying,"
+  }
+}

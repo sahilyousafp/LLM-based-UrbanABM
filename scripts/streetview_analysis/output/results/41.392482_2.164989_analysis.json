@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002640",
+    "latitude": 41.392482,
+    "longitude": 2.164989,
+    "heading": 272.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "e9bd0c5a-4436-4454-ada0-ea7c0fe31abf",
+    "dist_along_edge_m": 12.4,
+    "source_image": "sv_41.392482_2.164989_h272.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48725.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with a man standing in the middle of the sidewalk, surrounded by buildings, trees, and vehicles. The sun is shining brightly overhead, casting long shadows across the ground. A bus is parked along the curb, and several people are walking in the distance. The man is wearing a white shirt and dark pants, and he has his hands in his pockets. He is looking down at something on the ground.",
+    "buildings": "The buildings in the background are tall and have a mix of modern and traditional architectural styles. They are made of stone, brick, and glass, and some have balconies and ornate facades. There are also several trees and greenery scattered throughout the area.",
+    "materials": "The pavement is made of large, flat stones arranged in a pattern. The road surface is smooth and well-maintained, with a few potholes and cracks here and there. There are also several streetlights and utility poles along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked against the wall. There are also several signs and advertisements posted on the buildings and lampposts.",
+    "vegetation": "The trees are tall and leafy, providing shade for pedestrians and adding a touch of greenery to the urban landscape. There are also several flowerbeds and planters filled with colorful flowers and shrubs.",
+    "signage": "There are several signs posted on the buildings, including a large billboard advertising a local business. There are also several smaller signs indicating directions and warnings.",
+    "ground_surfaces": "The pavement is made of large, flat stones arranged in a pattern. The road surface is smooth and well-maintained, with a few potholes and cracks here and there. There are also several streetlights and utility poles along the sidewalk.",
+    "spatial_enclosure": "The street feels relatively open and airy, with plenty of space between buildings and pedestrians. However, there are several narrow alleys and side streets that can be found off the main thoroughfares.",
+    "pedestrian_activity": "There are several people walking along the sidewalk, some of whom are carrying bags or backpacks. There are also several people sitting on benches or standing near the street.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow cast over the entire scene. The sun is high in the sky, casting long shadows across the ground.",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its mix of shops, cafes, and restaurants. It is also a great place to take photos and enjoy the sights and sounds of the city.",
+    "as_commuter": "This street is a convenient location for commuters, with several buses and trains passing through the area. It is also a great spot for cyclists and runners.",
+    "as_tourist": "This street is a popular spot for tourists, with many shops and restaurants catering to visitors. It is also a great place to take photos and enjoy the views of the city.",
+    "as_student": "This street is a great place for students to study urban planning and architecture. It is also a great spot for those interested in sustainability and environmentalism."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_181343",
+    "latitude": 41.391909399999996,
+    "longitude": 2.1649108000000004,
+    "heading": 46.92358201850277,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "06623a60-61b6-4421-8cae-0b2e6f53283e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391909_2.164911_h46.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 8046.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large room with a high ceiling and arched windows,",
+    "buildings": "The building has a cream-colored wall with a wooden frame around the windows,",
+    "materials": "The floor is made of wood parquet,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no furniture pieces in the room,",
+    "vegetation": "There are no plants or trees in the room,",
+    "signage": "There are no signs or posters in the room,",
+    "ground_surfaces": "The ground is made of wood parquet,",
+    "spatial_enclosure": "The room is open and spacious,",
+    "pedestrian_activity": "There are no people in the room,",
+    "lighting_atmosphere": "The lighting is bright and well-lit,",
+    "as_resident": "This room is empty,",
+    "as_commuter": "It is a quiet area,",
+    "as_tourist": "The room is not very crowded.",
+    "as_student": "There are no students in the room,"
+  }
+}

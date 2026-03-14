@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_035516",
+    "latitude": 41.397162,
+    "longitude": 2.154734,
+    "heading": 52.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "e73da025-0487-4269-8368-73e2c771ad97",
+    "dist_along_edge_m": 78.8,
+    "source_image": "sv_41.397162_2.154734_h52.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50272.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long hallway with white walls and a white ceiling with square tiles. The floor is made of shiny beige marble. A wooden door with a silver handle is open, revealing a long hallway with brown doors and windows along both sides. A white sign with black text is affixed to the door. A white cart with a black arm is seen on the left side of the hallway. The hallway has a high ceiling with square tiles and lights. The hallway is well-lit.",
+    "buildings": "The hallway has two stories with a white wall on the left and a brown wall on the right. The first floor has a large window with a view of another room. The second floor has a door leading to another room.",
+    "materials": "The first floor has a white wall with a black switch plate. The second floor has a brown wall with a white sign.",
+    "building_condition": "unknown",
+    "street_furniture": "There is a white cart with a black arm on the left side of the hallway. There are no other objects in the hallway.",
+    "vegetation": "There are no plants or trees in the hallway.",
+    "signage": "There is a white sign with black text on the right side of the hallway.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "There are no people in the hallway.",
+    "as_commuter": "There are no commuters in the hallway.",
+    "as_tourist": "There are no tourists in the hallway.",
+    "as_student": "There are no students in the hallway."
+  }
+}

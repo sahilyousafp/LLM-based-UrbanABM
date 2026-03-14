@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_011044",
+    "latitude": 41.389486,
+    "longitude": 2.17382,
+    "heading": 132.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "12a57dfe-e1a5-4d80-b7da-7c6bfcd19646",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389486_2.173820_h132.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48985.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with a bus parked along the curb, surrounded by tall buildings and trees. The bus has blue stripes and is facing away from the camera. The street is paved with gray bricks and has white lines painted on it. There are several cars parked along the street, as well as a few pedestrians walking on the sidewalk. In the background, there are several tall buildings with balconies and windows. The sky is clear and blue.",
+    "buildings": "The buildings in the background are multi-story structures with balconies and windows. They appear to be residential or commercial properties. Some have ornate facades, while others are more plain. The buildings are made of stone or concrete and have a mix of modern and traditional architectural styles.",
+    "materials": "The bus has a sleek, modern design with a white body and blue accents. The bus is parked on the side of the street, facing away from the camera. The bus has large windows that allow passengers to look out onto the street.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, providing places for people to sit and rest. There are also several streetlights and signs, including a stop sign and a pedestrian crossing signal.",
+    "vegetation": "There are several trees lining the street, providing shade and greenery to the area. The trees are bare, suggesting that it may be winter or early spring.",
+    "signage": "There are several signs along the street, including a stop sign and a directional sign. The signs are clearly visible and easy to read.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might notice the presence of a bench and a trash can, indicating that the area is well-maintained and cared for. They might also notice the presence of a stop sign, which suggests that the area is safe and regulated.",
+    "as_commuter": "A commuter might notice the presence of a bus stop and a bike lane, indicating that the area is designed to accommodate different modes of transportation. They might also notice the presence of a bike path, which could be a convenient option for those who prefer cycling.",
+    "as_tourist": "A tourist might notice the unique architecture and design of the buildings, as well as the vibrant colors and patterns on the bus. They might also notice the presence of street performers and vendors, adding to the lively atmosphere.",
+    "as_student": "A student might notice the presence of a bicycle rack and a map, indicating that the area is easily accessible by public transportation. They might also notice the presence of a coffee shop or cafe, which could be a popular spot for students to grab a drink or snack."
+  }
+}

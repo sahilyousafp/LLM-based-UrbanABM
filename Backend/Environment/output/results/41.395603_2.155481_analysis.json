@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_185528",
+    "latitude": 41.3956031,
+    "longitude": 2.1554812,
+    "heading": 251.67301088837652,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5c9a0e05-099f-4c26-bc70-5b5caa2ee1ef",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395603_2.155481_h251.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64967.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings lining both sides, featuring a mix of palm trees and other vegetation along the sidewalk, with a few pedestrians strolling along the pedestrian path adjacent to the road. The street itself is relatively empty, with only a few vehicles parked along the curb.",
+    "buildings": "The buildings are primarily white, with some having balconies and ornate details such as columns and arches. Some have signs indicating they are commercial establishments, while others appear to be residential.",
+    "materials": "The street is paved with asphalt, with a smooth texture and a slight sheen. The sidewalk is made of concrete, with a subtle pattern of small stones embedded in the surface.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for people to rest and dispose of waste.",
+    "vegetation": "Palm trees line the street, their slender trunks and feathery leaves swaying gently in the breeze. Other trees and shrubs are also present, adding a touch of greenery to the urban landscape.",
+    "signage": "Signs are posted at various points along the street, including directional signs, business names, and informational notices. They are mounted on poles or attached to buildings.",
+    "ground_surfaces": "The ground surfaces are composed of asphalt, with a rough texture and a subtle sheen. The sidewalk is made of concrete, with a subtle pattern of small stones embedded in the surface.",
+    "spatial_enclosure": "The street feels relatively open, with a clear view of the surrounding buildings and sky. There are no visible barriers or obstructions.",
+    "pedestrian_activity": "People are scattered along the sidewalk, some walking alone and others in small groups. They seem to be going about their daily business, unaware of the camera's presence.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow cast over the entire scene. The shadows are long and deep, suggesting a late morning or early afternoon sun.",
+    "as_resident": "The street is a part of the city's fabric, with its own character and charm. It is a place where residents can live, work, and play, and where the city's history and culture are preserved.",
+    "as_commuter": "The street is a vital part of the city's infrastructure, with regular bus routes and bike lanes making it easy for commuters to get around. It is a safe and efficient way to travel through the city.",
+    "as_tourist": "The street is a popular spot for visitors, with its unique architecture, cultural attractions, and lively atmosphere. It is a place where people can come to explore, learn, and enjoy the city's many wonders.",
+    "as_student": "The street is a great place for students to connect with others, learn new things, and experience the city's diverse culture."
+  }
+}

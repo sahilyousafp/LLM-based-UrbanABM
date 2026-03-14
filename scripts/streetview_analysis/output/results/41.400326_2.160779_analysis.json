@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_022022",
+    "latitude": 41.400326,
+    "longitude": 2.160779,
+    "heading": 50.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3f0c43c7-dbc1-4139-a0ae-8ea497e0f11f",
+    "dist_along_edge_m": 4.2,
+    "source_image": "sv_41.400326_2.160779_h50.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 26173.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides, paved with large square stones, lined with trees and benches, and featuring a mix of residential and commercial properties. The street is relatively quiet, with only a few parked motorcycles and a single person walking along the sidewalk.",
+    "buildings": "The buildings are primarily yellow, with some white accents and ornate ironwork on the windows. They appear well-maintained but show signs of age, with some showing wear and tear on the facades and roofs.",
+    "materials": "The street is paved with large, irregularly shaped stones, and the buildings' facades feature a mix of smooth stucco and rough-hewn stone. Some of the buildings have decorative ironwork, while others have plain concrete or stucco exteriors.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked against the buildings. A small tree grows out of a planter near the center of the image.",
+    "vegetation": "The street is lined with trees, which provide shade and add a touch of greenery to the otherwise urban landscape. There are also several potted plants and hanging baskets placed along the sidewalk.",
+    "signage": "There are several signs posted on the buildings, including a large sign on the left side of the image that reads 'Casa de la Vella' in bold letters. There are also several smaller signs and posters on the buildings, advertising local businesses and events.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the image, although there are several people walking in the distance. The street appears to be relatively quiet, with only a few cars parked along the curb.",
+    "lighting_atmosphere": "The lighting in the image is soft and diffused, with a warm glow emanating from the streetlights and the setting sun. The sky above is blue and cloudy, adding to the peaceful ambiance of the scene.",
+    "as_resident": "A local resident might notice that the street is relatively quiet and peaceful, with a few people going about their daily business. There are also several benches and planters along the sidewalk, suggesting that the area is popular with locals who want to sit and relax.",
+    "as_commuter": "A commuter might notice that the street is relatively empty, with only a few people walking by. The buildings and surroundings suggest that the area is busy during peak hours, with many people commuting to and from work or school.",
+    "as_tourist": "A tourist might notice that the street is relatively empty, with only a few people walking by. The architecture and landscaping suggest that the area is historic and culturally significant, making it a popular destination for visitors.",
+    "as_student": "A student might notice that the street is relatively quiet, with only a few people walking by. The buildings and surroundings suggest that the area is academic or research-oriented, with many students and faculty members likely living and working in the surrounding buildings."
+  }
+}

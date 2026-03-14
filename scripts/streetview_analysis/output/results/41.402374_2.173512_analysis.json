@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_032233",
+    "latitude": 41.402374,
+    "longitude": 2.173512,
+    "heading": 270.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "9e9f35da-e2ad-4b6c-b5d5-649ee3367ad4",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.402374_2.173512_h270.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50599.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large cathedral with tall ceilings and stained glass windows, featuring a mix of brown and tan colored marble flooring, with several people milling about in the distance. The cathedral has a grandiose architecture with multiple levels and columns, and there are several large stained glass windows visible in the background. The floor is made up of various shades of brown and tan marble, with some sections appearing darker than others. There are several people scattered throughout the space, some of whom appear to be tourists taking photos or admiring the architecture. The atmosphere is calm and peaceful, with soft lighting coming in through the stained glass windows.",
+    "buildings": "The cathedral has a mix of old and new elements, with some parts appearing more ornate and decorative while others are more modern and sleek. The walls are adorned with intricate carvings and statues, and there are several large stained glass windows that add a pop of color to the otherwise muted tones of the space.",
+    "materials": "The cathedral's exterior is primarily made of stone, with some sections featuring a smooth, polished finish while others have a more textured, rough-hewn appearance. The roof is covered in a layer of dark gray slate, which adds a sense of depth and dimensionality to the space.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and chairs scattered throughout the space, providing a place for visitors to rest and take in the surroundings. Some of the benches are quite ornate, featuring intricate carvings and other decorative elements.",
+    "vegetation": "The cathedral is surrounded by lush greenery, including several large trees and bushes that add a touch of natural beauty to the space. There are also several potted plants placed throughout the area, adding a pop of color and texture to the surroundings.",
+    "signage": "There are several signs posted throughout the space, including directional signs and informational displays. These signs provide important information about the cathedral's history, architecture, and cultural significance.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people visible in the space, including tourists and locals going about their daily business. Some people are sitting on benches or walking through the area, while others are taking photos or admiring the architecture.",
+    "lighting_atmosphere": "The lighting in the cathedral is soft and warm, with a mix of natural and artificial light sources. The stained glass windows filter the light, casting colorful patterns and shadows across the floor.",
+    "as_resident": "As a local resident, I would say that the cathedral is a peaceful and welcoming space that offers a unique blend of history, culture, and community. It is a popular spot for both locals and tourists alike, and is often bustling with activity during peak hours.",
+    "as_commuter": "As a commuter, I would say that the cathedral is a convenient and accessible location for those traveling to the city. It is close to public transportation and shopping districts, making it easy to get around without having to worry about parking or navigating unfamiliar streets.",
+    "as_tourist": "As a tourist, I would say that the cathedral is a great place to visit for those looking for a unique and memorable experience. It is a beautiful and historic site that offers a glimpse into the world's cultural heritage, and is worth visiting for anyone looking for a fun and educational experience.",
+    "as_student": "As a student, I would say that the cathedral is a great place to study architecture, art history, or religion. It is a beautiful and inspiring space that offers a wealth of interesting details and insights into the world's cultural heritage."
+  }
+}

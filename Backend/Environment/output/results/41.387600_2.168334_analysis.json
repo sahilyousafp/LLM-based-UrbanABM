@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_190801",
+    "latitude": 41.38759969999999,
+    "longitude": 2.1683342000000003,
+    "heading": 45.74750363497856,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b6b8c078-1772-439f-8609-259422a052b1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387600_2.168334_h45.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64327.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a busy intersection with a large billboard displaying an advertisement for Enecole-ho6, surrounded by tall buildings and pedestrians. The street has a mix of commercial and residential properties, with a few parked scooters and a large gray trash bin on the left side. A pedestrian crossing is marked with white lines and a red sign indicating a pedestrian crossing. The sky is clear and blue.",
+    "buildings": "The building on the left has a beige façade with multiple stories and windows, while the building on the right has a more modern design with a large billboard covering its front. The ground floor of the building on the right has a storefront with a sign reading Desigual and a VISA logo.",
+    "materials": "The building on the left has a concrete façade with a grid pattern, while the building on the right has a smooth, reflective surface. The billboard displays a serene landscape with trees and water.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several scooters parked along the curb, including a black scooter with a white license plate and a silver scooter with a black seat.",
+    "vegetation": "There are several trees and bushes along the sidewalk, as well as a few potted plants near the street corner.",
+    "signage": "There are several signs along the street, including a red stop sign and a yellow sign with a pedestrian symbol.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The street is relatively narrow, with a few cars parked along the curb.",
+    "pedestrian_activity": "There are several people walking along the sidewalk, some carrying bags or backpacks.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few shadows cast by the trees and buildings.",
+    "as_resident": "The street is bustling with activity, with people going about their daily business.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation.",
+    "as_tourist": "The street is a great spot for sightseeing, with many interesting landmarks and attractions nearby.",
+    "as_student": "The street is a hub for student activity, with many young people hanging out and socializing."
+  }
+}

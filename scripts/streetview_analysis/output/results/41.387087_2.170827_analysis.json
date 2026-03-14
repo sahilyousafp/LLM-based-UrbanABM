@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_021123",
+    "latitude": 41.387087,
+    "longitude": 2.170827,
+    "heading": 75.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "06b3c193-289e-402f-84de-65c26df9a976",
+    "dist_along_edge_m": 4.4,
+    "source_image": "sv_41.387087_2.170827_h75.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49250.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city with a clear blue sky, featuring a mix of modern and older buildings, including a large white building with a clock tower and a curved glass wall with advertisements, surrounded by pedestrians and scooters. The scene is bustling with activity as people go about their daily lives amidst the urban landscape.",
+    "buildings": "The large white building has a clock tower and a curved glass wall with advertisements, while the smaller building has a more traditional façade with a flat roof.",
+    "materials": "The ground is paved with concrete, and there are several trees growing along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks scattered throughout the area.",
+    "vegetation": "The trees provide shade and add a touch of greenery to the urban landscape.",
+    "signage": "There are several signs posted on the buildings, including a large sign reading 'SABA' and a smaller sign advertising a local business.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area is quiet and peaceful, with only a few people out and about.",
+    "as_commuter": "The area is a convenient location for those looking for a quick commute.",
+    "as_tourist": "The area is a great spot for taking photos and exploring the city's hidden gems.",
+    "as_student": "The area is a great place to study architecture and culture."
+  }
+}

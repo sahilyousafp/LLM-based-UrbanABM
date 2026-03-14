@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_193111",
+    "latitude": 41.3875917,
+    "longitude": 2.1694548,
+    "heading": 145.15497435654663,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c9daa9bb-596b-451b-b526-4ed00bc08bfa",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387592_2.169455_h145.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64530.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city square with a few people walking around, surrounded by buildings and trees. The sun is shining brightly overhead, casting long shadows across the ground. The sky is mostly cloudy but there are patches of blue sky peeking through. There are several large buildings in the distance, including a tall white building with many windows and a shorter building with a flat roof. In the foreground, there is a small plaza with a few benches and some greenery. A person is sitting on one of the benches, reading a book. There are also a few other people walking around, some of whom are looking at their phones or taking pictures. The overall atmosphere is calm and peaceful, with a sense of activity and movement.",
+    "buildings": "The buildings in the background are made of stone and have a mix of modern and traditional architectural styles. Some of them have balconies or terraces, while others have large windows or ornate facades. One building has a clock tower that stands out from the rest. The buildings are all different heights, with some being much taller than others. They are spaced out along the street, with some being closer together than others. There are also some trees and bushes scattered throughout the area, adding some greenery to the otherwise urban landscape.",
+    "materials": "The ground is paved with a smooth, dark gray material that reflects the sunlight. There are also some lighter-colored stones or bricks mixed in, which add texture and interest to the scene. The pavement is clean and well-maintained, with no visible cracks or potholes. There are also some metal railings and barriers along the edges of the plaza, which help to define the boundaries between the different areas of the square.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and chairs scattered throughout the plaza, providing places for people to sit and rest. Some of the benches are made of wood or metal, while others are covered in cushions or fabric. There are also some tables and umbrellas, which suggest that the plaza may be used for outdoor dining or socializing. The furniture is arranged in a way that creates a sense of community and encourages people to gather and interact with one another.",
+    "vegetation": "The plaza is surrounded by trees and shrubs, which provide shade and add some color to the scene. There are also some flowers or plants growing in pots or planters, which add some vibrancy to the area. The vegetation is well-maintained, with no visible weeds or debris. There are also some birds flying overhead, which adds to the lively atmosphere of the plaza.",
+    "signage": "There are several signs posted around the plaza, including directional signs, informational signs, and advertisements. Some of the signs are large and prominent, while others are smaller and more discreet. There are also some street signs, which provide information about the location and directions. The signs are all written in Spanish, suggesting that the plaza is located in a Spanish-speaking country.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "The lighting in the plaza is bright and sunny, with the sun shining down from above. There are also some clouds in the sky, which add some depth and texture to the scene. The lighting is warm and inviting, with a sense of warmth and comfort.",
+    "as_resident": "As a resident, I would say that this plaza is a popular spot for locals and visitors alike. It seems like a great place to relax, socialize, or take a break from the hustle and bustle of daily life. There are several benches and tables scattered throughout the plaza, which suggests that it is a welcoming and comfortable space. The plaza also seems to be well-maintained, with clean streets and tidy surroundings.",
+    "as_commuter": "As a commuter, I would say that this plaza is a convenient and accessible place to get around. There are several benches and public transportation options available, including buses and trains. The plaza is also close to several major roads and highways, making it easy to get to work or school. Overall, the plaza seems to be a great spot to start your day or end your day.",
+    "as_tourist": "As a tourist, I would say that this plaza is a great spot to explore and discover new things. There are several interesting landmarks and attractions in the area, including a large monument or statue in the distance. The plaza also seems to be a great place to take photos, with plenty of scenic views and interesting architecture. Overall, the plaza seems to be a fun and exciting place to visit.",
+    "as_student": "As a student, I would say that this plaza is a great place to study or work. There are several desks and chairs scattered throughout the plaza, which suggests that it is a quiet and focused environment. The plaza also seems to be a great spot to study or work, with plenty of natural light and comfortable seating areas. Overall, the plaza seems to be a great spot to concentrate and learn."
+  }
+}

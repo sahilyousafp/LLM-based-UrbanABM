@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172016",
+    "latitude": 41.39868899999999,
+    "longitude": 2.1661337000000005,
+    "heading": 312.4298818387544,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "19359be7-7f24-4bd5-baa7-6362fc202426",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.398689_2.166134_h312.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21810.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow alleyway between two buildings with a mix of old and new architecture, featuring a mix of residential and commercial properties along its length. The alleyway is lined with shops, cafes, and restaurants, and is well-lit by a combination of overhead lighting and streetlights. The walls are adorned with murals depicting scenes of everyday life, adding a touch of color and vibrancy to the otherwise drab surroundings. The alleyway is bustling with activity, as locals go about their daily business while tourists take photos and admire the artwork.",
+    "buildings": "The buildings on either side of the alleyway are a mix of old and new, with some featuring ornate facades and others displaying more modern designs. The older buildings have a worn, weathered look, while the newer ones appear sleek and contemporary. The alleyway is flanked by tall trees and lush greenery, which adds a touch of nature to the urban landscape.",
+    "materials": "The alleyway is lined with a mix of old and new materials, including brick, stone, and metal. The walls are adorned with murals and graffiti, while the floor is made of polished concrete.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the alleyway, providing a place for people to rest and take in the sights. There are also several trash cans and recycling bins, which are strategically placed to encourage visitors to dispose of their waste properly.",
+    "vegetation": "The alleyway is lined with trees and plants, which add a touch of greenery to the urban landscape. There are also several flowerbeds and potted plants, which add a pop of color and vibrancy to the scene.",
+    "signage": "There are several signs posted along the alleyway, including directional signs and advertisements for local businesses. Some of the signs are brightly colored and eye-catching, while others are more subdued and understated.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "The lighting in the alleyway is dim, with a warm glow emanating from the streetlights and building lights. The atmosphere is cozy and intimate, with a sense of community and connection among the people present.",
+    "as_resident": "As a local resident, I would describe the alleyway as a vibrant and lively space that is filled with the sounds of conversation and laughter. I would recommend it as a great spot to grab a coffee or snack before heading out into the city.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, I would describe the alleyway as a charming and historic space that is steeped in history and culture. I would recommend it as a great spot to explore and discover the local hidden gems.",
+    "as_student": "As a student, I would describe the alleyway as a quiet and peaceful space that is perfect for studying or working. I would recommend it as a great spot to get some fresh air and focus."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023556",
+    "latitude": 41.401085,
+    "longitude": 2.159836,
+    "heading": 51.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "29b936ff-62e1-4f57-bae3-8148e31aa5f1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401085_2.159836_h51.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50692.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a city street with buildings, pedestrians, and various objects such as trash cans, plants, and graffiti. The scene is set during the daytime with sunlight casting shadows on the ground. The street is lined with buildings featuring colorful murals and graffiti, while pedestrians walk along the sidewalk. A man takes a picture of the mural with his phone. The scene has a lively and vibrant atmosphere.",
+    "buildings": "The buildings in the background have a mix of modern and traditional architectural styles, with some featuring large windows and others having more ornate facades. The walls are adorned with vibrant murals and graffiti, adding a pop of color to the scene.",
+    "materials": "The mural is made up of a combination of materials, including paint, stucco, and possibly other decorative elements. The graffiti adds texture and visual interest to the wall.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters scattered throughout the area, providing seating and greenery to the urban landscape.",
+    "vegetation": "The plants add a touch of nature to the scene, with flowers blooming in pots and hanging baskets.",
+    "signage": "The street signs are clear and easy to read, indicating directions and important information.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, going about their daily business.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is bustling with activity, with people going about their daily routines.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is a popular destination for tourists, with its unique architecture and vibrant atmosphere.",
+    "as_student": "The street is a hub for students and locals alike, with a lively and dynamic atmosphere."
+  }
+}

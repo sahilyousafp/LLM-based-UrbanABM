@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_182838",
+    "latitude": 41.3870529,
+    "longitude": 2.1706710999999994,
+    "heading": 351.2409515105063,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "4cd3f758-0c5a-47c0-939c-bb66fe46dd90",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387053_2.170671_h351.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64482.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A curved road with a statue on the right side, surrounded by trees and buildings. The road has a sidewalk on the left side with benches and trees planted along it. There are several buildings in the background, including a large tan building on the right side of the road. The sky is clear and blue.",
+    "buildings": "The statue is made of dark gray stone and depicts three figures. It is placed on a square base made of light brown stone blocks. The statue is positioned on the right side of the road, facing the camera. The road curves to the left in the distance.",
+    "materials": "The statue is made of dark gray stone. The base is made of light brown stone blocks. The road is paved with asphalt.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two benches on the left side of the road, one behind the other. They are made of metal and have a simple design.",
+    "vegetation": "There are several trees lining the left side of the road. They are tall and have green leaves.",
+    "signage": "There are no visible signs on the buildings or on the road.",
+    "ground_surfaces": "The ground is paved with asphalt.",
+    "spatial_enclosure": "The road is relatively narrow, but there are no obstacles or hazards.",
+    "pedestrian_activity": "There are no pedestrians visible in the image.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is scenic and picturesque.",
+    "as_student": "The area is clean and safe."
+  }
+}

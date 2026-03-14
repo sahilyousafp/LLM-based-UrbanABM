@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_012046",
+    "latitude": 41.400742,
+    "longitude": 2.162726,
+    "heading": 31.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "fbde32a6-f086-40e3-9854-28d70f7ace44",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.400742_2.162726_h31.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48891.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "Street view of a closed storefront with a black metal shuttered door featuring the word FABRICK in white letters, with a logo above it, set against a beige stone wall with a pinkish-red accent wall above. A woman walks by wearing all black, carrying a bag over her shoulder, while another person stands to the side. The scene is set during daytime.",
+    "buildings": "The storefront has a beige stone facade with a large black metal shuttered door, featuring a logo above it, and a pinkish-red accent wall above. The building is situated on a street with a sidewalk and a curb.",
+    "materials": "The storefront's exterior is made of beige stone, with a large black metal shuttered door and a pinkish-red accent wall above. The building's facade is adorned with a logo above the door.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the immediate vicinity, but there may be some nearby.",
+    "vegetation": "There are no visible plants or trees in the immediate vicinity.",
+    "signage": "A sign is visible above the door, although its text is illegible.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The storefront appears to be vacant, with no visible activity or signage.",
+    "as_commuter": "unknown",
+    "as_tourist": "The storefront is not particularly notable or attractive.",
+    "as_student": "The storefront is not particularly interesting or noteworthy."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172506",
+    "latitude": 41.3871754,
+    "longitude": 2.1684233999999996,
+    "heading": 188.82874338668967,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0835374b-81f6-4aa9-bce9-6b7d04955e41",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387175_2.168423_h188.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 4114.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a restaurant with a large windowed frontage,",
+    "buildings": "The building has a cream-colored facade with ornate carvings and a flat roof,",
+    "materials": "The building's exterior is made of stone and glass,",
+    "building_condition": "The building appears well-maintained but shows signs of wear and tear,",
+    "street_furniture": "There are several tables and chairs inside the restaurant,",
+    "vegetation": "There are potted plants outside the restaurant,",
+    "signage": "The restaurant has a sign that reads 'Pintos' in white letters,",
+    "ground_surfaces": "The ground is paved with cobblestones,",
+    "spatial_enclosure": "The street is relatively narrow and has a slight incline,",
+    "pedestrian_activity": "People are sitting at tables inside the restaurant,",
+    "lighting_atmosphere": "The lighting is bright and sunny,",
+    "as_resident": "The restaurant appears to be a popular spot for locals and tourists alike,",
+    "as_commuter": "The street is busy with pedestrians,",
+    "as_tourist": "unknown",
+    "as_student": "The restaurant is a good option for students looking for a place to eat."
+  }
+}

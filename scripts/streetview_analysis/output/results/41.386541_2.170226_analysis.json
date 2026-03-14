@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_012916",
+    "latitude": 41.386541,
+    "longitude": 2.170226,
+    "heading": 341.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "7eeab251-30c6-48ed-a704-dbd6324dd97d",
+    "dist_along_edge_m": 21.2,
+    "source_image": "sv_41.386541_2.170226_h341.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48767.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a large white building with a flat roof and symmetrical facade, surrounded by trees and a paved area with a few people walking around. The building has a central entrance flanked by two smaller doors and several windows on either side. A large tree stands in front of the building, casting a shadow over the area. The paved area is mostly empty, with a few benches and a small garden bed with some plants. The sky is clear and blue, with a few clouds visible in the distance. The overall atmosphere is calm and peaceful, with a sense of serenity and tranquility.",
+    "buildings": "The building has a classic, neoclassical style with a symmetrical facade and a central entrance flanked by two smaller doors and several windows on either side. It has a flat roof and a simple, unadorned exterior. The building appears to be well-maintained and in good condition.",
+    "materials": "The building's facade is made of white stone or concrete, with a smooth, uniform texture. The windows are rectangular and evenly spaced, with a simple frame. The roof is flat and covered in a layer of snow or dirt.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the paved area, providing a place for people to sit and rest. There are also a few trash cans and recycling bins.",
+    "vegetation": "The trees surrounding the building are tall and leafy, with branches that stretch up towards the sky. They provide shade and add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs visible in the distance, including a large sign that reads 'Casa de la Cultura' in bold letters. There are also several smaller signs that appear to be advertisements or informational signs.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people visible in the distance, walking along the sidewalk or sitting on benches. They appear to be going about their daily business, unaware of the camera.",
+    "lighting_atmosphere": "The lighting in the image is soft and diffused, with a warm glow emanating from the setting sun. The shadows are long and gentle, adding depth and dimension to the scene.",
+    "as_resident": "A local resident might notice the building's historic architecture and the surrounding greenery. They might appreciate the peaceful atmosphere and the sense of community that pervades the area.",
+    "as_commuter": "unknown",
+    "as_tourist": "A tourist might notice the unique architecture and the beautiful surroundings. They might take photos and admire the building's design.",
+    "as_student": "A student might notice the building's educational purpose and the surrounding campus. They might appreciate the building's historical significance and its role as a hub for learning."
+  }
+}

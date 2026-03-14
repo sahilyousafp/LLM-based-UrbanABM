@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_222900",
+    "latitude": 41.3952356,
+    "longitude": 2.168772,
+    "heading": 132.87158275634386,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "b7f63267-7c89-478f-b558-bc0571f383e9",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395236_2.168772_h132.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 23705.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a corner of a city street with a tall yellow building featuring a curved front and multiple windows, surrounded by trees and a sidewalk,",
+    "buildings": "The building has a cream-colored facade with white trim and a rounded corner, with balconies on the top floor and a large window on the second floor,",
+    "materials": "The ground floor has a smooth concrete base and a glass door, while the upper floors have a mix of stone and glass facades,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a bike rack and a small tree,",
+    "vegetation": "The trees are tall and leafy, providing shade and adding to the area's aesthetic appeal,",
+    "signage": "There are several signs indicating parking restrictions and pedestrian crossings, as well as a few streetlights and a bike lane,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be residential, with a few shops and restaurants nearby,",
+    "as_commuter": "The street is moderately busy during rush hour, with cars and pedestrians sharing the space,",
+    "as_tourist": "The area is popular with tourists, who come to admire the architecture and enjoy the local cuisine,",
+    "as_student": "The area is also home to several universities and research institutions, making it a hub for students and academics."
+  }
+}

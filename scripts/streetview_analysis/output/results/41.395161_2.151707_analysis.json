@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_032436",
+    "latitude": 41.395161,
+    "longitude": 2.151707,
+    "heading": 316.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1e081811-28c0-406c-9264-586c7484ed56",
+    "dist_along_edge_m": 21.6,
+    "source_image": "sv_41.395161_2.151707_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 15897.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a large building with a blue sign reading 'Bicycle' and a yellow sign reading 'Café', surrounded by other buildings and a woman walking down the sidewalk.",
+    "buildings": "The large building has a reddish-brown facade with many windows, while the adjacent building has a more modern design with balconies and a glass frontage.",
+    "materials": "The street is paved with gray concrete, and there are several potted plants along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables outside the café, but there are several orange planters containing small trees and shrubs.",
+    "vegetation": "The area is relatively quiet, with only a few pedestrians passing by.",
+    "signage": "The blue sign reads 'Bicycle' in black letters, while the yellow sign reads 'Café' in white letters.",
+    "ground_surfaces": "The ground is made of gray concrete, with a slight incline.",
+    "spatial_enclosure": "The street is relatively narrow, with a low wall separating it from the sidewalk.",
+    "pedestrian_activity": "The woman is walking alone, looking at her phone as she passes by.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds in the sky.",
+    "as_resident": "The woman seems to be enjoying the scenery, taking a leisurely stroll through the city.",
+    "as_commuter": "She is likely heading to work or school, given the casual attire and relaxed demeanor.",
+    "as_tourist": "The area may be popular with tourists due to its unique architecture and scenic views.",
+    "as_student": "The woman may be a student on her way to class, given the presence of a café and the quiet atmosphere."
+  }
+}

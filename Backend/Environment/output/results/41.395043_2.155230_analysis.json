@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_224757",
+    "latitude": 41.3950428,
+    "longitude": 2.1552296,
+    "heading": 45.914040640636756,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "2446fd81-0acd-48f3-b866-a041f5748f57",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395043_2.155230_h45.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85068.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings, trees, and pedestrians, showcasing a mix of modern architecture and urban landscape.",
+    "buildings": "unknown",
+    "materials": "glass and concrete",
+    "building_condition": "well-maintained",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

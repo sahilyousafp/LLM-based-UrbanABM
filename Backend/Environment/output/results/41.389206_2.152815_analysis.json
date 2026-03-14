@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_180851",
+    "latitude": 41.38920649999999,
+    "longitude": 2.1528152000000005,
+    "heading": 225.3423771376927,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c53df0ba-7edd-43ed-a8e4-8ffec376ccd9",
+    "dist_along_edge_m": 241.9,
+    "source_image": "sv_41.389206_2.152815_h225.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 7150.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long white hallway with a black and white checkered floor, two doors on either side, and two paintings hanging on the wall,",
+    "buildings": "The walls are white with gray baseboards, and there are two doors on either side of the hall,",
+    "materials": "The floor is made of black and white checkered tiles,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables,",
+    "vegetation": "There are no plants or trees,",
+    "signage": "There are no signs or posters,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "There are no people or objects visible,",
+    "as_commuter": "There are no people or objects visible,",
+    "as_tourist": "There are no people or objects visible,",
+    "as_student": "There are no people or objects visible."
+  }
+}

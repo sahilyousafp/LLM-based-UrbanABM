@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002252",
+    "latitude": 41.386709,
+    "longitude": 2.170762,
+    "heading": 353.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "8da80cde-23e9-4a77-b6f6-10f558291a43",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386709_2.170762_h353.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 8905.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with a woman walking down the sidewalk, surrounded by buildings and trees. The sky is clear and blue, with a few clouds visible in the distance. The street is paved with asphalt and has a slight incline, with a few pedestrians visible in the distance. A large white building dominates the background, with a red information kiosk in front of it. The kiosk has a sign with various images and text, including a logo and a map. The surrounding area is well-maintained, with neatly trimmed bushes and trees lining the sidewalk. The overall atmosphere is lively and bustling, with people going about their daily business.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

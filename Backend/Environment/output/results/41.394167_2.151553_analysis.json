@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_230921",
+    "latitude": 41.3941669,
+    "longitude": 2.1515533,
+    "heading": 316.5047683505347,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "b8951735-c860-4616-9e32-65a9ba539562",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394167_2.151553_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43873.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with tall buildings lining both sides of the road, featuring a mix of pedestrians and vehicles moving along the road, with a few parked motorcycles and cars visible in the distance. The scene is set against a backdrop of clear blue skies and a few trees with sparse foliage. A man and woman stand on the sidewalk, engaged in conversation, while others walk by. The street is lined with various objects including a parking sign, a streetlight, and a bike rack.",
+    "buildings": "The buildings are multi-story structures with ornate facades, some featuring balconies and decorative elements such as columns and arches. The buildings appear to be well-maintained but show signs of wear and tear, with some displaying faded paint and peeling paintwork.",
+    "materials": "The street is paved with a combination of concrete and asphalt, with white lines marking the pedestrian crossing and bike lane. The buildings' facades are constructed from a mix of materials, including stone, brick, and metal.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks placed along the sidewalk, providing seating and storage for cyclists and pedestrians alike. A few trash cans are also visible.",
+    "vegetation": "The trees lining the street are mostly bare, with a few leaves still clinging to the branches. The foliage is sparse, suggesting that the area may be experiencing a dry spell.",
+    "signage": "There are several signs posted along the street, including a blue sign indicating parking restrictions and a red sign warning of a pedestrian crossing ahead.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the street's cleanliness and modern amenities, such as the bike racks and trash cans. They may also enjoy the historic architecture and scenic views of the surrounding buildings.",
+    "as_commuter": "Commuters might find the street convenient for getting around, with easy access to public transportation and nearby shopping and dining options. They may also appreciate the street's lively atmosphere and the opportunity to meet locals and fellow students.",
+    "as_tourist": "Tourists might find the street appealing, with its unique blend of old and new architecture and lively atmosphere. They may also appreciate the street's cultural attractions, such as street art and local events.",
+    "as_student": "Students might find the street convenient for commuting, with easy access to public transportation and nearby universities. They may also appreciate the street's cultural attractions, such as street art and local events."
+  }
+}

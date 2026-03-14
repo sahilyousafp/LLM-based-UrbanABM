@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_032744",
+    "latitude": 41.387043,
+    "longitude": 2.168612,
+    "heading": 31.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "50d1e034-7b8f-4b63-91ce-168e89795617",
+    "dist_along_edge_m": 9.2,
+    "source_image": "sv_41.387043_2.168612_h31.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 19837.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city square with a large tree in the center, surrounded by buildings and people sitting on benches. The sky is blue and clear.",
+    "buildings": "The buildings are tall and white, with many windows and balconies. They have a mix of modern and traditional architectural styles.",
+    "materials": "The ground is made of gray stone pavers, with some areas covered in graffiti. There are also several trees and lampposts throughout the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the square, as well as a few trash cans and recycling bins.",
+    "vegetation": "The trees are mostly bare, but there are a few leaves still clinging to the branches. There are also some small bushes and flowers planted along the edges of the square.",
+    "signage": "There are several signs posted around the square, including a large black sign with white lettering that reads 'Café Bar'. There are also several smaller signs advertising local businesses.",
+    "ground_surfaces": "The ground is made up of large, flat stones that are arranged in a grid pattern. There are also several cracks and unevennesses throughout the area.",
+    "spatial_enclosure": "The square is relatively open and airy, with plenty of space between the buildings and the sidewalk. However, there are several narrow alleys and passageways that crisscross the area.",
+    "pedestrian_activity": "People are walking in all directions, some sitting on benches, and others standing and chatting. There are also a few children playing in the square.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow cast over the entire area. There are also some shadows cast by the trees and buildings.",
+    "as_resident": "Many locals seem to enjoy spending time in the square, taking photos and enjoying the scenery. Some people are working or studying, while others are simply relaxing and socializing.",
+    "as_commuter": "The square is easily accessible by public transportation, and there are several bus stops and bike lanes nearby. It's a convenient location for both locals and visitors.",
+    "as_tourist": "This area is popular with tourists, who come to admire the architecture and take photos. There are also several street performers and vendors selling souvenirs and food.",
+    "as_student": "Students often stop by the square to study or work, and some are even taking classes or attending lectures. There are also several libraries and cafes nearby."
+  }
+}

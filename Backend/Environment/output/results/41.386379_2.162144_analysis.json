@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_230751",
+    "latitude": 41.3863789,
+    "longitude": 2.1621442,
+    "heading": 222.86954678974462,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "57c127b2-50fd-43b0-a79b-7cb979828d4b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386379_2.162144_h222.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43905.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street corner with a tall building featuring a mix of old and new architecture, including a prominent green striped awning and a small outdoor cafe area with tables and chairs. The street is lined with trees and has a few parked scooters along the sidewalk. A pedestrian crossing is marked by white lines on the asphalt, and there are several people walking along the sidewalk.",
+    "buildings": "The building has a cream-colored facade with stone accents and balconies adorned with potted plants. It stands out as a prominent landmark in the area.",
+    "materials": "The building's exterior is constructed from a combination of materials, including stone, brick, and possibly metal.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the cafe, providing a place for pedestrians to rest and enjoy the surroundings.",
+    "vegetation": "The trees lining the street have lush green leaves and provide shade for those who sit beneath them.",
+    "signage": "The cafe has a colorful awning with a sign reading 'Mediamanga' in bold letters.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is bustling with activity, but it also has a relaxed and welcoming atmosphere.",
+    "as_commuter": "The street is easily accessible by foot or by car, with a designated bike lane and parking spots available.",
+    "as_tourist": "The street is a hub for tourists, with its unique blend of old and new architecture and lively atmosphere.",
+    "as_student": "The area is home to a variety of shops and restaurants, catering to both locals and visitors."
+  }
+}

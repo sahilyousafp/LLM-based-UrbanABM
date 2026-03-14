@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171047",
+    "latitude": 41.39620539999999,
+    "longitude": 2.1514102,
+    "heading": 224.21945473706123,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a1c3b7e8-d922-48e4-9d7a-666cadeb6239",
+    "dist_along_edge_m": 44.0,
+    "source_image": "sv_41.396205_2.151410_h224.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21711.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long hallway with white tile flooring and walls painted black and white, featuring a large gold and black sign reading 'GATSEY' in the middle of the wall. The ceiling is white with recessed lighting, and there are several doors along the left side of the hallway. On the right side, there is a blue wall with white writing on it. There are also some shelves with various items on them. The floor is made of white tile, and there are several benches along the right side of the hallway. The overall atmosphere is bright and clean.",
+    "buildings": "The buildings in the background are tall and modern, with sleek lines and minimalist designs. They appear to be made of glass and steel, and have a reflective quality to them. The buildings seem to be well-maintained, with no visible signs of wear or damage.",
+    "materials": "The materials used in the construction of the buildings include concrete, glass, and metal. The walls are made of concrete, while the windows are framed in metal. The roofs are flat and feature solar panels.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches placed along the right side of the hallway, providing a place for people to sit and rest. Some of the benches are made of wood, while others are metal.",
+    "vegetation": "There are no visible plants or trees in the hallway, but there are some small potted plants placed on tables near the benches.",
+    "signage": "There are several signs posted along the right side of the hallway, including a large sign that reads 'DAVID' in bold letters. There are also smaller signs that appear to be advertisements for local businesses.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no people visible in the hallway, but there are several benches and tables scattered throughout the area. The atmosphere is quiet and peaceful, with only a few people passing by.",
+    "lighting_atmosphere": "The lighting in the hallway is bright and even, with a warm glow emanating from the overhead lights. The light is soft and gentle, creating a comfortable and inviting atmosphere.",
+    "as_resident": "As a resident, I would find this area to be very pleasant and relaxing. The benches and tables provide a nice spot to sit and take a break, and the surrounding shops and restaurants offer a convenient place to grab a bite to eat or meet with friends.",
+    "as_commuter": "As a commuter, I would find this area to be a convenient and efficient way to get around the city. The benches and tables provide a place to wait for public transportation, and the surrounding shops and restaurants offer a convenient place to grab a bite to eat or meet with friends.",
+    "as_tourist": "As a tourist, I would find this area to be a great spot to explore and take photos. The unique architecture and beautiful surroundings make it a popular destination for visitors.",
+    "as_student": "As a student, I would find this area to be a great place to study and relax. The benches and tables provide a comfortable spot to work or read, and the surrounding shops and restaurants offer a convenient place to grab a snack or drink."
+  }
+}

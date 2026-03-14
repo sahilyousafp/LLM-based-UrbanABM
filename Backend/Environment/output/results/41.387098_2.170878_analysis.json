@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172639",
+    "latitude": 41.3870978,
+    "longitude": 2.1708782999999996,
+    "heading": 75.23916690258756,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0a6d3e81-c7ac-4e95-9955-d15f03e2c997",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387098_2.170878_h75.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21915.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings and trees lining both sides of the road. The sky is clear and blue, with a few clouds visible in the distance. The sun is shining brightly, casting long shadows across the pavement. The street is relatively empty, with only a few pedestrians and vehicles visible. The buildings are mostly modern and sleek, with large windows and flat roofs. There are several trees and bushes along the sidewalk, adding some greenery to the otherwise urban landscape. The street is paved with asphalt, and there are several manhole covers and storm drains visible. In the distance, there are several tall buildings, including a large office building with a distinctive curved roofline. The overall atmosphere is calm and peaceful, with a sense of activity and energy emanating from the bustling city.",
+    "buildings": "The buildings in the image are primarily made of concrete and glass, with some stone accents. They vary in height and style, ranging from modern skyscrapers to older, more traditional structures. Some have flat roofs, while others have pitched roofs with multiple levels. The facades are mostly smooth and unadorned, with large windows and minimal ornamentation. There are also several smaller buildings and shops along the street, including a small café and a bookstore. The buildings are generally well-maintained, but show signs of wear and tear in some areas. There are also several trees and bushes scattered throughout the area, adding some greenery to the urban landscape.",
+    "materials": "The materials used in the construction of the buildings include concrete, glass, steel, and stone. The streets are paved with asphalt, and there are several manhole covers and storm drains visible. The facades of the buildings are primarily made of concrete and glass, with some stone accents. The buildings are generally well-maintained, but show signs of wear and tear in some areas. There are also several trees and bushes scattered throughout the area, adding some greenery to the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and other pieces of street furniture visible in the image. These include a bench on the sidewalk, a trash can, and a bike rack. There are also several streetlights and signs along the street. The street itself is relatively wide, with a few lanes of traffic visible. There are also several crosswalks and pedestrian crossings, indicating that the area is designed for both vehicular and pedestrian traffic.",
+    "vegetation": "The vegetation in the image includes several trees and bushes. These are mostly deciduous, with yellow leaves visible in the fall season. There are also several potted plants and flowers visible, adding some color and texture to the scene. The vegetation is generally well-maintained, with neatly trimmed hedges and a variety of plants and flowers.",
+    "signage": "There are several signs visible in the image, including street signs, directional signs, and informational signs. These include a stop sign, a yield sign, and a pedestrian crossing sign. There are also several other signs visible, including a directional sign pointing to a nearby landmark or attraction.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "The lighting in the image is bright and sunny, with a warm glow cast by the sun. The lighting is generally soft and diffused, with no harsh shadows or bright highlights. There are also several streetlights visible, which add to the overall brightness and illumination of the scene.",
+    "as_resident": "As a resident, I would describe the area as quiet and peaceful. The atmosphere is calm and serene, with a sense of community and activity. There are several people visible, but they are not dense or crowded. The area is generally safe and welcoming, with plenty of amenities and services available.",
+    "as_commuter": "As a commuter, I would describe the area as convenient and accessible. The area is easily reached by public transportation, including buses, trains, and taxis. The streets are generally wide and well-maintained, with plenty of parking options available. The area is also relatively affordable, with reasonable prices for food, housing, and other living expenses.",
+    "as_tourist": "As a tourist, I would describe the area as lively and vibrant. The atmosphere is energetic and dynamic, with a sense of excitement and curiosity. There are many interesting sights and attractions visible, including historic landmarks, cultural institutions, and entertainment venues. The area is generally bustling and active, with plenty of opportunities for shopping, dining, and exploration.",
+    "as_student": "As a student, I would describe the area as busy and fast-paced. The atmosphere is fast and energetic, with a sense of academic rigor and intellectual curiosity. There are many students visible, working on assignments and studying. The area is generally competitive and challenging, with plenty of opportunities for learning and growth."
+  }
+}

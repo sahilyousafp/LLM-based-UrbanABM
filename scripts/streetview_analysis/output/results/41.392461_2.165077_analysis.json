@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_021954",
+    "latitude": 41.392461,
+    "longitude": 2.165077,
+    "heading": 59.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "749e8e10-2c13-4357-adc0-d02e104804d4",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392461_2.165077_h59.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12183.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a busy shopping area with pedestrians and cars,",
+    "buildings": "The buildings are tall and made of stone and glass,",
+    "materials": "The ground is paved with hexagonal concrete pavers,",
+    "building_condition": "unknown",
+    "street_furniture": "There are benches and streetlights along the sidewalk,",
+    "vegetation": "There are small trees and bushes planted in planters,",
+    "signage": "There are several signs indicating business names and directions,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking in both directions,",
+    "lighting_atmosphere": "The sun is shining brightly,",
+    "as_resident": "The area is lively and bustling,",
+    "as_commuter": "It is easy to get around by foot or car,",
+    "as_tourist": "It has a mix of old and new architecture,",
+    "as_student": "The area is safe and welcoming."
+  }
+}

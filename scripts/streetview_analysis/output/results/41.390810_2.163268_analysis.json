@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_024741",
+    "latitude": 41.39081,
+    "longitude": 2.163268,
+    "heading": 314.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d32a808e-e124-4df4-8051-b51340994fd4",
+    "dist_along_edge_m": 22.5,
+    "source_image": "sv_41.390810_2.163268_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50212.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with tall buildings lining both sides of the street, outdoor tables and chairs set up along the sidewalk, and parked motorcycles lining the curb. The sun casts long shadows across the gray concrete ground, while pedestrians walk along the sidewalk and cars drive by in the distance. A tree stands tall in the foreground, its branches stretching out over the sidewalk.",
+    "buildings": "The buildings are multi-story structures with balconies and windows, some with ornate facades and others with more modern designs. Some have awnings or canopies, while others have large windows that reflect the blue sky.",
+    "materials": "The ground is made of gray concrete pavers, with a few trees planted along the sidewalk. The buildings' facades are constructed from a mix of materials, including stone, brick, and metal.",
+    "building_condition": "unknown",
+    "street_furniture": "Outdoor tables and chairs are arranged along the sidewalk, with some patrons sitting and enjoying their meals or drinks. A few bicycles are parked nearby.",
+    "vegetation": "The trees provide shade and add a touch of greenery to the urban landscape. They are spaced at regular intervals along the sidewalk.",
+    "signage": "There are several signs posted along the sidewalk, including a large banner advertising a business and smaller signs indicating directions and warnings.",
+    "ground_surfaces": "The ground is paved with gray concrete pavers, with a few cracks and unevenness.",
+    "spatial_enclosure": "The street feels relatively open, with a clear view of the surrounding buildings and sky. There are no visible barriers or obstructions.",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to chat or take photos. Others are sitting at the outdoor tables, enjoying their food and drinks.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow cast by the sun.",
+    "as_resident": "The street is bustling with activity, but it's not overly crowded. People seem relaxed and enjoying themselves.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation.",
+    "as_tourist": "The street is a popular destination for families and couples, with beautiful views of the city skyline.",
+    "as_student": "The street is a great place to study or work, with plenty of quiet spots to sit and read or work."
+  }
+}

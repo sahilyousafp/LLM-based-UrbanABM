@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_231732",
+    "latitude": 41.3917156,
+    "longitude": 2.1553400000000003,
+    "heading": 179.7301165233057,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "f5fbb07d-59aa-4d59-b183-5af166e38c70",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391716_2.155340_h179.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44232.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A restaurant with a long counter and tables and chairs along the walls,",
+    "buildings": "The restaurant has a beige wall with brown wooden beams and a white ceiling with black beams.",
+    "materials": "The counter is made of dark gray marble, while the chairs are black metal with a curved backrest.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several small square tables with white tops and black metal chairs.",
+    "vegetation": "There are no plants or trees in the area.",
+    "signage": "There are two large pictures of shirts hanging on the wall.",
+    "ground_surfaces": "The floor is made of orange tiles.",
+    "spatial_enclosure": "The restaurant is open to the outside, but there are no windows.",
+    "pedestrian_activity": "There are no pedestrians in the area.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The restaurant is empty.",
+    "as_commuter": "The restaurant is close to the train station.",
+    "as_tourist": "The restaurant is a popular spot for tourists.",
+    "as_student": "The restaurant is a good place to study."
+  }
+}

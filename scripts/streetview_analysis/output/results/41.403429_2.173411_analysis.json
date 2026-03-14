@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_022916",
+    "latitude": 41.403429,
+    "longitude": 2.173411,
+    "heading": 94.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2cd69dfa-2431-4b99-a671-fc90d80a03e2",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403429_2.173411_h94.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12060.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with pedestrians and vehicles,",
+    "buildings": "A row of buildings with varied architectural styles,",
+    "materials": "The sidewalk is made of gray concrete pavers,",
+    "building_condition": "unknown",
+    "street_furniture": "Benches and trash cans line the sidewalk,",
+    "vegetation": "Trees and bushes line the street,",
+    "signage": "Street signs and traffic lights are present,",
+    "ground_surfaces": "The ground is paved with asphalt,",
+    "spatial_enclosure": "The street is relatively narrow,",
+    "pedestrian_activity": "People are walking in both directions,",
+    "lighting_atmosphere": "The sun shines brightly overhead,",
+    "as_resident": "A local resident notes the lack of parking,",
+    "as_commuter": "The street is busy with cars and buses,",
+    "as_tourist": "The street has a lively atmosphere,",
+    "as_student": "There are cafes and shops along the street."
+  }
+}

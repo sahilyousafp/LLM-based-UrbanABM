@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223840",
+    "latitude": 41.39200879999999,
+    "longitude": 2.1644779000000005,
+    "heading": 141.0485937871553,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "fdcbf39a-6ef2-4509-8a53-2d23362c3d59",
+    "dist_along_edge_m": 24.2,
+    "source_image": "sv_41.392009_2.164478_h141.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 31987.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of old and new architecture, including a large yellow building with balconies and a white van parked along the curb.",
+    "buildings": "The yellow building has a classic European style with ornate details such as carved stone facades and decorative ironwork, while the adjacent building has a more modern aesthetic with clean lines and minimal ornamentation.",
+    "materials": "The yellow building's exterior is clad in a combination of yellow stucco and stone, with a warm, earthy tone that contrasts with the cool tones of the surrounding buildings.",
+    "building_condition": "unknown",
+    "street_furniture": "The street is lined with potted plants and benches, providing a welcoming space for pedestrians to rest and take in the sights.",
+    "vegetation": "The trees and shrubs add a touch of greenery to the urban landscape, with lush foliage and colorful flowers blooming in the spring and summer months.",
+    "signage": "The street is home to a variety of signs, including directional signs, informational signs, and advertisements, which help guide pedestrians and drivers through the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is home to a diverse range of residents, from young professionals to seniors, who live and work in the area, and enjoy the vibrant atmosphere and amenities.",
+    "as_commuter": "The street is well-connected to other parts of the city, with easy access to public transportation and shopping districts, making it a convenient location for commuters and travelers alike.",
+    "as_tourist": "The street is a popular destination for tourists, with many visitors drawn to its unique blend of history, culture, and entertainment options.",
+    "as_student": "The street is also a hub for students, with many schools and universities located nearby, offering a lively and dynamic environment for learning and growth."
+  }
+}

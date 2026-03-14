@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_032709",
+    "latitude": 41.403169,
+    "longitude": 2.173208,
+    "heading": 212.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c1a6260d-acab-402d-b5a9-dbb7e6bcba5d",
+    "dist_along_edge_m": 43.4,
+    "source_image": "sv_41.403169_2.173208_h212.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50750.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A rainy day in a park with two people holding umbrellas, surrounded by trees and bushes, with a black fence in the background. The ground is wet and there are leaves scattered all over the place. There are two people standing under an umbrella, one wearing a black jacket and blue jeans, and the other wearing a black jacket and pants. The person in the front has a blue umbrella. The sky is gray and cloudy.",
+    "buildings": "The building in the back has a cream-colored facade with stone quoins at the corners. It is tall and narrow. The building in the middle has a red brick facade with a flat roof. It is wider than the other buildings.",
+    "materials": "The ground is made of concrete with some yellow leaves scattered all over it. There are also some small rocks and pebbles.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables visible.",
+    "vegetation": "There are several trees and bushes surrounding the area. Some have yellow leaves, while others have green leaves.",
+    "signage": "There are no visible signs.",
+    "ground_surfaces": "The ground is wet and shiny. There are some puddles of water on the ground.",
+    "spatial_enclosure": "The area is enclosed by a black metal fence.",
+    "pedestrian_activity": "There are no people walking around.",
+    "lighting_atmosphere": "It is raining heavily, but the sky is still visible through the trees.",
+    "as_resident": "The area seems quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is not very popular.",
+    "as_student": "The area is not very accessible."
+  }
+}

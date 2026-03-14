@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_004829",
+    "latitude": 41.402632,
+    "longitude": 2.154578,
+    "heading": 276.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c9d8a743-7dfb-4cca-ac93-1e12bc1f2967",
+    "dist_along_edge_m": 31.2,
+    "source_image": "sv_41.402632_2.154578_h276.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48841.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A tree stands in front of a white wall, its branches stretching out over the sidewalk and railing. The tree has a thick trunk and is surrounded by a metal fence. A row of bicycles is parked along the sidewalk behind the fence. The ground is made of concrete and is wet, suggesting recent rain. The surrounding buildings have a mix of brick and stucco facades, with some featuring balconies and others having large windows. The overall atmosphere is calm and peaceful, with dappled sunlight filtering through the leaves of the tree.",
+    "buildings": "The building on the left has a cream-colored facade with a flat roof and a small balcony on the second floor. The building on the right has a more rustic appearance, with exposed brick and a sloping roof. Both buildings appear well-maintained but show signs of age.",
+    "materials": "The tree's trunk is made of rough-hewn wood, while the fence is constructed from smooth metal bars. The ground is paved with large, rectangular stones, and the sidewalk is made of smooth concrete.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches placed along the sidewalk, providing a place for pedestrians to rest and take in the surroundings. A few trash cans are also scattered throughout the area.",
+    "vegetation": "The tree's canopy is dense with leaves, casting dappled shadows on the ground below. The bushes and plants surrounding the tree are lush and green, adding a touch of color to the otherwise drab urban landscape.",
+    "signage": "There are several signs posted along the sidewalk, including a large banner advertising a local business and a smaller sign indicating the location of a nearby park.",
+    "ground_surfaces": "The ground is covered in a layer of dirt and debris, with a few puddles of water scattered about. The sidewalk is made of smooth concrete, and there are several cracks and unevennesses throughout.",
+    "spatial_enclosure": "The tree creates a sense of enclosure, drawing the viewer's eye towards the center of the image. The fence adds a sense of separation between the tree and the surrounding buildings.",
+    "pedestrian_activity": "There are no people visible in the image, but the presence of benches and trash cans suggests that the area is used by pedestrians regularly.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with the sun shining down from above. The shadows cast by the tree and buildings add depth and texture to the image.",
+    "as_resident": "The area is a hub of activity, with many people coming and going throughout the day. The tree is a convenient stop for commuters and students.",
+    "as_commuter": "The area is a hub of activity, with many people coming and going throughout the day. The tree provides a peaceful oasis in the midst of the bustling city.",
+    "as_tourist": "The area is quiet and peaceful, with only a few people visible in the distance. The tree is a popular spot for tourists to take photos and enjoy the scenery.",
+    "as_student": "The area is a popular spot for outdoor events and festivals, with many people gathering in the tree's shade. The tree is a symbol of community and connection to the past."
+  }
+}

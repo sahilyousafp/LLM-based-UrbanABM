@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_184717",
+    "latitude": 41.399030399999994,
+    "longitude": 2.1533452,
+    "heading": 231.3398098082029,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "7867fc60-8068-4b25-a4e0-60a7168ba96b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399030_2.153345_h231.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 13538.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings and trees lining both sides,",
+    "buildings": "The buildings have a mix of modern and older styles, with some featuring large windows and others having more ornate facades,",
+    "materials": "The street is paved with a combination of concrete and asphalt,",
+    "building_condition": "unknown",
+    "street_furniture": "Benches and planters line the sidewalk, providing shade and seating areas,",
+    "vegetation": "Trees and shrubs add a touch of greenery to the urban landscape,",
+    "signage": "Signs and advertisements are posted along the street, including a large digital display,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People can be seen walking along the sidewalk, but there are few pedestrians in the immediate area,",
+    "lighting_atmosphere": "The lighting is bright and sunny, with shadows cast by the trees and buildings,",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with a lively atmosphere,",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and restaurants, offering a range of amenities,",
+    "as_student": "The area is home to several universities and colleges, making it a hub for students and young professionals."
+  }
+}

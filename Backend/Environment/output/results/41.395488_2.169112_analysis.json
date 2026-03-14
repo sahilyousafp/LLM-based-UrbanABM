@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_183255",
+    "latitude": 41.3954885,
+    "longitude": 2.1691119,
+    "heading": 316.09103983653654,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2b1a3b6b-8396-4c06-9fed-034e7633f5d0",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395488_2.169112_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 63289.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long hallway with a high ceiling and wooden beams, lined with shops on both sides. The floor is made of wood planks and has a ramp leading up to the main area. The walls are made of wood and have large windows along the length of the hall. There are several shops on either side of the hall, including a laundry mat and a store selling various household items. The lighting is bright and natural, coming from the skylights in the ceiling. The atmosphere is calm and peaceful, with a few people milling about. The overall mood is one of quiet activity, with a sense of community and commerce.",
+    "buildings": "The buildings are tall and modern, with sleek lines and minimalist designs. They are made of glass and steel, with large windows that let in plenty of natural light. The roofs are curved and made of wood, adding a touch of warmth to the otherwise industrial feel of the space. The buildings are well-maintained and clean, with no visible signs of wear or tear. The overall aesthetic is one of sophistication and elegance.",
+    "materials": "The materials used in the construction of the buildings are a mix of wood, metal, and glass. The wood is used for the beams and trim, while the metal is used for the frames and supports. The glass is used for the windows and doors, allowing natural light to flood the interior spaces. The materials are durable and long-lasting, giving the buildings a sense of permanence and stability.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several pieces of furniture scattered throughout the hallway, including benches, chairs, and tables. Some of the furniture is modern and sleek, while others are more traditional and ornate. The furniture is arranged in a way that creates a sense of flow and movement through the space.",
+    "vegetation": "There are several plants and trees placed throughout the hallway, adding a touch of greenery to the space. The plants are well-maintained and healthy, with lush foliage and colorful flowers. The trees are tall and slender, providing shade and a sense of tranquility.",
+    "signage": "There are several signs posted throughout the hallway, including directional signs, informational signs, and advertisements. The signs are clear and easy to read, with bold fonts and bright colors. The signs provide important information about the location and services available in the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "The lighting in the hallway is warm and inviting, with a mix of natural and artificial light sources. The lights are bright and even, casting a warm glow over the entire space. The lighting is soft and gentle, creating a sense of comfort and relaxation.",
+    "as_resident": "As a resident, I would find this space very welcoming and comfortable. The atmosphere is relaxed and casual, with plenty of opportunities to sit and socialize. The space is well-lit and well-maintained, making it easy to navigate and enjoy.",
+    "as_commuter": "As a commuter, I would find this space very convenient and practical. The space is easily accessible and well-connected to public transportation, making it a great option for getting around the city. The atmosphere is busy and dynamic, with plenty of opportunities to meet new people and make connections.",
+    "as_tourist": "As a tourist, I would find this space very charming and charming. The architecture is unique and visually appealing, with a mix of old and new elements. The space is well-designed and functional, with plenty of opportunities to explore and discover.",
+    "as_student": "As a student, I would find this space very useful and convenient. The space is clean and well-maintained, with plenty of study areas and resources available. The atmosphere is quiet and focused, making it ideal for studying and learning."
+  }
+}

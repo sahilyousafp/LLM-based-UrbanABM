@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_004456",
+    "latitude": 41.392178,
+    "longitude": 2.165166,
+    "heading": 41.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0db619e3-11a0-4a3f-8da5-a0040de87afd",
+    "dist_along_edge_m": 27.8,
+    "source_image": "sv_41.392178_2.165166_h41.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49004.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with tall buildings and trees lining the sidewalk. The street is busy with cars, motorcycles, and pedestrians. People are sitting on benches and walking along the sidewalk. There are several trees planted along the street, casting shadows on the ground. The sky is clear and blue.",
+    "buildings": "The buildings are multi-story structures made of stone and glass. They have ornate facades and balconies. Some have awnings over the windows.",
+    "materials": "The street is paved with cobblestone and has a smooth finish. There are also some modern elements like metal bike racks and trash cans.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables set up along the sidewalk. Some people are sitting on them, while others are walking by.",
+    "vegetation": "The trees are tall and leafy, providing shade for the pedestrians below. They are spaced evenly apart and well-maintained.",
+    "signage": "There are several signs posted along the street, including a large digital billboard and smaller hand-painted signs.",
+    "ground_surfaces": "The ground is made of concrete and has a rough texture. There are some cracks and unevenness in the pavement.",
+    "spatial_enclosure": "The street is relatively narrow, but there are enough space between the buildings to allow for easy passage.",
+    "pedestrian_activity": "People are walking in both directions, some carrying bags or backpacks. A few are sitting on benches, taking a break.",
+    "lighting_atmosphere": "The sun is shining brightly, casting long shadows across the street.",
+    "as_resident": "The street is bustling with activity, but it doesn't seem crowded. There are a few people sitting on benches, enjoying the scenery.",
+    "as_commuter": "The street is a convenient location for those looking for a quick bite to eat or coffee.",
+    "as_tourist": "The street is a great spot for tourists, with its historic architecture and lively atmosphere.",
+    "as_student": "The street is a vibrant and lively area, with plenty of opportunities for relaxation and entertainment."
+  }
+}

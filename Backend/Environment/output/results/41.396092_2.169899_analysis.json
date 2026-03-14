@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_220948",
+    "latitude": 41.396092100000004,
+    "longitude": 2.169899,
+    "heading": 134.25178143204664,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "90009473-0ca9-45dc-bba7-36a3b0259cb4",
+    "dist_along_edge_m": 22.5,
+    "source_image": "sv_41.396092_2.169899_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43589.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with a man riding a bicycle across the intersection, pedestrians waiting to cross, and tall buildings lining the sidewalk. The street has a bike lane and pedestrian crossing marked by white lines and a yellow line. A stop sign is mounted on a pole next to the curb. Trees are planted along the sidewalk, and a few people are standing around. The sky is overcast.",
+    "buildings": "The building on the left is beige with a large window on the top floor, while the building on the right is tan with red accents and has several windows on each floor. The ground floor of the tan building has a storefront with a sign reading 'Café' and a doorway with a metal gate.",
+    "materials": "The man on the bicycle wears a black shirt, red shorts, and white shoes. He has a backpack strapped to his back. The bicycle is red with black wheels and handlebars.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two benches on the sidewalk, one near the corner of the beige building and another near the stop sign. There is also a trash can and a bike rack.",
+    "vegetation": "The trees are tall and leafy, providing shade for pedestrians.",
+    "signage": "A red and white sign indicates that vehicles should not enter the street.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet, with only a few people visible.",
+    "as_commuter": "The street is a great place to meet friends.",
+    "as_tourist": "The area is a great place to explore.",
+    "as_student": "The area is a great place to study."
+  }
+}

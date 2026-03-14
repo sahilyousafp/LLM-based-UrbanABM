@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_003342",
+    "latitude": 41.387188,
+    "longitude": 2.163187,
+    "heading": 62.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ba36baaf-0f47-4f0d-8d68-dd4424ce278b",
+    "dist_along_edge_m": 7.4,
+    "source_image": "sv_41.387188_2.163187_h62.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12084.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A dark city park with a bench in front of a large building with many windows,",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners and is several stories high,",
+    "materials": "The ground is made of concrete and there are some plants growing out of it,",
+    "building_condition": "unknown",
+    "street_furniture": "There is a black metal bench in the foreground,",
+    "vegetation": "There are some small bushes and trees in the background,",
+    "signage": "There are no visible signs or advertisements,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible,",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area is quiet and peaceful,",
+    "as_commuter": "unknown",
+    "as_tourist": "There are some interesting architectural features,",
+    "as_student": "The area is not very crowded."
+  }
+}

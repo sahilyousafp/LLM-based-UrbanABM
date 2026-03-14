@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_221227",
+    "latitude": 41.395187699999994,
+    "longitude": 2.1550396000000003,
+    "heading": 72.15127238695516,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "aadfe760-9b7a-4f93-86ba-32b86d44ced3",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395188_2.155040_h72.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85556.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, lined with trees and featuring various objects such as benches, bike racks, and trash cans along the sidewalk. The street is paved with gray bricks and has a few pedestrians walking along it. The sky is overcast.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and traditional designs. Some have balconies, while others have large windows.",
+    "materials": "The street is paved with gray bricks, and there are several trees planted along the sidewalk. There are also some parked motorcycles and scooters near the curb.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, providing places for people to sit and rest.",
+    "vegetation": "The trees are tall and leafy, casting dappled shadows on the ground below.",
+    "signage": "There are several signs posted along the street, including a blue sign with white lettering and a yellow sign with black lettering.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking along the street, but it's not overly crowded.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is quiet and peaceful, with only a few people out and about.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with interesting architectural features, such as ornate facades and decorative details.",
+    "as_student": "The street is clean and well-maintained, with clear signage and easy access to public transportation."
+  }
+}

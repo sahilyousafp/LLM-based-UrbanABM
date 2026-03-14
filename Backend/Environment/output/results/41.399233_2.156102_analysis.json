@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_213145",
+    "latitude": 41.399233300000006,
+    "longitude": 2.1561016,
+    "heading": 136.2093254494622,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "31671a18-1767-4f90-9676-1e7416e66ec3",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399233_2.156102_h136.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 16319.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A bustling city street at night with many people walking along the sidewalk,",
+    "buildings": "The buildings are tall and have a mix of old and new architecture,",
+    "materials": "The buildings' facades are made of stone, brick, and glass,",
+    "building_condition": "unknown",
+    "street_furniture": "There are benches and trash cans along the sidewalk,",
+    "vegetation": "There are trees and plants lining the street,",
+    "signage": "There are several signs advertising businesses,",
+    "ground_surfaces": "The ground is paved with cobblestones,",
+    "spatial_enclosure": "The street is relatively narrow and winding,",
+    "pedestrian_activity": "People are walking in both directions,",
+    "lighting_atmosphere": "The street is well-lit,",
+    "as_resident": "Many locals and tourists alike enjoy the area,",
+    "as_commuter": "It's easy to get around by foot or by car,",
+    "as_tourist": "The area has a lively atmosphere,",
+    "as_student": "The area is also home to some shops and restaurants."
+  }
+}

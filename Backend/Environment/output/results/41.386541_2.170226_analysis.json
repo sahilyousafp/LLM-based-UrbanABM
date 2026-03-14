@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_173430",
+    "latitude": 41.386540700000005,
+    "longitude": 2.1702256000000006,
+    "heading": 341.011588214425,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "7eeab251-30c6-48ed-a704-dbd6324dd97d",
+    "dist_along_edge_m": 21.2,
+    "source_image": "sv_41.386541_2.170226_h341.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21875.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a large white building with a flat roof and symmetrical facade, surrounded by trees and a paved area with a few people walking around. The building has a central entrance flanked by two smaller wings, with a row of windows on the top floor. The ground floor has a large window display and a sign reading 'Casa de la Cultura' in bold letters. The surrounding area is mostly empty, with a few benches and a small garden bed with some plants and a lamppost. The sky is overcast with a few clouds.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_215122",
+    "latitude": 41.397763200000014,
+    "longitude": 2.1721186,
+    "heading": 232.74989680945978,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "0e3a8bbb-df93-490c-bbfc-c7e58e108ad8",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397763_2.172119_h232.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43956.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with parked cars and bicycles along the sidewalk, under a clear blue sky with a few clouds. The sun shines brightly overhead, casting long shadows across the asphalt. A row of trees lines the left side of the street, while a bus stop and a yellow taxi cab are visible on the right. The street is relatively empty, with only a few pedestrians and cyclists present.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and older architectural styles. Some have balconies, while others feature large windows and ornate facades. The buildings appear well-maintained, with some displaying signs of wear and tear.",
+    "materials": "The street itself is paved with asphalt, featuring a central median strip and a drainage grate. The sidewalk is made of concrete pavers, with a slight incline towards the camera. The curb is painted white, and there are several bike racks and trash cans along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, as well as a few streetlights and utility poles. The street is relatively quiet, with only a few pedestrians and cyclists present.",
+    "vegetation": "The street is lined with trees and bushes, which provide shade and add a touch of greenery to the urban landscape. There are also several flowerbeds and planters along the sidewalk.",
+    "signage": "There are several signs visible, including a large digital display screen mounted on a pole near the intersection. There are also several smaller signs advertising local businesses and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might comment on the street's cleanliness and safety, noting the presence of trash cans and recycling bins. They might also appreciate the street's aesthetic appeal, citing its historic architecture and lively atmosphere.",
+    "as_commuter": "unknown",
+    "as_tourist": "A tourist might comment on the street's charm, noting the historic architecture and lively atmosphere. They might also appreciate the street's cultural significance, citing its role as a hub for local events and activities.",
+    "as_student": "A student might comment on the street's accessibility, noting the presence of bike racks and pedestrian-friendly infrastructure. They might also appreciate the street's proximity to educational institutions and cultural attractions."
+  }
+}

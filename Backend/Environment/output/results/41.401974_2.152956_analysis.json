@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_214359",
+    "latitude": 41.4019738,
+    "longitude": 2.1529556000000003,
+    "heading": 54.16600630833506,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "238d16a6-e2d0-4ac3-8ee2-8b654021a340",
+    "dist_along_edge_m": 12.9,
+    "source_image": "sv_41.401974_2.152956_h54.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43960.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with pedestrians walking along the sidewalk in front of a row of buildings. The street is paved with asphalt and has white painted markings indicating pedestrian crossings and taxi lanes. A tree stands in the middle of the street, surrounded by a small square of grass. The surrounding buildings have balconies and windows, with various storefronts including a coffee shop, a clothing store, and a restaurant. The street is lined with trees and has a few pedestrians walking along the sidewalk.",
+    "buildings": "The buildings are multi-story structures with ornate facades and balconies. The first floor has large windows and doors, while the upper floors have smaller windows and balconies. The buildings appear to be well-maintained but show signs of wear and tear.",
+    "materials": "The street is paved with asphalt and has white painted markings indicating pedestrian crossings and taxi lanes. The sidewalk is made of concrete and has a small patch of grass in the middle. The buildings' facades are constructed from a combination of materials, including stone, brick, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked against the buildings.",
+    "vegetation": "The street is lined with trees that provide shade and add aesthetic appeal to the area. There are also several potted plants placed along the sidewalk.",
+    "signage": "There are several signs posted on the buildings, including a sign for a coffee shop, a sign for a clothing store, and a sign for a restaurant. The signs are colorful and eye-catching.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the street's lively atmosphere and the variety of shops and restaurants available. They might enjoy the outdoor seating areas and the convenience of being able to walk through the alleyways and side streets.",
+    "as_commuter": "A commuter might use the street as a convenient route to work or school, with easy access to public transportation and nearby shops and restaurants.",
+    "as_tourist": "A tourist might find the street appealing due to its historic charm and lively atmosphere. They might enjoy exploring the street's unique features, such as the ornate balconies and decorative street furniture.",
+    "as_student": "A student might appreciate the street's proximity to campus life and the opportunities for studying and learning. They might enjoy the street's vibrant atmosphere and the variety of shops and restaurants available."
+  }
+}

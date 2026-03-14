@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_043531",
+    "latitude": 41.386939,
+    "longitude": 2.170857,
+    "heading": 270.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b8b6452f-f7fe-4197-8a6d-48df05f466db",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386939_2.170857_h270.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49555.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a large fountain on the right side and a statue on the left side. The street is paved with gray stone and has a low wall on both sides. There are tall trees lining the street and buildings in the distance. The sky is clear and blue.",
+    "buildings": "The building on the right has a red brick facade with a stone base and a decorative archway. It has a small window on either side of the archway.",
+    "materials": "The building on the left has a cream-colored facade with a stone base and a statue on top. It is taller than the other buildings in the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "There are several trees and bushes along the sidewalk.",
+    "signage": "There are several signs posted along the street, including a stop sign and a pedestrian crossing signal.",
+    "ground_surfaces": "The ground is made up of large stone slabs.",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and cafes.",
+    "as_student": "The street is clean and safe."
+  }
+}

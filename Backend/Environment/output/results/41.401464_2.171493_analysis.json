@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172643",
+    "latitude": 41.4014642,
+    "longitude": 2.1714930000000003,
+    "heading": 51.06978690406663,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ff27c8d9-899b-4349-a4b8-53c766c1e4e4",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401464_2.171493_h51.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 3989.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with a yellow construction fence and a tree in front of a beige building,",
+    "buildings": "The beige building has a flat roof and a large windowed wall,",
+    "materials": "The beige building has a flat roof and a large windowed wall,",
+    "building_condition": "unknown",
+    "street_furniture": "There is a white car parked in front of the beige building,",
+    "vegetation": "There is a tree in front of the beige building,",
+    "signage": "There is a blue sign with a white P on it,",
+    "ground_surfaces": "The ground is paved with concrete,",
+    "spatial_enclosure": "The street is empty,",
+    "pedestrian_activity": "There are no pedestrians,",
+    "lighting_atmosphere": "The sun is shining brightly,",
+    "as_resident": "There are no people visible,",
+    "as_commuter": "There are no people visible,",
+    "as_tourist": "There are no tourists,",
+    "as_student": "There are no students,"
+  }
+}

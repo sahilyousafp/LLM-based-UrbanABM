@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_040825",
+    "latitude": 41.389383,
+    "longitude": 2.173478,
+    "heading": 244.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f06fec30-000d-4c5f-adb7-dbef56dac85f",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389383_2.173478_h244.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49943.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with pedestrians crossing the road, surrounded by tall buildings and palm trees. The street is paved with asphalt and has white painted lines indicating pedestrian crossings. A motorcycle is parked on the side of the road. The buildings have a mix of old and new architecture, with some having balconies and others being more modern. The street is lined with trees and plants, adding a touch of greenery to the urban landscape.",
+    "buildings": "The buildings are multi-story structures with a mix of old and new facades. Some have balconies, while others have large windows. The buildings appear to be well-maintained but show signs of wear and tear. The street is relatively quiet, with only a few pedestrians visible.",
+    "materials": "The street is paved with asphalt and has white painted lines indicating pedestrian crossings. There are also some trees and plants along the sidewalk, adding a touch of greenery to the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the curb.",
+    "vegetation": "The street is lined with palm trees and other plants, which add a touch of greenery to the urban landscape.",
+    "signage": "There are several signs posted along the street, including a blue sign with white lettering and a red sign with black lettering.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is likely a popular spot for locals and tourists alike, with its mix of old and new architecture and lively atmosphere.",
+    "as_commuter": "The street is a great spot for commuters to meet up with friends or family.",
+    "as_tourist": "The street is a great spot for tourists to explore and take in the sights and sounds of the city.",
+    "as_student": "The street is a great spot for students to hang out and socialize."
+  }
+}

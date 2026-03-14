@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002958",
+    "latitude": 41.399163,
+    "longitude": 2.153011,
+    "heading": 250.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ae9d0e91-3287-4c1f-ba55-46b35fa2daa9",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399163_2.153011_h250.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 14670.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings, trees, and a person sitting on a bench in the distance.",
+    "buildings": "The buildings have a mix of modern and traditional styles, with some featuring balconies and others having flat facades.",
+    "materials": "The ground is paved with concrete and asphalt, while the upper floors of the buildings are made of red brick and white stone.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters along the sidewalk, providing shade and seating for pedestrians.",
+    "vegetation": "The trees are deciduous, with some displaying autumnal colors and others still green.",
+    "signage": "There are several signs and advertisements visible, including a large billboard and smaller signs on the buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears quiet and peaceful, with a few people going about their daily business.",
+    "as_commuter": "unknown",
+    "as_tourist": "The architecture and landscaping suggest a popular tourist destination, with many visitors taking photos and admiring the views.",
+    "as_student": "The area is bustling with students and young professionals, who often stop to take photos or grab a coffee at the nearby café."
+  }
+}

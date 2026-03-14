@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023022",
+    "latitude": 41.394555,
+    "longitude": 2.167254,
+    "heading": 229.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d6549467-1f97-4d13-bce4-b86f03ea0b44",
+    "dist_along_edge_m": 9.4,
+    "source_image": "sv_41.394555_2.167254_h229.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50280.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long hallway with a high ceiling and arched windows, featuring a series of columns and arches along its length. The walls are adorned with murals depicting various scenes, while the floor is made of large, flat stones. A small tree grows in a raised bed near the right wall, adding a touch of greenery to the otherwise stark architecture. The space is well-lit, with natural light pouring in through the windows and skylights above. The atmosphere is calm and serene, with a sense of history and tradition emanating from the old buildings and artwork.",
+    "buildings": "The building's architecture is characterized by tall, slender columns that support the high ceiling, creating a sense of grandeur and elegance. The walls are constructed from rough-hewn stone blocks, giving the space a rustic yet refined feel. The mural on the left wall adds a pop of color and visual interest, while the arched windows allow for plenty of natural light to flood the area.",
+    "materials": "The floor is composed of large, flat stones that have been carefully arranged to create a smooth, even surface. The columns are made of rough-hewn stone, adding texture and depth to the space. The mural on the left wall depicts a scene of people engaged in various activities, such as reading, writing, and conversing. The arched windows above add a touch of elegance and sophistication.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters scattered throughout the space, providing a place for visitors to rest and take in the surroundings. A few trees and shrubs add some greenery to the area, helping to soften the urban landscape.",
+    "vegetation": "The trees and plants are well-tended, with neatly trimmed leaves and branches. They add a touch of nature to the otherwise concrete-dominated space.",
+    "signage": "There are several signs posted throughout the area, including directional signs and informational displays. These help guide visitors through the space and provide important information about the surrounding area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the image, but the presence of benches and planters suggests that the space is intended for public use. The lack of people adds to the sense of calm and tranquility.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a resident, I would appreciate the peaceful and welcoming atmosphere of this space. It seems like a great place to relax and unwind after a long day.",
+    "as_commuter": "As a commuter, I would appreciate the convenience of being able to walk or bike through the space. The lack of cars and other vehicles makes it easy to navigate and get around.",
+    "as_tourist": "As a tourist, I would be interested in learning more about the history and culture of the area. The murals and architecture suggest a rich and vibrant community, and I would love to learn more.",
+    "as_student": "As a student, I would find this space to be a great place to study and work. The quiet and peaceful atmosphere makes it an ideal spot to focus and concentrate."
+  }
+}

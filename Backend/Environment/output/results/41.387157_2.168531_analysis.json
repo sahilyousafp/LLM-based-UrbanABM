@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_214247",
+    "latitude": 41.38715729999999,
+    "longitude": 2.1685311000000005,
+    "heading": 283.1295194189699,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "8926499a-c7f3-4960-9fe3-934b999f6982",
+    "dist_along_edge_m": 9.2,
+    "source_image": "sv_41.387157_2.168531_h283.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 19112.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A busy city street with pedestrians walking along the sidewalk, lined with tall buildings and shops,",
+    "buildings": "The buildings are multi-story structures made of stone and glass, with ornate facades and balconies,",
+    "materials": "The ground is paved with gray stone tiles, while the upper floors have a smooth concrete finish,",
+    "building_condition": "unknown",
+    "street_furniture": "There are benches and trash cans along the sidewalk, as well as streetlights and bike racks,",
+    "vegetation": "There are small trees and bushes planted in planters along the sidewalk,",
+    "signage": "There are several signs advertising businesses and services, including a coffee shop and a restaurant,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for both locals and tourists,",
+    "as_commuter": "unknown",
+    "as_tourist": "The area has a lively atmosphere, with many shops and restaurants nearby,",
+    "as_student": "The area is home to many young professionals and students."
+  }
+}

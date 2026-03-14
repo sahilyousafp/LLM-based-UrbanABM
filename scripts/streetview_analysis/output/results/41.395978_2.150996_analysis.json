@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_003700",
+    "latitude": 41.395978,
+    "longitude": 2.150996,
+    "heading": 71.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a1c3b7e8-d922-48e4-9d7a-666cadeb6239",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395978_2.150996_h71.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49056.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street from a rooftop patio area. The patio has a red brick floor and is surrounded by buildings on both sides. There are several large planters along the right side of the patio, filled with various plants and shrubs. A white door is visible on the left side of the patio, leading into a building. The sky is blue with some clouds.",
+    "buildings": "The building on the left has a cream-colored facade with a flat roof and a row of windows. The building on the right has a more modern design with a sloping roof and a large window on the top floor.",
+    "materials": "The patio floor is made of red bricks laid in a herringbone pattern. The planters are made of wood and contain a variety of plants, including ferns and succulents.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image.",
+    "vegetation": "The planters are filled with a mix of annuals and perennials, including hosta, boxwood, and hibiscus.",
+    "signage": "There are no visible signs in the image.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the image.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The patio appears to be a quiet spot for residents to relax and enjoy the outdoors.",
+    "as_commuter": "The patio is a convenient spot for commuters to stop and rest during their daily commute.",
+    "as_tourist": "The patio offers a peaceful retreat from the hustle and bustle of the city.",
+    "as_student": "The patio is a great spot for students to study or work."
+  }
+}

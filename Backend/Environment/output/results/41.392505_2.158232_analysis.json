@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_175016",
+    "latitude": 41.3925055,
+    "longitude": 2.1582321000000007,
+    "heading": 98.73377712784406,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b1cd5fed-66a6-4591-a4a6-9a007b0e0905",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392505_2.158232_h98.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21923.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large indoor space with a tiled floor and ceiling, featuring a staircase leading down to a lower level with a railing and a row of bicycles parked along the wall. The walls are white with blue accents, and there are several doors and windows visible. The lighting is bright and even, suggesting a well-maintained public area. There are no people present in the image.",
+    "buildings": "The buildings in the background appear to be commercial or office spaces, with a mix of modern and older architectural styles. Some have glass facades, while others feature more traditional designs. The overall aesthetic is clean and professional.",
+    "materials": "The flooring is made of small, square tiles that cover the entire floor area. The walls are constructed from a combination of concrete and glass, giving them a sleek and contemporary look. The ceiling is composed of long, thin panels that run parallel to each other, creating a sense of depth and visual interest.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and chairs scattered throughout the area, providing a place for people to rest and take in the surroundings. A few trash cans are also visible, indicating that the area is regularly cleaned and maintained.",
+    "vegetation": "There are no plants or trees visible in the image, but there are several potted plants placed around the perimeter of the area. These add a touch of greenery to the otherwise drab surroundings.",
+    "signage": "There are several signs posted throughout the area, including directional signs and informational posters. These provide important information to visitors and help guide them through the space.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a resident, I would find this area to be a pleasant and relaxing space. The abundance of seating and greenery creates a sense of tranquility, making it an ideal spot to sit and relax.",
+    "as_commuter": "As a commuter, I would find this area to be a convenient and accessible location for getting around the city. The proximity to public transportation and the abundance of seating make it an ideal spot to wait for trains or buses.",
+    "as_tourist": "As a tourist, I would find this area to be a great spot to take photos and explore the surrounding area. The unique architecture and design elements make it a popular spot for photography.",
+    "as_student": "As a student, I would find this area to be a useful and inspiring location for studying or working. The proximity to the city center makes it easy to get to, and the abundance of seating and greenery create a comfortable and motivating environment."
+  }
+}

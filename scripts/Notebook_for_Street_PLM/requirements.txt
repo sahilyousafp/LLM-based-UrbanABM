@@ -1,0 +1,17 @@
+google-cloud-bigquery
+db-dtypes
+transformers>=4.40
+huggingface_hub
+pydantic
+Pillow
+requests
+pyproj
+shapely
+geopandas
+tqdm>=4.66
+numpy
+python-dotenv
+torch
+torchvision
+torchaudio
+accelerate>=0.30

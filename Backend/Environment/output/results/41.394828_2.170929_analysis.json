@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_204434",
+    "latitude": 41.3948278,
+    "longitude": 2.1709288,
+    "heading": 270.83720725239056,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a54db497-a8aa-4d26-8f7a-aa176c874b1a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394828_2.170929_h270.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85874.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with a large building in the background and several bicycles parked along the sidewalk in the foreground. The street is empty except for a few pedestrians and cyclists. The sky is clear and blue, suggesting a sunny day. The building has a modern design with a flat roof and a mix of glass and concrete walls. There are several windows on each floor, some of which have balconies. The street is lined with trees and other buildings, creating a sense of depth and context.",
+    "buildings": "The building is a large, multi-story structure with a flat roof and a mix of glass and concrete walls. It has a modern design with a flat roof and a mix of windows on each floor, some of which have balconies. The building appears to be well-maintained, with no visible signs of damage or neglect.",
+    "materials": "The building's exterior is made of a combination of materials, including glass, concrete, and possibly metal or steel. The ground floor has a smooth, polished finish, while the upper floors have a more textured appearance.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, providing a place for people to sit and rest. Some of the benches are made of wood or metal, while others appear to be plastic or fiberglass.",
+    "vegetation": "The street is lined with trees and other vegetation, which adds a touch of greenery to the urban landscape. The trees are tall and leafy, with branches that stretch up towards the sky.",
+    "signage": "There are several signs visible in the distance, including a large billboard and a series of smaller signs advertising local businesses.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of this street, which is quiet and serene despite being in a busy city. The presence of trees and greenery adds a touch of nature to the urban environment.",
+    "as_commuter": "A commuter might prefer this street as a convenient option for getting to work or school. The street is close to several major thoroughfares, making it easy to navigate.",
+    "as_tourist": "A tourist might enjoy the street's historic charm and character, which is evident in its old buildings and quaint storefronts. The street is a popular destination for foodies and shoppers.",
+    "as_student": "A student might appreciate the street's proximity to several universities and colleges, making it easy to get around by bike or on foot. The street is also a great spot for studying or working out."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_190551",
+    "latitude": 41.3870433,
+    "longitude": 2.1686121,
+    "heading": 31.288300057049412,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "50d1e034-7b8f-4b63-91ce-168e89795617",
+    "dist_along_edge_m": 9.2,
+    "source_image": "sv_41.387043_2.168612_h31.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64367.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city square with a large tree in the middle, surrounded by buildings and people sitting on benches. The sky is blue and clear with a few clouds. The ground is made of gray concrete pavers with some leaves scattered around. There are several tall buildings surrounding the square, including a white building with many windows and a clock tower. People are walking around, some sitting on benches, and others standing near the tree. A black lamppost stands in the foreground.",
+    "buildings": "The white building has a classic European-style architecture with a clock tower and arched windows. It has a flat roof and a small balcony on the top floor. The building is made of white stone or concrete and has a symmetrical facade with evenly spaced windows. The building appears to be several stories high.",
+    "materials": "The ground is made of gray concrete pavers with some leaves scattered around. The tree has a thick trunk and branches that stretch up towards the sky. The leaves are sparse, suggesting it may be autumn or winter.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches placed around the square, some of which have people sitting on them. There are also several trash cans and recycling bins scattered throughout the area. A black lamppost stands in the foreground.",
+    "vegetation": "The tree is bare, with only a few leaves remaining on its branches. The leaves are sparse and appear to be dead or dormant.",
+    "signage": "There are several signs posted on the buildings, including a large sign on the front of the white building that reads 'Café' in bold letters. There are also several smaller signs on the sidewalk that appear to be advertisements or informational signs.",
+    "ground_surfaces": "The ground is made of gray concrete pavers with some cracks and unevenness. The pavement is clean and well-maintained.",
+    "spatial_enclosure": "The square is relatively open and spacious, with plenty of room for people to move around. The buildings surround the square on all sides, creating a sense of enclosure.",
+    "pedestrian_activity": "People are walking in various directions, some alone and others in groups. Some are sitting on benches, while others are standing and chatting.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow coming from the sun. The shadows are long and deep, indicating that the sun is low in the sky.",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the square, enjoying the fresh air and sunshine. They might enjoy the views of the surrounding buildings and the sound of birds chirping.",
+    "as_commuter": "A commuter might use the square as a quick stop during their daily commute, perhaps to grab a coffee or snack before heading to work.",
+    "as_tourist": "A tourist might take a break from exploring the city to enjoy the scenery and take a photo.",
+    "as_student": "A student might use the square as a place to study or work in a quiet, peaceful environment. They might enjoy the opportunity to read a book or work on their laptop."
+  }
+}

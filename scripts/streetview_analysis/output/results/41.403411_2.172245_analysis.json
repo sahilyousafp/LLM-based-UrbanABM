@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002011",
+    "latitude": 41.403411,
+    "longitude": 2.172245,
+    "heading": 132.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "35ea766a-c259-44f3-960f-998825f7ee5a",
+    "dist_along_edge_m": 41.7,
+    "source_image": "sv_41.403411_2.172245_h132.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 47314.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long hallway with white walls and ceiling, featuring multiple ladders leaning against the walls and a workbench along the left wall. The floor is made of large square tiles, and there are several doors leading out of the room. The lighting is bright and even, suggesting daytime hours. The overall atmosphere is clean and well-maintained, with no visible clutter or mess.",
+    "buildings": "The buildings in the background have a mix of modern and traditional styles, with some having flat roofs and others having pitched roofs. Some have balconies or terraces, while others have large windows or doors.",
+    "materials": "The materials used in the construction of the buildings include concrete, brick, and wood. There are also metal railings and scaffolding visible.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and chairs scattered throughout the hallway, as well as a few tables and chairs near the doors.",
+    "vegetation": "There are no visible plants or trees in the hallway, but there are some small potted plants on the shelves near the doors.",
+    "signage": "There are several signs posted on the walls, including a large sign above the door that reads 'Welcome to [name of building]'.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the hallway, but there are a few people walking outside the doors.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful, with only a few people visible.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area looks like a popular spot for tourists, with many people taking photos and admiring the architecture.",
+    "as_student": "The area is likely a university campus or office complex, given the presence of students and faculty members."
+  }
+}

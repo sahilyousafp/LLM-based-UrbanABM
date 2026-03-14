@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023715",
+    "latitude": 41.396304,
+    "longitude": 2.151314,
+    "heading": 223.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1221cbc6-1920-4b8a-8341-d80faf7d815b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396304_2.151314_h223.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50472.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long hallway with a hardwood floor and white walls, featuring a desk with a chair and printer on the left, and several massage chairs lined up along the right wall. The room has a high ceiling with track lighting and a circular skylight. The walls have wood paneling accents, and there are two large pillars in the middle of the room. The floor is made of hardwood planks, and there are several rugs placed throughout the space. A small white table and chair sit near the front of the room, while a black car seat is positioned against the back wall.",
+    "buildings": "The buildings in the image are primarily gray and beige, with some wood accents. The left side of the room has a more modern aesthetic, while the right side has a more traditional look. The right-hand side of the room features a row of massage chairs, which are arranged in a neat line.",
+    "materials": "The materials used in the construction of the room include wood, metal, and plastic. The hardwood floor is made from a combination of oak and maple, while the walls feature a mix of wood paneling and painted surfaces. The massage chairs are constructed from a combination of leather and foam, with metal frames.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several pieces of street furniture scattered throughout the room, including a few chairs and tables. These items appear to be well-maintained and clean.",
+    "vegetation": "There are no visible plants or trees in the image, but there are several potted plants placed around the room.",
+    "signage": "There are no visible signs or advertisements in the image.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no visible pedestrians in the image.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might find this space appealing due to its comfortable seating options and peaceful ambiance.",
+    "as_commuter": "A commuter might find this area convenient for their daily commute, with plenty of seating and storage space.",
+    "as_tourist": "This area could be a popular spot for visitors to take photos or simply enjoy the scenery.",
+    "as_student": "A student might appreciate the peaceful atmosphere and comfortable seating available in this space."
+  }
+}

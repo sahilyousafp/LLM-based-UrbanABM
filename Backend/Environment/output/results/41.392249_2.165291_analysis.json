@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171621",
+    "latitude": 41.392249,
+    "longitude": 2.1652914000000005,
+    "heading": 180.17675945967554,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5bc95714-5f64-4ec3-90a9-9a3f255646c1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392249_2.165291_h180.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21913.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene viewed through a window, with tall buildings lining both sides of the street and a few trees scattered along the sidewalk. The sky is blue and clear, suggesting a late evening or early morning,",
+    "buildings": "The buildings are tall and modern, with large windows and sleek facades. They appear to be office buildings or apartments, with some having balconies or terraces.",
+    "materials": "The street is paved with dark gray asphalt, and there are several large concrete pillars supporting the overhanging roof of the buildings. There are also several trees planted along the sidewalk, adding some greenery to the otherwise urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, as well as a few bicycles parked against the curb.",
+    "vegetation": "The trees are mostly bare, with only a few leaves still clinging to the branches. There are also some potted plants placed along the sidewalk, adding some color and texture to the scene.",
+    "signage": "There are several signs posted along the street, including a large digital billboard and a few smaller signs advertising local businesses.",
+    "ground_surfaces": "The ground is made up of large concrete slabs, with some cracks and unevenness visible in places.",
+    "spatial_enclosure": "The street is relatively wide, with a few narrow alleys and side streets branching off from the main thoroughfare.",
+    "pedestrian_activity": "There are several people walking along the sidewalk, some of whom are carrying bags or briefcases. There are also a few cyclists riding their bikes down the street.",
+    "lighting_atmosphere": "The lighting is soft and warm, with a mix of natural and artificial light sources.",
+    "as_resident": "The street is bustling with activity, with people going about their daily business. There are also several street performers and vendors set up along the sidewalk.",
+    "as_commuter": "The street is a great place to commute, with easy access to public transportation.",
+    "as_tourist": "The street is a great place to explore, with plenty of interesting sights and experiences to discover.",
+    "as_student": "The street is a great place to study, with many universities and colleges located nearby."
+  }
+}

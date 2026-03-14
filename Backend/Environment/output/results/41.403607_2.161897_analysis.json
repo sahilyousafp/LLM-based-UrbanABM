@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_001056",
+    "latitude": 41.4036073,
+    "longitude": 2.1618974000000004,
+    "heading": 250.6161586089019,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "road",
+    "edge_id": "ab486610-603e-42cd-8552-59b3fdf39618",
+    "dist_along_edge_m": 13.3,
+    "source_image": "sv_41.403607_2.161897_h250.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43289.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings, trees, and parked cars. The street is paved with asphalt and has white painted lines indicating pedestrian crossings. There are several bicycles parked along the sidewalk, and a few people walking on the street. The buildings have balconies and windows, and there are various signs and advertisements displayed on the facades. The street is lined with trees providing shade and greenery. The sky is overcast.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and traditional architectural styles. They have flat roofs and feature large windows, balconies, and decorative elements such as columns and arches. Some of the buildings appear to be residential, while others may be commercial or office spaces.",
+    "materials": "The street is paved with asphalt and has white painted lines indicating pedestrian crossings. The buildings' facades are made of a combination of materials, including concrete, brick, and glass. The street is lined with trees that provide shade and greenery.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk. A few bicycles are parked near the curb.",
+    "vegetation": "The trees are tall and leafy, providing shade and greenery to the street. There are also some potted plants and flowers placed along the sidewalk.",
+    "signage": "There are several signs posted on the buildings, including street signs, directional signs, and advertisements. Some of the signs are illuminated, while others are not.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the quiet and peaceful atmosphere of the street, with plenty of greenery and comfortable seating areas. However, the area may not be suitable for all ages or activities.",
+    "as_commuter": "A commuter might prefer this area for its convenience and accessibility, with easy access to public transportation and shopping districts. However, the area may not be suitable for those who prefer a more laid-back atmosphere.",
+    "as_tourist": "A tourist might enjoy the street's unique character and charm, with its historic architecture and lively atmosphere. However, the area may not be suitable for those who prefer a more formal or upscale environment.",
+    "as_student": "A student might appreciate the street's proximity to universities and other educational institutions. However, the area may not be suitable for those looking for a quiet and peaceful environment."
+  }
+}

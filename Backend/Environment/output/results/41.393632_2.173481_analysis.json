@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_214413",
+    "latitude": 41.393632499999995,
+    "longitude": 2.1734805000000006,
+    "heading": 318.10697761082076,
+    "street_name": "Accés als Jardins de Jaume Perich",
+    "highway_type": "road",
+    "edge_id": "7fdf3dcb-4d36-43c5-82b7-a83e6d45a6ac",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.393632_2.173481_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85563.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with a mix of old and new buildings,",
+    "buildings": "The two-story building has a beige stone facade with a blue sign reading 'Centre Medical AVA' above the entrance,",
+    "materials": "The building's facade is made of stone with decorative ironwork,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture,",
+    "vegetation": "There are no visible plants or trees,",
+    "signage": "There are several signs including a large poster on the left side of the building,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A few people are visible inside the building,",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is moderately busy,",
+    "as_student": "There are no visible students,"
+  }
+}

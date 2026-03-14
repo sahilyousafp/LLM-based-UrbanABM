@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_043350",
+    "latitude": 41.393265,
+    "longitude": 2.16662,
+    "heading": 166.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5643b22e-ac57-4ce0-850f-29e922f3d8dc",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.393265_2.166620_h166.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12160.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a shopping mall with a glass front and escalator,",
+    "buildings": "The mall has a modern glass front with a black base and white ceiling,",
+    "materials": "The mall's exterior is made of glass and metal,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables outside,",
+    "vegetation": "There are trees and plants along the sidewalk,",
+    "signage": "There are several signs including a green sign with white lettering,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking on the sidewalk,",
+    "lighting_atmosphere": "It is daytime with overcast skies,",
+    "as_resident": "The mall is empty,",
+    "as_commuter": "unknown",
+    "as_tourist": "The mall is a popular tourist destination.",
+    "as_student": "The mall is a popular spot for students,"
+  }
+}

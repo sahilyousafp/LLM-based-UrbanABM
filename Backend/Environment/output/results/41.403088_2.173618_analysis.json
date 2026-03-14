@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_184209",
+    "latitude": 41.403088,
+    "longitude": 2.1736178,
+    "heading": 211.20624249516493,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "42e1bb1f-0057-40b5-9ef1-bf4e066ecc67",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403088_2.173618_h211.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 10770.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a park with people walking around,",
+    "buildings": "The buildings have a mix of old and new architecture,",
+    "materials": "The ground is made of concrete and asphalt,",
+    "building_condition": "unknown",
+    "street_furniture": "There are benches and tables scattered throughout the area,",
+    "vegetation": "There are many trees and bushes,",
+    "signage": "There are several signs indicating parking restrictions,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking and sitting,",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area is popular with locals and tourists alike,",
+    "as_commuter": "It is a busy area with a lot of foot traffic,",
+    "as_tourist": "It has a lively atmosphere,",
+    "as_student": "It is a good spot for outdoor activities."
+  }
+}

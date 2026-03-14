@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_025445",
+    "latitude": 41.39246,
+    "longitude": 2.164926,
+    "heading": 89.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c448ce7b-c72c-4538-a7e4-33e42f2d1b02",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392460_2.164926_h89.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49928.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street corner with a white van parked along the curb, surrounded by pedestrians and buildings under construction. The street is paved with asphalt and has a yellow line down the middle. A large building with scaffolding covers its front, while other buildings stand nearby. People are scattered about, some looking at their phones, others chatting or simply waiting. The sky is partly cloudy with patches of blue peeking through.",
+    "buildings": "The main building is covered in scaffolding, with a sign reading",
+    "materials": "The sidewalk is made of concrete pavers, with a few benches and planters adding some greenery. The street itself is smooth asphalt, with a yellow line running down the center.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the curb.",
+    "vegetation": "The street is lined with trees and bushes, which add some color and texture to the scene.",
+    "signage": "There are several signs posted along the street, including a stop sign and a pedestrian crossing signal.",
+    "ground_surfaces": "The ground is mostly flat, with some slight inclines and declines.",
+    "spatial_enclosure": "The street feels relatively open, with a clear view of the sky above.",
+    "pedestrian_activity": "People are milling about, some walking in groups and others alone.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds drifting across the sky.",
+    "as_resident": "The street is bustling with activity, but there are also moments of quiet contemplation.",
+    "as_commuter": "The street is a convenient location for those who need to get to work or school.",
+    "as_tourist": "The street is a popular destination for tourists.",
+    "as_student": "The area is a great spot for students to relax and socialize."
+  }
+}

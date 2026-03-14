@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_034530",
+    "latitude": 41.396939,
+    "longitude": 2.171039,
+    "heading": 134.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b7428fd2-133f-4938-a354-efc210873aa1",
+    "dist_along_edge_m": 19.4,
+    "source_image": "sv_41.396939_2.171039_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50694.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street corner with a tall apartment building on the left and a shorter building on the right. The street has a bike lane and a crosswalk with white markings. There are several parked motorcycles and bicycles along the curb. A person walks down the sidewalk in front of the buildings. The sky is overcast.",
+    "buildings": "The left building has a cream-colored facade with balconies and windows. The right building has a more modern design with a mix of concrete and glass. Both have multiple stories and appear to be residential. The street is paved with asphalt and has a bike lane marked by white lines.",
+    "materials": "The left building's facade is made of concrete with a smooth finish. The right building's facade is made of a combination of concrete and glass with a sleek, modern look.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several parked motorcycles and bicycles along the curb, as well as a few benches and trash cans.",
+    "vegetation": "There are a few trees and bushes along the sidewalk, adding some greenery to the urban landscape.",
+    "signage": "There are several signs posted along the street, including a stop sign, a pedestrian crossing signal, and a directional sign.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking along the sidewalk, but the area appears to be relatively quiet.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street seems to be a quiet, residential area with a few shops and cafes nearby.",
+    "as_commuter": "The street is a great spot for work, with plenty of office space and coworking areas.",
+    "as_tourist": "The street is a great spot for entertainment, with plenty of bars, clubs, and live music venues.",
+    "as_student": "The street is a great place to study, with plenty of libraries and universities nearby."
+  }
+}

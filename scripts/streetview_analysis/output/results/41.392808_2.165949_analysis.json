@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042223",
+    "latitude": 41.392808,
+    "longitude": 2.165949,
+    "heading": 52.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "acde7f2e-02b6-4ff3-81f2-90bcfafc051b",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392808_2.165949_h52.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49832.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides,",
+    "buildings": "The buildings have a mix of old and new architecture, with some featuring ornate facades and others having more modern designs.",
+    "materials": "The street is paved with gray bricks, and there are large windows on the storefronts.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters along the sidewalk.",
+    "vegetation": "There are small trees and bushes planted in white pots.",
+    "signage": "There are several signs advertising businesses and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, and there are a few cars parked along the curb.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street has a lively atmosphere, with many shops and restaurants.",
+    "as_student": "The street is lined with cafes and bars."
+  }
+}

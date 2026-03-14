@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_041242",
+    "latitude": 41.399545,
+    "longitude": 2.152118,
+    "heading": 52.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c5354479-1b58-4e52-a098-06f5cf4b8442",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399545_2.152118_h52.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49664.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings and a cloudy sky. The street has a white line down the middle and a bus is driving on the right side. There are people walking on the sidewalk and a few cars parked along the street. The buildings have different styles and colors, including a large white building with many windows and a smaller brown building with balconies. There are also some trees and bushes along the sidewalk.",
+    "buildings": "The buildings are mostly multi-story structures with various architectural styles, including modern glass and concrete, older brick and stone facades, and ornate details like balconies and decorative trim. Some buildings have flat roofs, while others have pitched roofs with chimneys.",
+    "materials": "The street is paved with asphalt and has a smooth surface. The sidewalks are made of concrete and have a slight incline. There are no visible streetlights or other infrastructure.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the curb. A bus stop is located on the corner of the street.",
+    "vegetation": "There are small trees and bushes planted along the sidewalk, adding some greenery to the urban landscape.",
+    "signage": "There are several signs posted along the street, including traffic signs, directional signs, and informational signs. Some of the signs are mounted on poles, while others are attached to buildings or freestanding.",
+    "ground_surfaces": "The ground is covered in asphalt, with some areas of concrete and brick. There are also some patches of grass and dirt.",
+    "spatial_enclosure": "The street is relatively narrow, with a maximum width of around 10 feet. The buildings on either side of the street are close together, creating a sense of intimacy and community.",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or briefcases, while others are chatting or looking at their phones. There are also a few cyclists riding by.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a mix of natural and artificial light sources. The sun is shining through the clouds, casting dappled shadows across the street.",
+    "as_resident": "This area appears to be a residential neighborhood, with apartments and houses lining the street. There are also some commercial establishments, such as cafes and shops.",
+    "as_commuter": "The area is a busy transportation hub, with buses and trains passing through regularly. There are also some cars and taxis parked along the street.",
+    "as_tourist": "The area is a popular spot for tourists, with many people taking photos and admiring the architecture. There are also some street performers and vendors selling souvenirs.",
+    "as_student": "This area is a hub for students and young professionals, with many people studying or working in the surrounding buildings. There are also some young adults hanging out in groups, socializing and enjoying the atmosphere."
+  }
+}

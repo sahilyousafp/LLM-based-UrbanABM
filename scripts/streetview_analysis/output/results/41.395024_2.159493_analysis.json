@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_021750",
+    "latitude": 41.395024,
+    "longitude": 2.159493,
+    "heading": 318.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "4a3f1de8-0bd7-4959-8dcb-8631879b3aae",
+    "dist_along_edge_m": 127.4,
+    "source_image": "sv_41.395024_2.159493_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49419.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street with buildings, people sitting at tables, and large white lights hanging from the ceiling. The street is paved with dark gray bricks and has a few people walking around. There are several large windows along the side of the building, allowing natural light to enter the area. The building itself is made of light-colored stone and has a modern design. The street is relatively empty, but there are some people sitting at tables outside of a cafe or restaurant. The atmosphere is calm and peaceful, with a sense of community among the patrons. The lighting is bright and airy, with large white globes hanging from the ceiling. The overall mood is relaxed and inviting.",
+    "buildings": "The building is made of light-colored stone and has a modern design. It has several stories and a flat roof. The building is well-maintained and clean. The exterior walls are smooth and unadorned, with no visible decorations or artwork. The entrance is located on the right-hand side of the building and has a set of double doors with a small window above them. The building appears to be a commercial property, possibly a hotel or office building.",
+    "materials": "The building's exterior is made of a combination of materials, including stone, brick, and metal. The stone gives the building a sturdy and timeless look, while the brick adds warmth and texture. The metal accents provide a touch of modernity and sophistication.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several chairs and tables scattered throughout the outdoor seating area, providing ample space for customers to sit and enjoy their meals or drinks. The furniture is modern and stylish, with sleek lines and comfortable-looking cushions. Some of the tables have umbrellas or canopies to provide shade for diners.",
+    "vegetation": "There are a few potted plants placed around the outdoor seating area, adding a touch of greenery to the otherwise urban landscape. The plants are well-maintained and healthy-looking, with vibrant green leaves and colorful flowers.",
+    "signage": "There are several signs posted around the building, including a large sign above the entrance that reads 'GAL' in bold letters. There are also smaller signs on the windows and doors, advertising various services and promotions.",
+    "ground_surfaces": "The ground is paved with dark gray bricks, which provide a durable and easy-to-clean surface for pedestrians and vehicles. The bricks are arranged in a pattern, with some areas featuring a more intricate design than others.",
+    "spatial_enclosure": "The street is relatively narrow, with a gentle slope leading up to the building. The enclosure is defined by the building's walls and the surrounding pavement.",
+    "pedestrian_activity": "There are a few people walking along the sidewalk, some of whom are looking at their phones or chatting with friends. Others are simply strolling along, taking in the sights and sounds of the city.",
+    "lighting_atmosphere": "The lighting in the area is soft and warm, with a mix of natural and artificial light sources. The sun shines down from above, casting long shadows across the pavement. The streetlights are spaced at regular intervals, providing adequate illumination for pedestrians and drivers.",
+    "as_resident": "As a local resident, I would appreciate seeing more of the city's character and charm. I'd like to see more historic buildings and unique architecture, as well as a stronger sense of community and social interaction.",
+    "as_commuter": "As a commuter, I'd appreciate seeing more public transportation options available in the area. I'd like to see buses, trains, or bicycles parked near the building, as well as pedestrian-friendly infrastructure like crosswalks and bike lanes.",
+    "as_tourist": "As a tourist, I'd appreciate seeing more of the city's history and landmarks. I'd like to visit the city's iconic landmarks, such as the cathedral or museum.",
+    "as_student": "As a student, I'm curious about the city's academic environment and resources. I'd love to learn more about the local universities and research institutions, as well as the city's vibrant arts and cultural scene."
+  }
+}

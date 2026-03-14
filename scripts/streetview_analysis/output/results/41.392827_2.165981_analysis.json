@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042237",
+    "latitude": 41.392827,
+    "longitude": 2.165981,
+    "heading": 232.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "acde7f2e-02b6-4ff3-81f2-90bcfafc051b",
+    "dist_along_edge_m": 3.4,
+    "source_image": "sv_41.392827_2.165981_h232.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12852.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street lined with tall buildings and parked motorcycles,",
+    "buildings": "The buildings have cream-colored facades with stone columns and ornate details,",
+    "materials": "The street is paved with gray bricks and has a drainage grate running down the middle,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk,",
+    "vegetation": "There are some small trees and bushes planted in large pots,",
+    "signage": "There are several signs posted on the buildings,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike,",
+    "as_commuter": "It's a busy area with a mix of pedestrians and motorcyclists,",
+    "as_tourist": "It's a charming and historic neighborhood with plenty of character.",
+    "as_student": "The area is home to many students and young professionals,"
+  }
+}

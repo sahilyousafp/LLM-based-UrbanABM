@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_221755",
+    "latitude": 41.3879539,
+    "longitude": 2.1594713999999997,
+    "heading": 315.1543129696894,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "45129c3c-63e8-461b-916a-fe83acff476a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387954_2.159471_h315.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43923.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, featuring a mix of old and new architecture, including a large tree-lined sidewalk and a busy intersection with cars and pedestrians. The street is paved with asphalt and has white painted lines indicating pedestrian crossings and bike lanes. A black car is parked along the curb, while a person walks across the street. The surrounding buildings have balconies and windows, with some displaying signs and advertisements. The sky is overcast.",
+    "buildings": "The buildings are multi-story structures with a mix of stone and concrete facades, featuring ornate balconies and decorative details. Some have signs and advertisements, while others appear more residential. The buildings vary in height, with some having multiple stories and others being single-story.",
+    "materials": "Materials used include stone, brick, and concrete, with some buildings featuring ornate details such as carved stone facades and decorative ironwork. The street is paved with asphalt and has white painted lines indicating pedestrian crossings and bike lanes.",
+    "building_condition": "unknown",
+    "street_furniture": "Street furniture includes benches, trash cans, and bike racks, with some areas featuring outdoor seating and planters.",
+    "vegetation": "The street is lined with trees and bushes, providing shade and greenery to the urban landscape. Some trees have been planted along the sidewalk, adding to the aesthetic appeal of the area.",
+    "signage": "Signs include street signs, directional signs, and advertisements, with some featuring bright colors and bold lettering.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "Local residents seem to appreciate the street's charm, with some mentioning its historic significance and cultural importance. Others note its role as a hub for community activity and social interaction.",
+    "as_commuter": "unknown",
+    "as_tourist": "Tourists are drawn to the street's unique blend of history, culture, and entertainment options. They also enjoy the street's scenic views and picturesque architecture.",
+    "as_student": "Students often find the street charming and inviting, with its mix of old and new architecture, and its lively atmosphere. They also appreciate the street's proximity to cultural attractions and events."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172616",
+    "latitude": 41.38951879999999,
+    "longitude": 2.1739835,
+    "heading": 244.39939073001318,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "12a57dfe-e1a5-4d80-b7da-7c6bfcd19646",
+    "dist_along_edge_m": 15.7,
+    "source_image": "sv_41.389519_2.173983_h244.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 3015.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a bus parked along the curb, pedestrians walking on the sidewalk, and buildings lining the street in the distance. The sky is partly cloudy with a few wispy clouds scattered across it. The sun is shining down casting shadows on the ground and illuminating the scene. The street is paved with gray bricks and has a slight curve to it. A white bus with blue lettering is parked along the curb, facing away from the camera. Two women are walking towards the camera, while a man walks away from it. The woman on the left is wearing a black jacket and pants, while the woman on the right is dressed in a white coat and brown boots. The man is wearing a dark suit and carrying a briefcase. The buildings in the background are tall and have a mix of modern and traditional architecture. The overall atmosphere is calm and peaceful.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

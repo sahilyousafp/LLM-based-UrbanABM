@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_033539",
+    "latitude": 41.387106,
+    "longitude": 2.169224,
+    "heading": 99.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3c38ec5e-9580-47e4-9326-5293d001fe45",
+    "dist_along_edge_m": 68.9,
+    "source_image": "sv_41.387106_2.169224_h99.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50473.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with people walking around,",
+    "buildings": "The buildings are tall and modern, with large windows and flat roofs.",
+    "materials": "The street is paved with concrete and has a smooth texture.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "There are several trees and bushes along the street.",
+    "signage": "There are several signs posted along the street.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking in both directions.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be residential.",
+    "as_commuter": "The area is convenient for commuting.",
+    "as_tourist": "The area is a great place to relax.",
+    "as_student": "The area is popular with young adults."
+  }
+}

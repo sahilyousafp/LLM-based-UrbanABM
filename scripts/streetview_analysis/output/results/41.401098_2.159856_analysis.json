@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023609",
+    "latitude": 41.401098,
+    "longitude": 2.159856,
+    "heading": 231.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "29b936ff-62e1-4f57-bae3-8148e31aa5f1",
+    "dist_along_edge_m": 2.2,
+    "source_image": "sv_41.401098_2.159856_h231.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 11961.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow street in a city with tall buildings on both sides,",
+    "buildings": "The buildings are peach-colored with yellow accents and have multiple stories,",
+    "materials": "The walls are made of concrete and brick,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables outside,",
+    "vegetation": "There are some small plants in pots along the sidewalk,",
+    "signage": "There are several signs posted on the buildings,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking down the street,",
+    "lighting_atmosphere": "The lighting is bright and sunny,",
+    "as_resident": "The area seems quiet and peaceful,",
+    "as_commuter": "The street is not very busy,",
+    "as_tourist": "The area has some interesting architecture,",
+    "as_student": "The area is quiet and residential."
+  }
+}

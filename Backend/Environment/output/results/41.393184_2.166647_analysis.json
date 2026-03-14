@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_202057",
+    "latitude": 41.3931842,
+    "longitude": 2.1666465,
+    "heading": 9.034768937284355,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "6f663a61-8b7b-4ac7-ac72-e38a270aa826",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.393184_2.166647_h9.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85864.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a pedestrian area with buildings on both sides, including a large yellow building on the left and a modern glass-fronted building on the right. The street is paved with grey bricks and has a few cars parked along the side. A woman wearing a black puffy jacket walks down the sidewalk, passing by a set of stairs leading into a subway station. The sky is partly cloudy.",
+    "buildings": "The yellow building has a flat roof and multiple windows, while the glass-fronted building has a sleek, curved frontage and a large window display. The street is lined with various shops and restaurants, and there are several pedestrians walking in both directions.",
+    "materials": "The yellow building has a smooth, cream-colored facade with arched windows and a decorative cornice, while the glass-fronted building has a dark, reflective surface with a subtle pattern of lights.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the entrance to the subway station.",
+    "vegetation": "There are a few small trees and bushes planted along the sidewalk, adding some greenery to the urban landscape.",
+    "signage": "There are several signs posted along the sidewalk, including a large digital billboard and a smaller sign advertising a local business.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is bustling with activity, with people going about their daily business.",
+    "as_commuter": "The street is a busy thoroughfare, with many people going about their daily routines.",
+    "as_tourist": "The street is a popular destination for tourists, with its historic charm and vibrant atmosphere.",
+    "as_student": "The street is a great place to learn, with plenty of academic resources and research opportunities."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_232204",
+    "latitude": 41.39062729999999,
+    "longitude": 2.1564778000000002,
+    "heading": 223.60195810137387,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "1bcf2b50-711f-4d60-acfd-9cd6d54eeced",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.390627_2.156478_h223.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 20828.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a modern building with a tree in front of it,",
+    "buildings": "The building has a mix of old and new architecture, with a large glass wall and a wooden balcony,",
+    "materials": "The building's exterior is made of a combination of materials, including wood, glass, and metal,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several scooters parked along the sidewalk, as well as a few benches and trash cans,",
+    "vegetation": "The tree in front of the building is tall and slender, with sparse leaves,",
+    "signage": "There are several signs posted on the building, including a sign indicating the name of the business inside,",
+    "ground_surfaces": "The ground is paved with asphalt and has a few cracks and potholes,",
+    "spatial_enclosure": "The street is relatively narrow and winding, with a slight incline,",
+    "pedestrian_activity": "There are a few people walking down the street, but it's not crowded,",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few shadows cast by the buildings,",
+    "as_resident": "The area appears to be quiet and peaceful, with a few people going about their daily business,",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The area is home to a number of young professionals and students, who often stop to grab a coffee or snack before heading out."
+  }
+}

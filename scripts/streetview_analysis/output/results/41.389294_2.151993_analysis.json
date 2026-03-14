@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_015700",
+    "latitude": 41.389294,
+    "longitude": 2.151993,
+    "heading": 239.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a5353751-a034-4e82-8321-7f252423d21a",
+    "dist_along_edge_m": 9.6,
+    "source_image": "sv_41.389294_2.151993_h239.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49379.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "Street view of a curved wall with three windows featuring yellow and white stained glass panes separated by black lines, set against a beige stone wall with white trim. The windows have a diamond pattern and are framed in white. A Google logo is visible in the bottom left corner.",
+    "buildings": "The left window has a cream-colored stone facade with a white border, while the middle window has a similar design but with a slightly different pattern. The right window has a more ornate design with a gold accent line separating the two sections of the window.",
+    "materials": "The left window has a cream-colored stone facade with a white border, while the middle window has a similar design but with a slightly different pattern. The right window has a cream-colored stone facade with a white border, while the middle window has a similar design but with a slightly different pattern. The left window has a cream-colored stone facade with a white border, while the right window has a more ornate design with a gold accent line separating the two sections of the window.",
+    "building_condition": "The left window has a cream-colored stone facade with a white border, while the middle window has a similar design but with a slightly different pattern. The right window has a cream-colored stone facade with a white border, while the middle window has a similar design but with a slightly different pattern. The left window has a cream-colored stone facade with a white border, while the right window has a more ornate design with a gold accent line separating the two sections of the window.",
+    "street_furniture": "A bench is visible in front of the left window, while a streetlight is visible in front of the middle window. A bike rack is visible in front of the right window.",
+    "vegetation": "There are no visible plants or trees in the image.",
+    "signage": "There are no visible signs in the image.",
+    "ground_surfaces": "The ground is paved with gray concrete.",
+    "spatial_enclosure": "The street is relatively narrow, with a slight curve to the right.",
+    "pedestrian_activity": "There are no pedestrians visible.",
+    "lighting_atmosphere": "The lighting is bright and well-lit.",
+    "as_resident": "The area appears to be quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area appears to be quiet and peaceful.",
+    "as_student": "The area appears to be quiet and peaceful."
+  }
+}

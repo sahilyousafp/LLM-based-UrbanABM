@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_183505",
+    "latitude": 41.396028400000006,
+    "longitude": 2.1511858999999998,
+    "heading": 313.3728495512197,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "af87db6f-15e7-4c5e-9291-0ecb62d00a8e",
+    "dist_along_edge_m": 7.5,
+    "source_image": "sv_41.396028_2.151186_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64367.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A woman walks away from the camera carrying a shopping basket and umbrella, while a man walks towards the camera holding a bag, set against a blurred background of a city street with buildings and pavement. The woman wears a dark dress and carries a large basket over her shoulder, while the man wears a short-sleeved shirt and pants, and holds a small bag in his hand. The scene is bathed in soft, diffused light.",
+    "buildings": "The woman stands in front of a tall, white building with a flat roof, while the man walks past a shorter, brown building with a pitched roof.",
+    "materials": "The woman's dress is made of a smooth, flowing material, while the man's shirt and pants are made of a rougher, more textured fabric.",
+    "building_condition": "unknown",
+    "street_furniture": "The woman has a large basket slung over her arm, while the man carries a small bag in his hand.",
+    "vegetation": "There are no visible plants or trees in the scene, but there are several potted plants placed along the sidewalk.",
+    "signage": "There are several signs posted on the buildings, including a large sign reading 'Open' and a smaller sign advertising a local business.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The woman seems lost in thought, while the man looks around him.",
+    "as_commuter": "The woman walks quickly and confidently.",
+    "as_tourist": "The scene is full of interesting details and colors.",
+    "as_student": "The woman is engaged in conversation with someone off-camera."
+  }
+}

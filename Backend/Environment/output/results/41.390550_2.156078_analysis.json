@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_225008",
+    "latitude": 41.3905499,
+    "longitude": 2.1560777000000004,
+    "heading": 67.65320309313995,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "f30274d5-52db-4b0a-accb-0057233ac6db",
+    "dist_along_edge_m": 138.5,
+    "source_image": "sv_41.390550_2.156078_h67.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43465.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A computer lab with yellow walls and white desks,",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners.",
+    "materials": "The building has a cream-colored facade with stone quoins at the corners.",
+    "building_condition": "unknown",
+    "street_furniture": "There are four chairs and two computers on the desk.",
+    "vegetation": "There are no plants or trees in the picture.",
+    "signage": "There are no signs or plaques.",
+    "ground_surfaces": "The ground is made of concrete.",
+    "spatial_enclosure": "The room is open and bright.",
+    "pedestrian_activity": "There are no people in the picture.",
+    "lighting_atmosphere": "It is daytime.",
+    "as_resident": "This is a school.",
+    "as_commuter": "I am a student.",
+    "as_tourist": "I am a tourist.",
+    "as_student": "I am a student."
+  }
+}

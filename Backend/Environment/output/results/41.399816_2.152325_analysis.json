@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_194935",
+    "latitude": 41.3998159,
+    "longitude": 2.1523249,
+    "heading": 84.49580272754133,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c549e46a-c02f-4b0e-a0e5-c8339abd700e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399816_2.152325_h84.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 86046.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long flight of stairs leading up to a building with a glass escalator on the right side. The walls are beige and there are metal handrails on both sides of the stairs. There are no people visible in the image. The ceiling is blue and there is a small light fixture on the wall at the top of the stairs. The ground is made of gray tiles. The building has a large window at the top of the stairs.",
+    "buildings": "The building has a cream-colored facade with a stone base and a large window at the top of the stairs. It is taller than the surrounding buildings.",
+    "materials": "The stairs have a gray tile floor and metal handrails on both sides. The escalator is made of glass and metal.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or other furniture visible in the image.",
+    "vegetation": "There are no plants or trees visible in the image.",
+    "signage": "There are no visible signs or advertisements.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no people visible in the image.",
+    "lighting_atmosphere": "The lighting is bright and sunny.",
+    "as_resident": "The area appears to be quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are no tourists visible in the image.",
+    "as_student": "There are no students visible in the image."
+  }
+}

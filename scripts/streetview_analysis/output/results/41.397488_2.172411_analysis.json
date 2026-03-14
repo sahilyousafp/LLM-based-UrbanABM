@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042418",
+    "latitude": 41.397488,
+    "longitude": 2.172411,
+    "heading": 313.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "9c7d33a2-f99f-4df9-bc3c-de14d0293c42",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397488_2.172411_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50193.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, paved with gray concrete pavers, and lined with trees and outdoor seating areas for cafes and restaurants. The sky is blue with some clouds, and there are several tall buildings in the distance. A person walks down the middle of the street, and there are several tables and chairs set up outside cafes and restaurants along the sidewalk. There are also several black umbrellas over the tables.",
+    "buildings": "The buildings are multi-story structures made of stone and brick, with ornate facades and decorative details such as columns and arches. Some of the buildings have balconies and windows with shutters.",
+    "materials": "The street is paved with gray concrete pavers, and there are several large trees planted along the sidewalk. There are also several streetlights and utility poles throughout the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several tables and chairs set up outside cafes and restaurants, including a few picnic tables and benches. There are also several umbrellas providing shade for diners.",
+    "vegetation": "The trees are tall and leafy, with green leaves and branches that stretch out over the sidewalk.",
+    "signage": "There are several signs posted along the street, including directional signs and advertisements for local businesses.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people walking along the sidewalk, including a few individuals sitting at outdoor tables.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is bustling with activity, with people going about their daily business.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and nearby shopping and dining options.",
+    "as_tourist": "The street is a great place to visit, with its unique blend of history, culture, and entertainment options.",
+    "as_student": "The street is a great place to study, with many universities and colleges located nearby."
+  }
+}

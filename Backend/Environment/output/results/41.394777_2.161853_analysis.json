@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_210525",
+    "latitude": 41.3947773,
+    "longitude": 2.1618531000000005,
+    "heading": 316.63785083131984,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "450a5014-9fa9-47c8-b6d9-3545cc186335",
+    "dist_along_edge_m": 6.6,
+    "source_image": "sv_41.394777_2.161853_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 14362.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with a motorbike crossing the intersection,",
+    "buildings": "The buildings have a unique curved design with balconies and windows,",
+    "materials": "The ground is made of concrete and has a smooth texture,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables outside,",
+    "vegetation": "There are trees lining the sidewalk,",
+    "signage": "There are several signs posted along the street,",
+    "ground_surfaces": "The ground is paved with asphalt,",
+    "spatial_enclosure": "The street is relatively wide and open,",
+    "pedestrian_activity": "People are walking on the sidewalk,",
+    "lighting_atmosphere": "The sun is shining brightly,",
+    "as_resident": "This area is quiet and peaceful,",
+    "as_commuter": "It is a busy street with cars and pedestrians,",
+    "as_tourist": "The architecture is interesting and unique,",
+    "as_student": "I'm not sure what this place looks like."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_020420",
+    "latitude": 41.394847,
+    "longitude": 2.170761,
+    "heading": 121.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d291401d-483f-4ca2-a4f0-c96aefd53f26",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394847_2.170761_h121.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48833.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with buildings on both sides, featuring a mix of old and new architecture, including a tall beige building with balconies and a shorter red brick building with a flat roof, surrounded by trees and street furniture such as benches and lampposts. The street is paved with cobblestones and has a small plaza with a fountain and a few people walking around. The sky is blue with some clouds.",
+    "buildings": "The beige building has a classic European style with ornate ironwork and balconies, while the red brick building has a more modern look with large windows and a flat roof. Both buildings have a mix of old and new features, giving the area a unique character.",
+    "materials": "The beige building has a stone facade with a warm, earthy tone, while the red brick building has a smooth, reddish-brown exterior. The cobblestone street adds texture and depth to the scene.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts along the sidewalk, providing shade and lighting for pedestrians. A few bicycles are parked near the curb.",
+    "vegetation": "The trees are bare, suggesting that it may be winter or early spring. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs posted along the street, including a large sign reading 'Espan's' and a smaller sign indicating a pedestrian crossing. These signs help guide pedestrians through the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This area seems to be a popular spot for locals and tourists alike, with a mix of shops, cafes, and restaurants. It's a great place to grab a bite to eat or meet friends.",
+    "as_commuter": "The area is a convenient location for those looking to commute to work or school, with many public transportation options available. It's a great place to start your day.",
+    "as_tourist": "The area is a popular spot for foodies, with many restaurants and cafes serving delicious cuisine. It's a great place to try new foods and drinks.",
+    "as_student": "The area is a great place for students to hang out and socialize, with many bars and clubs nearby. It's a fun and lively spot to relax and unwind."
+  }
+}

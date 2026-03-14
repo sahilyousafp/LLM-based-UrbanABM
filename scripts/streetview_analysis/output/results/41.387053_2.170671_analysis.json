@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_025858",
+    "latitude": 41.387053,
+    "longitude": 2.170671,
+    "heading": 351.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "4cd3f758-0c5a-47c0-939c-bb66fe46dd90",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387053_2.170671_h351.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50161.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A curved road with a statue on the right side,",
+    "buildings": "The buildings are tall and made of stone,",
+    "materials": "The statue is made of dark metal,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or other furniture along the road,",
+    "vegetation": "There are trees on both sides of the road,",
+    "signage": "There are no visible signs,",
+    "ground_surfaces": "The ground is paved with concrete,",
+    "spatial_enclosure": "The road is relatively empty,",
+    "pedestrian_activity": "There are no pedestrians,",
+    "lighting_atmosphere": "It is daytime,",
+    "as_resident": "There are no people,",
+    "as_commuter": "There are no cars,",
+    "as_tourist": "There are no tourists,",
+    "as_student": "There are no students,"
+  }
+}

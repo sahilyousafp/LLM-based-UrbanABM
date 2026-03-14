@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_011448",
+    "latitude": 41.395669,
+    "longitude": 2.157552,
+    "heading": 315.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "5d59ec5a-16f5-4764-80c3-1229bec5d72b",
+    "dist_along_edge_m": 18.7,
+    "source_image": "sv_41.395669_2.157552_h315.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49083.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings lining both sides, featuring a mix of modern and historic architecture, including a prominent yellow stone building with ornate details on the right side of the street. The street itself is paved with asphalt and has a central median with small trees planted in square concrete planters. A wooden bench sits along the curb, while pedestrians and cars move about in the distance. The sky above is overcast.",
+    "buildings": "The yellow stone building on the right has a mix of rectangular and arched windows, with a decorative cornice above the second floor. The building's facade is made of rough-hewn stone blocks, with some sections appearing to be original construction while others have been restored or repainted. The ground floor features large windows with metal frames, while the upper floors have smaller paned windows with decorative stone surrounds. The building's roofline is flat, with a slight overhang above the entrance.",
+    "materials": "The street is paved with smooth asphalt, with a central median featuring small trees planted in square concrete planters. The sidewalk is made of the same material as the street, with a few benches and lampposts scattered about. The streetlights are tall and slender, with a simple yet elegant design.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches placed along the sidewalk, including a long wooden bench near the front of the image. There are also a few lampposts and trash cans scattered about.",
+    "vegetation": "The street is lined with small trees planted in square concrete planters, adding a touch of greenery to the otherwise urban landscape. The trees are relatively young, with bare branches and sparse foliage.",
+    "signage": "There are several signs visible, including a large sign on the left side of the image that reads 'Eixample' in bold letters. There are also several smaller signs and advertisements posted on the buildings and lampposts.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people visible in the distance, walking along the sidewalk or sitting on benches. Some are engaged in conversation, while others appear to be lost in thought.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might comment on the street's charm and character, noting the mix of old and new architecture and the lively atmosphere. They might mention the street's proximity to the city's cultural attractions and its role as a hub for shopping and dining.",
+    "as_commuter": "A commuter might comment on the street's convenience and accessibility, noting the proximity to public transportation and the ease of getting around. They might mention the street's lively atmosphere and the opportunities for socializing and networking.",
+    "as_tourist": "A tourist might comment on the street's unique blend of history and culture, noting the mix of old and new architecture and the street's lively atmosphere. They might mention the street's popularity among tourists and its role as a hub for shopping and dining.",
+    "as_student": "A student might comment on the street's academic vibe, noting the presence of universities and research institutions in the area. They might mention the street's proximity to the city's cultural attractions and its role as a hub for students and scholars."
+  }
+}

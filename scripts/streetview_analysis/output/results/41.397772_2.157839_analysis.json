@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_015252",
+    "latitude": 41.397772,
+    "longitude": 2.157839,
+    "heading": 86.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "ee20fbbb-c085-4367-a37a-267390d72a36",
+    "dist_along_edge_m": 9.1,
+    "source_image": "sv_41.397772_2.157839_h86.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 14619.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a modern office space with a large window and a wooden desk,",
+    "buildings": "The building has a mix of old and new architecture, with a combination of brick and glass facades,",
+    "materials": "The interior features a combination of wood and metal accents, while the exterior has a sleek glass and steel façade,",
+    "building_condition": "The building appears well-maintained but shows some signs of wear and tear,",
+    "street_furniture": "There are several chairs and tables scattered throughout the area, as well as a few potted plants,",
+    "vegetation": "The surrounding area is mostly empty, with only a few trees and bushes providing shade,",
+    "signage": "There are several signs posted around the building, including a directional sign and a few advertisements,",
+    "ground_surfaces": "The ground is made of concrete and asphalt, with a few cracks and potholes,",
+    "spatial_enclosure": "The building is surrounded by a small courtyard with a few trees and a fountain,",
+    "pedestrian_activity": "There are a few people walking by the building, but it's not particularly busy,",
+    "lighting_atmosphere": "The lighting is bright and airy, with plenty of natural light pouring in through the windows,",
+    "as_resident": "The building appears to be a popular spot for locals and visitors alike, with a few people sitting outside enjoying the views,",
+    "as_commuter": "unknown",
+    "as_tourist": "The building has a few interesting architectural features, such as a large clock tower and a statue,",
+    "as_student": "The building is home to a number of students and young professionals who work there."
+  }
+}

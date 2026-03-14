@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174812",
+    "latitude": 41.39762710000001,
+    "longitude": 2.172307,
+    "heading": 169.28530110961287,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f779986c-7a84-42d9-b5a6-02b7aeff3693",
+    "dist_along_edge_m": 13.3,
+    "source_image": "sv_41.397627_2.172307_h169.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21777.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street corner with pedestrians walking along the sidewalk and a few tables outside a cafe. The street is paved with gray concrete and has a bike lane painted on it. There are tall buildings lining the street, including a large white building with many windows and balconies on the left and a smaller tan building with a flat roof on the right. A group of people are sitting at tables outside a cafe, and there are several streetlights and signs along the sidewalk. The sky is blue with some clouds.",
+    "buildings": "The large white building has a flat roof and is made of stone or concrete. It has many windows and balconies, and its facade is smooth and unadorned. The smaller tan building has a more ornate facade with columns and arches. It also has a flat roof.",
+    "materials": "The street is paved with gray concrete and has a bike lane painted on it. The bike lane is marked by a white bicycle symbol and has a slight incline. The streetlights are tall and slender, with yellow glass covers and metal frames. The signs are rectangular and have black text on a white background.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several tables and chairs set up outside the cafe, as well as a few benches and trash cans. The tables are round and wooden, and the chairs are simple and functional.",
+    "vegetation": "There are several trees and bushes along the sidewalk, providing shade and greenery to the area. The trees are tall and leafy, and the bushes are neatly trimmed.",
+    "signage": "There are several signs posted along the sidewalk, including a stop sign, a pedestrian crossing sign, and a directional sign pointing to different parts of the city.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with plenty of amenities such as cafes, restaurants, and shops. It is also a good place to take photos, with its unique architecture and scenic views.",
+    "as_commuter": "The street is a convenient location for commuting, with easy access to public transportation and nearby subway stations. It is also a great spot for cycling, with a dedicated bike lane and bike parking available.",
+    "as_tourist": "The street is a popular destination for tourists, with its beautiful architecture, lively atmosphere, and scenic views. It is also a great spot for shopping and dining, with plenty of restaurants and cafes serving everything from traditional Spanish cuisine to international fare.",
+    "as_student": "The street is a great place to study, with plenty of libraries, universities, and research institutions nearby. It is also a great spot for taking classes or workshops, with plenty of opportunities for artistic expression."
+  }
+}

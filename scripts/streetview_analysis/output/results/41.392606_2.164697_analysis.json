@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_041633",
+    "latitude": 41.392606,
+    "longitude": 2.164697,
+    "heading": 140.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d64c7dc9-1839-428e-b241-5607915e19c4",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392606_2.164697_h140.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50323.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings lining both sides, featuring a mix of commercial and residential structures, including a large office building on the left and smaller apartments on the right. The street is bustling with activity, as pedestrians and vehicles move along the sidewalk and crosswalks. A row of parked scooters lines the curb, while a few cars drive by. Trees provide shade and add a touch of greenery to the urban landscape. The sky above is a brilliant blue with puffy white clouds.",
+    "buildings": "The buildings are primarily made of glass and steel, with some featuring ornate facades and others displaying more modern designs. Some have balconies and terraces, while others appear to be under construction or renovation. The street is lined with streetlights and utility poles, adding to the urban ambiance.",
+    "materials": "Materials used include concrete, brick, and glass, with some buildings featuring stone or metal accents. The street itself is paved with asphalt, and the sidewalks are made of concrete.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans scattered throughout the area, providing a place for people to rest and dispose of waste.",
+    "vegetation": "Trees line the street, casting dappled shadows on the sidewalk and adding a touch of nature to the urban environment.",
+    "signage": "Signs are posted at regular intervals, advertising local businesses and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is home to a diverse range of residents, including students, professionals, and families.",
+    "as_commuter": "Commuters are active, with some walking or cycling along the street.",
+    "as_tourist": "The street is a hub of activity, with people from all walks of life coming together to socialize and explore.",
+    "as_student": "Students and young adults are present, often sitting on benches or walking through the area."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_175443",
+    "latitude": 41.38871559999999,
+    "longitude": 2.1540602,
+    "heading": 225.6770475376944,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0d2a6089-49b4-42a3-ad25-54a92384d2f5",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.388716_2.154060_h225.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 22008.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a person riding a bicycle in the distance, lined with trees and buildings, and featuring several red bicycles parked along the sidewalk.",
+    "buildings": "The buildings in the background have a mix of modern and traditional styles, with some having flat roofs and others having pitched roofs. The buildings appear to be made of stone, brick, and concrete.",
+    "materials": "The street is paved with cobblestone, while the sidewalks are made of smooth concrete. There are also several large trees planted along the sidewalk, providing shade and adding to the aesthetic appeal of the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several red bike racks placed along the sidewalk, each holding two bikes. A few benches are also scattered throughout the area, providing places for pedestrians to rest.",
+    "vegetation": "The trees are tall and leafy, with branches that stretch up towards the sky. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs posted along the street, including a large sign that reads 'Bike Share' in bold letters. There are also several smaller signs indicating parking restrictions and directions.",
+    "ground_surfaces": "The ground is made up of a combination of asphalt and concrete, with some areas featuring decorative patterns and textures. There are also several large planters filled with flowers and shrubs, adding color and vibrancy to the area.",
+    "spatial_enclosure": "The street is relatively narrow, but it has a sense of openness due to the presence of trees and greenery. The buildings loom in the background, creating a sense of depth and perspective.",
+    "pedestrian_activity": "There are several people visible in the distance, walking along the sidewalk or sitting on benches. Some are engaged in conversation, while others are reading or simply enjoying the scenery.",
+    "lighting_atmosphere": "The lighting in the area is bright and sunny, with a warm glow cast by the sun. The shadows are long and deep, suggesting that the sun is high in the sky.",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the area, with its mix of natural beauty and urban amenities. They might enjoy the opportunity to sit and relax in the shade of the trees or take a leisurely stroll through the park-like setting.",
+    "as_commuter": "A commuter might be interested in the area's accessibility, with its proximity to public transportation and pedestrian-friendly infrastructure. They might be looking for ways to reduce their carbon footprint and promote sustainability.",
+    "as_tourist": "A tourist might be drawn to the area's unique character, with its eclectic mix of old and new buildings, as well as its vibrant street life. They might be interested in exploring the local culture and history.",
+    "as_student": "A student might appreciate the area's academic environment, with its focus on intellectual pursuits and critical thinking. They might be looking for ways to engage in academic research and development projects."
+  }
+}

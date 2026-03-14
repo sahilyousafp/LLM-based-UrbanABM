@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_235931",
+    "latitude": 41.4038977,
+    "longitude": 2.1669758,
+    "heading": 134.88851285755527,
+    "street_name": "Carrer d'en Grassot",
+    "highway_type": "road",
+    "edge_id": "1a7d9dcb-6675-46db-abed-a12086d23a99",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403898_2.166976_h134.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 17876.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with tall buildings lining both sides,",
+    "buildings": "The buildings have a mix of modern and older styles, with some featuring balconies and others having large windows,",
+    "materials": "The ground is paved with cobblestones, while the upper floors of the buildings are made of concrete and glass,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk,",
+    "vegetation": "There are a few trees planted along the sidewalk, adding some greenery to the urban landscape,",
+    "signage": "There are several signs posted on the buildings, including a yellow sign on a tree,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The street is relatively narrow, with a slight curve,",
+    "pedestrian_activity": "People are walking along the sidewalk, going about their daily business,",
+    "lighting_atmosphere": "The sun shines down on the street, casting long shadows,",
+    "as_resident": "This area is likely a popular spot for locals and tourists alike,",
+    "as_commuter": "It's a busy area with a steady stream of foot traffic,",
+    "as_tourist": "unknown",
+    "as_student": "The area is home to many students, with a mix of young professionals and families."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_033307",
+    "latitude": 41.387636,
+    "longitude": 2.169563,
+    "heading": 153.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "da0383a5-548e-488e-a3ae-2bccfb09fbc0",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387636_2.169563_h153.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50724.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a large square in the middle,",
+    "buildings": "The buildings appear well-maintained, but show signs of wear and tear.",
+    "materials": "The ground is made of smooth concrete, with some cracks and unevenness.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts along the sidewalk.",
+    "vegetation": "There are some small trees and bushes planted along the sidewalk.",
+    "signage": "There are several signs posted along the street, including a stop sign and a directional sign.",
+    "ground_surfaces": "The ground is made of smooth concrete, with some cracks and unevenness.",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking along the sidewalk.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area has a lively atmosphere, with many shops and restaurants nearby.",
+    "as_student": "The area is clean and safe, with plenty of parking available."
+  }
+}

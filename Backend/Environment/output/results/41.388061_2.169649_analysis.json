@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_200058",
+    "latitude": 41.3880613,
+    "longitude": 2.1696488999999994,
+    "heading": 135.70164947065297,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "44884f1a-f0b1-4149-9de3-ff992bf69ca8",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.388061_2.169649_h135.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85905.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street at night with a large tree on the left side and a yellow truck on the right side. The street is lined with buildings and has many pedestrians walking along it. There are also several cars driving by. The sky is dark with a few clouds.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "Good,",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "Signs are present but illegible,",
+    "ground_surfaces": "Pavement,",
+    "spatial_enclosure": "Open,",
+    "pedestrian_activity": "People walking,",
+    "lighting_atmosphere": "dim,",
+    "as_resident": "Not very busy,",
+    "as_commuter": "Not very busy,",
+    "as_tourist": "Not very busy,",
+    "as_student": "Not very busy,"
+  }
+}

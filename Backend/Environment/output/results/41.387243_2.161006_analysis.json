@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_225148",
+    "latitude": 41.38724260000001,
+    "longitude": 2.1610063,
+    "heading": 232.8274073746919,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "1c22af42-4748-4c8d-b8ca-0c3cb5dcf1f1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387243_2.161006_h232.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43364.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, featuring a mix of residential and commercial properties, including shops and apartments. The street is lined with trees and has a few pedestrians walking along the sidewalk. A yellow taxi cab is parked on the side of the road, while a person stands near the curb. The sky is overcast.",
+    "buildings": "The buildings are primarily beige-colored, with some having balconies and ornate facades. Some have red doors and windows, while others have more modern designs. The street is paved with asphalt and has white lines marking lanes.",
+    "materials": "The street is made of asphalt, with concrete sidewalks and asphalt curbs.",
+    "building_condition": "The buildings appear well-maintained, but show signs of wear and tear. Some have graffiti on the walls.",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk.",
+    "vegetation": "The trees are tall and leafy, providing shade for pedestrians.",
+    "signage": "There are several signs posted along the street, including stop signs and directional signs.",
+    "ground_surfaces": "The ground is mostly flat, with some slight inclines and declines.",
+    "spatial_enclosure": "The street is relatively narrow, with a gentle slope.",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or backpacks.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a warm glow.",
+    "as_resident": "The area appears to be a quiet neighborhood with a mix of residential and commercial properties.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with interesting architectural details, such as ornate facades and decorative ironwork.",
+    "as_student": "The street is relatively empty, with only a few cars parked along the curb."
+  }
+}

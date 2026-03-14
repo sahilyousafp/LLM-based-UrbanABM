@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_225303",
+    "latitude": 41.38661419999999,
+    "longitude": 2.1616021000000005,
+    "heading": 315.31253600312425,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "b02ff5ba-7da9-4a5d-be19-a8e95381b30a",
+    "dist_along_edge_m": 85.7,
+    "source_image": "sv_41.386614_2.161602_h315.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 29527.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, featuring a mix of commercial and residential properties. The street is paved with gray concrete pavers and has a few trees planted along its length. A white van is parked on the right side of the street, while a person walks down the sidewalk in the distance. The sky above is overcast.",
+    "buildings": "The buildings on either side of the street are primarily made of stone and feature ornate facades. Some have balconies, while others have large windows. The buildings vary in height, with some being taller than others.",
+    "materials": "The street is paved with gray concrete pavers, and there are several trees planted along the sidewalk. The trees are bare, suggesting that the photo was taken during the winter months.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for pedestrians to rest and dispose of waste.",
+    "vegetation": "The trees are bare, indicating that the photo was taken during the winter months.",
+    "signage": "There are several signs posted along the street, including a yellow sign with black text that reads 'Casa de la Vella' and a blue sign with white text that reads 'Barcelona.",
+    "ground_surfaces": "The ground is paved with gray concrete pavers, and there are several cracks and unevennesses throughout.",
+    "spatial_enclosure": "The street feels relatively open, with a clear view of the surrounding buildings.",
+    "pedestrian_activity": "There are several people walking down the sidewalk, but the area is generally quiet.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a slight haze in the air.",
+    "as_resident": "The street is lined with shops and restaurants, and there are several benches and tables outside.",
+    "as_commuter": "The street is a convenient location for commuters, with several buses and trains passing through the area.",
+    "as_tourist": "The street is a popular destination for visitors, who come to explore the local culture and history.",
+    "as_student": "The street is a great place to study the local architecture and learn about the history of the area."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_014651",
+    "latitude": 41.401495,
+    "longitude": 2.166052,
+    "heading": 135.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f346d8d7-00f4-4047-b64d-47e1db8e0ad6",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401495_2.166052_h135.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48915.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, featuring a mix of residential and commercial properties, including apartments and shops, with a pedestrian crossing and traffic lights at the intersection. The street is paved with cobblestone and has a few trees and plants along the sidewalk. A person is seen walking across the street, while another is standing near the traffic light. The sky is overcast.",
+    "buildings": "The buildings are primarily beige and brown, with some having balconies and windows. Some have a more modern look, while others appear older. There are several cars parked along the street.",
+    "materials": "The street is paved with cobblestone, and there are some trees and plants along the sidewalk. The traffic lights are mounted on poles and have a yellow signal indicating 'do not walk'.",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and trash cans along the sidewalk, but they are not particularly decorative.",
+    "vegetation": "The trees are sparse and mostly deciduous, with some evergreen trees mixed in. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs posted along the street, including a stop sign, a no-parking sign, and a directional sign pointing to different parts of the city.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is quiet and peaceful, with only a few people out and about. There are some shops and cafes visible, but they are not particularly busy.",
+    "as_commuter": "The street is not particularly convenient for running errands, but it is close to some shops and services.",
+    "as_tourist": "The street is not particularly popular with locals, but it is a great place to explore and discover new places.",
+    "as_student": "The street is not particularly busy, but it is a great place to study urban planning and architecture."
+  }
+}

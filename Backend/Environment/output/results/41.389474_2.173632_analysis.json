@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171749",
+    "latitude": 41.3894739,
+    "longitude": 2.1736321000000003,
+    "heading": 63.66092825494826,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "54d7a180-a28c-403c-a847-1d7c3ed39eb5",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389474_2.173632_h63.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 5202.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street corner with a tree in the middle,",
+    "buildings": "A tall building with a mix of brown and blue windows, a black garage door, and a turquoise storefront,",
+    "materials": "The sidewalk is made of gray concrete pavers, while the building has a mix of brown and blue windows, a black garage door, and a turquoise storefront,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk,",
+    "vegetation": "A large tree stands in the middle of the street, its branches stretching out over the sidewalk,",
+    "signage": "There are several signs on the buildings, including a sign for a coffee shop and a sign for a restaurant,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to look at the shops,",
+    "lighting_atmosphere": "The sun shines down on the scene, casting long shadows across the street,",
+    "as_resident": "A few people are sitting outside the coffee shop, enjoying the warm weather,",
+    "as_commuter": "Some people are walking quickly, while others are taking their time,",
+    "as_tourist": "The street is lined with historic buildings, and there are several street performers and vendors set up along the sidewalk.",
+    "as_student": "A few students are walking to class, carrying backpacks and books,"
+  }
+}

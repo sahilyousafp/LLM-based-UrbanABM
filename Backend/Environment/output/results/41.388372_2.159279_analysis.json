@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_220743",
+    "latitude": 41.38837229999999,
+    "longitude": 2.1592788,
+    "heading": 136.49784483269593,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "adb6906c-356c-4b27-b23f-dd453bf3086e",
+    "dist_along_edge_m": 147.5,
+    "source_image": "sv_41.388372_2.159279_h136.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44114.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and cars parked along the curb. The street has a few pedestrians and vehicles moving along it. There are several large buildings on either side of the street, including a brown building with many windows and balconies on the right, and a tan building with a flat roof on the left. A white truck is driving down the street, and there are several other vehicles parked along the curb. The sky is bright and sunny.",
+    "buildings": "The buildings have different styles and heights. The brown building has a modern look with many windows and balconies, while the tan building has a more traditional look with a flat roof. Both buildings appear to be residential, with many windows and balconies.",
+    "materials": "The street is paved with asphalt and has a smooth surface. There are also concrete sidewalks and curbs along the street.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "There are several trees lining the street, some with pink flowers blooming on them.",
+    "signage": "There are several signs along the street, including a large sign on the front of the brown building.",
+    "ground_surfaces": "The ground is made of asphalt and has a smooth surface.",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people walking along the sidewalk, but they are not crowded.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds in the sky.",
+    "as_resident": "The street is a quiet neighborhood with a mix of residential and commercial properties.",
+    "as_commuter": "The street is a convenient location for commuters.",
+    "as_tourist": "The street is a popular spot for tourists to visit.",
+    "as_student": "The street is a great place to relax and enjoy the outdoors."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_173151",
+    "latitude": 41.3870057,
+    "longitude": 2.1700382,
+    "heading": 165.39321795480907,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "385635a9-aea6-4dd0-8147-25eba368dc52",
+    "dist_along_edge_m": 32.8,
+    "source_image": "sv_41.387006_2.170038_h165.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 22041.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large public square with a star-shaped mosaic pattern on the ground, surrounded by buildings and trees. The sky is clear and blue. People are walking around the square, some sitting on benches, and others standing near the perimeter. The sun is shining brightly, casting shadows on the ground. The square has a mix of red, white, and black tiles, with a few trees scattered throughout. A tall building stands in the distance, with a clock tower on top. The atmosphere is lively and bustling, with people going about their daily business.",
+    "buildings": "The buildings surrounding the square are mostly modern, with a mix of glass and stone facades. Some have balconies, while others have large windows. The buildings vary in height, with some being several stories high and others being shorter. There are also some older buildings with ornate details, such as intricate carvings and statues. The buildings are all made of stone or brick, with some having a more rustic appearance than others.",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "The square is surrounded by trees and other greenery, which adds a touch of nature to the urban landscape. The trees are tall and leafy, with some having branches that stretch out over the square. There are also some flowers and shrubs planted in pots along the edges of the square.",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking in various directions, some alone and others in groups. Some are sitting on benches, while others are standing and chatting. There are also some children playing in the square, running around and laughing.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This square is a popular spot for locals and tourists alike. People seem to enjoy spending time here, whether they're taking photos, eating at outdoor cafes, or simply relaxing in the shade. There are also some street performers and vendors selling goods and services.",
+    "as_commuter": "The square is a convenient location for commuting, with several buses and trains passing through the area. There are also some bike paths and bike lanes, making it easy to get around without cars.",
+    "as_tourist": "The square is a great spot for sightseeing, with its rich history and cultural significance. There are many museums and galleries showcasing art, architecture, and history. The square is also home to some beautiful parks and gardens, perfect for a picnic or stroll.",
+    "as_student": "This square is a great place to study or work, with plenty of quiet spots to sit and read or write. There are also some libraries and bookstores nearby, offering a wide range of books and resources."
+  }
+}

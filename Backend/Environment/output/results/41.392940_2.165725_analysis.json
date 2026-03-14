@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_205401",
+    "latitude": 41.392939699999985,
+    "longitude": 2.1657245000000005,
+    "heading": 49.27497683271514,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "da2bda91-bc0a-4701-9508-9c8d52c3e6a1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392940_2.165725_h49.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85884.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with parked scooters and cars, and featuring a mix of old and new architecture. The street is relatively empty, with only a few pedestrians visible in the distance. The sky is overcast, casting long shadows across the pavement.",
+    "buildings": "The buildings on either side of the street are primarily beige and tan, with some featuring ornate facades and others displaying more modern designs. Some have balconies, while others have large windows or decorative archways.",
+    "materials": "The street itself is paved with asphalt, with white lines marking the lanes and parking spots. A row of trash cans lines the sidewalk, and several scooters are parked along the curb.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, as well as a few streetlights and trash cans.",
+    "vegetation": "The street is lined with small trees and bushes, adding some greenery to the otherwise urban landscape.",
+    "signage": "There are several signs visible, including a large sign on the front of one of the buildings and smaller signs on the storefronts.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people visible, mostly walking or standing on the sidewalk.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be quiet, with only a few people visible.",
+    "as_commuter": "The street is a convenient location for those who want to explore the city's many neighborhoods.",
+    "as_tourist": "The street is a must-see destination for anyone visiting the city.",
+    "as_student": "The street is a great place to relax, study, or simply enjoy the city's many attractions."
+  }
+}

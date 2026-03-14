@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_005608",
+    "latitude": 41.387509,
+    "longitude": 2.163696,
+    "heading": 318.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "26e89e3a-1873-42ea-8789-bfbccf06bd02",
+    "dist_along_edge_m": 78.8,
+    "source_image": "sv_41.387509_2.163696_h318.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49235.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large white building with a flat roof and multiple windows, situated along a tree-lined street with a sidewalk and a low wall separating it from the road. The building has a symmetrical facade with evenly spaced windows and a central entrance flanked by two columns. A tall lamppost stands in front of the building, casting long shadows across the sidewalk. The surrounding area is quiet and peaceful, with a few trees and bushes adding some greenery to the scene. The sky above is blue with a few wispy clouds.",
+    "buildings": "The building has a classic, European-style architecture with ornate details such as carved stone carvings and decorative trim around the windows and doors. The walls are made of smooth, light-colored stone, and the roof is covered in dark shingles. There are several chimneys rising from the roof, adding to the building's grandeur.",
+    "materials": "The building's exterior is constructed from a combination of materials, including stone, brick, and stucco. The stone used for the facade is a warm, beige color, while the brickwork is a deep red. The stucco finish adds a touch of elegance to the building's exterior.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the sidewalk, providing a place for pedestrians to rest and take in the surroundings. A few trash cans are also present, keeping the area clean and tidy.",
+    "vegetation": "The trees lining the street are tall and slender, with branches that stretch up towards the sky. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs posted along the street, including a large sign reading 'Casa de la Vella' in bold letters. There are also smaller signs indicating parking restrictions and directions to nearby attractions.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no people visible in the image, but the presence of benches and tables suggests that the area is likely bustling with foot traffic during peak hours.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would appreciate seeing more of the city's vibrant culture and history. I'd like to see more of the street art and murals that adorn the walls and buildings.",
+    "as_commuter": "As a commuter, I'm looking forward to exploring the city's public transportation system. I'd love to see more of the city's buses, trains, and metro lines.",
+    "as_tourist": "As a tourist, I'd like to see more of the city's cultural events and festivals. I'd love to visit the city's famous festivals and celebrations.",
+    "as_student": "As a student, I'm interested in learning more about the city's academic programs and research opportunities. I'd like to see more of the city's universities and colleges."
+  }
+}

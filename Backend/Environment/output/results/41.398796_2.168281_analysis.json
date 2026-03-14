@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_230644",
+    "latitude": 41.3987956,
+    "longitude": 2.1682807,
+    "heading": 314.5414441289154,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "458ee16c-e5d3-4670-906c-db91c29117af",
+    "dist_along_edge_m": 16.9,
+    "source_image": "sv_41.398796_2.168281_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85353.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with a silver car turning onto a street corner, surrounded by tall buildings and trees. The sky is clear and blue. A person is walking on the sidewalk to the left of the car. The street has white painted lines indicating pedestrian crossings and a crosswalk. There are several trees lining the street, including a large tree in the foreground. The buildings surrounding the street have various architectural styles, including a round building with balconies and a modern building with a flat roof. The ground surfaces include concrete, asphalt, and possibly marble. The lighting is bright and sunny, casting shadows on the street and buildings. The overall atmosphere is calm and peaceful.",
+    "buildings": "The round building has a rounded shape and multiple stories, with balconies on each floor. It has a cream-colored facade with stone accents. The modern building has a flat roof and a more minimalist design. Both buildings appear well-maintained but show signs of wear and tear. The street is lined with trees, including a large tree in the foreground. The ground surfaces include concrete, asphalt, and possibly marble.",
+    "materials": "The round building has a cream-colored facade with stone accents. The modern building has a flat roof and a more minimalist design. Both buildings appear well-maintained but show signs of wear and tear. The street is lined with trees, including a large tree in the foreground. The ground surfaces include concrete, asphalt, and possibly marble.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture such as benches, streetlights, bollards, bins, bike racks, etc. There are no visible pedestrians or vehicles in the immediate vicinity.",
+    "vegetation": "There are several trees lining the street, including a large tree in the foreground. The trees are leafy and well-maintained. There are also some smaller trees and bushes along the sidewalk.",
+    "signage": "There are several signs visible, including a blue sign with white lettering, a yellow sign with black lettering, and a red sign with white lettering. The signs are mounted on poles and are placed at regular intervals along the street.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A few people are visible in the distance, walking along the sidewalk. They appear to be going about their daily business.",
+    "as_commuter": "The street is relatively empty, with only a few people visible. There are no notable landmarks or attractions in the area.",
+    "as_tourist": "The street is quiet and peaceful, with only a few people visible. There are no notable landmarks or attractions in the area.",
+    "as_student": "The street is relatively empty, with only a few people visible. There are no notable landmarks or attractions in the area."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_210950",
+    "latitude": 41.397241799999996,
+    "longitude": 2.1555822,
+    "heading": 320.89973240007726,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "85f320b4-ca03-43c8-b60e-db4098e1493a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397242_2.155582_h320.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85419.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a storefront with a closed metal shuttered door, featuring a sign reading 'flotarium' and a yellow Lays potato chip advertisement, with a small potted plant in front of the entrance.",
+    "buildings": "The building has a gray concrete facade with a red brick upper level, while the ground floor is made of white concrete blocks.",
+    "materials": "The exterior walls feature a mix of materials including concrete, brick, and possibly wood or metal.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two potted plants, one on either side of the entrance.",
+    "vegetation": "The area around the entrance includes several potted plants, adding a touch of greenery to the otherwise industrial-looking space.",
+    "signage": "A large poster advertising Lays potato chips hangs on the wall inside the store.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The building may have been used for retail or office purposes, given its location and appearance.",
+    "as_commuter": "The building may be a convenient stop for commuters traveling through the area.",
+    "as_tourist": "The area may offer a glimpse into the local way of life.",
+    "as_student": "The area may offer opportunities for students to learn about local customs and traditions."
+  }
+}

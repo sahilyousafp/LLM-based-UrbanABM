@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_173515",
+    "latitude": 41.4026627,
+    "longitude": 2.1723103,
+    "heading": 91.09444780873184,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b8c5cd80-b8f3-4016-8b24-e18fce65da2d",
+    "dist_along_edge_m": 98.2,
+    "source_image": "sv_41.402663_2.172310_h91.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21501.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide, tree-lined path in a park with a few people walking along it. The path is made of dirt and has a low metal fence on either side. There are several trees and bushes along the path, as well as some benches and lampposts. The sky is overcast but bright enough to make everything visible. The path is relatively empty, with only a few people visible in the distance. The buildings are mostly obscured by the trees, but there are a few visible in the background. The ground is mostly dirt, with some paved sections. The overall atmosphere is peaceful and serene, with a sense of tranquility.",
+    "buildings": "The buildings in the background are mostly obscured by the trees, but there are a few visible. They appear to be residential, with balconies and windows. The facades are mostly made of stone or brick, with some wood accents. The buildings seem to be well-maintained, but not particularly ornate. There are a few signs and advertisements visible, but they are not prominent.",
+    "materials": "The materials used in the construction of the buildings and path include stone, brick, wood, and metal. The buildings have a mix of old and new elements, with some modern touches mixed in. The path is made of dirt, with some paved sections. The ground is mostly dirt, with some grassy areas and trees scattered throughout.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts along the path, providing shade and lighting. The benches are made of wood and metal, and the lampposts are tall and slender. There are also some trash cans and recycling bins along the path.",
+    "vegetation": "The vegetation along the path is mostly trees and bushes, with some flowers and shrubs. The trees are mostly deciduous, with some evergreen trees mixed in. The bushes are dense and varied, with different shapes and sizes. The vegetation is well-maintained, with no visible weeds or debris.",
+    "signage": "There are several signs along the path, including street signs, directional signs, and informational signs. The signs are mostly illegible, but they appear to provide information about the area, such as directions and warnings. There are also some advertisements and sponsorships visible.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would describe the atmosphere as peaceful and serene. The path is quiet and calm, with a sense of community. There are a few people visible in the distance, but they do not appear to be interacting with each other. The overall mood is relaxed and laid-back.",
+    "as_commuter": "As a commuter, I would describe the atmosphere as busy and fast-paced. The path is filled with people moving quickly, going about their daily routines. There are many cars and buses passing by, and the sound of honking and revving engines fills the air. The overall mood is energetic and dynamic.",
+    "as_tourist": "As a tourist, I would describe the atmosphere as lively and festive. The path is crowded with people taking photos and admiring the scenery. There are many interesting sights and sounds, including music and chatter. The atmosphere is fun and lively.",
+    "as_student": "As a student, I would describe the atmosphere as focused and studious. The path is quiet and contemplative, with a sense of concentration. There are a few students visible, studying or working on assignments. The overall mood is serious and academic."
+  }
+}

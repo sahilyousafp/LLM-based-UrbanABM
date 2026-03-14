@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_031507",
+    "latitude": 41.403846,
+    "longitude": 2.168961,
+    "heading": 319.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "49820477-57c7-4e03-8857-639b15dc874e",
+    "dist_along_edge_m": 26.8,
+    "source_image": "sv_41.403846_2.168961_h319.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50402.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "The street is a great place to meet new people and make friends.",
+    "buildings": "The buildings are made of brick and have multiple stories. They appear to be commercial properties, with storefronts on the ground floor. The facades are mostly plain, but some have decorative elements such as columns and arches.",
+    "materials": "The buildings' exterior walls are constructed from brick, with some sections featuring smooth finishes while others have a more textured appearance. Some windows are rectangular, while others are square.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several large trash cans placed along the sidewalk, including two large gray bins with lids and a few smaller ones. A scooter is parked near the curb.",
+    "vegetation": "The trees lining the street are tall and slender, with green leaves. They cast dappled shadows on the ground.",
+    "signage": "There are no visible signs or advertisements on the buildings, although there may be some subtle signage on the storefronts.",
+    "ground_surfaces": "The ground is covered in asphalt, with some areas of concrete and asphalt mixed together. There are no visible cracks or potholes.",
+    "spatial_enclosure": "The street is relatively narrow, with a gentle slope. The buildings rise up on either side, creating a sense of depth.",
+    "pedestrian_activity": "There are no visible pedestrians in the image.",
+    "lighting_atmosphere": "The lighting is bright and even, suggesting it is daytime. The sun is high in the sky, casting long shadows across the street.",
+    "as_resident": "The street appears to be quiet and peaceful, with no visible signs of human activity.",
+    "as_commuter": "The street is wide enough for vehicles to drive through comfortably, but not so wide that it becomes overly busy.",
+    "as_tourist": "The street is a popular destination for tourists, with its unique architecture and lively atmosphere.",
+    "as_student": "The street is a hub for students, with many shops and cafes catering to them."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_232541",
+    "latitude": 41.4033478,
+    "longitude": 2.150734,
+    "heading": 148.91616343822744,
+    "street_name": "Carrer d'Aulèstia i Pijoan",
+    "highway_type": "road",
+    "edge_id": "75dbf5ef-9dcf-4e84-bbc2-b56f701feb0b",
+    "dist_along_edge_m": 39.1,
+    "source_image": "sv_41.403348_2.150734_h148.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21878.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides,",
+    "buildings": "The left side has a cream-colored wall with a white stripe near the bottom, while the right side has a mix of brown and tan walls with windows and air conditioning units.",
+    "materials": "The left side has a cream-colored wall with a white stripe near the bottom, while the right side has a mix of brown and tan walls with windows and air conditioning units.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image.",
+    "vegetation": "There are no visible plants or trees in the image.",
+    "signage": "There are no visible signs in the image.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The street feels relatively open, with a slight curve to the right.",
+    "pedestrian_activity": "There are no visible pedestrians in the image.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with some shadows cast by the buildings.",
+    "as_resident": "This area appears to be quiet and peaceful, with no visible people or vehicles.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area appears to be quiet and peaceful, with no visible tourists or visitors.",
+    "as_student": "The area appears to be quiet and peaceful, with no visible students or young adults."
+  }
+}

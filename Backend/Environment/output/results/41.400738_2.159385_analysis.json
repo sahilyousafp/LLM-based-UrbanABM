@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_194020",
+    "latitude": 41.40073759999999,
+    "longitude": 2.1593851,
+    "heading": 46.47063404580507,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "55279f85-36b0-44c8-acb1-b2157fd669f4",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.400738_2.159385_h46.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 20008.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides, lined with shops and pedestrians. The street is paved with cobblestones and has a few small trees and plants along the sidewalk. The sky is clear and blue, suggesting a sunny day.",
+    "buildings": "Left building: cream rendered facade with stone quoins at the corners. Right: exposed red brick upper floors above a polished granite shopfront.",
+    "materials": "Left building: concrete, brick, glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "There are a few small trees and some potted plants along the sidewalk.",
+    "signage": "There are several signs posted on the buildings, including a large sign reading 'Café' and a smaller sign advertising a restaurant.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking down the street, but it's not overly crowded.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is quiet and peaceful, with only a few people out and about.",
+    "as_commuter": "The street is a convenient location for those who need to get around the city.",
+    "as_tourist": "The street is a great place to take photos and enjoy the sights and sounds of the city.",
+    "as_student": "The street is a great spot for studying or working."
+  }
+}

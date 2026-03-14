@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_040234",
+    "latitude": 41.394164,
+    "longitude": 2.167318,
+    "heading": 193.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "d5bfbdbe-3f08-444f-b6a7-ec21044ad958",
+    "dist_along_edge_m": 11.0,
+    "source_image": "sv_41.394164_2.167318_h193.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50159.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, featuring a mix of commercial and residential properties, including a prominent building with a sign reading 'od barcelona' and a yellow-painted crosswalk.",
+    "buildings": "The building has a modern design with a beige façade, featuring numerous windows and a flat roof, while adjacent buildings display a range of styles and heights.",
+    "materials": "The building's exterior is constructed from a combination of materials, including stone, glass, and possibly metal, with some sections appearing to be made of concrete or brick.",
+    "building_condition": "unknown",
+    "street_furniture": "The street is lined with various objects such as benches, streetlights, and trash cans, although the exact locations and arrangements are somewhat obscured by the distance.",
+    "vegetation": "The street is flanked by trees and other greenery, adding a touch of natural beauty to the urban landscape.",
+    "signage": "Signs are present along the street, although their content is not clearly visible due to the distance.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are seen walking along the sidewalk, engaging in various activities such as shopping or simply enjoying the surroundings.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with a lively atmosphere.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and restaurants, offering a range of amenities for visitors.",
+    "as_student": "The street is well-lit and safe, with clear signage and markings to guide pedestrians and cyclists."
+  }
+}

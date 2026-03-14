@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_043000",
+    "latitude": 41.39621,
+    "longitude": 2.168164,
+    "heading": 315.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "23d7fdb5-5328-4868-a987-b4d0498d3015",
+    "dist_along_edge_m": 4.4,
+    "source_image": "sv_41.396210_2.168164_h315.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 16961.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with a mix of commercial and residential buildings, featuring a variety of plants and flowers along the sidewalk, including a large tree in the center and several potted plants lining the street.",
+    "buildings": "The buildings are primarily beige with some blue accents, featuring balconies and windows, with a mix of modern and traditional designs.",
+    "materials": "The ground is paved with gray bricks, while the buildings have a combination of stone and concrete facades.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters along the sidewalk, as well as a few bicycles parked near the curb.",
+    "vegetation": "The area is filled with a variety of plants, including trees, shrubs, and flowering plants, creating a lush and vibrant atmosphere.",
+    "signage": "There are several signs visible, including a large sign reading 'Café' and smaller signs advertising various businesses.",
+    "ground_surfaces": "The ground is made up of gray bricks, with some areas featuring darker-colored stones or gravel.",
+    "spatial_enclosure": "The street is relatively open, with a few trees providing shade and a sense of separation between the different sections of the street.",
+    "pedestrian_activity": "People are walking along the sidewalk, with some stopping to admire the plants or take photos.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with dappled shadows cast by the trees and buildings.",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with a lively and welcoming atmosphere.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area has a strong sense of community, with many locals and visitors enjoying the scenery and amenities.",
+    "as_student": "The street is well-maintained, with clean sidewalks and well-manicured lawns."
+  }
+}

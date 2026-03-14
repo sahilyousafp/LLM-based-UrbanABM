@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_175528",
+    "latitude": 41.400325599999995,
+    "longitude": 2.1607789000000004,
+    "heading": 50.88755802910788,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3f0c43c7-dbc1-4139-a0ae-8ea497e0f11f",
+    "dist_along_edge_m": 4.2,
+    "source_image": "sv_41.400326_2.160779_h50.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 11224.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides, paved with large square stones, lined with trees and benches, and featuring a mix of residential and commercial properties. The street is relatively quiet, with only a few parked motorcycles and a single person walking along the sidewalk.",
+    "buildings": "The buildings are primarily yellow, with some white accents and ornate ironwork on the windows. They appear well-maintained but show signs of age, with some showing wear and tear on the facades and roofs.",
+    "materials": "The street is paved with large, irregularly shaped stones, and the buildings' facades feature a mix of smooth stucco and rough-hewn stone. Some have decorative ironwork, while others display more modern elements like glass and metal accents.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for pedestrians to rest and dispose of waste. A few bicycles are parked against the buildings, adding to the street's casual, laid-back vibe.",
+    "vegetation": "The trees lining the street are tall and leafy, casting dappled shadows on the ground below. They add a touch of greenery to the otherwise urban landscape.",
+    "signage": "There are several signs posted along the street, including directional signs and advertisements. Some are illegible, while others provide information about local businesses and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no people visible in the immediate vicinity, but there are hints of activity further down the street. Pedestrians can be seen walking in the distance, and there may be shops or restaurants nearby.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a warm glow emanating from the streetlights and building windows. The sky above is blue and cloudy, adding to the relaxed atmosphere.",
+    "as_resident": "This street seems to be a popular spot for locals, who know how to navigate its quiet streets and enjoy the peaceful surroundings. It's a great place to take a stroll or grab a coffee at one of the nearby cafes.",
+    "as_commuter": "As a commuter, I'm used to navigating busy city streets, but this one feels surprisingly calm and peaceful. The lack of heavy traffic and pedestrian activity makes it a pleasant place to wait for public transportation or grab a quick bite to eat.",
+    "as_tourist": "As a tourist, I'm drawn to this street because of its unique blend of history and modernity. The street's architecture and decor reflect the city's rich cultural heritage, making it a fascinating place to explore and learn about.",
+    "as_student": "I'm a student, and I appreciate the street's laid-back vibe and eclectic mix of old and new. It's a great place to study and relax, with plenty of opportunities to meet new people and learn about the local culture."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_204142",
+    "latitude": 41.3994622,
+    "longitude": 2.1521789000000004,
+    "heading": 322.7976754196724,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1feae880-99c1-41f8-98d0-e71c8cb33885",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399462_2.152179_h322.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 23379.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, featuring a mix of commercial and residential structures, including a large white truck driving down the middle lane, with pedestrians and cars parked along the sidewalk.",
+    "buildings": "The buildings have a modern aesthetic, with a combination of glass, concrete, and brick facades, some with balconies and others with flat roofs.",
+    "materials": "The street is paved with asphalt, with white lines marking lanes and pedestrian crossings, and features a mix of smooth and textured surfaces.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few trees providing shade.",
+    "vegetation": "The street is lined with trees and bushes, adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs indicating bus stops and pedestrian crossings, as well as a few billboards advertising local businesses.",
+    "ground_surfaces": "The ground is mostly flat, with some slight inclines and declines.",
+    "spatial_enclosure": "The street has a relatively open feel, with clear views of the surrounding buildings and sky.",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or briefcases, while others are sitting on benches.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds scattered across the sky.",
+    "as_resident": "The street is bustling with activity, with people going about their daily business.",
+    "as_commuter": "The street is well-connected to other parts of the city, with easy access to public transportation.",
+    "as_tourist": "The street is lined with shops and restaurants, offering a range of amenities for visitors.",
+    "as_student": "The street is also a hub for student activity, with many students studying or working in the area."
+  }
+}

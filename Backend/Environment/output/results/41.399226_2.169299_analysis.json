@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_215257",
+    "latitude": 41.39922620000001,
+    "longitude": 2.169299,
+    "heading": 137.22644860149762,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "2f9ac938-07c5-42b2-9378-7e5f3f2558e4",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399226_2.169299_h137.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85460.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings lining both sides, including a large white building with many windows and balconies, and a smaller building with a rounded corner and a statue on top. The street has a few cars parked along the curb and a person walking down the sidewalk. The sky is overcast.",
+    "buildings": "The large white building has a mix of rectangular and arched windows, with balconies on each floor. It has a flat roof with several small towers and turrets. The smaller building has a more ornate facade with columns and arches. There are also some trees and bushes along the sidewalk.",
+    "materials": "The street is paved with asphalt and has a smooth texture. The sidewalk is made of concrete and has a rougher texture. There are no visible street furniture such as benches or trash cans.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture such as benches or trash cans.",
+    "vegetation": "There are a few trees and bushes along the sidewalk, but they are sparse and do not provide much shade. There are also some streetlights and utility poles.",
+    "signage": "There are several signs along the street, including a yellow sign with black lettering and a blue sign with white lettering. There are also some advertisements and billboards.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the street, with its quiet streets and historic architecture. A commuter might find it convenient for walking or biking, while a tourist might enjoy the unique character of the area.",
+    "as_commuter": "A commuter might find the street convenient for commuting, with its proximity to public transportation options and pedestrian-friendly infrastructure. They might also appreciate the street's scenic views and opportunities for outdoor activities.",
+    "as_tourist": "A tourist might find the street charming and inviting, with its historic architecture and lively atmosphere. They might also appreciate the street's cultural significance and opportunities for shopping and dining.",
+    "as_student": "A student might find the street convenient for studying or working, with its quiet atmosphere and proximity to campus buildings. They might also appreciate the street's cultural significance and opportunities for socializing."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_201049",
+    "latitude": 41.3995452,
+    "longitude": 2.1521175,
+    "heading": 52.50053722354755,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c5354479-1b58-4e52-a098-06f5cf4b8442",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399545_2.152118_h52.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 54194.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with buildings on both sides, including a large white building on the left and a brown building on the right. The street has a white line down the middle and a bus is driving on the right side. There are people walking on the sidewalk and a few cars parked along the street. The sky is cloudy and overcast.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

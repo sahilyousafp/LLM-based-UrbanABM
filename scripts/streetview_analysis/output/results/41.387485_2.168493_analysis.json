@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042926",
+    "latitude": 41.387485,
+    "longitude": 2.168493,
+    "heading": 248.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "2a670318-7efb-44f3-b7d0-61bc4698ecb8",
+    "dist_along_edge_m": 5.4,
+    "source_image": "sv_41.387485_2.168493_h248.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 17451.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a busy intersection in Barcelona, Spain, with tall buildings lining both sides of the street and a motorcycle parked on the sidewalk.",
+    "buildings": "The buildings have ornate facades with balconies and windows, and some have decorative elements like columns and arches.",
+    "materials": "The street is paved with cobblestones, and there are several large yellow and green trash cans along the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside cafes and restaurants, as well as a few streetlights and signs.",
+    "vegetation": "There are some small trees and bushes planted in planters along the sidewalk, but most of the area is paved with concrete.",
+    "signage": "There are several signs advertising local businesses, including a large billboard for Rio and a smaller sign for a hotel.",
+    "ground_surfaces": "The ground is made up of cobblestone pavers, with a slight incline towards the top of the hill.",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking in all directions, some carrying bags or backpacks, while others are sitting on benches or chatting with friends.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds in the sky.",
+    "as_resident": "The street is bustling with activity, with people going about their daily business.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is popular with tourists, with many visitors taking photos and admiring the architecture.",
+    "as_student": "The area is also home to many young professionals and students, who often stop to grab a coffee or snack before heading out to work or school."
+  }
+}

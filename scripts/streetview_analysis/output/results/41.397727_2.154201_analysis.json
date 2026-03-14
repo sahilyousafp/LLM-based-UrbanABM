@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_035425",
+    "latitude": 41.397727,
+    "longitude": 2.154201,
+    "heading": 143.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "e73da025-0487-4269-8368-73e2c771ad97",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397727_2.154201_h143.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50127.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view from a car window, showing a white car driving down a two-way street lined with tall buildings and trees. The street has a crosswalk and a stop sign. There are parked cars along the side of the street, as well as some parked motorcycles. The sky is partly cloudy.",
+    "buildings": "The buildings on either side of the street are tall and modern, with large windows and balconies.",
+    "materials": "The street is paved with asphalt and has a smooth texture.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk.",
+    "vegetation": "There are several trees lining the street, providing shade and greenery.",
+    "signage": "There are several signs along the street, including a stop sign and a pedestrian crossing signal.",
+    "ground_surfaces": "The ground surfaces are mostly flat and smooth.",
+    "spatial_enclosure": "The street is relatively open, with a few trees and bushes separating the buildings.",
+    "pedestrian_activity": "There are a few people walking on the sidewalk.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few clouds in the sky.",
+    "as_resident": "The street is quiet and peaceful, with a few people going about their daily business.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and restaurants, and there are several people taking photos.",
+    "as_student": "The street is bustling with students and young professionals."
+  }
+}

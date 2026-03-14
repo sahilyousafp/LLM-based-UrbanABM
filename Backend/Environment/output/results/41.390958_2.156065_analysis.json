@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_230428",
+    "latitude": 41.390957799999995,
+    "longitude": 2.1560649,
+    "heading": 229.4733277301985,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "6e03aed6-f839-45c1-b314-4ace5ef15f3f",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.390958_2.156065_h229.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43513.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with a motorcyclist riding down the road, passing by tall buildings and pedestrians. The motorcyclist is wearing a white helmet and dark clothing. The street has a mix of concrete and asphalt surfaces, with some trees and trashcans along the sidewalk. The buildings have a mix of modern and traditional facades, with balconies and windows. The sky is clear and blue.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and traditional designs. They have a combination of concrete and brick facades, with balconies and windows. Some of the buildings appear to be residential, while others may be commercial or mixed-use.",
+    "materials": "The motorcyclist is riding a black scooter, and there are several large gray trashcans along the sidewalk. The ground is made of concrete and asphalt, with some trees and bushes scattered throughout.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or other outdoor furniture visible in the image.",
+    "vegetation": "There are a few small trees and bushes along the sidewalk, but they are sparse and do not provide much shade or landscaping.",
+    "signage": "There are several signs visible, including a blue and white sign on the corner of the street and a red and white sign on the side of a building.",
+    "ground_surfaces": "The ground is mostly flat and smooth, with some slight inclines and declines.",
+    "spatial_enclosure": "The street is relatively wide and open, with a few narrow alleys and side streets.",
+    "pedestrian_activity": "There are a few people walking on the sidewalk, but they are not densely packed.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a few shadows cast by the trees and buildings.",
+    "as_resident": "The street appears to be a quiet, residential area, with a few shops and restaurants visible in the distance.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation.",
+    "as_tourist": "The street is a great spot for tourists to explore, with its unique architecture and lively atmosphere.",
+    "as_student": "The street is a great place for students to study or work."
+  }
+}

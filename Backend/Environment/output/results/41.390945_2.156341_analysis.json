@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_231816",
+    "latitude": 41.3909453,
+    "longitude": 2.1563406000000005,
+    "heading": 274.0033523855294,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "f5fbb07d-59aa-4d59-b183-5af166e38c70",
+    "dist_along_edge_m": 131.5,
+    "source_image": "sv_41.390945_2.156341_h274.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43579.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with buildings on both sides, lined with trees and featuring two large gray trash cans in the foreground. The street is relatively empty, with only a few pedestrians visible. A van drives down the street, passing by the trash cans. The sky is clear and blue.",
+    "buildings": "The buildings are primarily residential, with some commercial properties mixed in.",
+    "materials": "The buildings' facades are made of brick, with some sections painted in various colors.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the buildings, suggesting a pedestrian-friendly area.",
+    "vegetation": "The trees lining the street are leafless, indicating it may be winter or early spring.",
+    "signage": "There are several signs along the street, including a parking sign and a directional sign.",
+    "ground_surfaces": "The ground is paved with asphalt, with yellow lines marking the edges of the sidewalk.",
+    "spatial_enclosure": "The street feels relatively open, with a slight curve to the right.",
+    "pedestrian_activity": "Only a few people are visible, mostly walking or standing near the trash cans.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with shadows cast by the trees.",
+    "as_resident": "The street appears quiet and peaceful, with no visible noise or activity.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street has a mix of old and new architecture, with some historic buildings alongside more modern structures.",
+    "as_student": "The street is likely a popular spot for students, given its proximity to universities and shops."
+  }
+}

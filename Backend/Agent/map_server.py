@@ -1,38 +1,47 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-import duckdb
-from shapely import wkt
-from model import CityModel
+import json
+import os
 import sys
 from pathlib import Path
+
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+import duckdb
+from shapely import wkt
+
+# Load .env from project root before anything else
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+load_dotenv(PROJECT_ROOT / ".env")
+
+from model import CityModel
 
 # Ensure Backend root on path (model.py also does this, but be explicit here)
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-# Import Mapillary service
-from mapillary import MapillaryService
 
 app = FastAPI(title="Urban ABM Backend API")
 
 # Configure CORS to allow frontend to fetch from backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your frontend URL
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Database path - use absolute path from project root
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+# Database path
 DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
 
-# Initialize Mesa model with agents (LLMClient is initialised inside CityModel)
-city_model = CityModel(num_agents=500)
+# Street view grid output directory
+SV_OUTPUT_DIR = PROJECT_ROOT / "Backend" / "Environment" / "output"
+SV_IMAGES_DIR = SV_OUTPUT_DIR / "images"
+SV_RESULTS_DIR = SV_OUTPUT_DIR / "results"
 
-# Initialize Mapillary service
-MAPILLARY_API_KEY = "MLY|33533093396335529|30cb7c42be1a23189b63952f439551bd"
-mapillary_service = MapillaryService(MAPILLARY_API_KEY)
+# Initialize Mesa model with agents (LLMClient is initialised inside CityModel)
+city_model = CityModel(num_agents=15)
+
 
 def get_db_connection():
     """Get DuckDB connection"""
@@ -64,6 +73,12 @@ async def read_root():
             "/api/stats",
             "/api/tables",
             "/api/test",
+            "/api/streetview_grid",
+            "/api/streetview_grid/image/{filename}",
+            "/api/streetview_grid/analysis/{lat}_{lon}",
+            "/api/config/frontend",
+            "/api/config/llm (POST)",
+            "/api/llm/stats",
             "/api/step_continuous (POST)",
             "/api/step (POST)"
         ]
@@ -244,6 +259,18 @@ async def get_agents():
         "features": features
     }
 
+@app.post("/api/agents/respawn")
+async def respawn_agents(count: int = 15):
+    """Re-create the city model with a new agent count (1-100)."""
+    global city_model
+    count = max(1, min(100, count))
+    city_model = CityModel(num_agents=count)
+    return {
+        "status": "respawned",
+        "count": len(city_model.city_agents),
+        "step": city_model.steps,
+    }
+
 @app.get("/api/agent/{agent_id}")
 async def get_agent_info(agent_id: int):
     """Get agent details and what they see (from stored query results)"""
@@ -261,7 +288,8 @@ async def get_agent_info(agent_id: int):
             "lon": agent.geometry.x,
             "lat": agent.geometry.y
         },
-        "nearby_amenities": agent.nearby_amenities
+        "nearby_amenities": agent.nearby_amenities,
+        "street_perception": agent.street_perception
     }
 
 @app.get("/api/agent/{agent_id}/summary")
@@ -275,6 +303,18 @@ async def get_agent_summary(agent_id: int):
     needs = await agent.memory.status.get("needs", {})
     cognition = await agent.memory.status.get("cognition_state", {})
 
+    # Build perception context for narration using scene_analysis text fields
+    perception_ctx = ""
+    if hasattr(agent, 'street_perception') and agent.street_perception:
+        sp = agent.street_perception
+        scene_parts = []
+        for key in ("scene_overview", "vegetation", "pedestrian_activity", "lighting_atmosphere"):
+            val = sp.get(key, "")
+            if val and val.strip().lower() != "unknown":
+                scene_parts.append(val)
+        if scene_parts:
+            perception_ctx = f" Street scene: {' '.join(scene_parts[:2])}"
+
     messages = [
         {"role": "system", "content": "You are narrating an urban simulation agent in Barcelona Eixample. Be concise (2-3 sentences)."},
         {"role": "user", "content": (
@@ -282,7 +322,8 @@ async def get_agent_summary(agent_id: int):
             f"lon={agent.geometry.x:.5f}, lat={agent.geometry.y:.5f}. "
             f"Needs: hunger={needs.get('hunger',0.5):.2f}, energy={needs.get('energy',1.0):.2f}, social={needs.get('social',0.5):.2f}. "
             f"Mood: {cognition.get('mood','neutral')}. "
-            f"Nearby: {', '.join(a.get('type','?') for a in agent.nearby_amenities[:5]) or 'nothing notable'}. "
+            f"Nearby: {', '.join(a.get('type','?') for a in agent.nearby_amenities[:5]) or 'nothing notable'}."
+            f"{perception_ctx} "
             "Narrate what this agent is experiencing right now."
         )}
     ]
@@ -296,31 +337,6 @@ async def get_agent_summary(agent_id: int):
         "archetype": profile.get("archetype", "unknown"),
     }
 
-@app.get("/api/agent/{agent_id}/streetview")
-async def get_agent_streetview(agent_id: int):
-    """Get Mapillary street view images near the agent's location"""
-    # Find the agent
-    agent = next((a for a in city_model.city_agents if a.unique_id == agent_id), None)
-    
-    if not agent:
-        return {"error": "Agent not found"}
-    
-    # Fetch Mapillary images near agent's location
-    images = mapillary_service.get_images_near_location(
-        lon=agent.geometry.x,
-        lat=agent.geometry.y,
-        radius=50  # 50 meter radius
-    )
-    
-    return {
-        "agent_id": agent.unique_id,
-        "location": {
-            "lon": agent.geometry.x,
-            "lat": agent.geometry.y
-        },
-        "images": images,
-        "image_count": len(images)
-    }
 
 @app.get("/api/agents/summaries")
 async def get_all_agent_summaries():
@@ -597,6 +613,144 @@ async def update_llm_config(provider: str, model: str, base_url: str = "", api_k
 async def get_llm_stats():
     """Return LLM usage statistics (token counts, latency)."""
     return city_model.llm_client.stats()
+
+
+# ── Street View Grid endpoints (DuckDB-backed) ─────────────────────
+
+
+@app.get("/api/streetview_grid")
+async def get_streetview_grid():
+    """Return GeoJSON of streetview scene analysis data read directly from JSON result files."""
+    import json as json_lib
+    import re
+
+    features = []
+    if not SV_RESULTS_DIR.is_dir():
+        return {"type": "FeatureCollection", "features": [], "error": "Results directory not found"}
+
+    for json_file in sorted(SV_RESULTS_DIR.glob("*_analysis.json")):
+        # Parse lat/lon from filename: {lat}_{lon}_analysis.json
+        m = re.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", json_file.name)
+        if not m:
+            continue
+        lat, lon = float(m.group(1)), float(m.group(2))
+        try:
+            data = json_lib.loads(json_file.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+
+        meta = data.get("metadata", {})
+        scene = data.get("scene_analysis") or {}
+        src_img = meta.get("source_image", "")
+
+        features.append({
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [lon, lat]},
+            "properties": {
+                "lat": lat,
+                "lon": lon,
+                "heading": meta.get("heading", 0.0),
+                "image_url": f"/api/streetview_grid/image/{src_img}" if src_img else "",
+                "model": meta.get("model", ""),
+                "timestamp": meta.get("timestamp", ""),
+                "scene_overview": scene.get("scene_overview", ""),
+                "buildings": scene.get("buildings", ""),
+                "materials": scene.get("materials", ""),
+                "building_condition": scene.get("building_condition", ""),
+                "street_furniture": scene.get("street_furniture", ""),
+                "vegetation": scene.get("vegetation", ""),
+                "signage": scene.get("signage", ""),
+                "ground_surfaces": scene.get("ground_surfaces", ""),
+                "spatial_enclosure": scene.get("spatial_enclosure", ""),
+                "pedestrian_activity": scene.get("pedestrian_activity", ""),
+                "lighting_atmosphere": scene.get("lighting_atmosphere", ""),
+                "as_resident": scene.get("as_resident", ""),
+                "as_commuter": scene.get("as_commuter", ""),
+                "as_tourist": scene.get("as_tourist", ""),
+                "as_student": scene.get("as_student", ""),
+            },
+        })
+    return {"type": "FeatureCollection", "features": features}
+
+
+@app.get("/api/streetview_grid/image/{filename}")
+async def get_streetview_image(filename: str):
+    """Serve a street view grid image file."""
+    filepath = SV_IMAGES_DIR / filename
+    if not filepath.is_file():
+        return {"error": "Image not found"}
+    return FileResponse(filepath, media_type="image/jpeg")
+
+
+@app.get("/api/streetview_grid/json/{filename}")
+async def get_streetview_json(filename: str):
+    """Serve a street view analysis JSON file from the results directory."""
+    import json as json_lib
+    results_dir = SV_OUTPUT_DIR / "results"
+    filepath = results_dir / filename
+    if not filepath.is_file():
+        return {"error": "Analysis JSON not found", "filename": filename}
+    try:
+        return json_lib.loads(filepath.read_text(encoding="utf-8"))
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@app.get("/api/streetview_grid/analysis/{lat}_{lon}")
+async def get_streetview_analysis(lat: str, lon: str):
+    """Return all perception fields for a given coordinate from DuckDB."""
+    try:
+        con = duckdb.connect(str(DB_PATH), read_only=True)
+        row = con.execute("""
+            SELECT latitude, longitude, walkability, has_vegetation,
+                   pedestrian_activity, architectural_style,
+                   building_condition, source_image,
+                   scene_narrative, materials, street_furniture,
+                   spatial_impression, heading, timestamp_str, model_name
+            FROM streetview_perception
+            WHERE ROUND(latitude, 4) = ROUND(CAST(? AS DOUBLE), 4)
+              AND ROUND(longitude, 4) = ROUND(CAST(? AS DOUBLE), 4)
+            LIMIT 1
+        """, [lat, lon]).fetchone()
+        con.close()
+    except Exception as e:
+        return {"error": str(e)}
+
+    if not row:
+        return {"error": "Analysis not found"}
+    return {
+        "latitude": row[0],
+        "longitude": row[1],
+        "walkability": row[2],
+        "has_vegetation": row[3],
+        "pedestrian_activity": row[4],
+        "architectural_style": row[5],
+        "building_condition": row[6],
+        "source_image": row[7],
+        "scene_narrative": row[8],
+        "materials": row[9],
+        "street_furniture": row[10],
+        "spatial_impression": row[11],
+        "heading": row[12],
+        "timestamp": row[13],
+        "model": row[14],
+    }
+
+
+# ── Frontend config endpoint ────────────────────────────────────────
+
+@app.get("/api/config/frontend")
+async def get_frontend_config():
+    """Expose non-secret configuration needed by the frontend."""
+    return {
+        "mapbox_token": os.environ.get("MAPBOX_TOKEN", ""),
+        "llm_provider": os.environ.get("LLM_PROVIDER", "ollama"),
+        "llm_model": os.environ.get("LLM_MODEL", ""),
+        "available_providers": [
+            {"id": "ollama", "name": "Ollama (Local)", "description": "Local LLM via Ollama — no GPU required"},
+            {"id": "vllm", "name": "vLLM (Docker GPU)", "description": "High-performance GPU inference via vLLM Docker"},
+        ],
+    }
 
 
 if __name__ == "__main__":

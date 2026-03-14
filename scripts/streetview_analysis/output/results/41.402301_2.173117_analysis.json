@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_032247",
+    "latitude": 41.402301,
+    "longitude": 2.173117,
+    "heading": 34.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "9e9f35da-e2ad-4b6c-b5d5-649ee3367ad4",
+    "dist_along_edge_m": 37.4,
+    "source_image": "sv_41.402301_2.173117_h34.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 13574.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "unknown",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

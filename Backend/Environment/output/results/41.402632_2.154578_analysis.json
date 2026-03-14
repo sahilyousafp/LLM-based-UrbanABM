@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171648",
+    "latitude": 41.40263170000001,
+    "longitude": 2.1545776000000005,
+    "heading": 276.16104849659155,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c9d8a743-7dfb-4cca-ac93-1e12bc1f2967",
+    "dist_along_edge_m": 31.2,
+    "source_image": "sv_41.402632_2.154578_h276.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 4796.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A tree-lined sidewalk in a city street with a mix of old and new buildings,",
+    "buildings": "The buildings are a mix of old and new, with some having ornate facades and others being more modern,",
+    "materials": "The ground is paved with concrete and has a few patches of grass and plants,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk,",
+    "vegetation": "The area is lined with trees and bushes, creating a peaceful oasis in the midst of the bustling city,",
+    "signage": "There are several signs advertising local businesses and services,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The street feels relatively open and airy, with plenty of space between buildings,",
+    "pedestrian_activity": "People are walking and cycling along the sidewalk, but there is no heavy foot traffic,",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a warm glow from the sun,",
+    "as_resident": "The area is quiet and peaceful, with a few people enjoying the scenery,",
+    "as_commuter": "The street is wide enough for cars to drive by, but there are no cars parked along the curb,",
+    "as_tourist": "unknown",
+    "as_student": "The area is popular with students, who often stop to take photos or sit on benches."
+  }
+}

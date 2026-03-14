@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_180721",
+    "latitude": 41.39541669999999,
+    "longitude": 2.1501908,
+    "heading": 45.83499475778626,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1221cbc6-1920-4b8a-8341-d80faf7d815b",
+    "dist_along_edge_m": 142.8,
+    "source_image": "sv_41.395417_2.150191_h45.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21789.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large room with white walls and a high ceiling, featuring a red floor and a row of cubicles along the back wall. The cubicles have white dividers and various items hanging from them. A black chair sits in the corner, while a table stands against the right wall. The room has a bright window at the top of the cubicle area.",
+    "buildings": "The cubicles are made of metal and wood, with some having windows and others being solid. They are arranged in a straight line, with a small gap between each one.",
+    "materials": "The floor is covered in red rubber flooring, with a few objects placed on it. The walls are painted white, and there are several windows near the top of the room.",
+    "building_condition": "unknown",
+    "street_furniture": "There is a single black chair in the corner of the room, accompanied by a small table with a lamp on it.",
+    "vegetation": "There are no plants or trees visible in the room.",
+    "signage": "There are no visible signs or advertisements.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no people visible in the room.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The room appears to be empty and quiet.",
+    "as_commuter": "unknown",
+    "as_tourist": "The room could be used as a waiting area or meeting space.",
+    "as_student": "The room could be used as a classroom or lecture hall."
+  }
+}

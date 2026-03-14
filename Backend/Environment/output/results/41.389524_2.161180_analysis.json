@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223113",
+    "latitude": 41.3895242,
+    "longitude": 2.1611804999999995,
+    "heading": 43.978665098381555,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "bce4c7dc-bd65-458f-8dc2-4ef0e3821b2b",
+    "dist_along_edge_m": 43.6,
+    "source_image": "sv_41.389524_2.161180_h43.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43634.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, featuring a mix of commercial and residential properties, with cars parked along the curb and pedestrians strolling along the sidewalk. The street is lined with trees and has a clear blue sky above. The sun casts long shadows across the pavement, indicating a late morning or early afternoon setting. The buildings have a mix of modern and traditional architectural styles, with some featuring balconies and ornate facades. The street is relatively quiet, with only a few people visible, but there are several cars parked along the curb and a few pedestrians walking along the sidewalk.",
+    "buildings": "The buildings are primarily made of stone and brick, with some featuring large windows and ornate ironwork. Some have balconies with wrought iron railings, while others have more minimalist designs. The buildings vary in height, with some being taller than others. There are also several shops and restaurants along the street, including a coffee shop and a bookstore.",
+    "materials": "The street is paved with cobblestone, and the sidewalks are made of concrete. The buildings' facades are primarily made of stone and brick, with some featuring decorative elements such as carvings and moldings. The streetlights are made of metal and have a modern design.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, providing a place for people to rest and dispose of waste. There are also several bike racks and bike lanes, allowing cyclists to ride safely through the area.",
+    "vegetation": "The street is lined with trees and other greenery, adding a touch of nature to the urban landscape. There are also several potted plants and flowerbeds along the sidewalk, adding color and vibrancy to the scene.",
+    "signage": "There are several signs along the street, including street signs, directional signs, and advertisements. Some of the signs are digital, while others are printed on paper or vinyl.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would find this street to be a pleasant and welcoming place to live. It offers a mix of urban and natural beauty, with plenty of opportunities for outdoor activities and exploration.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, I would find this street to be a great place to explore. It offers a unique blend of history and culture, with many interesting landmarks and attractions to discover.",
+    "as_student": "unknown"
+  }
+}

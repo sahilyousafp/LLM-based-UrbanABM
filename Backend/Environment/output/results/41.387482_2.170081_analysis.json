@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_182942",
+    "latitude": 41.38748179999999,
+    "longitude": 2.1700806000000004,
+    "heading": 108.66551654361444,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "4cd3f758-0c5a-47c0-939c-bb66fe46dd90",
+    "dist_along_edge_m": 72.1,
+    "source_image": "sv_41.387482_2.170081_h108.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64439.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a statue of a man riding a horse on the left side of the street. The street is lined with tall trees and buildings on both sides. There are people walking and riding bicycles along the sidewalk. The sky is clear and blue.",
+    "buildings": "The buildings are white and have multiple stories. They are made of stone and concrete. Some have balconies.",
+    "materials": "The statue is made of dark metal and is placed on a large stone pedestal. It depicts a man riding a horse.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "The trees are tall and leafy.",
+    "signage": "There are several signs posted along the street.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking and riding bicycles along the sidewalk.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be residential.",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The area is popular with students."
+  }
+}

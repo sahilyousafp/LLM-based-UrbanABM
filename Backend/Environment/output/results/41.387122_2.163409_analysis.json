@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174628",
+    "latitude": 41.387122000000005,
+    "longitude": 2.1634088000000005,
+    "heading": 312.40432038554695,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1f10527e-f8b3-47d1-99d0-30f318297d60",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387122_2.163409_h312.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21924.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A serene pond surrounded by lush greenery and a stone wall, creating a tranquil atmosphere. The pond is home to various aquatic plants and lily pads, adding to its natural beauty. A small plaque stands out against the backdrop of the surrounding foliage, providing information about the area. The stone wall adds a touch of rustic charm, while the trees and bushes create a sense of seclusion. The overall ambiance is peaceful and inviting, making it an ideal spot for relaxation and contemplation.",
+    "buildings": "The buildings in the background feature a mix of modern and traditional architecture, blending seamlessly into the natural surroundings. The stone walls and wooden accents add warmth and character to the scene, while the lush greenery provides a soothing contrast.",
+    "materials": "Materials such as stone, wood, and metal are used throughout the scene, creating a harmonious balance between nature and human-made structures.",
+    "building_condition": "unknown",
+    "street_furniture": "Street furniture such as benches and tables are scattered throughout the area, providing ample opportunities for people to sit and enjoy the scenery.",
+    "vegetation": "Vegetation such as trees, shrubs, and flowers add vibrancy and color to the scene, creating a lively and dynamic atmosphere.",
+    "signage": "Signage such as street signs, directional arrows, and informational displays provide important context and guidance for visitors.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "The street feels open and airy, with clear pathways and minimal obstructions.",
+    "pedestrian_activity": "People are present in the distance, going about their daily business, adding a sense of life and energy to the scene.",
+    "lighting_atmosphere": "Lighting conditions vary across the scene, with some areas receiving soft, diffused light and others being brighter and more dramatic.",
+    "as_resident": "Local residents take pride in the area, enjoying the tranquility and beauty of the surroundings.",
+    "as_commuter": "unknown",
+    "as_tourist": "Tourists are drawn to the area's unique blend of natural and man-made elements, appreciating the area's charm and character.",
+    "as_student": "Students are engaged in various activities, taking notes and observing their surroundings."
+  }
+}

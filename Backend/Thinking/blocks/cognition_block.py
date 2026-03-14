@@ -28,6 +28,8 @@ class CognitionBlock(Block):
                 fallback=True,
             )
 
+        street_perception = kwargs.get("street_perception")
+
         profile = await self.memory.status.get("agent_profile", {})
         archetype = profile.get("archetype", "resident")
         current_cognition = await self.memory.status.get("cognition_state", {})
@@ -36,11 +38,32 @@ class CognitionBlock(Block):
         recent_all = await self.memory.stream.get_recent_all(n=15)
         history_text = self.memory.stream.format_for_prompt(recent_all)
 
+        # Compose scene description from text fields for the LLM prompt
+        perception_text = ""
+        if street_perception:
+            scene_fields = [
+                ("scene_overview",      "Scene"),
+                ("buildings",           "Buildings"),
+                ("vegetation",          "Vegetation"),
+                ("pedestrian_activity", "Pedestrian activity"),
+                ("lighting_atmosphere", "Lighting/atmosphere"),
+                ("as_resident",         "Resident perspective"),
+                ("as_tourist",          "Tourist perspective"),
+            ]
+            lines = []
+            for key, label in scene_fields:
+                val = street_perception.get(key, "")
+                if val and val.strip().lower() != "unknown":
+                    lines.append(f"  {label}: {val}")
+            if lines:
+                perception_text = "\n".join(lines)
+
         messages = cognition_update_prompt(
             archetype=archetype,
             current_cognition=current_cognition,
             recent_history=history_text,
             step=step,
+            streetview_perception=perception_text,
         )
 
         response = await self.llm.chat_json(messages)

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_220105",
+    "latitude": 41.3897718,
+    "longitude": 2.1621696,
+    "heading": 351.22489251322105,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "1d8052c8-18c2-47fb-8a2e-3e7eaf3234c1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389772_2.162170_h351.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44133.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of residential and commercial properties, including apartments, shops, and restaurants. The street is relatively empty, with only a few cars parked along the curb and a few pedestrians strolling along the sidewalk. The sky is clear and blue, suggesting a pleasant day.",
+    "buildings": "Left building: A large, modern structure with a sleek, contemporary design, featuring a curved facade and a prominent entrance. It has multiple balconies and windows, giving it a sense of depth and texture. 'The building is made of a combination of materials, including concrete, glass, and metal.",
+    "materials": "Left building: The exterior walls are clad in a combination of smooth concrete and textured stone, while the roof is covered in a layer of dark gray slate tiles. The windows are framed in black metal, adding a touch of industrial chic to the overall aesthetic.",
+    "building_condition": "unknown",
+    "street_furniture": "Street furniture: Several benches and tables are scattered throughout the area, providing a place for people to rest and take in the views. Some of the tables have umbrellas to provide shade, while others are simply placed on the sidewalk.",
+    "vegetation": "Vegetation: Small trees and shrubs are planted in pots along the sidewalk, adding a touch of greenery to the urban landscape. They are spaced at regular intervals, creating a sense of rhythm and harmony.",
+    "signage": "Signage: Several signs are posted along the street, including directional signs and advertisements for local businesses. They are colorful and eye-catching, drawing attention to the various attractions and services available in the area.",
+    "ground_surfaces": "Ground surfaces: The ground surfaces are a mix of asphalt and concrete, with some areas featuring decorative patterns and textures. The road surface is smooth and well-maintained, with a slight incline that suggests a gentle slope.",
+    "spatial_enclosure": "Spatial enclosure: The street feels open and airy, with plenty of space between buildings and pedestrians. However, there are also several narrow alleys and side streets that can be found off the main thoroughfares.",
+    "pedestrian_activity": "Pedestrian activity: People are walking along the sidewalk, some stopping to admire the architecture or take photos. Others are sitting at outdoor cafes, enjoying a drink or meal.",
+    "lighting_atmosphere": "Lighting: The lighting is bright and even, with a warm glow emanating from the streetlights and building facades. The sun is shining down, casting long shadows across the pavement.",
+    "as_resident": "As resident: The street is bustling with activity, with people going about their daily business. There are several shops and cafes, as well as a few restaurants and bars, catering to a diverse range of tastes and preferences.",
+    "as_commuter": "unknown",
+    "as_tourist": "As tourist: The street is popular with visitors, who come to admire the architecture and soak up the local culture. There are several street performers and vendors, offering everything from traditional crafts to souvenirs.",
+    "as_student": "As student: The street is a hub of activity, with students walking to and from classes and studying in the nearby universities. There are several study groups and clubs, meeting spaces, and libraries."
+  }
+}

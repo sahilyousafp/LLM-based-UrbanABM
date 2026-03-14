@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_174125",
+    "latitude": 41.4000968,
+    "longitude": 2.1729382,
+    "heading": 136.61315475482343,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "bae2eebc-aeca-485e-a2b1-b52f39033090",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.400097_2.172938_h136.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21931.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of residential and commercial properties, including apartments and shops, with pedestrians and cyclists sharing the space. The street is paved with asphalt and has white markings indicating pedestrian crossings and bike lanes. Trees line the sidewalk, adding shade and greenery to the urban landscape. The clear blue sky suggests a pleasant day.",
+    "buildings": "The buildings are multi-story structures with balconies and windows, some with ornate facades and others more modern designs. Some have awnings or canopies over storefronts, while others appear to be residential units. The buildings vary in height, with some being taller than others.",
+    "materials": "The street is paved with asphalt, and there are white lines painted on the ground to indicate pedestrian crossings and bike lanes. There are also metal barriers along the sidewalk to prevent vehicles from entering the pedestrian area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk, providing places for people to rest and park their bicycles. A few trash cans are also visible, helping keep the area clean.",
+    "vegetation": "The trees are tall and leafy, casting dappled shadows across the street. They add a touch of greenery to the urban environment.",
+    "signage": "There are several signs visible, including street signs, directional signs, and advertisements. Some of the signs are illegible, but they add to the visual interest of the scene.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, offering a pleasant place to relax and take in the sights and sounds of the city.",
+    "as_commuter": "The street is a great spot for commuting, with plenty of parking available. It's a convenient location for getting to work or school.",
+    "as_tourist": "The street is a great spot for sightseeing, with plenty of historical landmarks and cultural attractions. It's a must-see destination for anyone visiting the city.",
+    "as_student": "This street is a great place to study, with plenty of quiet areas to sit and read or work. It's a peaceful and serene spot, perfect for those looking to escape the hustle and bustle of city life."
+  }
+}

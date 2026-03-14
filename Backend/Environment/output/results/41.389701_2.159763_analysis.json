@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_234911",
+    "latitude": 41.38970079999999,
+    "longitude": 2.1597628,
+    "heading": 44.364801232840875,
+    "street_name": "Carrer d'Enric Granados",
+    "highway_type": "road",
+    "edge_id": "7d39fa11-2eef-4a53-adb9-59c7cc0fb45f",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389701_2.159763_h44.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43896.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, featuring a mix of old and new architecture, including a large beige building with balconies and ornate details, and a smaller yellow building with a flat roof and a few windows, set against a clear blue sky with a few clouds.",
+    "buildings": "The beige building has a curved corner and a balcony on the top floor, while the yellow building has a flat roof and a few windows.",
+    "materials": "The beige building has a stone facade with ornate details, while the yellow building has a smooth concrete exterior.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the beige building, as well as a few bicycles parked along the sidewalk.",
+    "vegetation": "There are a few trees with orange leaves scattered throughout the area, adding a pop of color to the otherwise drab urban landscape.",
+    "signage": "There are several signs posted on the buildings, including a large sign reading 'Casa de la Vella' and a smaller sign advertising a local restaurant.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking down the street, but the area is generally quiet and peaceful.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be residential, with several apartments and shops visible.",
+    "as_commuter": "The area is also a popular spot for music lovers, with several live music venues available.",
+    "as_tourist": "The area is also a popular spot for history buffs, with several museums and historical landmarks available.",
+    "as_student": "The area is also a popular spot for art lovers, with several galleries and studios available."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_025717",
+    "latitude": 41.395686,
+    "longitude": 2.158643,
+    "heading": 63.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "860eef8a-92af-4887-88a1-34bea7ad423f",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395686_2.158643_h63.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49753.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a sandy area with several benches and trees in the background. The benches are made of wood and metal, and there are some palm trees and other trees in the distance. There are also some buildings in the background, including a tall white building on the right side of the image. The sky is blue and clear,",
+    "buildings": "unknown",
+    "materials": "The building on the left has a cream-colored facade with stone quoins at the corners. It is taller than the other buildings in the image. The building on the right has a white facade with a flat roof. There are two tall, thin trees in front of the building on the right. There are also some shorter trees and bushes in the background.",
+    "building_condition": "The building on the left has a flat roof and a small balcony on the top floor. The building on the right has a flat roof and a large window on the top floor. There are two tall, thin trees in front of the building on the right. There are also some shorter trees and bushes in the background.",
+    "street_furniture": "There are several benches in the image. They are all made of wood and metal. There are also some trash cans and streetlights in the image. There are also some bollards and bike racks in the image.",
+    "vegetation": "There are several trees in the image. There are also some bushes and plants in the background. There are some tall trees in the background. There are also some shorter trees and bushes in the background.",
+    "signage": "There are several signs in the image. There are some street signs and traffic signs in the image. There are also some plaques and awnings in the image.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_001823",
+    "latitude": 41.4030256,
+    "longitude": 2.152404,
+    "heading": 257.04676682617577,
+    "street_name": "Carrer Gran de Gràcia",
+    "highway_type": "road",
+    "edge_id": "0888d7b3-6c93-4887-b920-623711e0ca59",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403026_2.152404_h257.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85253.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large room with many people milling around, some sitting and others standing, with a projector screen displaying a computer program in the back wall. The room has a high ceiling with hanging lights and dark curtains covering the windows. The floor is made of dark gray tiles, and there are several tables and chairs scattered throughout the room. A whiteboard is set up near the front of the room, and a few people are gathered around it. There are also several pink balloons floating in the air. The walls are painted white, and there are several black spotlights mounted on the ceiling. The overall atmosphere is lively and bustling, with people chatting and laughing as they move around the room.",
+    "buildings": "The building has a modern design with a mix of wood and metal elements, including a wooden pillar in the center of the room. The building's facade is primarily composed of glass and metal, with a sleek and contemporary aesthetic. The building's condition is good, with no visible signs of wear or damage. The building is well-maintained and clean.",
+    "materials": "The building's exterior is clad in a combination of wood and metal, with a smooth finish. The building's roof is flat and covered in solar panels, giving it a sustainable and eco-friendly appearance. The building's interior is made of a combination of wood and metal, with a warm and inviting color scheme.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and chairs scattered throughout the room, providing seating for visitors. There are also several tables and desks, some of which have computers and other office equipment on them. The furniture is modern and stylish, with a minimalist aesthetic.",
+    "vegetation": "There are several potted plants placed around the room, adding a touch of greenery to the space. There are also several trees and shrubs planted along the perimeter of the room, providing shade and a natural ambiance.",
+    "signage": "There are several signs posted around the room, including directional signs and informational posters. Some of the signs are written in Spanish, while others are in English.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people walking around the room, some of whom are carrying bags or backpacks. There are also several people sitting on the benches, taking a break or working on their laptops.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would describe the area as vibrant and lively, with a strong sense of community. The area is popular with locals who come to work, study, or socialize. The area is clean and well-maintained, with plenty of amenities and services available.",
+    "as_commuter": "As a commuter, I would describe the area as busy and fast-paced, with a mix of locals and visitors. The area is popular with commuters who come to work or run errands. The area is clean and well-maintained, with plenty of amenities and services available.",
+    "as_tourist": "As a tourist, I would describe the area as lively and vibrant, with a mix of locals and visitors. The area is popular with tourists who come to explore the surrounding neighborhood. The area is clean and well-maintained, with plenty of amenities and services available.",
+    "as_student": "As a student, I would describe the area as quiet and focused, with a focus on learning and productivity. The area is popular with students who come to study and work on assignments. The area is clean and well-maintained, with plenty of resources and support available."
+  }
+}

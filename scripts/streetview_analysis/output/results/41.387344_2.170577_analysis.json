@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_043441",
+    "latitude": 41.387344,
+    "longitude": 2.170577,
+    "heading": 230.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "8c5abf95-30f8-4fe1-9bd5-bce276b4fffc",
+    "dist_along_edge_m": 6.8,
+    "source_image": "sv_41.387344_2.170577_h230.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49589.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large indoor shopping mall with a yellow ceiling and pink walls, featuring various stores and shoppers. The mall has a modern aesthetic with sleek lines and minimalist decor. The floor is made of polished concrete, and the walls are adorned with vibrant artwork and colorful lighting fixtures. The atmosphere is lively and inviting, with shoppers milling about and browsing the various stores. The mall appears to be well-maintained and clean, with a sense of energy and activity. The overall mood is upbeat and engaging, making it an attractive destination for both locals and tourists alike.",
+    "buildings": "The mall's architecture is characterized by its use of glass, steel, and concrete, giving it a contemporary feel. The buildings are tall and slender, with large windows that allow natural light to pour in and illuminate the interior. The exterior is sleek and modern, with clean lines and minimal ornamentation. The mall's design is functional and efficient, with easy access to all the different stores and amenities.",
+    "materials": "The mall's flooring is made of polished concrete, which adds to the overall modern aesthetic. The walls are clad in smooth, reflective surfaces that catch the light and create a sense of depth and dimensionality. The ceiling is made of glass panels that filter the natural light and add to the mall's bright and airy feel.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the mall, providing a place for shoppers to rest and take a break. There are also several kiosks and displays set up throughout the mall, showcasing products and services offered by local businesses.",
+    "vegetation": "The mall has a few small trees and plants placed strategically throughout the space, adding a touch of greenery to the otherwise urban environment. The plants are well-maintained and healthy, and they help to soften the cold concrete and steel of the mall's architecture.",
+    "signage": "There are several signs posted throughout the mall, including directional signs and advertisements for local businesses. The signs are clear and easy to read, and they help to guide shoppers through the mall.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would appreciate the mall's amenities, such as food and drink options, comfortable seating areas, and convenient parking. I would also like to see more art installations and cultural events.",
+    "as_commuter": "As a commuter, I would appreciate the mall's proximity to public transportation, with easy access to buses and trains. I would also like to see more pedestrian-friendly infrastructure, such as bike lanes and crosswalks.",
+    "as_tourist": "As a tourist, I would enjoy the mall's unique blend of culture and commerce, with its mix of local and international brands. I would also like to see more events and activities for families and children.",
+    "as_student": "As a student, I would appreciate the mall's academic atmosphere, with its quiet study areas and library. I would also like to see more opportunities for research and collaboration among students."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_205049",
+    "latitude": 41.3873444,
+    "longitude": 2.1705767,
+    "heading": 230.67797743759454,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "8c5abf95-30f8-4fe1-9bd5-bce276b4fffc",
+    "dist_along_edge_m": 6.8,
+    "source_image": "sv_41.387344_2.170577_h230.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85595.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large shopping mall with a yellow ceiling and pink walls, featuring various stores and shoppers. The mall has a modern aesthetic with sleek lines and clean architecture. The interior is well-lit, with a mix of natural and artificial lighting. The floor is made of polished concrete, and there are several display cases showcasing products. The atmosphere is lively, with people milling about and browsing the various stores. The overall mood is bright and inviting.",
+    "buildings": "The mall has a mix of high-rise and low-rise buildings, with a variety of architectural styles. Some buildings have a more traditional look, while others have a more contemporary design. There are also several large windows that allow natural light to flood the space.",
+    "materials": "The mall's exterior is clad in a combination of materials, including glass, metal, and stone. The building's facade is primarily composed of glass, with metal accents and decorative elements throughout. The stone used for the base of the building adds a touch of warmth and texture to the overall design.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the mall, providing a place for shoppers to rest and take a break. Some of the furniture is modern and sleek, while other pieces have a more rustic charm.",
+    "vegetation": "The mall has a few small trees and plants placed strategically around the space, adding a touch of greenery to the otherwise urban environment. The plants are well-maintained and add a pop of color to the area.",
+    "signage": "There are several signs posted throughout the mall, advertising various businesses and services. Some signs are digital, while others are printed on physical materials.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would appreciate the convenience of having a nearby coffee shop or restaurant. I'd like to see more outdoor seating areas and a better selection of food options.",
+    "as_commuter": "As a commuter, I appreciate the mall's proximity to public transportation. It's easy to get to from my car and bus, and the mall is within walking distance of several major highways.",
+    "as_tourist": "As a tourist, I'm excited to explore the mall's unique character and charm. I'd love to see more historic buildings and landmarks.",
+    "as_student": "As a student, I'm looking forward to studying the mall's design and architecture. I'd like to see more ways to incorporate sustainable practices into the mall's design."
+  }
+}

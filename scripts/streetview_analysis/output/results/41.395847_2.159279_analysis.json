@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_021700",
+    "latitude": 41.395847,
+    "longitude": 2.159279,
+    "heading": 212.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "4a3f1de8-0bd7-4959-8dcb-8631879b3aae",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395847_2.159279_h212.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49179.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a sandy path in a park with tall trees and greenery surrounding it. The path is empty except for a few people sitting on a bench in the distance. There are several large trees lining the path, including a tall palm tree and a tall evergreen tree. The sky is clear and blue.",
+    "buildings": "The buildings along the path are mostly low-rise, with some taller structures visible in the distance. They have a mix of modern and traditional architectural styles.",
+    "materials": "The ground is covered in sand, with some grassy areas and small rocks scattered throughout. There are also some paved paths and sidewalks made of concrete.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, as well as a few trash cans and recycling bins.",
+    "vegetation": "The trees and bushes are lush and green, providing shade and beauty to the area.",
+    "signage": "There are several signs posted along the path, including directional signs and informational signs about the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking along the path, but it is not crowded.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with a relaxed and welcoming atmosphere.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area has a mix of shops, cafes, and restaurants, making it a great place to explore.",
+    "as_student": "The area is a great spot for students to study and learn."
+  }
+}

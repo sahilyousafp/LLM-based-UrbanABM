@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_171643",
+    "latitude": 41.4025037,
+    "longitude": 2.1542660000000002,
+    "heading": 52.84262188418745,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c9d8a743-7dfb-4cca-ac93-1e12bc1f2967",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.402504_2.154266_h52.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21580.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow street with a tall building featuring a garage door with graffiti of a lobster and Spanish text,",
+    "buildings": "The building has a cream-colored facade with a large window above the garage door and a smaller window to its left. The garage door is cream-colored with a large orange lobster painted on it, accompanied by black text in Spanish.",
+    "materials": "The garage door is made of concrete and has a smooth texture. It is attached to a beige wall with a small window above it.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the immediate vicinity.",
+    "vegetation": "The surrounding area is lined with trees and bushes, creating a lush green environment.",
+    "signage": "There are several signs posted along the sidewalk, including a blue and white sign with a red circle and a blue arrow pointing to the left.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful.",
+    "as_commuter": "The area is moderately busy during the day.",
+    "as_tourist": "There are no notable tourist attractions or landmarks in the immediate vicinity.",
+    "as_student": "The area is a popular spot for students."
+  }
+}

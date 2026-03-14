@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023414",
+    "latitude": 41.403911,
+    "longitude": 2.17157,
+    "heading": 137.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b6936c14-eb56-4be7-9bba-419fc5bdf356",
+    "dist_along_edge_m": 72.5,
+    "source_image": "sv_41.403911_2.171570_h137.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 13942.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A street view of a city street with buildings on both sides,",
+    "buildings": "unknown",
+    "materials": "The building on the left has a mix of concrete, brick, and metal,",
+    "building_condition": "unknown",
+    "street_furniture": "There is a yellow barrier on the sidewalk in front of the building on the left,",
+    "vegetation": "There is a tree growing out of the sidewalk in front of the building on the right,",
+    "signage": "There is a red stop sign on the corner of the street,",
+    "ground_surfaces": "The ground is made of cobblestone,",
+    "spatial_enclosure": "The street is relatively narrow and has a slight incline,",
+    "pedestrian_activity": "People are walking on the sidewalk in front of the building on the left,",
+    "lighting_atmosphere": "It is daytime, but the lighting is dim,",
+    "as_resident": "The area seems quiet and peaceful,",
+    "as_commuter": "The street is not very busy,",
+    "as_tourist": "The area is not very touristy,",
+    "as_student": "There are some shops and cafes along the street."
+  }
+}

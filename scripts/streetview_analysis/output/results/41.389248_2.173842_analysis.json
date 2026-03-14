@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_041100",
+    "latitude": 41.389248,
+    "longitude": 2.173842,
+    "heading": 244.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "86a7129e-bc5c-4c0b-adac-cfa70542c2f1",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389248_2.173842_h244.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12448.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a city street with pedestrians and outdoor cafes,",
+    "buildings": "A large, multi-story building with a mix of old and new architecture,",
+    "materials": "The building has a combination of stone and glass facades,",
+    "building_condition": "unknown",
+    "street_furniture": "Outdoor tables and chairs line the sidewalk,",
+    "vegetation": "There are several trees and plants along the sidewalk,",
+    "signage": "A few street signs and advertisements are visible,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area seems lively and bustling,",
+    "as_commuter": "It's a popular spot for locals and tourists alike,",
+    "as_tourist": "The area is also a popular spot for foodies and photographers.",
+    "as_student": "The area is home to many students and young professionals,"
+  }
+}

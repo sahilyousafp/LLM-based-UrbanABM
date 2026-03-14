@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_235727",
+    "latitude": 41.396538299999996,
+    "longitude": 2.1600743,
+    "heading": 71.79718879596533,
+    "street_name": "Avinguda de la Diagonal",
+    "highway_type": "road",
+    "edge_id": "e80989ed-4024-4713-af39-ef2d13d9d726",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396538_2.160074_h71.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85149.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and parked motorcycles along the sidewalk, featuring a mix of old and new architecture, including a large white building with ornate balconies and a smaller, more modern structure with a flat roof. The street is relatively empty, with only a few pedestrians and vehicles visible, giving it a quiet, residential feel. The sky is clear and blue, casting long shadows across the pavement as the sun moves through the trees.",
+    "buildings": "The buildings are primarily made of stone and feature a mix of rectangular and arched windows, with some having balconies and others displaying intricate carvings. A few have signs indicating they are commercial properties, while others appear to be residential. The street is paved with asphalt and has a central median with a bike lane marked by white lines.",
+    "materials": "The street is lined with trees that have lost their leaves, suggesting it may be autumn or winter. The pavement is smooth and well-maintained, with a few cracks and unevenness visible. The streetlights are tall and slender, with a modern design.",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be a quiet, residential area, with a few people visible in the distance. There are no notable landmarks or attractions, but the street seems to be a pleasant place to live or visit.",
+    "as_commuter": "The street is relatively empty, with only a few people visible in the distance. There are no notable landmarks or attractions, but the street seems to be a pleasant place to commute.",
+    "as_tourist": "The street is relatively empty, with only a few people visible in the distance. There are no notable landmarks or attractions, but the street seems to be a pleasant place to explore.",
+    "as_student": "The street is relatively empty, with only a few people visible in the distance. There are no notable landmarks or attractions, but the street seems to be a pleasant place to study."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_225659",
+    "latitude": 41.39014190000001,
+    "longitude": 2.1571515,
+    "heading": 229.9039535930015,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "ef5eeae2-9048-4449-ab6d-64f079482972",
+    "dist_along_edge_m": 12.2,
+    "source_image": "sv_41.390142_2.157151_h229.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44063.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a white car parked on the side of a street in front of a multi-story building with balconies and storefronts. The car is facing away from the camera and has a red taillight and a black rear window. There are several motorcycles parked along the sidewalk in front of the building. A tree stands in the middle of the street. The building has a mix of brick and stucco exterior walls, with balconies on each floor. The ground floor has storefronts with various signs and awnings. The street is paved with asphalt and has a crosswalk with white lines. The sun casts shadows on the buildings and cars. The overall atmosphere is bright and sunny.",
+    "buildings": "The building has a mix of brick and stucco exterior walls, with balconies on each floor. The ground floor has storefronts with various signs and awnings. The street is paved with asphalt and has a crosswalk with white lines. The sun casts shadows on the buildings and cars. The overall atmosphere is bright and sunny.",
+    "materials": "The building has a mix of brick and stucco exterior walls, with balconies on each floor. The ground floor has storefronts with various signs and awnings. The street is paved with asphalt and has a crosswalk with white lines. The sun casts shadows on the buildings and cars. The overall atmosphere is bright and sunny.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several motorcycles parked along the sidewalk in front of the building. There is also a bench and a trash can near the curb.",
+    "vegetation": "There are two trees planted in the median between the street and the sidewalk. One tree is taller than the other. Both have sparse leaves and thin trunks.",
+    "signage": "There are several signs on the storefronts, including a blue sign with white lettering, a red sign with yellow lettering, and a white sign with black lettering. There is also a large sign on the top of the building that reads 'GLOBAL' in black letters.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people visible in the distance, but they are not clearly visible due to the distance and the angle of the shot. There are also several bicycles parked along the sidewalk.",
+    "lighting_atmosphere": "The lighting in the area is bright and sunny, with strong shadows cast by the trees and buildings. The sun is high in the sky, casting long shadows across the street and sidewalk.",
+    "as_resident": "A person is standing outside the store on the left, wearing a dark jacket and pants. They appear to be looking at something on the ground.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are several people visible in the distance, but they are not clearly visible due to the distance and the angle of the shot. There are also several bicycles parked along the sidewalk.",
+    "as_student": "unknown"
+  }
+}

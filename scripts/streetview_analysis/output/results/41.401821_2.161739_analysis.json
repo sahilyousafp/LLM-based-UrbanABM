@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_033617",
+    "latitude": 41.401821,
+    "longitude": 2.161739,
+    "heading": 138.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "635f0a79-103c-4e51-a5ac-f6326a373d3a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.401821_2.161739_h138.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 37842.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow city street with tall buildings on both sides, featuring a mix of old and new architecture. The street is lined with shops and cafes, including a bakery called Forn Yara Pa I Pastes, which has a distinctive sign with red lettering on a white background. The building's facade is made of grey stone blocks, with a large window on the ground floor and a smaller one above it. A yellow traffic light hangs from the wall next to the building, casting a warm glow over the scene. In the distance, a person can be seen riding a bicycle down the street, adding a sense of movement and activity to the otherwise quiet scene. The street is paved with cobblestones, and there are several benches and planters along the sidewalk, providing a place for pedestrians to rest and take in the sights.",
+    "buildings": "The building's facade is made of grey stone blocks, with a large window on the ground floor and a smaller one above it. The building's exterior is adorned with various signs and advertisements, including a prominent sign for Forn Yara Pa I Pastes, which reads 'Forn Yara Pa I Pastes' in bold red letters. The building's entrance is flanked by two large windows, one of which is covered with a metal grate. Above the entrance, a small balcony overlooks the street below, providing a glimpse into the lives of the people who live and work in the area.",
+    "materials": "The building's facade is made of grey stone blocks, with a large window on the ground floor and a smaller one above it. The building's exterior is adorned with various signs and advertisements, including a prominent sign for Forn Yara Pa I Pastes, which reads 'Forn Yara Pa I Pastes' in bold red letters. The building's entrance is flanked by two large windows, one of which is covered with a metal grate. Above the entrance, a small balcony overlooks the street below, providing a glimpse into the lives of the people who live and work in the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters along the sidewalk, providing a place for pedestrians to rest and take in the sights. A few bicycles are parked along the curb, and a streetlight stands sentinel at the corner of the street. The street itself is paved with cobblestones, and there are several signs and advertisements posted along the way.",
+    "vegetation": "The street is lined with trees and plants, adding a touch of greenery to the urban landscape. There are also several flower pots and planters placed along the sidewalk, filled with colorful flowers and shrubs. The street is well-maintained, with clean sidewalks and a smooth, even surface.",
+    "signage": "There are several signs posted along the street, including a large sign for Forn Yara Pa I Pastes, which reads 'Forn Yara Pa I Pastes' in bold red letters. There are also several smaller signs advertising local businesses, including a coffee shop and a restaurant. A streetlight stands at the corner of the street, casting a warm glow over the scene.",
+    "ground_surfaces": "The street is paved with cobblestones, and there are several signs and advertisements posted along the way. The street is well-maintained, with clean sidewalks and a smooth, even surface.",
+    "spatial_enclosure": "The street is relatively narrow, but it is wide enough to accommodate cars and pedestrians. The street is lined with trees and plants, adding a touch of greenery to the urban landscape. There are also several benches and planters placed along the sidewalk, providing a place for pedestrians to rest and take in the sights.",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "The lighting in the scene is soft and warm, with a gentle glow cast by the streetlights and the sun shining down from above. The atmosphere is peaceful and relaxed, with a sense of community and connection among the people in the scene.",
+    "as_resident": "As a resident, I would find this street to be a pleasant and welcoming place to visit. The street is lined with shops and cafes, and there are several benches and planters along the sidewalk. The street is well-maintained, with clean sidewalks and a smooth, even surface. The atmosphere is peaceful and relaxed, with a sense of community and connection among the people in the scene.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, I would find this street to be a fascinating and interesting place to explore. The street is lined with shops and cafes, and there are several benches and planters along the sidewalk. The street is well-maintained, with clean sidewalks and a smooth, even surface. The atmosphere is peaceful and relaxed, with a sense of community and connection among the people in the scene.",
+    "as_student": "As a student, I would find this street to be a great place to study and learn. The street is lined with shops and cafes, and there are several benches and planters along the sidewalk. The street is well-maintained, with clean sidewalks and a smooth, even surface. The atmosphere is peaceful and relaxed, with a sense of community and connection among the people in the scene."
+  }
+}

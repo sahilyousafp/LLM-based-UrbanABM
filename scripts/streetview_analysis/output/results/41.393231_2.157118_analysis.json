@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_030130",
+    "latitude": 41.393231,
+    "longitude": 2.157118,
+    "heading": 273.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a8b28000-983b-4940-9378-c6e827aa3d17",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.393231_2.157118_h273.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50211.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a city street with buildings on both sides, including a large white building with a flat roof and a smaller building with a sloping roof,",
+    "buildings": "unknown",
+    "materials": "Concrete, brick, glass",
+    "building_condition": "unknown",
+    "street_furniture": "Benches, trashcans, bike racks",
+    "vegetation": "Trees, bushes",
+    "signage": "Signs, street signs",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "Not very busy",
+    "as_commuter": "Not very busy",
+    "as_tourist": "Not very busy",
+    "as_student": "Not very busy"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_194516",
+    "latitude": 41.38731570000001,
+    "longitude": 2.1514462999999995,
+    "heading": 181.1374485151414,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "a2c24224-9c03-4aa9-a1bb-8011da9aaa57",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387316_2.151446_h181.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 86000.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, featuring a mix of residential and commercial properties. The street is relatively empty, with only a few parked cars and motorcycles along the curb. A white van is parked on the left side of the street, while several scooters are parked near the center. The buildings have balconies with green awnings, and some have graffiti on their facades. The street has a few trees and plants along the sidewalk, adding some greenery to the urban landscape. The sky is blue with wispy clouds.",
+    "buildings": "The buildings are multi-story structures with a mix of concrete and brick facades. Some have balconies with green awnings, while others have more plain walls. There are also some shops and restaurants along the street, but they are mostly closed or under construction. The buildings appear to be well-maintained, with some showing signs of wear and tear.",
+    "materials": "The street is paved with asphalt, and there are several large concrete blocks and pillars supporting the buildings. The sidewalks are made of concrete, and there are some trees and plants along the edge of the street.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked against the buildings. There are also some streetlights and utility poles along the street.",
+    "vegetation": "There are a few trees and plants along the sidewalk, including some potted plants and hanging baskets. There are also some flowers and shrubs growing out of the cracks in the sidewalk.",
+    "signage": "There are several signs along the street, including a blue sign indicating parking restrictions and a yellow sign warning of construction ahead. There are also some street signs and directional arrows pointing to various locations.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might notice the presence of a few shops and cafes along the street, as well as some residential apartments. They might also notice the sound of birds chirping and the smell of freshly brewed coffee.",
+    "as_commuter": "A commuter might notice the convenience of the location, as well as the proximity to public transportation options. They might also notice the variety of food and drink options available in the area.",
+    "as_tourist": "A tourist might notice the unique character of the area, as well as the rich history and culture of the neighborhood. They might also notice the beautiful architecture and scenic views of the surrounding hills and mountains.",
+    "as_student": "A student might notice the academic atmosphere of the area, as well as the diversity of the student body. They might also notice the quiet, peaceful nature of the area, despite being surrounded by the hustle and bustle of the city."
+  }
+}

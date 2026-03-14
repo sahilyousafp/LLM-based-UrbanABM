@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223506",
+    "latitude": 41.39601809999999,
+    "longitude": 2.1567136,
+    "heading": 136.1816539007886,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "0d9b47ff-1ee4-41cf-8977-3446f27e1539",
+    "dist_along_edge_m": 47.3,
+    "source_image": "sv_41.396018_2.156714_h136.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 84617.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with two young men crossing the road, surrounded by tall buildings and palm trees. The sky is blue with white clouds. The street is empty except for a few cars parked along the side. The men are wearing shorts and t-shirts, and they appear to be talking to each other as they cross the road. The buildings have a mix of old and new architecture, with some having ornate facades and others being more modern. There are also several trees and bushes along the sidewalk, adding some greenery to the urban landscape.",
+    "buildings": "The two-story building on the right has a large dome-shaped roof and a clock tower. It has a mix of stone and glass exterior walls, with balconies and windows on each floor. The building on the left is taller and has a more modern design, with a sleek glass façade and a flat roof. Both buildings have a similar height and scale, but the older building has more ornate details such as carvings and moldings.",
+    "materials": "The street is paved with asphalt and has a smooth surface. The sidewalks are made of concrete and have a slight incline. The road markings include white lines and arrows indicating traffic flow.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no benches or tables visible in the image, but there are several trash cans and recycling bins along the sidewalk.",
+    "vegetation": "There are several trees and bushes along the sidewalk, including palm trees and other tropical plants. The trees are well-maintained and add some greenery to the urban landscape.",
+    "signage": "There are several signs visible, including traffic lights, street signs, and directional signs. The signs are clear and easy to read, but there are no advertisements or promotional signs.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, given its central location and attractive architecture. The area is clean and well-maintained, making it a pleasant place to spend time.",
+    "as_commuter": "The street is a convenient and accessible route for commuters, with easy access to public transportation and parking. The area is well-connected to other parts of the city, making it a great spot for those who need to get around.",
+    "as_tourist": "The street is a popular spot for tourists, given its historic architecture and cultural attractions. The area is lively and vibrant, with many shops, restaurants, and attractions to explore.",
+    "as_student": "This street is a great spot for students to study and work, given its proximity to universities and office buildings. The area is quiet and peaceful, making it a great place to focus and concentrate."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_184839",
+    "latitude": 41.3862995,
+    "longitude": 2.1630016000000003,
+    "heading": 314.7950613613449,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "6ee8b71d-eb37-46e9-9593-34280d5ae1c8",
+    "dist_along_edge_m": 168.0,
+    "source_image": "sv_41.386299_2.163002_h314.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 11527.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large empty movie theater with a wide screen and rows of seats,",
+    "buildings": "The theater has a tall, brown curtain wall with a black border,",
+    "materials": "The floor is made of concrete with a drainage grate running down the middle,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no chairs or tables in the room,",
+    "vegetation": "There are no plants or trees in the room,",
+    "signage": "There are no signs or advertisements visible,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no people in the room,",
+    "lighting_atmosphere": "The lighting is dim,",
+    "as_resident": "This area is quiet and peaceful,",
+    "as_commuter": "It is a long distance between the theater and the main streets,",
+    "as_tourist": "There are no tourists in the theater.",
+    "as_student": "I don't know how many students are in the theater,"
+  }
+}

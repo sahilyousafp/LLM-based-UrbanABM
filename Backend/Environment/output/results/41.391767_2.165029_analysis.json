@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_193541",
+    "latitude": 41.3917666,
+    "longitude": 2.1650286,
+    "heading": 47.06546364670601,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f23fc7d5-2fef-4011-b750-f88d553398e9",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391767_2.165029_h47.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 64542.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large room with white walls and a wooden door, featuring a black-and-white picture above the door and a window with rounded edges on the right side. The floor is made of wood and has a patterned design. A small chair is placed near the door, and there is a trash can next to the window. The room is empty except for the furniture and decorations. The lighting is bright and even, suggesting it is daytime.",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners. It is tall and narrow, with a flat roof.",
+    "materials": "The floor is made of hexagonal ceramic tiles.",
+    "building_condition": "unknown",
+    "street_furniture": "There is a single chair placed against the wall.",
+    "vegetation": "There are no plants or trees visible in the image.",
+    "signage": "There are no visible signs or advertisements.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The room appears to be empty.",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The room is quiet and peaceful."
+  }
+}

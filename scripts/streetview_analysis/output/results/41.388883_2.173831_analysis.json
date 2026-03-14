@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_023113",
+    "latitude": 41.388883,
+    "longitude": 2.173831,
+    "heading": 85.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1637f97d-fe26-41d2-850f-40708baa8bba",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.388883_2.173831_h85.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50211.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings lining both sides, featuring a mix of commercial and residential structures. The street is relatively empty, with only a few pedestrians present. The sky is overcast, casting a gloomy tone over the scene. The street is paved with cobblestone and has a sidewalk made of concrete blocks. A large orange sign reading 'Casa de las Lamparas' hangs above the sidewalk, while a smaller sign below reads 'abelux'. The street is lined with trees and features several yellow poles along the sidewalk.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and traditional architectural styles. Some have balconies, while others feature large windows and ornate facades. The buildings appear to be well-maintained, with some displaying signs of wear and tear.",
+    "materials": "The street is paved with cobblestone, and the sidewalk is made of concrete blocks. Yellow poles line the sidewalk, providing support for the signs and other objects. The buildings' facades are primarily constructed from stone, with some featuring brick accents.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans placed along the sidewalk, as well as a few bicycles parked against the buildings. A small tree grows out of a planter near the corner of the street.",
+    "vegetation": "The street is lined with trees, which provide shade and add a touch of greenery to the urban landscape. The trees are well-maintained, with lush foliage and healthy leaves.",
+    "signage": "Several signs are visible, including a large orange sign reading 'Casa de las Lamparas' and a smaller sign below it that reads 'abelux'. These signs suggest that the area may be home to a variety of businesses and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A few people can be seen going about their daily business, but the area does not appear to be particularly vibrant or lively. The atmosphere is calm and peaceful, with a sense of everyday life unfolding.",
+    "as_commuter": "The area is a convenient location for commuters, with several bus stops and train stations nearby. The streets are relatively safe, with a sense of security.",
+    "as_tourist": "The area is a popular spot for families, with several parks and playgrounds located nearby. The atmosphere is family-friendly, with a sense of warmth and hospitality.",
+    "as_student": "The area is a great place to study abroad, with several universities and colleges located nearby. The atmosphere is academic and focused, with a sense of dedication and hard work."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_035243",
+    "latitude": 41.391222,
+    "longitude": 2.163827,
+    "heading": 313.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "05a09388-c76f-462e-9e3c-ccca9611a414",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391222_2.163827_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49952.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a large building with multiple stories and balconies, surrounded by other buildings and trees. The street has a white line down the middle and cars parked along the sides. People are walking on the sidewalk and there are various businesses along the street including a clothing store and a restaurant. The sky is overcast.",
+    "buildings": "The main building is cream colored with a beige facade and has many windows and balconies. It is at least five stories tall and has a flat roof. There are two smaller buildings on either side of it, one with a yellow facade and the other with a brown facade. The street is paved with asphalt and has a white line running down the middle.",
+    "materials": "The main building has a cream-colored facade with stone quoins at the corners. The second story has a balcony with a railing. The third story has a large window with a rounded top. The fourth and fifth stories have rectangular windows with black frames. The ground floor has a storefront with a sign reading'sehor' and a display window with mannequins dressed in clothes.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk. There is also a bike rack near the corner of the street.",
+    "vegetation": "There are several trees and bushes along the sidewalk. They are well-maintained and add some greenery to the urban landscape.",
+    "signage": "There are several signs along the street, including a blue sign with white lettering and a black sign with white lettering. There is also a small sign on the side of the street that reads 'Café'.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might notice the lack of outdoor seating and the presence of trash cans along the sidewalk.",
+    "as_commuter": "A commuter might notice the convenience of the location and the proximity to public transportation.",
+    "as_tourist": "A tourist might notice the historic charm of the area and the unique character of the buildings.",
+    "as_student": "A student might notice the academic atmosphere of the area."
+  }
+}

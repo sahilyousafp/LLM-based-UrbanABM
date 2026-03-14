@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_010531",
+    "latitude": 41.396149,
+    "longitude": 2.158862,
+    "heading": 128.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c68b73de-2414-4dde-9b6c-43dfdde20d3e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396149_2.158862_h128.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48647.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a park with palm trees and other vegetation surrounding a large building with a flat roof and a few windows. The ground is covered in sand and there are several tall trees in the background. There are also some people sitting on chairs near the building.",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners. It has three stories and a flat roof. There are two windows on the top floor and four on the bottom floor. There are also two windows on the side of the building.",
+    "materials": "The ground is made of sand and has tire tracks all over it. There are also some palm trees and other vegetation growing around the area.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area. Some of them have umbrellas attached to them.",
+    "vegetation": "There are several palm trees and other plants growing in the area. There are also some bushes and flowers.",
+    "signage": "There are several signs posted along the sidewalk, including a red sign with white lettering.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking through the area, but it's not crowded.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area is quiet and peaceful, with only a few people enjoying the scenery.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are several shops and cafes in the area, as well as a few restaurants.",
+    "as_student": "The area is clean and well-maintained, with plenty of space to study or work."
+  }
+}

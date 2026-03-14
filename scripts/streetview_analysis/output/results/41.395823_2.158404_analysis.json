@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_022554",
+    "latitude": 41.395823,
+    "longitude": 2.158404,
+    "heading": 131.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0433195c-2af7-43a2-9993-82a16b9e4b31",
+    "dist_along_edge_m": 52.3,
+    "source_image": "sv_41.395823_2.158404_h131.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50047.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide, empty street with a few benches and trees lining both sides. The buildings are tall and have a mix of white and gray facades. There are some greenery and a few signs along the way. The sky is blue and clear,",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_233046",
+    "latitude": 41.394252,
+    "longitude": 2.1513117,
+    "heading": 316.2905959464262,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "cacb0fe1-810a-48ac-9c2e-5a96c88e6ddc",
+    "dist_along_edge_m": 45.5,
+    "source_image": "sv_41.394252_2.151312_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85326.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A bedroom with a large window and red curtains, featuring a bed with a blue coverlet and a red pillow, along with two lamps and a radiator under the window. The room has a white wall with black trim and a black and white patterned headboard. A small table with a lamp sits beside the bed, while a larger table with a lamp is positioned near the window. The floor is made of wood and the walls are painted white.",
+    "buildings": "The building is a tall structure with a flat roof and a balcony on the second floor. It has a mix of modern and traditional elements, including a large arched doorway and ornate ironwork.",
+    "materials": "The building's exterior is clad in a combination of brick, stone, and metal, with a decorative cornice running along the top.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several pieces of furniture in the room, including a desk, chair, and bookshelf.",
+    "vegetation": "The room has a few potted plants and some hanging baskets filled with flowers.",
+    "signage": "There are several signs posted on the street, including a directional sign and a street nameplate.",
+    "ground_surfaces": "The ground is covered in a thin layer of dust and debris.",
+    "spatial_enclosure": "The room has a sense of openness, with plenty of natural light pouring in through the large windows.",
+    "pedestrian_activity": "The street is relatively quiet, with only a few pedestrians passing by.",
+    "lighting_atmosphere": "The lighting in the room is soft and warm, with a mix of overhead lights and table lamps.",
+    "as_resident": "The room is well-maintained and clean, with a comfortable-looking bed and tidy decor.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and restaurants, offering a range of amenities for visitors.",
+    "as_student": "The area is a great place to socialize, with plenty of social groups and clubs."
+  }
+}

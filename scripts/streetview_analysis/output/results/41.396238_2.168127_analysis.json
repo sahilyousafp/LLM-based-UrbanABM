@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042942",
+    "latitude": 41.396238,
+    "longitude": 2.168127,
+    "heading": 135.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "23d7fdb5-5328-4868-a987-b4d0498d3015",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396238_2.168127_h135.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 15417.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a flower shop with a wide entrance and a large number of plants and flowers outside,",
+    "buildings": "The building has a mix of old and new architecture, with a modern glass front and a more traditional stone facade,",
+    "materials": "The ground is paved with grey bricks, while the building itself is made of a combination of stone and glass,",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables placed around the area, as well as some potted plants and a few chairs,",
+    "vegetation": "The shop has a variety of plants and flowers, including roses, geraniums, and other colorful blooms,",
+    "signage": "There are several signs indicating the shop's name, address, and hours of operation,",
+    "ground_surfaces": "The ground is paved with grey bricks, and there are several small gardens and planters scattered throughout the area,",
+    "spatial_enclosure": "The shop is surrounded by tall buildings and has a large open space in the center,",
+    "pedestrian_activity": "There are several people walking through the area, but it's not overly crowded,",
+    "lighting_atmosphere": "The lighting is bright and airy, with plenty of natural light coming in from the windows,",
+    "as_resident": "The shop appears to be a popular spot for locals and tourists alike, with a relaxed and welcoming atmosphere,",
+    "as_commuter": "The shop is within walking distance of several major streets and public transportation hubs,",
+    "as_tourist": "The shop is a popular spot for taking photos and admiring the beautiful flowers and plants.",
+    "as_student": "The shop is a great place to grab a quick bite to eat or meet up with friends,"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_180635",
+    "latitude": 41.4022906,
+    "longitude": 2.1726752999999994,
+    "heading": 44.261501328387794,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "9ddd378a-c1cf-4f06-8e17-e9518292df06",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.402291_2.172675_h44.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21667.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A sunny day in a park with a few people strolling along a tree-lined path. The sun casts dappled shadows across the ground as people walk along the path. A car is parked on the side of the path, and a tall building looms in the distance. The sky is blue and clear.",
+    "buildings": "The buildings in the background have a mix of modern and traditional styles, with some featuring ornate facades and others having more minimalist designs. Some of the buildings appear to be residential, while others may be commercial or public buildings.",
+    "materials": "The buildings' exterior walls are made of a combination of stone, brick, and glass, giving them a unique texture and character.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the park, providing a place for visitors to rest and take in the surroundings.",
+    "vegetation": "The trees and bushes surrounding the park are lush and green, with leaves rustling gently in the breeze.",
+    "signage": "There are several signs posted along the path, including a yellow sign warning of potential hazards such as potholes and uneven terrain.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the path, some stopping to sit on benches or take photos.",
+    "lighting_atmosphere": "The lighting in the park is bright and cheerful, with the sun shining down and casting long shadows across the ground.",
+    "as_resident": "The park is a popular spot for locals and tourists alike, with many people enjoying the scenery and taking in the sights.",
+    "as_commuter": "The park is a convenient spot for commuters who need to get some exercise or run errands.",
+    "as_tourist": "The park is a great spot for families with young children, with plenty of play areas and picnic spots.",
+    "as_student": "The park is a great place for students to study or work."
+  }
+}

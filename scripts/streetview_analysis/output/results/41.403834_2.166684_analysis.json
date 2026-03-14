@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_025221",
+    "latitude": 41.403834,
+    "longitude": 2.166684,
+    "heading": 311.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "e5e2fd00-7805-4a28-a884-8de33764a1f6",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.403834_2.166684_h311.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50330.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings, cars parked along the curb, and pedestrians strolling by. The sun casts long shadows across the sidewalk, indicating a late afternoon or early evening setting. A white van and a red SUV are parked along the curb, while a tree stands tall in the middle of the street. The surrounding buildings feature balconies and windows, with some displaying signs and advertisements. The street is lined with various shops and cafes, including a parking garage and a coffee shop. The atmosphere is lively, with people going about their daily business.",
+    "buildings": "The buildings are multi-story structures with a mix of modern and traditional architectural styles. Some have balconies with potted plants, while others display signs advertising local businesses. The facades are made of stone, brick, and glass, adding texture and depth to the scene. The buildings appear well-maintained, with clean streets and sidewalks.",
+    "materials": "Materials used in construction include concrete, brick, and glass. The white van has a sleek, modern design, while the red SUV has a more rugged, sporty look. The tree's branches stretch up towards the sky, providing shade and a touch of nature amidst the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "Street furniture includes benches, trash cans, and bike racks, providing a place for people to rest, dispose of waste, and store their bicycles. The benches are simple, functional, and comfortable, while the bike racks offer a convenient spot for cyclists to lock up their bikes.",
+    "vegetation": "Vegetation is sparse, with only a few trees scattered throughout the area. The tree in the center of the street adds a touch of greenery to the otherwise urban landscape.",
+    "signage": "Signs are placed at various locations, including storefronts, street signs, and directional markers. They provide important information, such as directions, warnings, and advertisements. The signs are clear and easy to read, making it simple for pedestrians and drivers to navigate the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As locals, residents take pride in their neighborhood, taking care to maintain the area's charm and character. They appreciate the unique character of the street, which is a blend of old and new.",
+    "as_commuter": "Commuters are active, using public transportation, walking, or driving to get around the city. They take advantage of the area's convenience, accessibility, and amenities.",
+    "as_tourist": "Tourists are drawn to the area's unique character, history, and entertainment options. They come to experience the local culture, try new foods, and enjoy the city's vibrant atmosphere.",
+    "as_student": "Students are focused, studying and working on assignments. They take advantage of the area's academic resources, attending classes, and seeking out study groups and tutoring services."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_040002",
+    "latitude": 41.399816,
+    "longitude": 2.152325,
+    "heading": 84.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "c549e46a-c02f-4b0e-a0e5-c8339abd700e",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.399816_2.152325_h84.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 18339.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A long flight of stairs leading up to a building with a glass escalator on the right side. The walls are beige and there are metal handrails on both sides of the stairs. There are no people visible in the image.",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners. It is at least three stories tall and has a large window on the top floor.",
+    "materials": "The stairs have a gray tile floor and metal handrails. The escalator is made of glass and metal.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image.",
+    "vegetation": "There are no visible plants or trees in the image.",
+    "signage": "There are several signs posted along the wall, including a yellow sign with black text and a white sign with blue text.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no people visible in the image.",
+    "lighting_atmosphere": "The lighting in the image is bright and even, suggesting that it was taken during the daytime.",
+    "as_resident": "The area appears to be quiet and peaceful, with no visible noise or activity.",
+    "as_commuter": "unknown",
+    "as_tourist": "There are no tourists or visitors visible in the image.",
+    "as_student": "The area is clean and well-maintained, with a few benches and trash cans available."
+  }
+}

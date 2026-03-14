@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_180935",
+    "latitude": 41.3954936,
+    "longitude": 2.16055,
+    "heading": 252.56671705851934,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "81994c3e-3c84-4b23-9221-c553746e653f",
+    "dist_along_edge_m": 3.6,
+    "source_image": "sv_41.395494_2.160550_h252.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 43063.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, featuring a mix of commercial and residential structures. The street is paved with gray concrete pavers and has a few pedestrians walking along the sidewalk. A black lamppost stands in front of a small glass structure with a red sign reading 'M' in white letters. The surrounding buildings have a modern aesthetic with large windows and balconies. The sky is overcast.",
+    "buildings": "The buildings are primarily made of glass and steel, with some featuring balconies and ornate facades. Some have a more traditional look, while others appear newer and sleeker. The street is relatively quiet, with only a few cars parked along the curb.",
+    "materials": "The street is paved with gray concrete pavers, and there are several large glass structures along the sidewalk. The lampposts are made of metal and feature a classic design. The buildings' facades are mostly made of glass and steel, with some having balconies and ornate details.",
+    "building_condition": "unknown",
+    "street_furniture": "There are a few benches and trash cans scattered along the sidewalk, but the area is generally clean and well-maintained. There are also several streetlights, including a large one near the glass structure.",
+    "vegetation": "There are a few trees and bushes along the sidewalk, adding some greenery to the otherwise urban landscape. The buildings' facades are mostly bare, with some having decorative elements such as carvings or moldings.",
+    "signage": "There are several signs along the street, including a large one on the side of a building that reads 'Montblanc' in bold letters. There are also several smaller signs advertising various businesses, including a coffee shop and a restaurant.",
+    "ground_surfaces": "The ground is paved with gray concrete pavers, and there are several large cracks and unevennesses throughout. There are also several manhole covers and storm drains.",
+    "spatial_enclosure": "The street feels relatively open and airy, with plenty of space between buildings and pedestrians. However, there are several narrow alleys and side streets that can be found off the main thoroughfares.",
+    "pedestrian_activity": "There are a few people walking along the sidewalk, but the area is generally quiet and peaceful. Some people are sitting on benches or standing outside cafes, enjoying the scenery.",
+    "lighting_atmosphere": "The lighting is soft and diffused, with a warm glow emanating from the streetlights. The sky is overcast, casting long shadows across the street.",
+    "as_resident": "This area is likely a popular spot for locals and tourists alike, offering a mix of shopping, dining, and entertainment options. It's a great place to take a break from the hustle and bustle of the city.",
+    "as_commuter": "unknown",
+    "as_tourist": "The area is also home to several historic landmarks and cultural attractions, including a museum and a statue. Visitors can explore the street's many shops, restaurants, and cafes, and enjoy the unique architecture and lively atmosphere.",
+    "as_student": "As a student, I'd love to explore this area, taking advantage of its proximity to campus life and academic institutions. The street is bustling with young professionals and students, and offers plenty of opportunities for networking and learning."
+  }
+}

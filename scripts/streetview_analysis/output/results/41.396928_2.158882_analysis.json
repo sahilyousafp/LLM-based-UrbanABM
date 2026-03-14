@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_004137",
+    "latitude": 41.396928,
+    "longitude": 2.158882,
+    "heading": 47.1,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "78dceea1-2488-49c5-84cc-d5113fc1eec6",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.396928_2.158882_h47.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48500.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings lining both sides, featuring a mix of residential and commercial properties, including apartments, shops, and restaurants. The street is relatively empty, with only a few pedestrians and parked scooters along the sidewalk. The sky is overcast, casting long shadows across the pavement,",
+    "buildings": "The buildings are primarily made of stone and feature ornate facades with balconies and decorative details. Some have large windows, while others have smaller ones. There are also several shops and restaurants along the street, including a coffee shop and a bookstore.",
+    "materials": "The street is paved with cobblestone and has a few trees planted along the sidewalk. The pavement is clean and well-maintained, with some cracks and unevenness here and there.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the cafes and restaurants, providing a place for people to sit and rest. There are also some bike racks and parking meters along the sidewalk.",
+    "vegetation": "The trees are mostly bare, suggesting that it may be winter or early spring. There are also some flowers and plants growing in pots along the sidewalk.",
+    "signage": "There are several signs posted along the street, including street signs, directional signs, and advertisements. Some of the signs are old and worn, while others are more modern.",
+    "ground_surfaces": "The ground is mostly concrete, but there are some areas with grass and gravel. There are also some cracks and uneven surfaces.",
+    "spatial_enclosure": "The street is relatively open, with a few narrow alleys and side streets leading off into the distance. There are also some larger buildings and landmarks visible in the background.",
+    "pedestrian_activity": "There are a few people walking along the sidewalk, but it's not very busy. Some people are sitting on benches, while others are walking quickly past.",
+    "lighting_atmosphere": "The lighting is dim, with some areas being brighter than others. There are also some streetlights and lanterns hanging from the buildings.",
+    "as_resident": "Some locals seem to enjoy spending time outdoors, enjoying the fresh air and sunshine. Others appear to be more focused on their daily routines, going about their business without much fanfare.",
+    "as_commuter": "unknown",
+    "as_tourist": "This area is popular with tourists, who come to admire the architecture and take photos. There are also some street performers and vendors selling souvenirs and snacks.",
+    "as_student": "The area is also a great spot for nature lovers, with plenty of opportunities for outdoor activities such as hiking and rock climbing."
+  }
+}

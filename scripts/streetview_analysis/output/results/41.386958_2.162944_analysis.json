@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_031630",
+    "latitude": 41.386958,
+    "longitude": 2.162944,
+    "heading": 316.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "02a3a061-6f65-42b8-a23e-90449ef52f24",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386958_2.162944_h316.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 30719.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A serene garden scene with a small pond surrounded by lush greenery and a few buildings in the distance. The garden is well-maintained and peaceful, with a mix of trees, bushes, and flowers adding color and texture to the space. A winding path made of irregularly shaped stones leads through the garden, inviting visitors to explore its tranquil atmosphere.",
+    "buildings": "The buildings in the background are tall and imposing, with a mix of modern and traditional architectural styles. They appear to be residential or commercial properties, with balconies and windows that suggest a sense of community and activity.",
+    "materials": "The garden features a variety of materials, including stone, brick, and wood. The stone pathway is made up of large, irregularly shaped stones that have been carefully arranged to create a sense of movement and flow. The brick walls of the buildings are painted a warm, earthy color, while the wooden accents add a touch of warmth and character.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and chairs scattered throughout the garden, providing a place for visitors to sit and relax. Some of the benches are made of wood, while others are metal or plastic. There are also several tables and umbrellas, suggesting that the garden may host outdoor events or gatherings.",
+    "vegetation": "The garden is teeming with life, with a variety of plants and flowers adding color and texture to the space. There are tall trees that provide shade and shelter from the sun, while smaller shrubs and bushes add depth and interest to the landscape. The overall effect is one of serenity and tranquility.",
+    "signage": "There are several signs visible in the garden, including a large sign that reads 'Garden' in bold letters. There are also several smaller signs that appear to be directional arrows, indicating the location of nearby attractions and amenities.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a resident, I would find this garden to be a peaceful retreat from the hustle and bustle of city life. It offers a chance to escape into nature and enjoy the beauty of the outdoors. I would recommend it as a great spot to relax, read a book, or simply take a stroll.",
+    "as_commuter": "As a commuter, I would find this garden to be a convenient and relaxing break from the daily grind. It offers a peaceful oasis in the midst of a busy city, with plenty of opportunities for exercise and recreation. I would recommend it as a great place to unwind and recharge.",
+    "as_tourist": "As a tourist, I would find this garden to be a fascinating and unique attraction. It offers a glimpse into the history and culture of the city, with its ornate architecture and beautiful gardens. I would recommend it as a must-see destination for anyone interested in exploring the city's hidden gems.",
+    "as_student": "As a student, I would find this garden to be a valuable resource for learning and growth. It offers a peaceful and inspiring environment for studying, reading, and relaxation. I would recommend it as a great place to get away from the pressures of schoolwork and focus on my studies."
+  }
+}

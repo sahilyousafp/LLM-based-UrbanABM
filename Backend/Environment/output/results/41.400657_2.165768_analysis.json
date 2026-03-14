@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260312_000628",
+    "latitude": 41.40065659999999,
+    "longitude": 2.1657682000000005,
+    "heading": 46.73005071776299,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "road",
+    "edge_id": "4c66ddf0-0f8c-45f1-b6e5-07c08071ee6c",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.400657_2.165768_h46.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 37503.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings on both sides, lined with cars parked along the curb and trees providing shade. The street is relatively empty, with only a few pedestrians visible in the distance. The sky is overcast, casting long shadows across the pavement.",
+    "buildings": "The buildings are multi-story apartment complexes with balconies and windows. They have a mix of modern and traditional architectural styles, with some featuring ornate facades and others having more minimalist designs. Some buildings have awnings or shutters covering their windows.",
+    "materials": "The street is paved with asphalt, and there are several large trash cans and recycling bins placed along the sidewalk. The buildings' facades are made of a combination of concrete, brick, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area, providing a place for people to sit and rest. A few bicycles are parked against the buildings, and there are also some streetlights and trash cans.",
+    "vegetation": "The trees provide shade and add a touch of greenery to the otherwise urban landscape. There are also some potted plants and flowers placed along the sidewalk, adding color and vibrancy to the scene.",
+    "signage": "There are several signs posted on the buildings, including street signs, directional signs, and advertisements. Some of the signs are in Spanish, while others are in English.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of this quiet neighborhood, with its mix of residential and commercial spaces. They might enjoy the proximity to parks and green spaces, as well as the convenience of being close to public transportation.",
+    "as_commuter": "unknown",
+    "as_tourist": "A tourist might find this area attractive due to its unique blend of old and new architecture, as well as its vibrant street life. They might be drawn to the historic charm of the buildings and the lively atmosphere of the surrounding streets.",
+    "as_student": "A student might appreciate the academic vibe of this area, with its mix of modern and traditional buildings. They might enjoy the opportunity to study in a beautiful and culturally rich environment, surrounded by other students and scholars."
+  }
+}

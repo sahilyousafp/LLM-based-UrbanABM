@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_010940",
+    "latitude": 41.387137,
+    "longitude": 2.168416,
+    "heading": 8.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "0835374b-81f6-4aa9-bce9-6b7d04955e41",
+    "dist_along_edge_m": 4.3,
+    "source_image": "sv_41.387137_2.168416_h8.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48865.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a large white building with many windows and towers, surrounded by other buildings, with people walking around and cars driving by. The sky is blue with some clouds. There are two trash cans in front of the building, and a few people standing around them. A man and woman are standing near the trash cans, looking at something in the distance. The ground is made of gray bricks, and there are several other people walking around the area. The overall atmosphere is busy and lively.",
+    "buildings": "The large white building has a mix of modern and traditional architectural styles, with tall towers and ornate details. It has many windows and balconies, and appears to be a commercial or office building. The surrounding buildings are also white and have a similar style, but with more ornate details. There are several other buildings in the background, including a tall skyscraper with a distinctive shape.",
+    "materials": "The building's facade is made of white stone or concrete, with intricate carvings and moldings. The windows are large and rectangular, with metal frames. The roof is flat and has several chimneys.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the building, as well as a few streetlights and trash cans. The street is paved with gray bricks, and there are several people walking along the sidewalk.",
+    "vegetation": "There are a few small trees and bushes planted along the sidewalk, but they are sparse and do not provide much shade. There are also several potted plants and flowers placed along the sidewalk.",
+    "signage": "There are several signs posted on the building, including a large sign that reads 'Casa de la Vella' in bold letters. There are also several smaller signs advertising local businesses and events.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are several people walking along the sidewalk, some of whom are carrying bags or backpacks. There are also a few people sitting on benches or standing in small groups.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow over the entire scene. There are several streetlights and lanterns mounted on poles, casting long shadows across the sidewalk.",
+    "as_resident": "A local resident might comment on the cleanliness and safety of the area, noting that it is generally clean and safe. They might also mention the presence of street performers or vendors.",
+    "as_commuter": "unknown",
+    "as_tourist": "A tourist might comment on the beauty and charm of the area, noting the historic architecture and cultural attractions. They might also mention the lively atmosphere and outdoor dining options.",
+    "as_student": "A student might comment on the academic rigor and intellectual pursuits available in the area, noting the presence of libraries and research facilities. They might also mention the diverse range of courses offered."
+  }
+}

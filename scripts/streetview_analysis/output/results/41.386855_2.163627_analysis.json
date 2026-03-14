@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_005619",
+    "latitude": 41.386855,
+    "longitude": 2.163627,
+    "heading": 310.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "10893a18-3529-41ec-b2e3-85a8c21f2308",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386855_2.163627_h310.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 10831.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A view of a large window with a black metal grid pattern, showing a view of a courtyard with trees and a blue sky outside. The window has a white wall with small rectangular cutouts along the bottom,",
+    "buildings": "The window is part of a larger building with a cream-colored facade and a tall, thin column in the middle. There are two smaller windows on either side of the main window, both with similar designs but different sizes. The left window is closed, while the right window is open,",
+    "materials": "The window frames are made of black metal with a crisscross pattern. The walls surrounding the window have a cream-colored finish with small rectangular cutouts along the bottom,",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image, such as benches or trash cans.",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

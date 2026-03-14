@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_232505",
+    "latitude": 41.3957368,
+    "longitude": 2.1554650000000004,
+    "heading": 166.16116159286048,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "2cfb8097-7f85-438a-8909-055a48da3d2a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.395737_2.155465_h166.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85060.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A corner of a room with two red chairs, a white door, and a picture on the wall,",
+    "buildings": "The walls are painted mint green with white molding,",
+    "materials": "The chair frames are made of wood, while the radiator is made of metal.",
+    "building_condition": "unknown",
+    "street_furniture": "There are two red chairs placed against the wall,",
+    "vegetation": "There are no plants or trees in the area,",
+    "signage": "There are no visible signs,",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians,",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This is a quiet residential area,",
+    "as_commuter": "unknown",
+    "as_tourist": "There are no tourists,",
+    "as_student": "There are no students,"
+  }
+}

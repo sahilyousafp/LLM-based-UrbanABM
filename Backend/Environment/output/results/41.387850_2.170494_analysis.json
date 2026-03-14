@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_210825",
+    "latitude": 41.3878497,
+    "longitude": 2.1704944000000004,
+    "heading": 140.55105230620507,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "4816f429-c109-417c-ba0e-bfcbc72c4ec4",
+    "dist_along_edge_m": 8.6,
+    "source_image": "sv_41.387850_2.170494_h140.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 85604.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with buildings on both sides, paved with dark gray bricks, and a few trees in the distance. The sky is clear and blue, with a few clouds visible in the far distance. A small kiosk stands out in the middle of the street, with a red sign reading 'Mel Perdido' above its entrance. The kiosk has a flat roof and a large window on its front, with various items displayed inside. To the left of the kiosk is a tall white building with many windows, while to the right is a shorter building with a brown facade and a few windows. The street is mostly empty, with only a few people visible in the distance.",
+    "buildings": "The white building has a modern design with a flat roof and rectangular windows, while the brown building has a more traditional design with a pitched roof and smaller windows. Both buildings have a similar height, but the white building is taller than the brown one.",
+    "materials": "The white building has a smooth, white exterior with a few decorative elements, such as a small balcony on the top floor. The brown building has a rougher texture, with a mix of concrete and brick used for its exterior.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few streetlights and signs.",
+    "vegetation": "There are a few trees and bushes scattered throughout the area, providing shade and adding some greenery to the otherwise urban landscape.",
+    "signage": "There are several signs visible, including a large billboard on the side of the white building and a few smaller signs on the brown building.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the street, with plenty of space to sit and relax. They might also enjoy the views of the surrounding buildings and the street itself.",
+    "as_commuter": "A commuter might find the street comfortable and relaxing, with plenty of opportunities for rest and recovery.",
+    "as_tourist": "A tourist might find the street beautiful and captivating, with its unique character and charm.",
+    "as_student": "A student might find the street challenging and stimulating, with plenty of opportunities for problem-solving and critical thinking."
+  }
+}

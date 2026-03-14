@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_042327",
+    "latitude": 41.393371,
+    "longitude": 2.157649,
+    "heading": 181.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "634582ab-883b-40af-83b3-63f684c05bfd",
+    "dist_along_edge_m": 14.5,
+    "source_image": "sv_41.393371_2.157649_h181.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49854.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of commercial and residential structures. The street is relatively empty, with only a few vehicles parked along the curb. A black van is prominently featured in the foreground, while a white van and several motorcycles are parked along the sidewalk. The sky above is clear and blue, suggesting a sunny day.",
+    "buildings": "The buildings are primarily yellow, with some featuring balconies and ornate facades. The left side of the street has more modern architecture, while the right side has older, more traditional designs.",
+    "materials": "The street is paved with asphalt, and there are various materials used throughout the buildings, including stone, brick, and metal.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside cafes and restaurants, as well as bike racks and trash cans.",
+    "vegetation": "The street is lined with trees and other greenery, adding a touch of nature to the urban landscape.",
+    "signage": "There are several signs visible, including directional signs and advertisements.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the immediate area.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears to be a quiet, residential area, with a few residents visible in the distance.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is a fun and lively area, with plenty of things to do and see.",
+    "as_student": "The street is a vibrant and lively area, with a mix of old and new buildings and a diverse range of activities."
+  }
+}

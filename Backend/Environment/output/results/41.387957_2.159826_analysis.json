@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_222506",
+    "latitude": 41.387956800000005,
+    "longitude": 2.159826,
+    "heading": 317.21652166438224,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "e87c386f-bcba-4eff-9111-fd4e19e2e389",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387957_2.159826_h317.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44030.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and trashcans along the sidewalk. The street is mostly empty, with only a few cars and motorcycles passing by. The sky is blue with some clouds.",
+    "buildings": "The buildings are multi-story structures with balconies and windows. They have a mix of modern and traditional architectural styles.",
+    "materials": "The street is paved with asphalt and has white lines painted on it to guide traffic.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and bike racks along the sidewalk.",
+    "vegetation": "The trees are leafless, suggesting it may be winter or early spring.",
+    "signage": "There are several signs posted along the street, including traffic lights and directional signs.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no pedestrians visible in the image.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street appears quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with interesting architecture and has a charming atmosphere.",
+    "as_student": "The street is clean and safe, with clear signage and pedestrian-friendly infrastructure."
+  }
+}

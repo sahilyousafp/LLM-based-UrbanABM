@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_234954",
+    "latitude": 41.3980736,
+    "longitude": 2.1646389000000004,
+    "heading": 142.45570757696106,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "road",
+    "edge_id": "0ff3783a-b681-4a01-8dae-abd13afa51d8",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.398074_2.164639_h142.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 86392.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a bus parked along the curb. The street has white painted lines indicating pedestrian crossings and bike lanes, with a clear blue sky overhead. A large tree stands prominently in the middle of the street, casting a shadow over the area. The bus is parked along the curb, facing away from the camera, with its rear end visible.",
+    "buildings": "The buildings on either side of the street are multi-story structures with a mix of modern and older architectural styles. They have a uniform height and are made of a combination of concrete, brick, and glass.",
+    "materials": "The street is paved with asphalt, while the sidewalk is made of concrete. The buildings' facades feature a range of materials, including stone, brick, and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the curb.",
+    "vegetation": "The trees lining the street are tall and leafy, providing shade for pedestrians and adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs posted along the street, including traffic signs and directional indicators.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are no visible pedestrians in the immediate vicinity, but there may be some activity further down the street.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow cast by the sun.",
+    "as_resident": "The street appears to be a quiet, residential area, with a few residents visible in the distance.",
+    "as_commuter": "The street is a convenient stop for those traveling to and from the city center.",
+    "as_tourist": "The street is a must-see destination for anyone interested in exploring the city's rich history and culture.",
+    "as_student": "The street is a great place to learn about the city's famous landmarks and attractions."
+  }
+}

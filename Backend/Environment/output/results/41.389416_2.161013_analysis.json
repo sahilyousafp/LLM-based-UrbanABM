@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_220531",
+    "latitude": 41.38941609999999,
+    "longitude": 2.1610128,
+    "heading": 226.97621461945872,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "fef0e714-58f3-48fb-8789-f7a5573d18b6",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.389416_2.161013_h226.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 44094.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings and trees lining both sides. The street is paved with gray bricks and has a median strip with grass and trees. There are several large trash cans along the sidewalk. A few cars are parked along the street. The sky is clear and blue. The sun is shining down on the scene. The trees have lost their leaves, indicating it may be autumn or winter. The buildings are multi-story and made of concrete and glass. The street is relatively empty, but there are some pedestrians walking along the sidewalk. The overall atmosphere is calm and peaceful.",
+    "buildings": "The buildings are tall and modern, with a mix of glass and concrete facades. They appear to be residential or commercial properties. Some have balconies or terraces. The buildings are well-maintained and clean. The street is lined with trees and bushes, adding shade and greenery to the urban landscape.",
+    "materials": "The street is paved with gray bricks, and the median strip is covered in grass and trees. The trash cans are made of metal and plastic. The buildings' facades are made of glass and concrete. The streetlights are tall and slender, with a modern design. The benches are simple and functional.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables scattered throughout the area. They are made of wood and metal. The streetlights are tall and slender, with a modern design. The trash cans are made of metal and plastic.",
+    "vegetation": "The trees are deciduous, with bare branches and no leaves. The bushes are evergreen and well-manicured. The median strip is covered in grass and flowers. The streetlights are tall and slender, with a modern design.",
+    "signage": "There are several signs posted along the street, including street names, directional signs, and informational signs. They are all clearly visible and easy to read. The signs are mounted on poles and are spaced at regular intervals.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking along the sidewalk, but the street is generally quiet and peaceful. The pedestrian activity is limited, but there are a few people visible.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "As a local resident, I would appreciate the cleanliness and maintenance of the street. The trees and bushes are well-manicured, and the streetlights are modern and sleek. I would like to see more outdoor seating areas and public art installations.",
+    "as_commuter": "unknown",
+    "as_tourist": "As a tourist, I would be drawn to the unique architecture and historic charm of the area. I would want to explore the shops and restaurants along the street, and take in the views of the surrounding buildings.",
+    "as_student": "unknown"
+  }
+}

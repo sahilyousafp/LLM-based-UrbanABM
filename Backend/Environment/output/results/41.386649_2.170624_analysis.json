@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_172911",
+    "latitude": 41.3866487,
+    "longitude": 2.1706236999999997,
+    "heading": 129.52614866421834,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "3e5c0fcc-6367-4b81-819e-82731528c83b",
+    "dist_along_edge_m": 5.5,
+    "source_image": "sv_41.386649_2.170624_h129.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 21932.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings lining both sides, including a large white building with many windows and a smaller tan building with a flag on top, as well as several parked motorcycles and cars along the street. The sky is clear and blue, and there are several pedestrians walking across the street.",
+    "buildings": "The large white building has a flat roof with a row of small flags along the edge, while the smaller tan building has a more ornate facade with columns and arches. Both have multiple stories and numerous windows.",
+    "materials": "The large white building has a smooth, light-colored stone exterior, while the smaller tan building has a rougher texture and a mix of stone and brick materials.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans scattered throughout the area, but no other notable furniture pieces are visible.",
+    "vegetation": "There are several trees planted along the sidewalk, providing shade and adding some greenery to the urban landscape.",
+    "signage": "There are several signs visible, including a large red sign on the front of the larger building and a few smaller signs on the side of the street.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A few locals can be seen going about their daily business, while tourists take photos and admire the architecture.",
+    "as_commuter": "The area is also a great spot for nature lovers, with several hiking trails and scenic views of the surrounding mountains.",
+    "as_tourist": "The area is also a great spot for nature lovers, with several hiking trails and scenic views of the surrounding mountains.",
+    "as_student": "The area is also a great spot for nature lovers, with several hiking trails and scenic views of the surrounding mountains."
+  }
+}

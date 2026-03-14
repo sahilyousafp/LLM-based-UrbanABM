@@ -75,6 +75,8 @@ class BlockDispatcher:
         step: int,
         candidate_edges: list[dict],
         nearby_amenities: Optional[list] = None,
+        street_perception: Optional[dict] = None,
+        needs_new_edge: bool = True,
     ) -> StepResult:
         """
         Run all blocks for one simulation step.
@@ -83,6 +85,7 @@ class BlockDispatcher:
             step: current simulation step number
             candidate_edges: edges reachable from agent's current position
             nearby_amenities: POIs within range of current position
+            street_perception: VLM-analysed street environment at current location
         """
         # 1. NeedsBlock — always runs (cheap)
         needs_result = await self.needs_block.run(
@@ -90,17 +93,24 @@ class BlockDispatcher:
         )
 
         # 2. CognitionBlock — always runs (cheap between intervals)
-        cognition_result = await self.cognition_block.run(step=step)
+        cognition_result = await self.cognition_block.run(
+            step=step, street_perception=street_perception
+        )
 
-        # 3. MobilityBlock — LLM only if within per-step budget
-        use_llm = _can_use_llm_for_mobility(step)
-        if use_llm:
-            mobility_result = await self.mobility_block.run(
-                step=step, candidate_edges=candidate_edges
-            )
+        # 3. MobilityBlock — LLM only if within per-step budget AND we need a new edge
+        if needs_new_edge:
+            use_llm = _can_use_llm_for_mobility(step)
+            if use_llm:
+                mobility_result = await self.mobility_block.run(
+                    step=step, candidate_edges=candidate_edges,
+                    street_perception=street_perception,
+                )
+            else:
+                # Rule-based fallback: prefer least-visited edge
+                mobility_result = await self._rule_based_mobility(step, candidate_edges)
         else:
-            # Rule-based fallback: prefer least-visited edge
-            mobility_result = await self._rule_based_mobility(step, candidate_edges)
+            # We are still traversing the current edge
+            mobility_result = BlockResult(action="stay", params={}, reasoning="Traversing current edge")
 
         return StepResult(
             needs=needs_result,

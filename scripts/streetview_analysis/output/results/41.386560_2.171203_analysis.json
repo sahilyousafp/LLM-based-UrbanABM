@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_030635",
+    "latitude": 41.38656,
+    "longitude": 2.171203,
+    "heading": 301.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b43611f6-05cf-4093-892f-412dfa3b9ffe",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.386560_2.171203_h301.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50087.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with a bus on the left side of the road, lined with tall buildings and trees, featuring a mix of old and new architecture, including a large stone monument in the distance. The street is wide and well-lit, with a few cars parked along the curb and a bus driving down the road. The sky is a deep blue with a hint of pink on the horizon, suggesting the sun has recently set.",
+    "buildings": "The buildings in the background are a mix of old and new, with some featuring ornate facades and others having more modern designs. Some have balconies or terraces, while others appear to be commercial properties with large windows.",
+    "materials": "The street is paved with a combination of asphalt and cobblestone, with a decorative pattern of interlocking stones adding visual interest. A few trees line the sidewalk, providing shade and a touch of greenery amidst the urban landscape.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans scattered throughout the area, as well as a few bicycles parked against the curb. A small kiosk stands near the center of the image, offering refreshments and souvenirs.",
+    "vegetation": "The trees are tall and leafy, providing a natural oasis in the midst of the bustling city. They add a pop of color and texture to the scene.",
+    "signage": "There are several signs posted along the street, including directional signs and advertisements. Some of them are illuminated, while others are not.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its unique blend of old and new architecture and lively atmosphere. It's a great place to grab a coffee or snack before heading out into the city.",
+    "as_commuter": "The street is a convenient location for commuters, with several buses and trains passing through the area regularly. It's a great base for exploring the city and its surroundings.",
+    "as_tourist": "The street is a popular spot for tourists, with many shops and restaurants catering to visitors. The area is also home to several parks and gardens, making it a great place to relax and unwind.",
+    "as_student": "This street is a great place for students to study or work, with its quiet and peaceful atmosphere. The area is also home to several libraries and research facilities, making it a great spot for academic pursuits."
+  }
+}

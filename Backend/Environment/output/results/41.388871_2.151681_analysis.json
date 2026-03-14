@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_213920",
+    "latitude": 41.38887059999999,
+    "longitude": 2.1516805999999997,
+    "heading": 269.73737019588924,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "efbc525f-ca8d-41d1-b19a-51536c53bb98",
+    "dist_along_edge_m": 6.2,
+    "source_image": "sv_41.388871_2.151681_h269.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 12477.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with tall buildings and a blue sky",
+    "buildings": "A large white building with balconies and windows",
+    "materials": "The ground is made of concrete and brick",
+    "building_condition": "unknown",
+    "street_furniture": "Ben Jugat bus stop",
+    "vegetation": "Trees and plants line the sidewalk",
+    "signage": "Ben Jugat signs",
+    "ground_surfaces": "Pavement and asphalt",
+    "spatial_enclosure": "The street is relatively wide and has a clear view of the sky",
+    "pedestrian_activity": "People are walking on the sidewalk",
+    "lighting_atmosphere": "The sun is shining brightly",
+    "as_resident": "There are no people visible",
+    "as_commuter": "The street is busy with cars driving by",
+    "as_tourist": "The street is lined with shops and restaurants",
+    "as_student": "There are no students visible"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_041935",
+    "latitude": 41.393268,
+    "longitude": 2.166663,
+    "heading": 189.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "6f663a61-8b7b-4ac7-ac72-e38a270aa826",
+    "dist_along_edge_m": 9.4,
+    "source_image": "sv_41.393268_2.166663_h189.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50110.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street with buildings on both sides, featuring a mix of commercial and residential structures, including a large yellow building with many windows and a smaller building with a flat roof and a tree in front of it. The street has a wide sidewalk made of gray bricks, with a few people walking along it. A sign stands on the right side of the street, displaying an advertisement for a product called 'Siempre tuera de casa' with a picture of a hand holding a gift box. The sky above is overcast.",
+    "buildings": "The yellow building has a curved corner and a flat roof, while the other building has a more angular design with a flat roof. Both have multiple stories and feature large windows.",
+    "materials": "The yellow building's exterior is clad in a combination of smooth and textured surfaces, while the other building's facade is primarily composed of smooth concrete and glass.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters along the sidewalk, as well as a few trash cans and recycling bins.",
+    "vegetation": "The tree in front of the yellow building adds a touch of greenery to the otherwise urban landscape.",
+    "signage": "The sign advertising 'Siempre tuera de casa' is prominently displayed on the right side of the street, near the intersection with another street.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or briefcases, while others are simply strolling.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a quiet, residential neighborhood with a mix of apartments and shops.",
+    "as_commuter": "The street is a popular route for those looking for a quick coffee.",
+    "as_tourist": "The area is a great spot for sightseeing and relaxation.",
+    "as_student": "The area is a great place to study or work."
+  }
+}

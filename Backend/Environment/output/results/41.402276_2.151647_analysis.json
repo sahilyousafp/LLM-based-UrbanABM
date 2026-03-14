@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_232626",
+    "latitude": 41.402276099999995,
+    "longitude": 2.151647,
+    "heading": 245.82151621839682,
+    "street_name": "Carrer d'Aulèstia i Pijoan",
+    "highway_type": "road",
+    "edge_id": "d27dafb5-559e-4011-8eb3-fc1c77e39133",
+    "dist_along_edge_m": 103.8,
+    "source_image": "sv_41.402276_2.151647_h245.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 17333.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A narrow street in a city with buildings on both sides, featuring a mix of old and new architecture, including a yellow building with a closed storefront and a white building with balconies,",
+    "buildings": "unknown",
+    "materials": "Cement, brick, and possibly wood,",
+    "building_condition": "unknown",
+    "street_furniture": "Bollards, trash cans, and bike racks,",
+    "vegetation": "Small trees and bushes,",
+    "signage": "A sign reading 'La Brillantina' above the storefront,",
+    "ground_surfaces": "Paved with cobblestones,",
+    "spatial_enclosure": "Open and airy,",
+    "pedestrian_activity": "People walking and shopping,",
+    "lighting_atmosphere": "Bright and sunny,",
+    "as_resident": "The area is quiet and peaceful,",
+    "as_commuter": "unknown",
+    "as_tourist": "It's a popular tourist destination.",
+    "as_student": "The area is popular with students,"
+  }
+}

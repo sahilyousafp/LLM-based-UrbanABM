@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_020648",
+    "latitude": 41.392505,
+    "longitude": 2.158232,
+    "heading": 98.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b1cd5fed-66a6-4591-a4a6-9a007b0e0905",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392505_2.158232_h98.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49007.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large indoor space with a tiled floor and ceiling, featuring a staircase leading down to a lower level with a railing and stairs. The walls are white with blue accents, and there are several doors along the back wall. A few bicycles are parked near the top of the stairs. The lighting is bright and even, suggesting daytime hours. The atmosphere is calm and quiet, with no visible activity or movement. The overall mood is neutral, with no strong emotions or feelings conveyed.",
+    "buildings": "The buildings in the background have a mix of modern and traditional styles, with some featuring large windows and others having more ornate facades. Some of the buildings appear to be residential, while others may be commercial or office spaces. The architecture suggests a blend of old and new, with a focus on functionality rather than aesthetics.",
+    "materials": "The materials used in the construction of the buildings include concrete, brick, and metal. The flooring is made of polished stone or tile, and the walls are constructed from a combination of concrete and brick. The ceiling is made of metal panels, and the lighting fixtures are modern and energy-efficient.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several pieces of street furniture scattered throughout the area, including benches, trash cans, and bike racks. These items are likely intended for public use, but their exact purpose is unclear.",
+    "vegetation": "There are no visible plants or trees in the immediate vicinity, although there may be some hidden behind the buildings or in other areas of the surrounding streetscape.",
+    "signage": "There are several signs visible in the distance, including directional signs and advertisements. These signs appear to be informational, providing directions to various locations within the area.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might comment on the area as being clean and well-maintained, with a sense of community and activity. They may appreciate the presence of shops and restaurants in the area, as well as the overall aesthetic appeal of the surroundings.",
+    "as_commuter": "A commuter might comment on the area as being efficient and practical, with a sense of speed and convenience. They may appreciate the convenience of the location, as well as the variety of amenities available.",
+    "as_tourist": "A tourist might comment on the area as being lively and social, with a sense of community and connection. They may appreciate the unique character of the area, as well as the opportunity to connect with others.",
+    "as_student": "A student might view the area as being focused and driven, with a sense of purpose and motivation. They may appreciate the academic atmosphere, as well as the opportunities for growth and development."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_020047",
+    "latitude": 41.397509,
+    "longitude": 2.172338,
+    "heading": 349.3,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f779986c-7a84-42d9-b5a6-02b7aeff3693",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.397509_2.172338_h349.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48720.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide city street with a large building in the background, surrounded by trees and other buildings, with a few cars and motorcycles parked along the side of the road. The street has a pedestrian crossing and a sidewalk with outdoor seating for cafes and restaurants. The sky is blue with some clouds.",
+    "buildings": "The large building in the background has a mix of old and new architecture, with a flat roof and a decorative facade made of stone and brick. It has multiple stories and a prominent corner location.",
+    "materials": "The street is paved with asphalt and has white lines marking the lanes and crosswalks. There are also concrete sidewalks and metal poles holding up streetlights.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several tables and chairs set up outside the cafes and restaurants, as well as a few bicycles parked along the sidewalk.",
+    "vegetation": "The trees lining the street are tall and leafy, providing shade for pedestrians and adding to the aesthetic appeal of the area.",
+    "signage": "There are several signs posted along the street, including a stop sign and a directional sign pointing to nearby attractions.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to sit at the outdoor cafes or take photos.",
+    "lighting_atmosphere": "The lighting is bright and sunny, with a warm glow from the sun shining down on the street.",
+    "as_resident": "The street is bustling with activity, but it's not overly crowded. People seem to be enjoying the pleasant weather and scenic views.",
+    "as_commuter": "The street is a convenient location for those looking for a quick bite to eat.",
+    "as_tourist": "The street is a popular spot for taking photos and exploring the surrounding neighborhoods.",
+    "as_student": "The street is a great place to live, with easy access to school and university life."
+  }
+}

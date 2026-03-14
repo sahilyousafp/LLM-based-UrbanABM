@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_030424",
+    "latitude": 41.387141,
+    "longitude": 2.163151,
+    "heading": 209.9,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "382430a5-75f1-459b-b5ea-e0678673b87a",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387141_2.163151_h209.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50053.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A serene courtyard with a small pond surrounded by lush greenery and a large tree, set against the backdrop of a historic stone building with arched windows and a flat roof. The pond is home to a fountain and various plants, while the surrounding area features a cobblestone path and a mix of trees and bushes. A large tree stands tall near the water's edge, its branches stretching out over the pond. The building's façade is constructed from light-colored stone blocks, with several arched windows adding to its classic charm. The overall atmosphere is peaceful and inviting, perfect for a leisurely stroll or a moment of contemplation.",
+    "buildings": "The historic stone building boasts a classic façade with arched windows and a flat roof, exuding a sense of age and character. The building's exterior is constructed from light-colored stone blocks, giving it a warm and welcoming appearance. The façade is adorned with several arched windows, adding to its charm and elegance.",
+    "materials": "Materials used in the construction of the building include stone, brick, and possibly other natural materials such as wood or metal.",
+    "building_condition": "unknown",
+    "street_furniture": "Street furniture includes benches, streetlights, and possibly other objects such as trash cans or planters.",
+    "vegetation": "Vegetation in the area includes trees, bushes, and other plants, creating a lush and vibrant atmosphere.",
+    "signage": "Signage includes street signs, traffic signs, and possibly other forms of advertising or informational displays.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "Pedestrians can be seen walking along the sidewalk, enjoying the scenery and taking in the sights.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere and scenic views of the courtyard.",
+    "as_commuter": "Commuters may find the area convenient for their daily commutes.",
+    "as_tourist": "Tourists may enjoy the area's unique architecture and scenic views.",
+    "as_student": "Students may appreciate the academic opportunities available in the area."
+  }
+}

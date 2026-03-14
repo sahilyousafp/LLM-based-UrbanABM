@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_031218",
+    "latitude": 41.388946,
+    "longitude": 2.160815,
+    "heading": 313.5,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "68bfdfe2-6ec3-4ef0-ad59-35545ecd294f",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.388946_2.160815_h313.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 8756.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A busy city street with cars, buses, motorcycles, and pedestrians moving along the road. The buildings are tall and modern, with large windows and sleek designs. The sky is blue with white clouds, and there are palm trees lining the sidewalk. The street is wide and well-maintained, with clear markings and signage. There are several vehicles, including cars, buses, and motorcycles, all moving in different directions. People are walking on the sidewalks, some carrying bags or briefcases, while others are sitting on benches or standing near the street performers. The atmosphere is lively and bustling, with a sense of energy and activity.",
+    "buildings": "unknown",
+    "materials": "unknown",
+    "building_condition": "unknown",
+    "street_furniture": "unknown",
+    "vegetation": "unknown",
+    "signage": "unknown",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "unknown",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "unknown"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_202745",
+    "latitude": 41.393371,
+    "longitude": 2.1576491000000004,
+    "heading": 181.34801476287447,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "634582ab-883b-40af-83b3-63f684c05bfd",
+    "dist_along_edge_m": 14.5,
+    "source_image": "sv_41.393371_2.157649_h181.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 86261.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of commercial and residential structures. The street is relatively empty, with only a few vehicles parked along the curb. A black van is prominently featured in the foreground, while a large beige building dominates the background.",
+    "buildings": "The beige building has a classic European-style architecture, characterized by ornate facades and balconies. It stands out as a prominent landmark in the area.",
+    "materials": "The beige building's exterior is constructed from a combination of stone and brick, giving it a sturdy yet elegant appearance.",
+    "building_condition": "unknown",
+    "street_furniture": "The street is lined with outdoor seating areas, including tables and chairs, suggesting a popular spot for locals and tourists alike.",
+    "vegetation": "The surrounding area is dotted with small trees and shrubs, adding a touch of greenery to the urban landscape.",
+    "signage": "Signs are posted throughout the area, providing information on local businesses and services.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is likely a hub for local residents, with easy access to shops, restaurants, and public transportation.",
+    "as_commuter": "The street is a popular spot for commuters, with easy access to public transportation and nearby attractions.",
+    "as_tourist": "The area is a great place to visit, with plenty of things to see and do.",
+    "as_student": "The street is a vibrant and dynamic area, with a strong sense of community and a thriving arts scene."
+  }
+}

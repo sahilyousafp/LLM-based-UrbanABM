@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_031656",
+    "latitude": 41.387034,
+    "longitude": 2.162846,
+    "heading": 136.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "02a3a061-6f65-42b8-a23e-90449ef52f24",
+    "dist_along_edge_m": 11.8,
+    "source_image": "sv_41.387034_2.162846_h136.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 25439.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A large, old building with a flat roof and a small pond in front of it. The building has a beige stone facade with arched windows and a flat roof. There are several trees and bushes around the building, including a tall tree with no leaves. The ground is paved with irregularly shaped stones. A small pond is in the foreground, surrounded by plants and trees. The sky is overcast.",
+    "buildings": "The building has a beige stone facade with arched windows and a flat roof. It is at least two stories high. The building is made of stone and has a flat roof. There are several trees and bushes around the building, including a tall tree with no leaves. The ground is paved with irregularly shaped stones. A small pond is in the foreground, surrounded by plants and trees. The sky is overcast.",
+    "materials": "The building's facade is made of beige stone with arched windows and a flat roof. The building has a flat roof and is made of stone. The ground is paved with irregularly shaped stones. A small pond is in the foreground, surrounded by plants and trees. The sky is overcast.",
+    "building_condition": "unknown",
+    "street_furniture": "There are no visible street furniture in the image. There are no benches, streetlights, bollards, bins, or bike racks visible.",
+    "vegetation": "There are several trees and bushes around the building, including a tall tree with no leaves. There are also some smaller bushes and plants in the foreground. The vegetation is lush and green, but there are some dead leaves scattered around the area.",
+    "signage": "There are no visible signs or advertisements in the image. There are no street signs or other forms of signage visible.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might notice that the building is old and worn down. They might appreciate its historic charm and character. They might find it interesting to explore the surrounding streets and buildings.",
+    "as_commuter": "A commuter might notice that the building is close to the street. They might appreciate the convenience of being near the building. They might be interested in the surrounding streets and shops.",
+    "as_tourist": "A tourist might notice that the building is unique and interesting. They might be drawn to its architecture and history. They might enjoy visiting the surrounding streets and taking photos.",
+    "as_student": "A student might notice that the building is old and worn down. They might appreciate its historical significance and beauty. They might be interested in learning more about the building's history and architecture."
+  }
+}

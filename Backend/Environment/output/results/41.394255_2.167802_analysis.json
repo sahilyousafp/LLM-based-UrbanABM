@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_223357",
+    "latitude": 41.39425479999999,
+    "longitude": 2.1678017,
+    "heading": 311.31240675000697,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "road",
+    "edge_id": "6e3526ed-349f-45ed-88cb-48afabb9a058",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.394255_2.167802_h311.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 30096.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene with a car driving down the road, pedestrians walking on the sidewalk, and buildings lining both sides of the street. The sky is overcast and there are trees planted along the sidewalk.",
+    "buildings": "The buildings are multi-story structures made of stone and brick, with balconies and windows. One has a clock tower.",
+    "materials": "The street is paved with asphalt and has white lines painted on it. There are large trash cans on the sidewalk.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and tables outside the buildings, as well as a few bicycles parked along the sidewalk.",
+    "vegetation": "The trees are tall and leafy, providing shade for pedestrians and adding to the aesthetic appeal of the area.",
+    "signage": "There are several signs posted on the buildings, including a sign that reads 'Café' and another that says 'Barbería'.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or backpacks, while others sit at outdoor tables enjoying food and drinks.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is bustling with activity, with people going about their daily business. Some locals stop to chat or read newspapers, while tourists take photos and admire the architecture.",
+    "as_commuter": "The street is a popular route for commuters, with many people walking to and from work or school. Some use public transportation, while others drive or ride bikes.",
+    "as_tourist": "The street is a hub of activity, with many visitors taking photos and admiring the architecture. Some people stop to take a break or enjoy a snack or drink.",
+    "as_student": "The street is also home to students and young professionals, who often gather in groups to study or work."
+  }
+}

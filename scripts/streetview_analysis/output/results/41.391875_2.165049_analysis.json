@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_014108",
+    "latitude": 41.391875,
+    "longitude": 2.165049,
+    "heading": 135.8,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1dd3cd76-1e99-4004-a5b4-4b480aea08ed",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.391875_2.165049_h135.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 48747.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street scene at night with a group of people sitting on a bench under a tree. The street is paved with hexagonal concrete pavers and has a few trees planted along its length. A man stands near the bench, holding his phone, while others sit and stand around him. The buildings in the background have lit windows and signs, and there are streetlights illuminating the area. The atmosphere is calm and quiet, with a sense of community among the people gathered.",
+    "buildings": "The buildings in the background are tall and modern, with large windows and sleek facades. They appear to be office buildings or apartments, and some have balconies or terraces.",
+    "materials": "The ground is made of polished granite, with a smooth texture and subtle variations in color. The pavers are arranged in a pattern of alternating light and dark gray.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and chairs scattered throughout the area, some of which are occupied by people chatting or reading books. The benches are made of metal and wood, with cushions and backrests.",
+    "vegetation": "The trees are tall and slender, with sparse foliage that adds a touch of greenery to the otherwise urban landscape. They are spaced at regular intervals, providing shade and a sense of tranquility.",
+    "signage": "There are several signs visible, including a large digital billboard and smaller paper signs advertising local businesses. Some of the signs are illuminated, while others are not.",
+    "ground_surfaces": "The ground is made up of a mix of concrete, asphalt, and brick, with some areas showing signs of wear and tear. There are also some decorative elements, such as planters and sculptures.",
+    "spatial_enclosure": "The street is relatively narrow, but wide enough for pedestrians to move through comfortably. The buildings loom in the distance, casting long shadows across the pavement.",
+    "pedestrian_activity": "People are moving slowly and casually through the area, some stopping to chat or take photos. Others are walking alone or in small groups.",
+    "lighting_atmosphere": "The lighting is soft and warm, coming from a combination of overhead lights and streetlights. It creates a cozy and inviting atmosphere, despite the darkness of the night.",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, offering a break from the hustle and bustle of daily life. It may be a hub for socializing, shopping, or simply enjoying the sights and sounds of the city.",
+    "as_commuter": "The street is a convenient location for commuters, with easy access to public transportation and nearby shops and restaurants. It's a great place to grab a bite to eat or meet friends.",
+    "as_tourist": "The street is a popular destination for tourists, offering stunning views of the city and historic landmarks. It's a great place to take photos and enjoy the sights and sounds of the city.",
+    "as_student": "This street is a great place for students to study and work, with plenty of quiet and comfortable seating areas. It's a peaceful retreat from the hustle and bustle of campus life."
+  }
+}

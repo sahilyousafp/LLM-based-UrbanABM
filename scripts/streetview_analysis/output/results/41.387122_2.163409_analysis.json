@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_015716",
+    "latitude": 41.387122,
+    "longitude": 2.163409,
+    "heading": 312.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "1f10527e-f8b3-47d1-99d0-30f318297d60",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.387122_2.163409_h312.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 15569.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A serene pond surrounded by lush greenery and a low stone wall, creating a tranquil atmosphere.",
+    "buildings": "The buildings in the background feature a mix of modern and traditional architecture, with some having flat roofs and others sporting pitched roofs.",
+    "materials": "The pond's water is clear, reflecting the surrounding foliage and sky above. The stone wall adds a rustic touch, while the grasses and plants add a pop of color.",
+    "building_condition": "unknown",
+    "street_furniture": "Benches and tables are scattered around the pond, inviting passersby to sit and take in the peaceful surroundings.",
+    "vegetation": "Lush greenery surrounds the pond, including tall trees and bushes that provide shade and shelter.",
+    "signage": "Signs are posted throughout the area, providing information about the local businesses and attractions.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The street is quiet and peaceful, with only a few pedestrians passing through.",
+    "as_commuter": "unknown",
+    "as_tourist": "The street is lined with shops and cafes, offering a range of amenities for visitors.",
+    "as_student": "The street is also home to a number of educational institutions, making it a hub for learning and growth."
+  }
+}

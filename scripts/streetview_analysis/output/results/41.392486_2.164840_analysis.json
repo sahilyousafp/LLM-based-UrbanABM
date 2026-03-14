@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_002551",
+    "latitude": 41.392486,
+    "longitude": 2.16484,
+    "heading": 92.2,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "e9bd0c5a-4436-4454-ada0-ea7c0fe31abf",
+    "dist_along_edge_m": 0,
+    "source_image": "sv_41.392486_2.164840_h92.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49078.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with tall buildings lining both sides, featuring a mix of modern and historic architecture, including a prominent glass-fronted building with a flat roof and a large arched entrance on the left, surrounded by pedestrians and vehicles moving along the street. The sky is partly cloudy with patches of blue sky visible through the gaps between the buildings.",
+    "buildings": "The buildings are primarily made of glass, concrete, and stone, with some featuring ornate facades and others displaying more minimalist designs. The street is paved with cobblestones and has a central median with trees and planters.",
+    "materials": "The street is lined with a variety of materials, including glass, concrete, and stone, with some buildings featuring decorative elements such as columns and arches.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts along the sidewalk, providing shade and lighting for pedestrians.",
+    "vegetation": "The street is lined with trees and planters, adding a touch of greenery to the urban landscape.",
+    "signage": "There are several signs visible, including directional signs and advertisements.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to look at the buildings or take photos.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be a popular spot for locals and tourists alike, with a lively atmosphere.",
+    "as_commuter": "The area is a convenient location for those looking for a quick workout.",
+    "as_tourist": "The area is a great spot for sightseeing.",
+    "as_student": "The area is a great place to meet new people."
+  }
+}

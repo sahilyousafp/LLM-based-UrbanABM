@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_030923",
+    "latitude": 41.402212,
+    "longitude": 2.173567,
+    "heading": 337.0,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "42e1bb1f-0057-40b5-9ef1-bf4e066ecc67",
+    "dist_along_edge_m": 99.8,
+    "source_image": "sv_41.402212_2.173567_h337.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 50260.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with a large cathedral in the distance. The street is mostly empty, with only a few people walking along the sidewalk. There are several trees lining the street, some of which have lost their leaves. A person is riding a bicycle down the street, heading towards the camera. The street is made of dirt and has a drainage grate running along the bottom of the image. The sky is clear and blue.",
+    "buildings": "The cathedral is tall and ornate, with many spires and arches. It is made of stone and has a warm, golden color. The building is surrounded by other buildings, but it stands out due to its size and grandeur.",
+    "materials": "The cathedral's facade is made of stone, with intricate carvings and sculptures adorning the walls. The windows are stained glass, depicting scenes from religious stories. The roof is covered in tiles, which are arranged in a geometric pattern.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and lampposts along the street, providing shade and lighting for pedestrians. Some of the benches are occupied by people sitting and reading or chatting.",
+    "vegetation": "The trees surrounding the street are deciduous, with bare branches and sparse foliage. They provide a natural canopy overhead, casting dappled shadows on the ground below.",
+    "signage": "There are several signs posted along the street, including a large banner advertising a local business. The signs are colorful and eye-catching, but they do not appear to be particularly informative.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "unknown",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "A local resident might appreciate the peaceful atmosphere of the street, which is free of cars and noise pollution. They might enjoy the opportunity to sit and read a book or take a stroll.",
+    "as_commuter": "A commuter might use the street as a way to get around the city, taking advantage of the convenient location and accessibility. They might also use the street as a place to meet colleagues or classmates.",
+    "as_tourist": "A tourist might visit the street as a way to experience the city's entertainment options, taking in the sights and sounds of the local bars and clubs.",
+    "as_student": "A student might use the street as a place to study and work, taking notes and asking questions."
+  }
+}

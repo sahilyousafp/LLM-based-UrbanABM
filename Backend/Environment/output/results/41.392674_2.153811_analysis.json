@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_231445",
+    "latitude": 41.3926745,
+    "longitude": 2.1538112000000003,
+    "heading": 213.17459430899362,
+    "street_name": "Carrer d'Aribau",
+    "highway_type": "road",
+    "edge_id": "ab4921b7-7a3d-4fd5-9db9-c6773d0c2b0f",
+    "dist_along_edge_m": 12.8,
+    "source_image": "sv_41.392674_2.153811_h213.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 13686.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A city street view of a European-style building with a tree in front of it,",
+    "buildings": "The building has a cream-colored facade with stone quoins at the corners and a red brick upper floor,",
+    "materials": "The ground is paved with hexagonal ceramic tiles,",
+    "building_condition": "unknown",
+    "street_furniture": "There are three large gray trash cans lined up along the sidewalk,",
+    "vegetation": "There are two trees with pink blossoms,",
+    "signage": "There are several signs on the buildings,",
+    "ground_surfaces": "The street is paved with asphalt,",
+    "spatial_enclosure": "The street is relatively narrow,",
+    "pedestrian_activity": "People are walking on the sidewalk,",
+    "lighting_atmosphere": "It is daytime with bright sunlight,",
+    "as_resident": "This area is residential,",
+    "as_commuter": "It is a busy commercial area,",
+    "as_tourist": "It is a popular tourist destination,",
+    "as_student": "It is a university campus."
+  }
+}

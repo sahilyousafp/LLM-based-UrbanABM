@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260309_041542",
+    "latitude": 41.39324,
+    "longitude": 2.157621,
+    "heading": 1.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "33fbd4c6-d1a7-4c98-b355-472ebb1b5278",
+    "dist_along_edge_m": 10.9,
+    "source_image": "sv_41.393240_2.157621_h1.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 49798.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide-angle view of a city street with a large beige building in the background and a smaller beige building in the foreground. The street has a yellow barrier along its edge and a white car driving down it. A person wearing a blue jacket walks along the sidewalk in front of the smaller building. The sky is overcast.",
+    "buildings": "The larger building has a flat roof and a red banner hanging vertically on its side. It has many windows and a large arched doorway. The smaller building has a flat roof and a few windows. There are two people working near the entrance.",
+    "materials": "The larger building has a beige facade with stone quoins at the corners. The smaller building has a beige facade with a flat top.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and trash cans along the sidewalk.",
+    "vegetation": "There are some small trees and bushes along the sidewalk.",
+    "signage": "There are several signs on the buildings, including a large sign on the larger building.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "There are a few people walking along the sidewalk.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "The area appears to be quiet and peaceful.",
+    "as_commuter": "unknown",
+    "as_tourist": "unknown",
+    "as_student": "The area is quiet and peaceful."
+  }
+}

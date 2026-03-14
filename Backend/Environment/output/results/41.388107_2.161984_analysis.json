@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "20260311_180824",
+    "latitude": 41.38810689999999,
+    "longitude": 2.1619843000000007,
+    "heading": 24.493067802377993,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "f34286e6-b601-477a-97d6-aa3adc6e7adb",
+    "dist_along_edge_m": 24.2,
+    "source_image": "sv_41.388107_2.161984_h24.jpg",
+    "model": "facebook/Perception-LM-1B",
+    "device": "cuda",
+    "latency_ms": 41990.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene_overview": "A wide view of a city street with tall buildings lining both sides, featuring a mix of modern and older structures, with a few trees scattered along the sidewalk and a few parked cars visible in the distance. The street is paved with gray stone pavers and has a central median with small trees planted in large planters. A man and woman stand facing each other in the foreground, engaged in conversation, while another man walks by in the background. The sky is overcast with clouds.",
+    "buildings": "The buildings are primarily made of stone and feature ornate facades with arched windows and decorative details. Some have balconies, while others have flat roofs. The street is lined with trees and planters, adding a touch of greenery to the urban landscape.",
+    "materials": "Materials used include stone, brick, and concrete. The street is paved with gray stone pavers, and some buildings feature ornate facades with arched windows and decorative details. Some have balconies, while others have flat roofs.",
+    "building_condition": "unknown",
+    "street_furniture": "There are several benches and planters along the sidewalk, providing a place for pedestrians to rest and take in the surroundings. A few trash cans are also present.",
+    "vegetation": "The trees are tall and leafy, with some having lost their leaves. They add a touch of greenery to the urban landscape.",
+    "signage": "Signs are posted throughout the area, including directional signs and advertisements. Some are mounted on poles, while others are attached to buildings.",
+    "ground_surfaces": "unknown",
+    "spatial_enclosure": "unknown",
+    "pedestrian_activity": "People are walking along the sidewalk, some stopping to chat or take photos. Others are walking alone or in pairs.",
+    "lighting_atmosphere": "unknown",
+    "as_resident": "This street is likely a popular spot for locals and tourists alike, offering a pleasant place to relax and take in the sights and sounds of the city.",
+    "as_commuter": "The street is a popular spot for commuters, with many people walking to and from work or school.",
+    "as_tourist": "The street is a great spot for tourists, with its historic architecture and lively atmosphere.",
+    "as_student": "This street is a popular spot for students, with many young people studying or working in the area."
+  }
+}
