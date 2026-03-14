@@ -5,8 +5,8 @@ Adapted from AgentSociety's CognitionBlock pattern.
 """
 import logging
 
-from Thinking.block import Block, BlockResult
-from Thinking.prompts import cognition_update_prompt
+from LLM.Thinking.block import Block, BlockResult
+from LLM.Thinking.prompts import cognition_update_prompt
 
 logger = logging.getLogger(__name__)
 
