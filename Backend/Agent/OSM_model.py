@@ -18,8 +18,8 @@ if str(_BACKEND_ROOT) not in sys.path:
 
 from LLM.llm_config import LLMConfig
 from LLM.llm_client import LLMClient
-from Memory.memory import Memory
-from Thinking.dispatcher import BlockDispatcher, reset_step_counter
+from LLM.Memory.memory import Memory
+from LLM.Thinking.dispatcher import BlockDispatcher, reset_step_counter
 
 # Path to the DuckDB database (OSM data)
 PROJECT_ROOT = Path(__file__).parent.parent

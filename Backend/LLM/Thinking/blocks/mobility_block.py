@@ -14,8 +14,8 @@ import random
 import logging
 from typing import Any
 
-from Thinking.block import Block, BlockResult
-from Thinking.prompts import mobility_decision_prompt
+from LLM.Thinking.block import Block, BlockResult
+from LLM.Thinking.prompts import mobility_decision_prompt
 
 logger = logging.getLogger(__name__)
 
