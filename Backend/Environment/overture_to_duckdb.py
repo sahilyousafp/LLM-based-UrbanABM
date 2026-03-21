@@ -230,10 +230,16 @@ def extract_places(bq_client, duckdb_con, bbox):
     print("Extracting places (amenities) from Overture Maps (BigQuery)...")
     
     bq_query = f"""
-    SELECT 
+    SELECT
         id,
         ST_AsBinary(geometry) as geometry,
-        names.primary as name,
+        -- Prefer local language names: English > Spanish > Catalan > primary
+        COALESCE(
+            (SELECT e.element FROM UNNEST(names.alternate) AS e WHERE e.language = 'en' LIMIT 1),
+            (SELECT e.element FROM UNNEST(names.alternate) AS e WHERE e.language = 'es' LIMIT 1),
+            (SELECT e.element FROM UNNEST(names.alternate) AS e WHERE e.language = 'ca' LIMIT 1),
+            names.primary
+        ) as name,
         categories.primary as amenity,
         TO_JSON_STRING(categories.alternate) as amenity_tags,
         IFNULL((SELECT e.element.freeform FROM UNNEST(addresses.list) AS e LIMIT 1), '') as address,
@@ -557,6 +563,20 @@ def load_streetview_perception(duckdb_con):
                 if sp_vals:
                     spatial_impression = sp_vals[0]
 
+        # ── Extract full scene_analysis fields directly from JSON ──────────────────
+        # These are the original 16 fields from the PLM analysis
+        scene_analysis = data.get("scene_analysis", {})
+        scene_overview = scene_analysis.get("scene_overview", "")
+        buildings = scene_analysis.get("buildings", "")
+        signage = scene_analysis.get("signage", "")
+        ground_surfaces = scene_analysis.get("ground_surfaces", "")
+        lighting_atmosphere = scene_analysis.get("lighting_atmosphere", "")
+        as_resident = scene_analysis.get("as_resident", "")
+        as_commuter = scene_analysis.get("as_commuter", "")
+        as_tourist = scene_analysis.get("as_tourist", "")
+        as_student = scene_analysis.get("as_student", "")
+        vegetation_text = scene_analysis.get("vegetation", "")
+
         rows.append((
             lat, lon,
             avg_walkability,
@@ -572,13 +592,23 @@ def load_streetview_perception(duckdb_con):
             float(meta.get("heading", 0.0) or 0.0),
             str(meta.get("timestamp", "") or ""),
             str(meta.get("model", "") or ""),
+            scene_overview,
+            buildings,
+            signage,
+            ground_surfaces,
+            lighting_atmosphere,
+            as_resident,
+            as_commuter,
+            as_tourist,
+            as_student,
+            vegetation_text,
         ))
 
     if not rows:
         print("✗ No valid street view perception data found")
         return False
 
-    # Create table
+    # Create table with all 16 scene_analysis fields
     duckdb_con.execute("""
         CREATE OR REPLACE TABLE streetview_perception (
             latitude DOUBLE,
@@ -596,7 +626,18 @@ def load_streetview_perception(duckdb_con):
             spatial_impression VARCHAR,
             heading DOUBLE,
             timestamp_str VARCHAR,
-            model_name VARCHAR
+            model_name VARCHAR,
+            -- Full scene_analysis fields (all 16 from JSON)
+            scene_overview VARCHAR,
+            buildings VARCHAR,
+            signage VARCHAR,
+            ground_surfaces VARCHAR,
+            lighting_atmosphere VARCHAR,
+            as_resident VARCHAR,
+            as_commuter VARCHAR,
+            as_tourist VARCHAR,
+            as_student VARCHAR,
+            vegetation_text VARCHAR
         )
     """)
 
@@ -606,11 +647,13 @@ def load_streetview_perception(duckdb_con):
                 ?, ?,
                 ST_Point(?, ?),
                 ?, ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
         """, [r[0], r[1], r[1], r[0],
               r[2], r[3], r[4], r[5], r[6], r[7],
-              r[8], r[9], r[10], r[11], r[12], r[13], r[14]])
+              r[8], r[9], r[10], r[11], r[12], r[13], r[14],
+              r[15], r[16], r[17], r[18], r[19], r[20], r[21], r[22], r[23], r[24]])
 
     count = duckdb_con.execute("SELECT COUNT(*) FROM streetview_perception").fetchone()[0]
     print(f"✓ Loaded {count:,} street view perception points")

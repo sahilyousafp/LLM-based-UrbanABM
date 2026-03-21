@@ -58,8 +58,6 @@ Backend/Agent/tracking_data/*.duckdb
 node_modules/
 
 # Environment files with secrets
-scripts/.env
 .env
-*.env
 
 

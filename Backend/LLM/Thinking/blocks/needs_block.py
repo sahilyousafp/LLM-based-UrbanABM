@@ -34,11 +34,12 @@ AMENITY_NEED_MAP = {
 class NeedsBlock(Block):
     """Decays and updates agent needs each step."""
 
-    async def run(self, step: int, nearby_amenities: Optional[list] = None, **kwargs) -> BlockResult:
+    async def run(self, step: int, nearby_amenities: Optional[list] = None, street_perception: Optional[dict] = None, **kwargs) -> BlockResult:
         """
         Args:
             step: current simulation step
             nearby_amenities: list of {"name", "type", "dist"} from model query
+            street_perception: dict with scene_overview, buildings, vegetation, etc. from visual analysis
         """
         needs = await self.memory.status.get("needs", {})
         profile = await self.memory.status.get("agent_profile", {})
@@ -64,6 +65,7 @@ class NeedsBlock(Block):
                 needs=needs,
                 amenity_name=amenity_name,
                 amenity_type=amenity_type,
+                street_perception=street_perception,
             )
             response = await self.llm.chat_json(messages)
 

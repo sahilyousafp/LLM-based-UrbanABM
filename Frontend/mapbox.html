@@ -1,234 +1,405 @@
 <!DOCTYPE html>
-<html>
+<html class="dark" lang="en">
 <head>
-    <title>Urban ABM — Mapbox</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KINETIC OBSERVATORIUM | Urban Synthesis ABM</title>
+    
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#5c4300",
+              "outline": "#849396",
+              "on-secondary-fixed": "#261a00",
+              "on-primary-fixed-variant": "#004e60",
+              "inverse-surface": "#dee3ea",
+              "on-tertiary-fixed": "#23005b",
+              "inverse-on-surface": "#2c3137",
+              "on-error": "#690005",
+              "primary-fixed": "#b7eaff",
+              "on-tertiary-fixed-variant": "#5700c9",
+              "surface-dim": "#0f1419",
+              "surface-bright": "#353a3f",
+              "surface": "#0f1419",
+              "on-tertiary-container": "#6c00f7",
+              "on-tertiary": "#3c0090",
+              "outline-variant": "#3b494c",
+              "tertiary-fixed": "#e9ddff",
+              "primary-container": "#7bddff",
+              "on-error-container": "#ffdad6",
+              "secondary-fixed": "#ffdfa0",
+              "on-primary": "#003543",
+              "tertiary": "#f2e9ff",
+              "surface-tint": "#4cd6ff",
+              "primary": "#d2f2ff",
+              "on-secondary": "#402d00",
+              "surface-container-highest": "#30353b",
+              "primary-fixed-dim": "#4cd6ff",
+              "secondary": "#ffe2ab",
+              "surface-container-high": "#252a30",
+              "error": "#ffb4ab",
+              "inverse-primary": "#00677f",
+              "on-primary-fixed": "#001f28",
+              "tertiary-fixed-dim": "#d1bcff",
+              "surface-container-lowest": "#0a0f14",
+              "surface-container-low": "#171c21",
+              "on-primary-container": "#006178",
+              "secondary-container": "#ffbf00",
+              "on-surface": "#dee3ea",
+              "on-surface-variant": "#bac9cc",
+              "on-secondary-container": "#6d5000",
+              "error-container": "#93000a",
+              "surface-variant": "#30353b",
+              "on-background": "#dee3ea",
+              "background": "#0f1419",
+              "secondary-fixed-dim": "#fbbc00",
+              "tertiary-container": "#d9c8ff",
+              "surface-container": "#1b2025"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
     <style>
-        * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      body { background-color: #0f1419; color: #dee3ea; font-family: 'Inter', sans-serif; }
+      .glass-panel { background: rgba(48, 53, 59, 0.6); backdrop-filter: blur(12px); }
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b494c; border-radius: 10px; }
+      .map-container { mask-image: radial-gradient(circle at center, black 60%, transparent 100%); }
+      #left-panel.-translate-x-\[calc\(100\%\+2rem\)\] span { transform: rotate(180deg); }
+      #right-panel.translate-x-\[calc\(100\%\+2rem\)\] span { transform: rotate(180deg); }
+      #left-panel span, #right-panel span { transition: transform 0.5s ease; }
+      
+      /* MAPBOX OVERRIDES FOR DARK THEME */
+      .mapboxgl-popup-content { background: #171c21 !important; color: #dee3ea !important; border: 1px solid #3b494c !important; border-radius: 8px !important; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4) !important; padding: 12px; max-width: 360px; }
+      .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip { border-top-color: #171c21 !important; }
+      .mapboxgl-popup-anchor-top .mapboxgl-popup-tip { border-bottom-color: #171c21 !important; }
+      .mapboxgl-popup-anchor-left .mapboxgl-popup-tip { border-right-color: #171c21 !important; }
+      .mapboxgl-popup-anchor-right .mapboxgl-popup-tip { border-left-color: #171c21 !important; }
+      .mapboxgl-ctrl-group { background: #171c21 !important; }
+      .mapboxgl-ctrl-group button { filter: invert(1); }
+      
+      /* Street View Popup Styling (from old CSS to match new theme) */
+      .sv-popup img { width: 100%; max-width: 320px; border-radius: 4px; }
+      .sv-popup .sv-meta { font-size: 11px; color: #bac9cc; margin-top: 4px; }
+      .sv-popup .sv-scene { margin-top: 8px; max-height: 320px; overflow-y: auto; font-size: 11px; }
+      .sv-popup .sv-scene-row { margin-bottom: 6px; }
+      .sv-popup .sv-scene-label { font-family: 'Space Grotesk'; font-weight: 700; color: #4cd6ff; text-transform: uppercase; font-size: 10px; letter-spacing: 0.4px; }
+      .sv-popup .sv-scene-value { color: #dee3ea; margin-top: 1px; line-height: 1.4; }
 
-        /* ── Loading overlay ─────────────────────────────── */
-        .loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.95); z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .loading-overlay.hidden { display: none; }
-        .loading-overlay h2 { margin: 0 0 20px; color: #333; }
-        .progress-bar { width: 300px; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: #2196F3; transition: width 0.3s; width: 0%; }
-        .loading-status { margin-top: 10px; color: #666; font-size: 13px; }
+      /* Loader */
+      #loading-overlay { z-index: 9999; }
+      #loading-overlay.hidden { display: none !important; }
 
-        /* ── Control panel ───────────────────────────────── */
-        .control-panel {
-            position: absolute; top: 10px; right: 10px;
-            background: white; padding: 15px; border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.25); z-index: 2000;
-            max-width: 320px; max-height: 90vh; overflow-y: auto;
-            font-size: 13px;
-        }
-        .control-panel h3 { margin: 0 0 10px; font-size: 16px; }
-        .control-panel section { margin: 10px 0; padding: 10px 0; border-top: 1px solid #eee; }
-        .control-panel section:first-of-type { border-top: none; padding-top: 0; }
-        .control-panel label { display: block; margin: 4px 0; cursor: pointer; }
-        .control-panel input[type="text"],
-        .control-panel input[type="number"],
-        .control-panel select { width: 100%; padding: 5px; margin: 3px 0; border: 1px solid #ccc; border-radius: 3px; }
+      /* Utility classes for thoughts */
+      .thought-event { padding: 8px; border-left: 2px solid #4cd6ff; margin: 4px 0; background: rgba(30, 35, 40, 0.5); border-radius: 0 6px 6px 0; font-size: 11px; }
+      .thought-event.mobility { border-color: #ffbf00; }
+      .thought-event.cognition { border-color: #d9c8ff; }
+      .thought-event.needs { border-color: #4CAF50; }
+      .thought-event.amenity_visit { border-color: #f44336; }
+      .te-step { font-family: 'Space Grotesk'; font-size: 9px; color: #4cd6ff; opacity: 0.8; text-transform: uppercase; }
+      .te-desc { color: #dee3ea; margin-top: 2px; }
 
-        /* ── LLM panel ───────────────────────────────────── */
-        .llm-panel { background: #f8f9fa; border-radius: 5px; padding: 10px; }
-        .llm-panel h4 { margin: 0 0 8px; font-size: 14px; }
-        .llm-option { display: flex; align-items: center; gap: 8px; padding: 6px 8px; margin: 4px 0; border-radius: 4px; cursor: pointer; border: 2px solid transparent; }
-        .llm-option:hover { background: #e3f2fd; }
-        .llm-option.selected { border-color: #2196F3; background: #e3f2fd; }
-        .llm-option .llm-name { font-weight: 600; }
-        .llm-option .llm-desc { font-size: 11px; color: #666; }
-        .model-input { margin-top: 8px; }
-        .model-input label { font-size: 12px; color: #555; }
+      /* LLM options styling */
+      .llm-option { cursor: pointer; padding: 6px 8px; border-radius: 6px; display: flex; align-items: center; gap: 8px; border: 1px solid transparent; }
+      .llm-option:hover { background: rgba(48, 53, 59, 0.4); }
+      .llm-option.selected { border-color: #4cd6ff; background: rgba(76, 214, 255, 0.1); }
+      .llm-name { font-weight: 600; font-size: 12px; }
+      .llm-desc { font-size: 10px; color: #bac9cc; }
 
-        /* ── Buttons ─────────────────────────────────────── */
-        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600; }
-        .btn-primary { background: #2196F3; color: white; }
-        .btn-primary:hover { background: #1976D2; }
-        .btn-primary:disabled { background: #90CAF9; cursor: not-allowed; }
-        .btn-danger { background: #f44336; color: white; }
-        .btn-danger:hover { background: #d32f2f; }
-        .btn-success { background: #4CAF50; color: white; }
-        .btn-success:hover { background: #388E3C; }
-        .btn-sm { padding: 4px 10px; font-size: 12px; }
-
-        /* ── Simulation controls ─────────────────────────── */
-        .sim-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-        .sim-info { font-size: 11px; color: #555; margin-top: 5px; }
-        .speed-control { margin-top: 6px; }
-        .speed-control input[type="range"] { width: 100%; }
-
-        /* ── Agent info ──────────────────────────────────── */
-        .agent-info { display: none; }
-        .agent-info.visible { display: block; }
-        .agent-summary { font-size: 12px; padding: 8px; background: #f9f9f9; border-radius: 3px; line-height: 1.6; margin-top: 8px; }
-        .agent-summary strong { color: #2196F3; }
-
-        .needs-bar-container { display: flex; align-items: center; gap: 6px; margin: 3px 0; font-size: 11px; }
-        .needs-bar-label { width: 50px; text-align: right; color: #555; }
-        .needs-bar { flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
-        .needs-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
-        .needs-bar-value { width: 30px; font-size: 10px; color: #888; }
-
-        .cognition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 11px; margin-top: 4px; }
-        .cognition-item { background: #f0f4f8; padding: 4px 6px; border-radius: 3px; }
-        .cognition-item .label { color: #666; }
-        .cognition-item .value { font-weight: 600; color: #333; }
-
-        .thought-stream { max-height: 150px; overflow-y: auto; font-size: 11px; margin-top: 6px; }
-        .thought-event { padding: 4px 6px; border-left: 3px solid #2196F3; margin: 3px 0; background: #fafafa; border-radius: 0 3px 3px 0; }
-        .thought-event.mobility { border-color: #FF9800; }
-        .thought-event.cognition { border-color: #9C27B0; }
-        .thought-event.needs { border-color: #4CAF50; }
-        .thought-event.amenity_visit { border-color: #F44336; }
-        .thought-event .te-step { font-size: 10px; color: #999; }
-        .thought-event .te-desc { color: #333; }
-
-        .agent-section-title { font-size: 11px; font-weight: 600; color: #555; margin: 8px 0 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .llm-narrative { position: relative; }
-        .llm-spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid #ddd; border-top-color: #2196F3; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-left: 4px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ── Status badge ────────────────────────────────── */
-        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-        .status-badge.ready { background: #C8E6C9; color: #2E7D32; }
-        .status-badge.running { background: #BBDEFB; color: #1565C0; }
-        .status-badge.stopped { background: #FFCDD2; color: #C62828; }
-        .status-badge.configuring { background: #FFF9C4; color: #F57F17; }
-
-        /* ── Mapbox popup ────────────────────────────────── */
-        .mapboxgl-popup-content { padding: 10px; max-width: 340px; }
-        .sv-popup img { width: 100%; max-width: 320px; border-radius: 4px; }
-        .sv-popup .sv-meta { font-size: 11px; color: #666; margin-top: 4px; }
-        .sv-popup .sv-scene { margin-top: 8px; max-height: 320px; overflow-y: auto; font-size: 11px; }
-        .sv-popup .sv-scene-row { margin-bottom: 6px; }
-        .sv-popup .sv-scene-label { font-weight: 700; color: #555; text-transform: uppercase; font-size: 10px; letter-spacing: 0.4px; }
-        .sv-popup .sv-scene-value { color: #222; margin-top: 1px; line-height: 1.4; }
-
-
+      /* Ensure Map container takes full viewport */
+      #map { width: 100vw; height: 100vh; position: absolute; top:0; left:0; right:0; bottom:0; z-index: 0;}
     </style>
 </head>
-<body>
+<body class="overflow-hidden bg-surface-container-lowest text-on-surface">
+
     <!-- Loading overlay -->
-    <div id="loading-overlay" class="loading-overlay">
-        <h2>🏙️ Urban ABM (Mapbox)</h2>
-        <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
-        <div id="loading-status" class="loading-status">Connecting to backend...</div>
-    </div>
-
-    <div id="map"></div>
-
-    <!-- Control panel -->
-    <div class="control-panel">
-        <h3>🏙️ Urban ABM <span id="sim-status" class="status-badge ready">Ready</span></h3>
-
-        <section>
-            <label><strong>Backend API</strong></label>
-            <input type="text" id="api-url" value="http://127.0.0.1:8000" placeholder="Backend URL">
-        </section>
-
-        <section>
-            <div class="llm-panel">
-                <h4>🤖 LLM Provider</h4>
-                <div id="llm-options"></div>
-                <div class="model-input">
-                    <label>Model name:</label>
-                    <input type="text" id="llm-model" placeholder="Loading...">
-                </div>
-                <button class="btn btn-primary btn-sm" id="btn-apply-llm" style="margin-top:8px;">Apply LLM Config</button>
-                <div id="llm-status" style="font-size:11px; color:#666; margin-top:4px;"></div>
-            </div>
-        </section>
-
-        <section>
-            <h4 style="margin:0 0 8px;">▶ Simulation</h4>
-            <div class="sim-controls">
-                <button class="btn btn-success" id="btn-run">▶ Run</button>
-                <button class="btn btn-danger" id="btn-stop" style="display:none;">⏸ Pause</button>
-                <button class="btn btn-primary btn-sm" id="btn-step">Step</button>
-            </div>
-            <div class="sim-info">
-                Step: <strong id="sim-step">0</strong> |
-                Agents: <strong id="agent-count">0</strong> |
-                LLM calls: <strong id="llm-calls">0</strong>
-            </div>
-            <div style="display:flex; gap:4px; align-items:center; margin-top:6px;">
-                <label style="font-size:11px; white-space:nowrap;">Agents:</label>
-                <input type="number" id="agent-count-input" value="15" min="1" max="100" style="width:55px; padding:3px;">
-                <button class="btn btn-primary btn-sm" id="btn-respawn">Respawn</button>
-            </div>
-            <div class="speed-control">
-                Speed: <span id="speed-value">1.0</span>s/step
-                <input type="range" id="speed-slider" min="0.1" max="5" step="0.1" value="1">
-            </div>
-        </section>
-
-        <section>
-            <h4 style="margin:0 0 8px;">🗺️ Layers</h4>
-            <label><input type="checkbox" id="layer-buildings" checked> Buildings</label>
-            <label><input type="checkbox" id="layer-network" checked> Walk Network</label>
-            <label><input type="checkbox" id="layer-roads" checked> Roads</label>
-            <label><input type="checkbox" id="layer-amenities" checked> Amenities</label>
-            <label><input type="checkbox" id="layer-agents" checked> Agents</label>
-            <label><input type="checkbox" id="layer-streetview" checked> 📷 Street View Grid</label>
-        </section>
-
-        <section>
-            <h4 style="margin:0 0 8px;">🔍 Find Agent</h4>
-            <div style="display:flex; gap:4px;">
-                <input type="number" id="agent-search-input" placeholder="Agent ID" min="0" max="499" style="flex:1;">
-                <button class="btn btn-primary btn-sm" id="agent-search-btn">Go</button>
-            </div>
-        </section>
-
-        <section>
-            <div id="stats" style="font-size:11px; color:#666;">Loading stats...</div>
-        </section>
-
-        <div class="agent-info" id="agent-info">
-            <section>
-                <h4 style="margin:0 0 5px;">Agent <span id="agent-id"></span> <span id="agent-archetype" class="status-badge ready"></span></h4>
-                <p style="margin:3px 0; font-size:12px;">📍 <span id="agent-location"></span></p>
-                <p style="margin:3px 0; font-size:12px;">Nearby: <span id="agent-amenity-count"></span> places</p>
-
-                <div class="agent-section-title">📊 Needs</div>
-                <div id="agent-needs">
-                    <div class="needs-bar-container"><span class="needs-bar-label">Hunger</span><div class="needs-bar"><div class="needs-bar-fill" id="need-hunger" style="width:50%;background:#FF9800;"></div></div><span class="needs-bar-value" id="need-hunger-val">0.5</span></div>
-                    <div class="needs-bar-container"><span class="needs-bar-label">Energy</span><div class="needs-bar"><div class="needs-bar-fill" id="need-energy" style="width:100%;background:#4CAF50;"></div></div><span class="needs-bar-value" id="need-energy-val">1.0</span></div>
-                    <div class="needs-bar-container"><span class="needs-bar-label">Social</span><div class="needs-bar"><div class="needs-bar-fill" id="need-social" style="width:50%;background:#2196F3;"></div></div><span class="needs-bar-value" id="need-social-val">0.5</span></div>
-                </div>
-
-                <div class="agent-section-title">🧠 Cognition</div>
-                <div class="cognition-grid" id="agent-cognition">
-                    <div class="cognition-item"><span class="label">Mood:</span> <span class="value" id="cog-mood">—</span></div>
-                    <div class="cognition-item"><span class="label">Curiosity:</span> <span class="value" id="cog-curiosity">—</span></div>
-                    <div class="cognition-item"><span class="label">Fatigue:</span> <span class="value" id="cog-fatigue">—</span></div>
-                    <div class="cognition-item"><span class="label">Goal:</span> <span class="value" id="cog-goal">—</span></div>
-                </div>
-
-                <div class="agent-section-title">💭 Thought Stream</div>
-                <div class="thought-stream" id="agent-stream">
-                    <em style="color:#999; font-size:11px;">Run a simulation step to see thoughts</em>
-                </div>
-
-                <div class="agent-section-title llm-narrative">🗣️ LLM Narrative <span id="llm-spinner" class="llm-spinner" style="display:none;"></span></div>
-                <div id="agent-summary" class="agent-summary">
-                    <em style="color:#999;">Click an agent or search by ID</em>
-                </div>
-            </section>
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-950/90 backdrop-blur-xl flex flex-col items-center justify-center transition-opacity duration-500">
+        <h2 class="font-headline text-3xl font-bold text-cyan-400 mb-6 tracking-widest italic uppercase">Kinetic Observatorium</h2>
+        <div class="w-64 h-1.5 bg-surface-container-highest rounded-full overflow-hidden mb-3">
+            <div id="progress-fill" class="h-full bg-cyan-400 shadow-[0_0_8px_rgba(76,214,255,0.8)] transition-all duration-300 w-0"></div>
         </div>
+        <div id="loading-status" class="text-xs text-on-surface-variant font-medium tracking-wide">Connecting to backend...</div>
     </div>
 
-    <script>
+    <!-- MAIN CANVAS: FULL SCREEN MAP -->
+    <main class="ml-20 h-screen w-[calc(100vw-5rem)] bg-surface-container-lowest relative overflow-hidden">
+        <div id="map"></div>
+
+        <!-- TOP NAVIGATION SHELL -->
+        <header class="absolute top-0 w-full z-20 bg-slate-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-16 shadow-2xl shadow-cyan-900/20">
+            <div class="text-2xl font-black tracking-tighter text-cyan-400 italic font-headline">KINETIC OBSERVATORIUM</div>
+            <nav class="hidden md:flex gap-8 items-center">
+                <a class="font-headline font-bold uppercase tracking-widest text-sm text-cyan-400 border-b-2 border-cyan-400 pb-1" href="#">SIMULATION</a>
+                <a class="font-headline font-bold uppercase tracking-widest text-sm text-slate-400 hover:text-slate-200 transition-colors" href="#">AGENTS</a>
+                <a class="font-headline font-bold uppercase tracking-widest text-sm text-slate-400 hover:text-slate-200 transition-colors" href="#">ANALYTICS</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <span id="sim-status" class="text-[10px] font-bold bg-cyan-400/10 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/30 uppercase tracking-wider">Ready</span>
+            </div>
+        </header>
+
+        <!-- SIDE NAVIGATION SHELL -->
+        <aside class="absolute left-[-5rem] top-0 z-40 h-full w-20 hover:w-64 transition-all duration-500 overflow-hidden bg-slate-950 flex flex-col py-20 border-r border-outline-variant/20 shadow-xl" style="left: -5rem;"> <!-- Keeping it fixed to layout logic -->
+        </aside>
+
+        <!-- Actually let's put side nav fixed to window left -->
+        <aside class="h-screen w-20 hover:w-64 transition-all duration-500 fixed left-0 top-0 z-40 overflow-hidden bg-slate-950 flex flex-col h-full py-20 border-r border-outline-variant/20 shadow-xl">
+            <div class="flex flex-col gap-6 mt-4">
+                <div class="group flex items-center px-6 py-3 cursor-pointer bg-cyan-500/10 text-cyan-400 border-r-2 border-cyan-400">
+                    <span class="material-symbols-outlined">tune</span>
+                    <span class="ml-4 font-inter text-xs font-medium tracking-tight opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Parameters</span>
+                </div>
+                <div class="group flex items-center px-6 py-3 cursor-pointer text-slate-500 hover:text-slate-300 hover:bg-slate-900/80">
+                    <span class="material-symbols-outlined">memory</span>
+                    <span class="ml-4 font-inter text-xs font-medium tracking-tight opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Providers</span>
+                </div>
+            </div>
+            <div class="mt-auto px-4 pb-8">
+                <button class="w-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-lg py-3 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-headline text-[10px] font-bold tracking-widest uppercase" id="btn-respawn">
+                    RESPAWN AGENTS
+                </button>
+            </div>
+        </aside>
+
+        <!-- FLOATING CONTROL PANEL (LEFT) -->
+        <div class="absolute top-24 left-8 z-10 w-80 flex flex-col gap-4 transition-transform duration-500 ease-in-out" id="left-panel">
+            <button class="absolute -right-10 top-0 bg-slate-950/80 backdrop-blur-md border border-outline-variant/20 p-2 rounded-r-lg text-cyan-400 hover:text-white transition-colors" onclick="document.getElementById('left-panel').classList.toggle('-translate-x-[calc(100%+2rem)]')">
+                <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+            
+            <!-- Header Identity -->
+            <div class="glass-panel p-4 rounded-xl border border-outline-variant/20">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase">Simulation Module</span>
+                    <div class="flex items-center gap-1.5" id="stats">
+                        <span class="text-[9px] font-bold text-cyan-400 tracking-tighter">Loading stats...</span>
+                    </div>
+                </div>
+                <h1 class="font-headline text-xl font-bold text-on-surface leading-tight">V.08.4_URBAN_SYNTH</h1>
+            </div>
+
+            <!-- Backend & LLM Config -->
+            <div class="glass-panel p-5 rounded-xl border border-outline-variant/20 flex flex-col gap-4">
+                <div class="space-y-3">
+                    <div class="group">
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5 ml-1">Core Endpoint</label>
+                        <div class="bg-surface-container-highest/50 rounded-lg flex items-center px-3 py-2 border-b-2 border-transparent group-focus-within:border-primary-fixed-dim transition-all">
+                            <span class="material-symbols-outlined text-sm text-on-surface-variant mr-2">link</span>
+                            <input id="api-url" class="bg-transparent border-none text-xs text-on-surface w-full p-0 focus:ring-0" type="text" value="http://127.0.0.1:8000"/>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5 ml-1">LLM Provider & Model</label>
+                        <div id="llm-options" class="flex flex-col gap-1 mb-2"></div>
+                        <div class="bg-surface-container-highest/50 rounded-lg flex items-center px-3 py-2 border-b-2 border-transparent group-focus-within:border-primary-fixed-dim transition-all">
+                            <input id="llm-model" class="bg-transparent border-none text-xs text-on-surface w-full p-0 focus:ring-0" type="text" placeholder="Loading..."/>
+                        </div>
+                        <button id="btn-apply-llm" class="mt-3 w-full bg-gradient-to-r from-primary-fixed-dim to-primary-container text-on-primary font-headline text-[10px] font-bold tracking-widest uppercase py-2 rounded-md shadow-lg shadow-cyan-900/40">Apply Config</button>
+                        <div id="llm-status" class="text-[10px] text-on-surface-variant mt-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Playback Controls -->
+            <div class="glass-panel p-4 rounded-xl border border-outline-variant/20 flex flex-col gap-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex gap-2">
+                        <button id="btn-run" title="Run Continuous" class="w-12 h-10 rounded-lg bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-cyan-400 hover:bg-primary-container hover:text-on-primary transition-all">
+                            <span class="material-symbols-outlined">play_arrow</span>
+                        </button>
+                        <button id="btn-stop" style="display:none;" title="Pause" class="w-12 h-10 rounded-lg bg-primary-fixed-dim flex items-center justify-center text-on-primary shadow-lg shadow-cyan-900/40">
+                            <span class="material-symbols-outlined">pause</span>
+                        </button>
+                        <button id="btn-step" title="Step" class="w-10 h-10 rounded-lg bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-all">
+                            <span class="material-symbols-outlined">skip_next</span>
+                        </button>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">TICK</div>
+                        <div id="sim-step" class="text-lg font-headline font-bold text-cyan-400 leading-none">0</div>
+                    </div>
+                </div>
+                <!-- Speed & Setup -->
+                <div class="flex items-center justify-between text-[10px]">
+                    <div class="flex items-center gap-2 w-1/2">
+                        <label class="text-on-surface-variant uppercase tracking-wider font-bold">Speed</label>
+                        <input id="speed-slider" class="w-full accent-cyan-400 cursor-pointer" type="range" min="0.1" max="5" step="0.1" value="1"/>
+                        <span id="speed-value" class="w-4 text-cyan-400 font-mono">1</span>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <label class="text-on-surface-variant uppercase tracking-wider font-bold">Agents</label>
+                        <input id="agent-count-input" value="15" min="1" max="100" class="w-12 bg-surface-container-highest border-none rounded text-[10px] px-2 py-1 text-center text-on-surface focus:ring-1 focus:ring-cyan-400" type="number"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Layers -->
+            <div class="glass-panel p-5 rounded-xl border border-outline-variant/20 space-y-5">
+                <div class="relative flex gap-2">
+                    <div class="relative flex-1">
+                        <input id="agent-search-input" class="w-full bg-surface-container-highest/50 border-none rounded-lg text-xs py-2 pl-8 pr-3 text-on-surface placeholder:text-slate-500 focus:ring-1 focus:ring-cyan-400" placeholder="Agent ID..." type="number"/>
+                        <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-500 text-[18px]">person_search</span>
+                    </div>
+                    <button id="agent-search-btn" class="bg-surface-container-highest px-3 border border-outline-variant/20 rounded-lg text-[10px] font-bold text-cyan-400 hover:bg-surface-container-high">GO</button>
+                </div>
+
+                <div class="space-y-3">
+                    <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Layer Visibility</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center justify-between cursor-pointer group">
+                            <span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Buildings & Footprints</span>
+                            <input id="layer-buildings" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+                        </label>
+                        <label class="flex items-center justify-between cursor-pointer group">
+                            <span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Road Networks</span>
+                            <input id="layer-roads" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+                        </label>
+                        <label class="flex items-center justify-between cursor-pointer group">
+                            <span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Walk Network</span>
+                            <input id="layer-network" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+                        </label>
+                        <label class="flex items-center justify-between cursor-pointer group">
+                            <span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Amenities & POIs</span>
+                            <input id="layer-amenities" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+                        </label>
+                        <label class="flex items-center justify-between cursor-pointer group">
+                            <span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Agent Path Trails</span>
+                            <input id="layer-agents" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+                        </label>
+                        <label class="flex items-center justify-between cursor-pointer group">
+                            <span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">📷 Street View Grid</span>
+                            <input id="layer-streetview" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AGENT MONITORING PANEL (RIGHT) -->
+        <div class="absolute top-24 right-8 z-10 w-96 flex flex-col gap-4 max-h-[calc(100vh-8rem)] transition-transform duration-500 ease-in-out hidden" id="agent-info">
+            <button class="absolute -left-10 top-0 bg-slate-950/80 backdrop-blur-md border border-outline-variant/20 p-2 rounded-l-lg text-cyan-400 hover:text-white transition-colors" onclick="document.getElementById('agent-info').classList.toggle('translate-x-[calc(100%+2rem)]')">
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+            
+            <!-- Agent Identity Card -->
+            <div class="glass-panel rounded-xl border border-outline-variant/20 overflow-hidden flex flex-col">
+                <div class="p-5 flex items-start gap-4 bg-gradient-to-br from-surface-container-high to-surface-container-low">
+                    <div class="relative">
+                        <div class="w-12 h-12 rounded-xl border-2 border-cyan-400/50 bg-slate-800 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-cyan-400" style="font-size: 28px;">person</span>
+                        </div>
+                        <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-surface flex items-center justify-center"></div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h2 class="font-headline font-bold text-lg text-on-surface">AGENT_#<span id="agent-id"></span></h2>
+                            <span id="agent-archetype" class="text-[10px] font-bold bg-cyan-400/10 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/30 uppercase">MOBILE</span>
+                        </div>
+                        <p class="text-[10px] font-mono text-cyan-400/80 mt-1">📍 <span id="agent-location">--</span></p>
+                        <p class="text-[9px] text-slate-400 mt-0.5">Nearby: <span id="agent-amenity-count">0</span> places</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-[8px] font-bold py-0.5 px-2 rounded-full bg-tertiary-container/20 text-tertiary-container border border-tertiary-container/30">MOOD: <span id="cog-mood" class="uppercase"></span></span>
+                            <span class="text-[8px] font-bold py-0.5 px-2 rounded-full bg-secondary-container/20 text-secondary-container border border-secondary-container/30">FATIGUE: <span id="cog-fatigue"></span></span>
+                            <span class="text-[8px] font-bold py-0.5 px-2 rounded-full bg-primary-container/20 text-primary-fixed border border-primary-container/30">CURIOSITY: <span id="cog-curiosity"></span></span>
+                            <span class="text-[8px] font-bold py-0.5 px-2 rounded-full bg-surface-variant text-slate-300 border border-outline-variant/40 mt-1">GOAL: <span id="cog-goal" class="uppercase"></span></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Needs & Cognition -->
+                <div class="p-4 space-y-3 border-t border-outline-variant/10">
+                    <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Metabolic & Cognitive Status</h3>
+                    <div class="space-y-2">
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[9px] font-medium text-slate-400 uppercase">
+                                <span>Energy Reserve</span>
+                                <span id="need-energy-val">1.0</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                                <div id="need-energy" class="h-full bg-cyan-400 rounded-full shadow-[0_0_8px_rgba(76,214,255,0.4)] transition-all duration-300"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[9px] font-medium text-slate-400 uppercase">
+                                <span>Social Satiation</span>
+                                <span id="need-social-val">1.0</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                                <div id="need-social" class="h-full bg-tertiary-container rounded-full shadow-[0_0_8px_rgba(217,200,255,0.4)] transition-all duration-300"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[9px] font-medium text-slate-400 uppercase">
+                                <span>Hunger Metric</span>
+                                <span id="need-hunger-val">0.0</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                                <div id="need-hunger" class="h-full bg-secondary-container rounded-full shadow-[0_0_8px_rgba(255,191,0,0.4)] transition-all duration-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LLM Narrative -->
+                <div class="p-4 flex-1 border-t border-outline-variant/10">
+                    <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2 flex items-center justify-between">
+                        Narrative Synthesis 
+                        <span id="llm-spinner" class="material-symbols-outlined text-[14px] animate-spin text-cyan-400 hidden">sync</span>
+                    </h3>
+                    <div id="agent-summary" class="bg-surface-container-lowest/40 p-3 rounded-lg border border-outline-variant/20 italic text-[11px] leading-relaxed text-slate-300 max-h-32 overflow-y-auto custom-scrollbar">
+                        <em style="color:#666;">Click an agent or search by ID</em>
+                    </div>
+                </div>
+                
+                <!-- Thought Stream -->
+                <div class="p-4 h-48 border-t border-outline-variant/10 flex flex-col">
+                    <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Event Persistence</h3>
+                    <div id="agent-stream" class="flex-1 overflow-y-auto custom-scrollbar space-y-1 flex flex-col">
+                        <em style="color:#666; font-size:10px;">Run a simulation step to see thoughts</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ASYMMETRIC METRIC WIDGETS (BOTTOM) -->
+        <div class="absolute bottom-6 right-8 z-10 flex gap-6 items-end">
+            <div class="glass-panel px-5 py-3 rounded-xl border border-outline-variant/20">
+                <div class="text-[9px] font-bold text-on-surface-variant tracking-widest uppercase mb-1">Active Entities</div>
+                <div class="flex items-baseline gap-2">
+                    <span id="agent-count" class="text-2xl font-headline font-bold text-cyan-400">0</span>
+                    <span class="text-[9px] font-bold text-slate-500 uppercase">Agents</span>
+                </div>
+            </div>
+            <div class="glass-panel px-5 py-3 rounded-xl border border-outline-variant/20">
+                <div class="text-[9px] font-bold text-on-surface-variant tracking-widest uppercase mb-1">Total Inferences</div>
+                <div class="flex items-baseline gap-2">
+                    <span id="llm-calls" class="text-2xl font-headline font-bold text-tertiary-container">0</span>
+                    <span class="text-[9px] font-bold text-slate-500 uppercase">Calls</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<script>
         // ── State ───────────────────────────────────────────
         let map;
         let animationInterval = null;
@@ -269,7 +440,7 @@
 
             map = new mapboxgl.Map({
                 container: 'map',
-                style: 'mapbox://styles/mapbox/light-v11',
+                style: 'mapbox://styles/mapbox/dark-v11',
                 center: [2.17, 41.39],
                 zoom: 14
             });
@@ -498,7 +669,7 @@
         // ── Agent selection ─────────────────────────────────
         async function selectAgent(agentId) {
             selectedAgentId = agentId;
-            document.getElementById('agent-info').classList.add('visible');
+            document.getElementById('agent-info').classList.remove('hidden');
 
             // Load structured data immediately (no LLM needed)
             await showAgentDetails(agentId);
@@ -588,7 +759,7 @@
         async function showAgentNarrative(agentId) {
             const spinner = document.getElementById('llm-spinner');
             const summaryEl = document.getElementById('agent-summary');
-            spinner.style.display = 'inline-block';
+            spinner.classList.remove('hidden');
             summaryEl.innerHTML = '<em style="color:#999;">Generating narrative...</em>';
             const apiUrl = getApiUrl();
             try {
@@ -604,7 +775,7 @@
             } catch (e) {
                 summaryEl.innerHTML = '<em style="color:#c00;">LLM not connected</em>';
             }
-            spinner.style.display = 'none';
+            spinner.classList.add('hidden');
         }
 
         // ── Agent respawn ──────────────────────────────────
@@ -619,7 +790,7 @@
                 document.getElementById('llm-calls').textContent = '0';
                 await loadAgents(apiUrl);
                 selectedAgentId = null;
-                document.getElementById('agent-info').classList.remove('visible');
+                document.getElementById('agent-info').classList.add('hidden');
             } catch (e) {
                 alert('Respawn failed: ' + e.message);
             }

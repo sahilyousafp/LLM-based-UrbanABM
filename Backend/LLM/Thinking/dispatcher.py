@@ -89,7 +89,7 @@ class BlockDispatcher:
         """
         # 1. NeedsBlock — always runs (cheap)
         needs_result = await self.needs_block.run(
-            step=step, nearby_amenities=nearby_amenities
+            step=step, nearby_amenities=nearby_amenities, street_perception=street_perception
         )
 
         # 2. CognitionBlock — always runs (cheap between intervals)

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC OBSERVATORIUM | Urban Synthesis ABM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#5c4300",
+              "outline": "#849396",
+              "on-secondary-fixed": "#261a00",
+              "on-primary-fixed-variant": "#004e60",
+              "inverse-surface": "#dee3ea",
+              "on-tertiary-fixed": "#23005b",
+              "inverse-on-surface": "#2c3137",
+              "on-error": "#690005",
+              "primary-fixed": "#b7eaff",
+              "on-tertiary-fixed-variant": "#5700c9",
+              "surface-dim": "#0f1419",
+              "surface-bright": "#353a3f",
+              "surface": "#0f1419",
+              "on-tertiary-container": "#6c00f7",
+              "on-tertiary": "#3c0090",
+              "outline-variant": "#3b494c",
+              "tertiary-fixed": "#e9ddff",
+              "primary-container": "#7bddff",
+              "on-error-container": "#ffdad6",
+              "secondary-fixed": "#ffdfa0",
+              "on-primary": "#003543",
+              "tertiary": "#f2e9ff",
+              "surface-tint": "#4cd6ff",
+              "primary": "#d2f2ff",
+              "on-secondary": "#402d00",
+              "surface-container-highest": "#30353b",
+              "primary-fixed-dim": "#4cd6ff",
+              "secondary": "#ffe2ab",
+              "surface-container-high": "#252a30",
+              "error": "#ffb4ab",
+              "inverse-primary": "#00677f",
+              "on-primary-fixed": "#001f28",
+              "tertiary-fixed-dim": "#d1bcff",
+              "surface-container-lowest": "#0a0f14",
+              "surface-container-low": "#171c21",
+              "on-primary-container": "#006178",
+              "secondary-container": "#ffbf00",
+              "on-surface": "#dee3ea",
+              "on-surface-variant": "#bac9cc",
+              "on-secondary-container": "#6d5000",
+              "error-container": "#93000a",
+              "surface-variant": "#30353b",
+              "on-background": "#dee3ea",
+              "background": "#0f1419",
+              "secondary-fixed-dim": "#fbbc00",
+              "tertiary-container": "#d9c8ff",
+              "surface-container": "#1b2025"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body { background-color: #0f1419; color: #dee3ea; font-family: 'Inter', sans-serif; }
+      .glass-panel {
+        background: rgba(48, 53, 59, 0.6);
+        backdrop-filter: blur(12px);
+      }
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b494c; border-radius: 10px; }
+      .map-container {
+        mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
+      }
+      #left-panel.-translate-x-\[calc\(100\%\+2rem\)\] span { transform: rotate(180deg); }
+      #right-panel.translate-x-\[calc\(100\%\+2rem\)\] span { transform: rotate(180deg); }
+      #left-panel span, #right-panel span { transition: transform 0.5s ease; }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- TOP NAVIGATION SHELL -->
+<header class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-16 w-full shadow-2xl shadow-cyan-900/20">
+<div class="text-2xl font-black tracking-tighter text-cyan-400 italic font-headline">KINETIC OBSERVATORIUM</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-headline font-bold uppercase tracking-widest text-sm text-cyan-400 border-b-2 border-cyan-400 pb-1" href="#">SIMULATION</a>
+<a class="font-headline font-bold uppercase tracking-widest text-sm text-slate-400 hover:text-slate-200 transition-colors" href="#">AGENTS</a>
+<a class="font-headline font-bold uppercase tracking-widest text-sm text-slate-400 hover:text-slate-200 transition-colors" href="#">ANALYTICS</a>
+<a class="font-headline font-bold uppercase tracking-widest text-sm text-slate-400 hover:text-slate-200 transition-colors" href="#">ARCHIVE</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-slate-400 hover:text-cyan-300 transition-all active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-slate-400 hover:text-cyan-300 transition-all active:scale-95">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="User profile circular avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA6y7quNWJfipti_nh6w7pvvBHPjYHuVc34C7TeW_fbwsJFSIbSOa3065YorlukNfP5Btm9WuLSZRsBQYMvYMJywUq7O6sFKoiP9Eyos3SfPDNvnQDxk9CUuavHx5wBvkq37Gm6CnncJM1ytucS8KRDhpRa5yblDQ9XJDMeKODJDrjSRVLWhruuM_wvq7qi7xuPG0uPmTzJi-hM-BaQjdYEVCi0e2Mns2UqH7YKNe-cGmtesJq4aqv3TCz9JiL-Oiw1rirz5KiES0L"/>
+</div>
+</div>
+</header>
+<!-- SIDE NAVIGATION SHELL -->
+<aside class="h-screen w-20 hover:w-64 transition-all duration-500 fixed left-0 top-0 z-40 overflow-hidden bg-slate-950 flex flex-col h-full py-20">
+<div class="flex flex-col gap-6 mt-4">
+<div class="group flex items-center px-6 py-3 cursor-pointer bg-cyan-500/10 text-cyan-400 border-r-2 border-cyan-400">
+<span class="material-symbols-outlined">tune</span>
+<span class="ml-4 font-inter text-xs font-medium tracking-tight opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Parameters</span>
+</div>
+<div class="group flex items-center px-6 py-3 cursor-pointer text-slate-500 hover:text-slate-300 hover:bg-slate-900/80">
+<span class="material-symbols-outlined">memory</span>
+<span class="ml-4 font-inter text-xs font-medium tracking-tight opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Providers</span>
+</div>
+<div class="group flex items-center px-6 py-3 cursor-pointer text-slate-500 hover:text-slate-300 hover:bg-slate-900/80">
+<span class="material-symbols-outlined">play_arrow</span>
+<span class="ml-4 font-inter text-xs font-medium tracking-tight opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Controls</span>
+</div>
+<div class="group flex items-center px-6 py-3 cursor-pointer text-slate-500 hover:text-slate-300 hover:bg-slate-900/80">
+<span class="material-symbols-outlined">person_search</span>
+<span class="ml-4 font-inter text-xs font-medium tracking-tight opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Search</span>
+</div>
+<div class="group flex items-center px-6 py-3 cursor-pointer text-slate-500 hover:text-slate-300 hover:bg-slate-900/80">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="ml-4 font-inter text-xs font-medium tracking-tight opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Logs</span>
+</div>
+</div>
+<div class="mt-auto px-4 pb-8">
+<button class="w-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-lg py-3 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-headline text-[10px] font-bold tracking-widest uppercase">
+                DEPLOY AGENTS
+            </button>
+</div>
+</aside>
+<!-- MAIN CANVAS: FULL SCREEN MAP -->
+<main class="ml-20 h-screen w-[calc(100vw-5rem)] bg-surface-container-lowest relative overflow-hidden">
+<!-- Background Map (Mockup) -->
+<div class="absolute inset-0 z-0 bg-slate-900">
+<img alt="Simulation Map" class="w-full h-full object-cover opacity-40 mix-blend-luminosity" data-alt="Top down dark satellite view of Barcelona urban grid with data overlays" data-location="Barcelona" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDweKTrtdz2g2Tn8WnWTo-Qoi3ghOoAKBweEH6ZywHv3PGmQvSjuf7N7agnjXProhG-7pDdIUcP-eWd8an8utSzvGcI90MUzhp4KLcNi9fXQuk5MglMu9GexOmJA8cXqlKZ9mZdruSd6ihzcwmJYfIXrj9vS5RjGf4qFXggGiS1dQyYMGvsgKbsp1SghS69Mabptg6iUVdHj0Rl50guI9CacRqIcLNbxnWe29eVn1iyu-Vy1470TAnBp1Jm_U8cVdOFDXPI215JhJd1"/>
+<!-- Dynamic Agent Markers -->
+<div class="absolute top-1/2 left-1/3 w-3 h-3 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(76,214,255,0.8)] animate-pulse"></div>
+<div class="absolute top-1/4 left-1/2 w-3 h-3 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(76,214,255,0.8)]"></div>
+<div class="absolute bottom-1/3 right-1/4 w-3 h-3 bg-secondary-container rounded-full shadow-[0_0_15px_rgba(255,191,0,0.8)]"></div>
+<div class="absolute top-2/3 left-1/4 w-3 h-3 bg-tertiary-container rounded-full shadow-[0_0_15px_rgba(217,200,255,0.8)] animate-pulse"></div>
+</div>
+<!-- FLOATING CONTROL PANEL (LEFT) -->
+<div class="absolute top-24 left-8 z-10 w-80 flex flex-col gap-4 transition-transform duration-500 ease-in-out" id="left-panel"><button class="absolute -right-10 top-0 bg-slate-950/80 backdrop-blur-md border border-outline-variant/20 p-2 rounded-r-lg text-cyan-400 hover:text-white transition-colors" onclick="document.getElementById('left-panel').classList.toggle('-translate-x-[calc(100%+2rem)]')">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<!-- Header Identity -->
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase">Simulation Module</span>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+<span class="text-[9px] font-bold text-red-500 tracking-tighter">REC</span>
+</div>
+</div>
+<h1 class="font-headline text-xl font-bold text-on-surface leading-tight">V.08.4_URBAN_SYNTH</h1>
+</div>
+<!-- Backend & LLM Config -->
+<div class="glass-panel p-5 rounded-xl border border-outline-variant/20 flex flex-col gap-4">
+<div class="space-y-3">
+<div class="group">
+<label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5 ml-1">Core Endpoint</label>
+<div class="bg-surface-container-highest/50 rounded-lg flex items-center px-3 py-2 border-b-2 border-transparent group-focus-within:border-primary-fixed-dim transition-all">
+<span class="material-symbols-outlined text-sm text-on-surface-variant mr-2">link</span>
+<input class="bg-transparent border-none text-xs text-on-surface w-full p-0 focus:ring-0" type="text" value="https://api.kinetic.io/v1/sim"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5 ml-1">Provider</label>
+<div class="bg-surface-container-highest/50 rounded-lg px-3 py-2 text-xs text-on-surface flex items-center justify-between cursor-pointer">
+<span>Anthropic</span>
+<span class="material-symbols-outlined text-xs">expand_more</span>
+</div>
+</div>
+<div>
+<label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5 ml-1">Model</label>
+<div class="bg-surface-container-highest/50 rounded-lg px-3 py-2 text-xs text-on-surface flex items-center justify-between cursor-pointer">
+<span>Claude-3.5</span>
+<span class="material-symbols-outlined text-xs">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Playback Controls -->
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20 flex items-center justify-between">
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-primary-container hover:text-on-primary transition-all">
+<span class="material-symbols-outlined">skip_previous</span>
+</button>
+<button class="w-12 h-10 rounded-lg bg-primary-fixed-dim flex items-center justify-center text-on-primary shadow-lg shadow-cyan-900/40">
+<span class="material-symbols-outlined">pause</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-primary-container hover:text-on-primary transition-all">
+<span class="material-symbols-outlined">skip_next</span>
+</button>
+</div>
+<div class="text-right">
+<div class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">TICK</div>
+<div class="text-lg font-headline font-bold text-cyan-400 leading-none">084,291</div>
+</div>
+</div>
+<!-- Search & Layers -->
+<div class="glass-panel p-5 rounded-xl border border-outline-variant/20 space-y-5">
+<div class="relative">
+<input class="w-full bg-surface-container-highest/50 border-none rounded-lg text-xs py-3 pl-10 pr-4 text-on-surface placeholder:text-slate-500 focus:ring-1 focus:ring-cyan-400" placeholder="Find Agent ID..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">person_search</span>
+</div>
+<div class="space-y-3">
+<h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Layer Visibility</h3>
+<div class="space-y-2">
+<label class="flex items-center justify-between cursor-pointer group">
+<span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Buildings &amp; Footprints</span>
+<input checked="" class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Road Networks</span>
+<input checked="" class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Amenities &amp; POIs</span>
+<input class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Agent Path Trails</span>
+<input checked="" class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- AGENT MONITORING PANEL (RIGHT) -->
+<div class="absolute top-24 right-8 z-10 w-96 flex flex-col gap-4 h-[calc(100vh-8rem)] transition-transform duration-500 ease-in-out" id="right-panel"><button class="absolute -left-10 top-0 bg-slate-950/80 backdrop-blur-md border border-outline-variant/20 p-2 rounded-l-lg text-cyan-400 hover:text-white transition-colors" onclick="document.getElementById('right-panel').classList.toggle('translate-x-[calc(100%+2rem)]')">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+<!-- Agent Identity Card -->
+<div class="glass-panel rounded-xl border border-outline-variant/20 overflow-hidden flex flex-col">
+<div class="p-5 flex items-start gap-4 bg-gradient-to-br from-surface-container-high to-surface-container-low">
+<div class="relative">
+<div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-cyan-400/50">
+<img alt="Selected Agent" class="w-full h-full object-cover" data-alt="Close up portrait of a young urban resident agent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7nHnLPUm-4Q6_508taedTp-zSTncbhe7tUkECdFsBjQ1KAXFfx6QH49w9RN0sUtKOJy-1lFnPnDB_WkjqHIt8HUPF-qkLhlZtKXJDA5g5x5wduFRSCSl4pV4H1fqQNXBs1FXZnl9-C9XarODCjkY5Uj7tFQB0Ta2Dv2mhnLQn_BZ5yQjNVMpVik_ZpdVIYZKECUuEOhmZVKYCjfM2FdjsfOKqRm2SPcqigVS2yOPtGTHSFe9ZK8N_t1igsYZ_TSCzcu0HgXpycM8t"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-surface flex items-center justify-center"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h2 class="font-headline font-bold text-lg text-on-surface">AGENT_#0492</h2>
+<span class="text-[10px] font-bold bg-cyan-400/10 text-cyan-400 px-2 py-0.5 rounded border border-cyan-400/30">MOBILE</span>
+</div>
+<p class="text-xs text-on-surface-variant font-medium mt-0.5">EL RAVAL DISTRICT, BARCELONA</p>
+<div class="flex gap-2 mt-2">
+<span class="text-[9px] font-bold py-0.5 px-2 rounded-full bg-tertiary-container/20 text-tertiary-container border border-tertiary-container/30">MOOD: CURIOUS</span>
+<span class="text-[9px] font-bold py-0.5 px-2 rounded-full bg-secondary-container/20 text-secondary-container border border-secondary-container/30">TRAIT: WANDERER</span>
+</div>
+</div>
+</div>
+<!-- Needs & Cognition -->
+<div class="p-5 space-y-4 border-t border-outline-variant/10">
+<h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Metabolic &amp; Cognitive Status</h3>
+<div class="space-y-3">
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-medium text-slate-400">
+<span>ENERGY RESERVE</span>
+<span>78%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-cyan-400 w-[78%] rounded-full shadow-[0_0_8px_rgba(76,214,255,0.4)]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-medium text-slate-400">
+<span>SOCIAL SATIATION</span>
+<span>42%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[42%] rounded-full shadow-[0_0_8px_rgba(217,200,255,0.4)]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-medium text-slate-400">
+<span>HUNGER METRIC</span>
+<span>15%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[15%] rounded-full shadow-[0_0_8px_rgba(255,191,0,0.4)]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- LLM Narrative -->
+<div class="p-5 flex-1 border-t border-outline-variant/10">
+<h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">Narrative Synthesis (Claude-3.5)</h3>
+<div class="bg-surface-container-lowest/40 p-3 rounded-lg border border-outline-variant/20 italic text-xs leading-relaxed text-slate-300">
+                        "Agent #0492 is currently wandering through the narrow alleys of El Raval. The morning sunlight hitting the sandstone buildings has triggered a 15% increase in 'Aesthetic Appreciation'. They are searching for a specific bookstore, though their primary motivation is starting to shift towards social interaction as midday approaches..."
+                    </div>
+</div>
+<!-- Thought Stream -->
+<div class="p-5 h-48 border-t border-outline-variant/10 flex flex-col">
+<h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">Event Persistence</h3>
+<div class="flex-1 overflow-y-auto custom-scrollbar space-y-3">
+<div class="flex gap-3 items-start opacity-100">
+<span class="text-[9px] font-mono text-cyan-400/60 pt-0.5">14:22:01</span>
+<div class="text-[11px] text-on-surface">Target established: <span class="text-cyan-400">MACBA Plaza</span>. Initiating routing.</div>
+</div>
+<div class="flex gap-3 items-start opacity-80">
+<span class="text-[9px] font-mono text-cyan-400/60 pt-0.5">14:18:55</span>
+<div class="text-[11px] text-on-surface">Condition update: Mood shifted to <span class="text-tertiary-container">Contemplative</span>.</div>
+</div>
+<div class="flex gap-3 items-start opacity-60">
+<span class="text-[9px] font-mono text-cyan-400/60 pt-0.5">14:15:30</span>
+<div class="text-[11px] text-on-surface">Observation: Crowded intersection. Stress +2.</div>
+</div>
+<div class="flex gap-3 items-start opacity-40">
+<span class="text-[9px] font-mono text-cyan-400/60 pt-0.5">14:10:12</span>
+<div class="text-[11px] text-on-surface">Path deviation: Curiosity triggered by street art.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ASYMMETRIC METRIC WIDGETS (BOTTOM) -->
+<div class="absolute bottom-10 right-10 z-10 flex gap-6 items-end">
+<div class="glass-panel px-6 py-4 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mb-1">Active Entities</div>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-headline font-bold text-cyan-400">1,248</span>
+<span class="text-[10px] font-bold text-slate-500 uppercase">Agents</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FLOATING ACTION BUTTON (CONTEXTUAL) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4">
+<div class="hidden items-center gap-2 px-4 py-2 bg-slate-950/80 backdrop-blur-md rounded-full border border-outline-variant/20" id="timer-container">
+<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+<span class="font-mono text-xs text-on-surface font-bold" id="recording-timer">00:00:00</span>
+</div>
+<button class="bg-gradient-to-r from-primary-fixed-dim to-primary-container px-8 py-3 rounded-full text-on-primary font-headline text-xs font-bold tracking-[0.1em] uppercase shadow-2xl shadow-cyan-400/20 active:scale-95 transition-all flex items-center gap-3" id="record-action-btn" onclick="handleRecording()">
+<span class="material-symbols-outlined" id="record-icon" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+<span id="record-text">Start Recording</span>
+</button>
+</div>
+<script>
+      let state = 'idle';
+      let timerInterval;
+      let seconds = 0;
+
+      function updateTimerDisplay() {
+        const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+        const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        document.getElementById('recording-timer').innerText = `${h}:${m}:${s}`;
+      }
+
+      function handleRecording() {
+        const btn = document.getElementById('record-action-btn');
+        const icon = document.getElementById('record-icon');
+        const text = document.getElementById('record-text');
+        const timerContainer = document.getElementById('timer-container');
+
+        if (state === 'idle') {
+          state = 'recording';
+          text.innerText = 'Stop Recording';
+          icon.innerText = 'stop';
+          btn.classList.remove('from-primary-fixed-dim', 'to-primary-container');
+          btn.classList.add('bg-red-500/20', 'text-red-500', 'border', 'border-red-500/30');
+          timerContainer.classList.remove('hidden');
+          timerContainer.classList.add('flex');
+          
+          seconds = 0;
+          updateTimerDisplay();
+          timerInterval = setInterval(() => {
+            seconds++;
+            updateTimerDisplay();
+          }, 1000);
+
+        } else if (state === 'recording') {
+          state = 'stopped';
+          clearInterval(timerInterval);
+          text.innerText = 'Save Recording';
+          icon.innerText = 'save';
+          btn.classList.remove('bg-red-500/20', 'text-red-500', 'border-red-500/30');
+          btn.classList.add('from-cyan-500', 'to-cyan-400', 'text-white');
+          timerContainer.classList.add('opacity-50');
+
+        } else if (state === 'stopped') {
+          // Reset to initial
+          state = 'idle';
+          text.innerText = 'Start Recording';
+          icon.innerText = 'fiber_manual_record';
+          btn.classList.add('from-primary-fixed-dim', 'to-primary-container');
+          btn.classList.remove('from-cyan-500', 'to-cyan-400', 'text-white');
+          timerContainer.classList.add('hidden');
+          timerContainer.classList.remove('flex', 'opacity-50');
+          seconds = 0;
+        }
+      }
+    </script>
+</body></html>

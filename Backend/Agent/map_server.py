@@ -744,9 +744,10 @@ async def get_frontend_config():
     """Expose non-secret configuration needed by the frontend."""
     return {
         "mapbox_token": os.environ.get("MAPBOX_TOKEN", ""),
-        "llm_provider": os.environ.get("LLM_PROVIDER", "ollama"),
+        "llm_provider": os.environ.get("LLM_PROVIDER", "gemini"),
         "llm_model": os.environ.get("LLM_MODEL", ""),
         "available_providers": [
+            {"id": "gemini", "name": "Google Gemini 2.0 Flash Lite", "description": "Fast, efficient cloud LLM by Google — no local setup required"},
             {"id": "ollama", "name": "Ollama (Local)", "description": "Local LLM via Ollama — no GPU required"},
             {"id": "vllm", "name": "vLLM (Docker GPU)", "description": "High-performance GPU inference via vLLM Docker"},
         ],

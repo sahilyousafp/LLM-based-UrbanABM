@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This document presents a comprehensive architecture for an LLM-enhanced Urban Agent-Based Model (ABM) system designed for spatial cognition research. The system integrates Mesa-based agent simulation, OpenStreetMap geospatial data, and Large Language Model (LLM) capabilities through local inference using Ollama and Llama 3.1. The architecture separates concerns between a FastAPI backend server, a geospatial visualization frontend, and an LLM service layer, enabling scalable, real-time natural language generation of agent perspectives based on spatial perception.
+This document presents a comprehensive architecture for an LLM-enhanced Urban Agent-Based Model (ABM) system designed for spatial cognition research. The system integrates Mesa-based agent simulation, OpenStreetMap geospatial data, and Large Language Model (LLM) capabilities through Google's Gemini 2.0 Flash API. The architecture separates concerns between a FastAPI backend server, a geospatial visualization frontend, and an LLM service layer, enabling scalable, real-time natural language generation of agent perspectives based on spatial perception.
 
 ## 1. System Overview
 
@@ -12,7 +12,7 @@ Urban Agent-Based Models traditionally represent agent perception through struct
 
 ### 1.2 Key Contributions
 
-1. **Decoupled Architecture**: Separation of simulation (Mesa ABM), API layer (FastAPI), visualization (Leaflet.js), and LLM inference (Ollama)
+1. **Decoupled Architecture**: Separation of simulation (Mesa ABM), API layer (FastAPI), visualization (Leaflet.js), and LLM inference (Gemini 2.0 Flash)
 2. **Real-time LLM Integration**: Sub-second latency natural language generation for agent perspectives
 3. **Spatial Query Optimization**: DuckDB with spatial extensions for efficient geospatial operations
 4. **Fallback Mechanisms**: Graceful degradation when LLM services are unavailable
@@ -26,8 +26,8 @@ Urban Agent-Based Models traditionally represent agent perception through struct
 | Spatial Engine | DuckDB + Spatial Extensions | Geospatial data storage and queries |
 | Cloud Data Warehouse | GCP BigQuery | Scalable geospatial data analytics |
 | API Server | FastAPI | RESTful API with CORS support |
-| LLM Runtime | Ollama | Local LLM inference server |
-| Language Model | Llama 3.1 (8B parameters) | Natural language generation |
+| LLM Runtime | Google Gemini 2.0 Flash | Cloud-based LLM inference via API |
+| Language Model | Gemini 2.0 Flash | Natural language generation |
 | Frontend | Leaflet.js | Interactive map visualization |
 | Geometry Processing | Shapely | Geometric operations and WKT parsing |
 
@@ -70,24 +70,24 @@ Urban Agent-Based Models traditionally represent agent perception through struct
     │   Mesa ABM Model           │   │   LLM Service Layer     │
     │   (Backend/Agent/model.py) │   │   (Backend/LLM/)        │
     │                            │   │                         │
-    │ • CityModel                │   │ • Ollama integration    │
+    │ • CityModel                │   │ • Gemini API client     │
     │ • CityAgent (500x)         │   │ • Prompt engineering    │
-    │ • Network navigation       │   │ • Llama 3.1 inference   │
+    │ • Network navigation       │   │ • Gemini 2.0 Flash      │
     │ • Spatial perception       │   │ • Fallback templates    │
     └──────────┬─────────────────┘   └──────────┬──────────────┘
                │                                 │
-               │                                 │ HTTP API
+               │                                 │ HTTPS API
                ↓                                 ↓
     ┌────────────────────────┐   ┌──────────────────────────────┐
-    │  DuckDB Spatial DB     │   │  Ollama Runtime              │
-    │                        │   │  (localhost:11434)           │
-    │ • Buildings (polygons) │   │                              │
-    │ • Walk edges (lines)   │   │ • Model: llama3.1:8b        │
-    │ • Amenities (points)   │   │ • Temperature: 0.7          │
-    │ • OSM/Overture data    │   │ • Max tokens: 150           │
-    └────────┬───────────────┘   └──────────────────────────────┘
-             │
-             ↓
+    │  DuckDB Spatial DB     │   │  Google Gemini API           │
+    │                        │   │  (generativelanguage.        │
+    │ • Buildings (polygons) │   │   googleapis.com)            │
+    │ • Walk edges (lines)   │   │                              │
+    │ • Amenities (points)   │   │ • Model: gemini-2.0-flash-lite│
+    │ • OSM/Overture data    │   │ • Temperature: 0.7          │
+    └────────┬───────────────┘   │ • Max tokens: 256           │
+               │                 └──────────────────────────────┘
+               ↓
     ┌────────────────────────────────────────────────────────────┐
     │  GCP BigQuery (Optional Cloud Layer)                       │
     │                                                            │
@@ -105,7 +105,7 @@ The system follows a layered architecture with clear separation of concerns:
 1. **Presentation Layer** (Frontend): Handles user interaction and visualization
 2. **Application Layer** (FastAPI): Routes requests and coordinates services
 3. **Business Logic Layer** (Mesa Model + LLM Service): Implements simulation and intelligence
-4. **Data Layer** (DuckDB + Ollama): Provides persistence and model inference
+4. **Data Layer** (DuckDB + Gemini API): Provides persistence and model inference
 
 ### 2.3 Data Flow: Agent Perspective Generation
 
@@ -135,13 +135,13 @@ The system follows a layered architecture with clear separation of concerns:
          You can see: [amenity list].
          Describe your perspective in 2-3 sentences."
         ↓
-[7] Ollama API call (POST /api/generate)
+[7] Gemini API call (POST /v1beta/openai/chat/completions)
         ↓
-[8] Llama 3.1 inference (~1-2 seconds)
+[8] Gemini 2.0 Flash inference (~500ms-1s)
         ↓
 [9] Natural language summary generated
-        "I'm Agent N, walking through Barcelona's 
-         Eixample district. I can see Joys cafe 
+        "I'm Agent N, walking through Barcelona's
+         Eixample district. I can see Joys cafe
          nearby, perfect for a coffee break..."
         ↓
 [10] Response sent to frontend
@@ -498,8 +498,8 @@ async function showAgentSummary(agentId) {
 |--------|-------|-------|
 | Agent Count | 500 | Concurrent active agents |
 | Update Frequency | 1 Hz | Simulation steps per second |
-| LLM Latency (Cold) | 2-5 seconds | First request, model loading |
-| LLM Latency (Warm) | 1-2 seconds | Subsequent requests (longer output) |
+| LLM Latency (Cold) | ~500ms | First request, API connection |
+| LLM Latency (Warm) | ~200-500ms | Subsequent requests |
 | Fallback Latency | <0.1 seconds | Template generation |
 | Spatial Query Time | 10-50 ms | Per-agent amenity lookup |
 | Agent Movement | 15-25% edge/step | Variable speed |
@@ -526,8 +526,8 @@ async function showAgentSummary(agentId) {
 | Mesa Model (500 agents) | ~50 MB |
 | DuckDB Database | ~200 MB (loaded) |
 | FastAPI Server | ~100 MB |
-| Ollama Runtime | ~8-16 GB (model dependent) |
-| **Total System** | **~8.5-16.5 GB** |
+| Gemini API | ~0 MB (cloud-based) |
+| **Total System** | **~350 MB** |
 
 ## 5. Research Applications
 
@@ -577,11 +577,10 @@ amenity_limit = 20  # Maximum nearby POIs to track
 
 #### LLM Service
 ```python
-model = "llama3.1:8b"  # 8 billion parameters
-temperature = 0.7       # Creativity level (0.0-1.0)
-top_p = 0.9            # Nucleus sampling threshold
-max_tokens = 150       # Summary length constraint (3-4 sentences)
-timeout = 10           # Request timeout (seconds)
+model = "gemini-2.0-flash-lite"  # Google's efficient flash model (updated from deprecated gemini-2.0-flash)
+temperature = 0.7           # Creativity level (0.0-1.0)
+max_tokens = 256            # Summary length constraint
+timeout = 30                # Request timeout (seconds)
 output_format = "markdown"  # Bold formatting for emphasis
 ```
 
@@ -655,9 +654,11 @@ FROM `bigquery-public-data.overture_maps.places`;
 
 ```
 Local Machine:
-├── Ollama Server (localhost:11434)
 ├── FastAPI Backend (localhost:8000)
 └── Static Frontend (file:// or localhost:8080)
+
+Cloud Services:
+└── Google Gemini API (HTTPS)
 ```
 
 ### 7.2 Production Considerations
@@ -670,26 +671,27 @@ Load Balancer
     ↓
 FastAPI Instances (Auto-scaling)
     ↓
-LLM Service Pool (GPU-enabled)
+Google Gemini API (Cloud)
     ↓
 DuckDB Database (Read replicas)
 ```
 
 **Key Requirements:**
-- GPU acceleration for LLM inference
+- No GPU required (cloud-based LLM)
 - Redis cache for summary results
-- Request queuing for LLM calls
+- Request queuing for high concurrency
 - Horizontal scaling of API servers
 - CDN for frontend assets
+- API key rate limit management
 
 ## 8. Limitations and Future Work
 
 ### 8.1 Current Limitations
 
-1. **LLM Latency**: 1-2 second delay impacts real-time interaction
-2. **Sequential Processing**: One summary at a time limits throughput
-3. **Fixed Prompts**: No dynamic prompt adaptation based on context
-4. **Memory Requirements**: 8GB+ GPU for optimal LLM performance
+1. **API Dependency**: Requires internet connection and API key
+2. **Rate Limits**: Free tier has request quotas (15 RPM, 1M TPM)
+3. **Sequential Processing**: One summary at a time limits throughput
+4. **Fixed Prompts**: No dynamic prompt adaptation based on context
 5. **Network Dependency**: Agents follow predefined network (no free movement)
 
 ### 8.2 Future Enhancements
@@ -726,18 +728,22 @@ The implementation validates the feasibility of using LLMs to transform structur
 LLM_Based_UrbanABM/
 ├── Frontend/
 │   ├── index.html                 # Leaflet.js visualization interface
-│   └── README.md                  # Frontend documentation
+│   └── mapbox.html                # Mapbox GL alternative
 ├── Backend/
 │   ├── Agent/
 │   │   ├── map_server.py         # FastAPI server (CORS, endpoints)
 │   │   ├── model.py              # Mesa ABM (CityModel, CityAgent)
 │   │   └── BACKEND_README.md     # API documentation
 │   └── LLM/
-│       ├── llm_service.py        # Ollama integration, prompt engineering
+│       ├── llm_client.py         # Gemini/OpenAI-compatible async client
+│       ├── llm_config.py         # Provider-agnostic configuration
+│       ├── llm_service.py        # Legacy Ollama service (fallback)
 │       ├── __init__.py           # Module initialization
-│       ├── README.md             # LLM module documentation
-│       └── SETUP_GUIDE.md        # Installation instructions
+│       └── Thinking/             # Agent cognition modules
 ├── UrbanABM/                     # Additional utilities
+├── benchmark/                    # LLM provider benchmarks
+├── scripts/                      # Data processing scripts
+├── .env                          # Environment configuration (gitignored)
 ├── requirements.txt              # Python dependencies
 ├── start_backend.bat             # Backend launcher (Windows)
 └── start_system.bat              # Full system launcher
@@ -758,7 +764,8 @@ uvicorn>=0.24.0
 duckdb>=0.9.0
 shapely>=2.0.0
 
-# LLM Integration
+# LLM Integration (OpenAI-compatible client for Gemini)
+openai>=1.30.0
 requests>=2.31.0
 
 # Data Processing
@@ -767,6 +774,9 @@ pandas>=2.0.0
 # Cloud Integration (Optional)
 google-cloud-bigquery>=3.10.0
 db-dtypes>=1.1.1  # BigQuery data types support
+
+# Environment Variables
+python-dotenv>=1.0.0
 ```
 
 ### 10.3 Installation
@@ -775,20 +785,18 @@ db-dtypes>=1.1.1  # BigQuery data types support
 # 1. Install Python dependencies
 pip install -r requirements.txt
 
-# 2. Install Ollama
-# Download from https://ollama.ai/download
+# 2. Get Gemini API Key
+# Visit: https://aistudio.google.com/apikey
+# Copy your API key to .env file
 
-# 3. Start Ollama service
-ollama serve
+# 3. Configure environment
+# Copy .env.example to .env and fill in your API keys
 
-# 4. Pull language model
-ollama pull llama3.1
-
-# 5. Start backend
+# 4. Start backend
 cd Backend/Agent
 python map_server.py
 
-# 6. Open frontend
+# 5. Open frontend
 # Open Frontend/index.html in web browser
 ```
 
@@ -806,8 +814,9 @@ python map_server.py
 - Shapely: Geometric operations (https://shapely.readthedocs.io/)
 
 **LLM Infrastructure:**
-- Ollama: Local LLM runtime (https://ollama.ai/)
-- Llama 3.1: Meta's open-source language model
+- Google Gemini API: Multimodal language model (https://ai.google.dev/gemini-api)
+- OpenAI Python Client: OpenAI-compatible API client (https://github.com/openai/openai-python)
+- Gemini 2.0 Flash: Google's fast, efficient language model
 
 **Data Sources:**
 - OpenStreetMap: Collaborative mapping project (https://www.openstreetmap.org/)

@@ -500,22 +500,63 @@ class CityModel(mesa.Model):
 
     def get_nearby_perception(self, point_geom):
         """
-        Find the nearest street view scene analysis point within ~150m.
-        Returns the full scene_analysis dict from the JSON file, or None if nothing nearby.
+        Find the nearest street view scene analysis point within ~150m from DuckDB.
+        Returns the full scene_analysis dict, or None if nothing nearby.
         """
-        _THRESHOLD_DEG = 0.0015  # ~150m at Barcelona latitude
-        best = None
-        best_dist = _THRESHOLD_DEG
-        for entry in self._sv_cache:
-            dx = entry["lon"] - point_geom.x
-            dy = entry["lat"] - point_geom.y
-            dist = (dx * dx + dy * dy) ** 0.5
-            if dist < best_dist:
-                best_dist = dist
-                best = entry
-        if best is None:
-            return None
-        return dict(best["scene_analysis"])
+        try:
+            # Query DuckDB for nearest perception point within ~150m
+            # 0.0015 degrees ≈ 150m at Barcelona latitude
+            buffer_deg = 0.0015
+            
+            query = f"""
+            SELECT 
+                scene_overview, buildings, materials, building_condition,
+                street_furniture, vegetation_text, signage, ground_surfaces,
+                spatial_impression, pedestrian_activity, lighting_atmosphere,
+                as_resident, as_commuter, as_tourist, as_student,
+                latitude, longitude
+            FROM streetview_perception
+            WHERE ST_DWithin(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'), {buffer_deg})
+            ORDER BY ST_Distance(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'))
+            LIMIT 1
+            """
+            result = self.con.execute(query).fetchone()
+            
+            if not result:
+                return None
+            
+            # Map database columns to scene_analysis dict format
+            return {
+                "scene_overview": result[0] or "",
+                "buildings": result[1] or "",
+                "materials": result[2] or "",
+                "building_condition": result[3] or "",
+                "street_furniture": result[4] or "",
+                "vegetation": result[5] or "",
+                "signage": result[6] or "",
+                "ground_surfaces": result[7] or "",
+                "spatial_enclosure": result[8] or "",
+                "pedestrian_activity": result[9] or "",
+                "lighting_atmosphere": result[10] or "",
+                "as_resident": result[11] or "",
+                "as_commuter": result[12] or "",
+                "as_tourist": result[13] or "",
+                "as_student": result[14] or "",
+            }
+        except Exception as e:
+            print(f"Perception query error: {e}")
+            # Fallback to JSON cache if DuckDB query fails
+            _THRESHOLD_DEG = 0.0015
+            best = None
+            best_dist = _THRESHOLD_DEG
+            for entry in self._sv_cache:
+                dx = entry["lon"] - point_geom.x
+                dy = entry["lat"] - point_geom.y
+                dist = (dx * dx + dy * dy) ** 0.5
+                if dist < best_dist:
+                    best_dist = dist
+                    best = entry
+            return dict(best["scene_analysis"]) if best else None
 
     def step(self):
         self.steps += 1

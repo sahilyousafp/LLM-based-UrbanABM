@@ -2,7 +2,7 @@
 Prompt templates for agent thinking blocks.
 Each template is a callable that fills named placeholders and returns a messages list.
 """
-from typing import Any
+from typing import Any, Optional
 
 
 def _system(content: str) -> dict:
@@ -103,14 +103,34 @@ def needs_evaluation_prompt(
     needs: dict,
     amenity_name: str,
     amenity_type: str,
+    street_perception: Optional[dict] = None,
 ) -> list[dict]:
     """Prompt to evaluate how much visiting this amenity satisfies agent needs."""
+    # Build scene description from street perception fields
+    perception_text = ""
+    if street_perception:
+        scene_fields = [
+            ("scene_overview",      "Scene"),
+            ("buildings",           "Buildings"),
+            ("vegetation",          "Vegetation"),
+            ("street_furniture",    "Street furniture"),
+            ("signage",             "Signage"),
+            ("pedestrian_activity", "Pedestrian activity"),
+        ]
+        lines = []
+        for key, label in scene_fields:
+            val = street_perception.get(key, "")
+            if val and val.strip().lower() not in ("unknown", ""):
+                lines.append(f"  {label}: {val}")
+        if lines:
+            perception_text = "\n\nSurrounding street scene:\n" + "\n".join(lines)
+
     user_content = f"""Agent archetype: {archetype}
 Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}
-Visited amenity: "{amenity_name}" (type: {amenity_type})
+Visited amenity: "{amenity_name}" (type: {amenity_type}){perception_text}
 
 How much does this visit satisfy each need? Provide values 0.0-1.0 (0=no satisfaction, 1=fully satisfied).
-Also give a brief description of what the agent does there.
+Also give a brief description of what the agent does there, considering the surrounding environment.
 
 Respond with JSON:
 {{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "activity": "<what agent does>"}}"""
