@@ -130,11 +130,20 @@ class CityAgent(mg.GeoAgent):
 
     async def _async_step(self) -> None:
         """Full async step: query amenities, run dispatcher, update geometry."""
-        # Query DuckDB for nearby amenities
-        self.nearby_amenities = self.model.get_nearby_amenities(self.geometry)
+        # Get current perception mode from model
+        perception_mode = getattr(self.model, 'perception_mode', 'both')
 
-        # Query nearest street view perception data
-        self.street_perception = self.model.get_nearby_perception(self.geometry)
+        # Query DuckDB for nearby amenities (if mode allows)
+        if perception_mode in ['amenities', 'both']:
+            self.nearby_amenities = self.model.get_nearby_amenities(self.geometry)
+        else:
+            self.nearby_amenities = []
+
+        # Query nearest street view perception data (if mode allows)
+        if perception_mode in ['perception', 'both']:
+            self.street_perception = self.model.get_nearby_perception(self.geometry)
+        else:
+            self.street_perception = None
 
         # Update position in memory
         await self.memory.status.update("position", {
@@ -165,8 +174,22 @@ class CityAgent(mg.GeoAgent):
         # Apply mobility decision — move to chosen edge
         if needs_new_edge and result.mobility.action == "move_to_edge":
             self._apply_mobility(result.mobility.params)
+            # Log decision with fallback status
+            if hasattr(self.model, 'tracker') and self.model.tracker:
+                self.model.tracker.log_decision(
+                    agent_id=self.unique_id,
+                    step_number=self.model.steps,
+                    decision_type="edge_change",
+                    longitude=self.geometry.x,
+                    latitude=self.geometry.y,
+                    from_edge_id=self.previous_edge_id,
+                    to_edge_id=self.current_edge_id,
+                    alternatives_count=len(candidate_edges) if candidate_edges else 0,
+                    decision_reason=result.mobility.reasoning,
+                    is_fallback=result.mobility.fallback
+                )
         elif result.mobility.action == "stay":
-            pass  # Stay on current edge
+            pass # Stay on current edge
 
         # Advance position along current edge
         self._advance_along_edge()
@@ -298,7 +321,8 @@ class CityModel(mesa.Model):
         super().__init__()
         self.num_agents = num_agents
         self.steps = 0
-        
+        self.perception_mode = "both"  # 'amenities', 'perception', or 'both'
+
         # Use custom attribute name (Mesa 3.0+ reserves 'agents')
         self.city_agents = []
         self.edge_visit_count_global = {}  # Shared visit count for sync fallback

@@ -14,7 +14,7 @@ class LLMConfig:
     api_key: str = ""
     base_url: str = ""                # Override endpoint (e.g. vLLM at http://localhost:8001/v1)
     timeout: int = 30
-    max_tokens: int = 256
+    max_tokens: int = 4096
     temperature: float = 0.7
 
     # Computed property: resolved base_url for each provider

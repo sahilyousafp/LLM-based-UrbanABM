@@ -185,16 +185,13 @@
                 <span class="material-symbols-outlined text-sm">chevron_left</span>
             </button>
             
-            <!-- Header Identity -->
-            <div class="glass-panel p-4 rounded-xl border border-outline-variant/20">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase">Simulation Module</span>
-                    <div class="flex items-center gap-1.5" id="stats">
-                        <span class="text-[9px] font-bold text-cyan-400 tracking-tighter">Loading stats...</span>
-                    </div>
-                </div>
-                <h1 class="font-headline text-xl font-bold text-on-surface leading-tight">V.08.4_URBAN_SYNTH</h1>
-            </div>
+      <!-- Header Identity -->
+      <div class="glass-panel p-3 rounded-xl border border-outline-variant/20">
+        <div class="flex items-center justify-between">
+          <h1 class="font-headline text-lg font-bold text-on-surface">V.08.4_URBAN_SYNTH</h1>
+          <span class="text-[9px] text-on-surface-variant" id="stats">Loading...</span>
+        </div>
+      </div>
 
             <!-- Backend & LLM Config -->
             <div class="glass-panel p-5 rounded-xl border border-outline-variant/20 flex flex-col gap-4">
@@ -262,9 +259,22 @@
                     <button id="agent-search-btn" class="bg-surface-container-highest px-3 border border-outline-variant/20 rounded-lg text-[10px] font-bold text-cyan-400 hover:bg-surface-container-high">GO</button>
                 </div>
 
-                <div class="space-y-3">
-                    <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Layer Visibility</h3>
-                    <div class="space-y-2">
+<div class="space-y-3">
+<h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Agent Perception</h3>
+<div class="relative">
+<select id="perception-mode" class="w-full bg-surface-container-highest border border-outline-variant/30 rounded-lg text-xs py-2 px-3 text-on-surface focus:ring-1 focus:ring-cyan-400 cursor-pointer appearance-none">
+<option value="both">Both (Amenities + Perception Points)</option>
+<option value="amenities">Amenities Only</option>
+<option value="perception">Perception Points Only</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-[16px] pointer-events-none">expand_more</span>
+</div>
+<p class="text-[9px] text-slate-500 mt-1">Controls what agents perceive in the environment</p>
+</div>
+
+<div class="space-y-3">
+<h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Layer Visibility</h3>
+<div class="space-y-2">
                         <label class="flex items-center justify-between cursor-pointer group">
                             <span class="text-xs text-on-surface group-hover:text-cyan-400 transition-colors">Buildings & Footprints</span>
                             <input id="layer-buildings" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0" type="checkbox"/>
@@ -743,13 +753,17 @@
                     container.innerHTML = '<em style="color:#999; font-size:11px;">No thoughts yet — run a step</em>';
                     return;
                 }
-                container.innerHTML = data.events.map(ev => {
-                    const topicClass = ev.topic || 'mobility';
-                    return `<div class="thought-event ${topicClass}">
-                        <span class="te-step">Step ${ev.step} · ${ev.topic}</span><br>
-                        <span class="te-desc">${ev.description}</span>
-                    </div>`;
-                }).join('');
+    container.innerHTML = data.events.map(ev => {
+      const topicClass = ev.topic || 'mobility';
+      const isFallback = ev.metadata?.fallback === true;
+      const decisionBadge = isFallback
+        ? '<span class="ml-1 px-1.5 py-0.5 text-[8px] bg-amber-500/20 text-amber-400 rounded border border-amber-500/30">FALLBACK</span>'
+        : '<span class="ml-1 px-1.5 py-0.5 text-[8px] bg-emerald-500/20 text-emerald-400 rounded border border-emerald-500/30">LLM</span>';
+      return `<div class="thought-event ${topicClass}">
+        <span class="te-step">Step ${ev.step} · ${ev.topic}${decisionBadge}</span><br>
+        <span class="te-desc">${ev.description}</span>
+      </div>`;
+    }).join('');
                 container.scrollTop = container.scrollHeight;
             } catch (e) {
                 console.error('Agent stream error:', e);
@@ -869,16 +883,41 @@
             agents: 'agents-layer',
             streetview: 'streetview-layer'
         };
-        Object.entries(layerMap).forEach(([checkbox, layerId]) => {
-            document.getElementById('layer-' + checkbox).addEventListener('change', e => {
-                if (map.getLayer(layerId)) {
-                    map.setLayoutProperty(layerId, 'visibility', e.target.checked ? 'visible' : 'none');
-                }
-            });
-        });
+Object.entries(layerMap).forEach(([checkbox, layerId]) => {
+  document.getElementById('layer-' + checkbox).addEventListener('change', e => {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, 'visibility', e.target.checked ? 'visible' : 'none');
+    }
+  });
+});
 
-        // ── Boot ────────────────────────────────────────────
-        init();
+// Perception mode dropdown
+const perceptionModeSelect = document.getElementById('perception-mode');
+if (perceptionModeSelect) {
+  perceptionModeSelect.addEventListener('change', async (e) => {
+    const mode = e.target.value;
+    const apiUrl = getApiUrl();
+    try {
+      const res = await fetch(`${apiUrl}/api/config/perception-mode`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: mode })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log('Perception mode updated:', data.mode);
+        // Visual feedback
+        const statusText = mode === 'both' ? 'Amenities + Perception Points' : mode === 'amenities' ? 'Amenities Only' : 'Perception Points Only';
+        console.log(`Agent perception set to: ${statusText}`);
+      }
+    } catch (error) {
+      console.error('Failed to update perception mode:', error);
+    }
+  });
+}
+
+// ── Boot ────────────────────────────────────────────
+init();
     </script>
 </body>
 </html>

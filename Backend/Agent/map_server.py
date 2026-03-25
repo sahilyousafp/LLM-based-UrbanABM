@@ -609,6 +609,28 @@ async def update_llm_config(provider: str, model: str, base_url: str = "", api_k
     return {"status": "updated", "provider": provider, "model": model}
 
 
+# Global perception mode setting (affects what agents query for)
+perception_mode = "both"  # Default: amenities + perception points
+
+@app.post("/api/config/perception-mode")
+async def update_perception_mode(mode: str):
+    """Update what agents perceive: 'amenities', 'perception', or 'both'."""
+    global perception_mode
+    if mode not in ["amenities", "perception", "both"]:
+        return {"error": "Invalid mode. Must be 'amenities', 'perception', or 'both'"}
+    perception_mode = mode
+    # Update the model's perception mode
+    city_model.perception_mode = mode
+    print(f"Agent perception mode updated to: {mode}")
+    return {"status": "updated", "mode": mode}
+
+
+@app.get("/api/config/perception-mode")
+async def get_perception_mode():
+    """Get current perception mode."""
+    return {"mode": perception_mode}
+
+
 @app.get("/api/llm/stats")
 async def get_llm_stats():
     """Return LLM usage statistics (token counts, latency)."""

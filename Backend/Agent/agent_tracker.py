@@ -67,26 +67,27 @@ class AgentTracker:
                     edge_id INTEGER,
                     position_along_edge DOUBLE,
                     speed DOUBLE,
-                    nearby_amenities_count INTEGER DEFAULT 0
-                );
+            nearby_amenities_count INTEGER DEFAULT 0
+            );
             """)
-            
+
             # Create agent_decisions table for tracking edge changes and decisions
             self.con.execute("""
-                CREATE TABLE IF NOT EXISTS agent_decisions (
-                    decision_id INTEGER PRIMARY KEY,
-                    agent_id INTEGER NOT NULL,
-                    timestamp TIMESTAMP NOT NULL,
-                    step_number INTEGER NOT NULL,
-                    decision_type VARCHAR NOT NULL,
-                    from_edge_id INTEGER,
-                    to_edge_id INTEGER,
-                    longitude DOUBLE NOT NULL,
-                    latitude DOUBLE NOT NULL,
-                    geometry GEOMETRY,
-                    alternatives_count INTEGER,
-                    decision_reason VARCHAR
-                );
+            CREATE TABLE IF NOT EXISTS agent_decisions (
+            decision_id INTEGER PRIMARY KEY,
+            agent_id INTEGER NOT NULL,
+            timestamp TIMESTAMP NOT NULL,
+            step_number INTEGER NOT NULL,
+            decision_type VARCHAR NOT NULL,
+            from_edge_id INTEGER,
+            to_edge_id INTEGER,
+            longitude DOUBLE NOT NULL,
+            latitude DOUBLE NOT NULL,
+            geometry GEOMETRY,
+            alternatives_count INTEGER,
+            decision_reason VARCHAR,
+            is_fallback BOOLEAN DEFAULT FALSE
+            );
             """)
             
             # Create spatial indexes for efficient queries
@@ -124,8 +125,8 @@ class AgentTracker:
         except Exception as e:
             logger.error(f"Failed to initialize database: {e}")
             raise
-    
-    def log_movement(self, agent_id, step_number, longitude, latitude, 
+
+    def log_movement(self, agent_id, step_number, longitude, latitude,
                      edge_id=None, position_along_edge=None, speed=None,
                      nearby_amenities_count=0):
         """
@@ -164,10 +165,10 @@ class AgentTracker:
     
     def log_decision(self, agent_id, step_number, decision_type, longitude, latitude,
                      from_edge_id=None, to_edge_id=None, alternatives_count=None,
-                     decision_reason=None):
+                     decision_reason=None, is_fallback=False):
         """
         Log an agent's decision (e.g., choosing a new edge).
-        
+
         Args:
             agent_id: Unique identifier of the agent
             step_number: Current simulation step
@@ -178,26 +179,27 @@ class AgentTracker:
             to_edge_id: Edge the agent chose to move to (optional)
             alternatives_count: Number of alternative edges available (optional)
             decision_reason: Reason for the decision (optional)
+            is_fallback: True if decision used rule-based fallback instead of LLM
         """
         try:
             timestamp = datetime.now()
-            
+
             self.con.execute("""
-                INSERT INTO agent_decisions 
-                (decision_id, agent_id, timestamp, step_number, decision_type, 
-                 from_edge_id, to_edge_id, longitude, latitude, geometry,
-                 alternatives_count, decision_reason)
-                VALUES (
-                    (SELECT COALESCE(MAX(decision_id), 0) + 1 FROM agent_decisions),
-                    ?, ?, ?, ?,
-                    ?, ?, ?, ?,
-                    ST_Point(?, ?),
-                    ?, ?
-                )
+            INSERT INTO agent_decisions
+            (decision_id, agent_id, timestamp, step_number, decision_type,
+             from_edge_id, to_edge_id, longitude, latitude, geometry,
+             alternatives_count, decision_reason, is_fallback)
+            VALUES (
+            (SELECT COALESCE(MAX(decision_id), 0) + 1 FROM agent_decisions),
+            ?, ?, ?, ?,
+            ?, ?, ?, ?,
+            ST_Point(?, ?),
+            ?, ?, ?
+            )
             """, [agent_id, timestamp, step_number, decision_type,
                   from_edge_id, to_edge_id, longitude, latitude,
-                  longitude, latitude, alternatives_count, decision_reason])
-            
+                  longitude, latitude, alternatives_count, decision_reason, is_fallback])
+
         except Exception as e:
             logger.error(f"Failed to log decision for agent {agent_id}: {e}")
     

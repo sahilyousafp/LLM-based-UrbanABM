@@ -230,23 +230,23 @@ def extract_places(bq_client, duckdb_con, bbox):
     print("Extracting places (amenities) from Overture Maps (BigQuery)...")
     
     bq_query = f"""
-    SELECT
-        id,
-        ST_AsBinary(geometry) as geometry,
-        -- Prefer local language names: English > Spanish > Catalan > primary
-        COALESCE(
-            (SELECT e.element FROM UNNEST(names.alternate) AS e WHERE e.language = 'en' LIMIT 1),
-            (SELECT e.element FROM UNNEST(names.alternate) AS e WHERE e.language = 'es' LIMIT 1),
-            (SELECT e.element FROM UNNEST(names.alternate) AS e WHERE e.language = 'ca' LIMIT 1),
-            names.primary
-        ) as name,
-        categories.primary as amenity,
-        TO_JSON_STRING(categories.alternate) as amenity_tags,
-        IFNULL((SELECT e.element.freeform FROM UNNEST(addresses.list) AS e LIMIT 1), '') as address,
-        IFNULL((SELECT e.element FROM UNNEST(websites.list) AS e LIMIT 1), '') as website,
-        IFNULL((SELECT e.element FROM UNNEST(phones.list) AS e LIMIT 1), '') as phone,
-        bbox.xmin as lon,
-        bbox.ymin as lat
+SELECT
+    id,
+    ST_AsBinary(geometry) as geometry,
+    -- Prefer local language names: English > Spanish > Catalan > primary
+    COALESCE(
+        (SELECT e.value FROM UNNEST(names.common.key_value) AS e WHERE e.key = 'en' LIMIT 1),
+        (SELECT e.value FROM UNNEST(names.common.key_value) AS e WHERE e.key = 'es' LIMIT 1),
+        (SELECT e.value FROM UNNEST(names.common.key_value) AS e WHERE e.key = 'ca' LIMIT 1),
+        names.primary
+    ) as name,
+    categories.primary as amenity,
+    TO_JSON_STRING(categories.alternate) as amenity_tags,
+    IFNULL((SELECT e.element.freeform FROM UNNEST(addresses.list) AS e LIMIT 1), '') as address,
+    IFNULL((SELECT e.element FROM UNNEST(websites.list) AS e LIMIT 1), '') as website,
+    IFNULL((SELECT e.element FROM UNNEST(phones.list) AS e LIMIT 1), '') as phone,
+    bbox.xmin as lon,
+    bbox.ymin as lat
     FROM `{BIGQUERY_PROJECT}.{OVERTURE_DATASET}.place`
     WHERE bbox.xmin >= {bbox['min_lon']}
       AND bbox.ymin >= {bbox['min_lat']}
@@ -565,7 +565,7 @@ def load_streetview_perception(duckdb_con):
 
         # ── Extract full scene_analysis fields directly from JSON ──────────────────
         # These are the original 16 fields from the PLM analysis
-        scene_analysis = data.get("scene_analysis", {})
+        scene_analysis = data.get("scene_analysis") or {}
         scene_overview = scene_analysis.get("scene_overview", "")
         buildings = scene_analysis.get("buildings", "")
         signage = scene_analysis.get("signage", "")
@@ -765,7 +765,7 @@ def main():
     success &= extract_transportation(bq_client, duckdb_con, BBOX)
     
     # Load local street view perception data
-    load_streetview_perception(duckdb_con)
+    success &= load_streetview_perception(duckdb_con)
     
     if success:
         # Create spatial indexes
