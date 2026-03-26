@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 import duckdb
@@ -617,7 +617,7 @@ async def update_llm_config(provider: str, model: str, base_url: str = "", api_k
 perception_mode = "both"  # Default: amenities + perception points
 
 @app.post("/api/config/perception-mode")
-async def update_perception_mode(mode: str):
+async def update_perception_mode(mode: str = Body(..., embed=True)):
     """Update what agents perceive: 'amenities', 'perception', or 'both'."""
     global perception_mode
     if mode not in ["amenities", "perception", "both"]:
