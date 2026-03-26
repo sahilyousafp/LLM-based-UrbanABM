@@ -59,6 +59,17 @@
         .btn-success { background: #4CAF50; color: white; }
         .btn-success:hover { background: #388E3C; }
         .btn-sm { padding: 4px 10px; font-size: 12px; }
+        .btn-record { background: #e53935; color: white; border-radius: 50%; width: 36px; height: 36px; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; }
+        .btn-record:hover { background: #c62828; }
+        .btn-record.recording { background: #e53935; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(229, 57, 53, 0); } 100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); } }
+        .recording-panel { background: #ffebee; border: 2px solid #e53935; border-radius: 5px; padding: 10px; margin-top: 10px; }
+        .recording-panel.hidden { display: none; }
+        .recording-status { font-size: 11px; color: #c62828; margin-top: 5px; }
+        .recording-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+        .recording-controls label { font-size: 11px; display: flex; align-items: center; gap: 4px; }
+        .download-link { display: inline-block; margin-top: 8px; padding: 6px 12px; background: #4CAF50; color: white; text-decoration: none; border-radius: 4px; font-size: 12px; }
+        .download-link:hover { background: #388E3C; }
 
         /* ── Simulation controls ─────────────────────────── */
         .sim-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
@@ -169,6 +180,7 @@
                 <button class="btn btn-success" id="btn-run">▶ Run</button>
                 <button class="btn btn-danger" id="btn-stop" style="display:none;">⏸ Pause</button>
                 <button class="btn btn-primary btn-sm" id="btn-step">Step</button>
+                <button class="btn btn-record" id="btn-record" title="Start Recording">●</button>
             </div>
             <div class="sim-info">
                 Step: <strong id="sim-step">0</strong> |
@@ -183,6 +195,22 @@
             <div class="speed-control">
                 Speed: <span id="speed-value">1.0</span>s/step
                 <input type="range" id="speed-slider" min="0.1" max="5" step="0.1" value="1">
+            </div>
+            
+            <!-- Recording Panel -->
+            <div id="recording-panel" class="recording-panel hidden">
+                <h4 style="margin:0 0 8px; color: #c62828;">🔴 Recording</h4>
+                <div class="recording-status">
+                    Session: <strong id="rec-session">—</strong><br>
+                    Steps: <strong id="rec-steps">0</strong> |
+                    Records: <strong id="rec-records">0</strong> |
+                    Agents: <strong id="rec-agents">0</strong>
+                </div>
+                <div class="recording-controls">
+                    <label><input type="checkbox" id="rec-include-thoughts" checked> Thoughts</label>
+                    <label><input type="checkbox" id="rec-include-perception" checked> Perception</label>
+                </div>
+                <div id="recording-result" style="margin-top:8px;"></div>
             </div>
         </section>
 
@@ -256,6 +284,11 @@
         let selectedMarker = null;
         let summaryUpdateInterval = null;
         let currentLLMProvider = 'ollama';
+        
+        // Recording state
+        let isRecording = false;
+        let recordingSessionId = null;
+        let recordingStatusInterval = null;
 
         function getApiUrl() { return document.getElementById('api-url').value; }
 
@@ -714,10 +747,121 @@
             document.getElementById('sim-status').textContent = 'Paused';
         }
 
+        // ── Recording functions ──────────────────────────────
+        async function startRecording() {
+            const apiUrl = getApiUrl();
+            const includeThoughts = document.getElementById('rec-include-thoughts').checked;
+            const includePerception = document.getElementById('rec-include-perception').checked;
+            
+            try {
+                const sessionName = `session_${new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)}`;
+                const res = await fetch(`${apiUrl}/api/recording/start?session_name=${encodeURIComponent(sessionName)}&include_thoughts=${includeThoughts}&include_perception=${includePerception}`, {
+                    method: 'POST',
+                });
+                const data = await res.json();
+                
+                if (data.status === 'recording_started') {
+                    isRecording = true;
+                    recordingSessionId = data.session_id;
+                    
+                    // Update UI
+                    document.getElementById('recording-panel').classList.remove('hidden');
+                    document.getElementById('btn-record').classList.add('recording');
+                    document.getElementById('btn-record').title = 'Stop Recording';
+                    document.getElementById('rec-session').textContent = data.session_name;
+                    document.getElementById('rec-steps').textContent = '0';
+                    document.getElementById('rec-records').textContent = '0';
+                    document.getElementById('rec-agents').textContent = '0';
+                    document.getElementById('recording-result').innerHTML = '';
+                    
+                    // Start polling status
+                    recordingStatusInterval = setInterval(updateRecordingStatus, 2000);
+                    
+                    console.log('Recording started:', data);
+                }
+            } catch (e) {
+                alert('Failed to start recording: ' + e.message);
+            }
+        }
+
+        async function stopRecording() {
+            const apiUrl = getApiUrl();
+            
+            try {
+                const res = await fetch(`${apiUrl}/api/recording/stop`, { method: 'POST' });
+                const data = await res.json();
+                
+                // Stop polling
+                if (recordingStatusInterval) {
+                    clearInterval(recordingStatusInterval);
+                    recordingStatusInterval = null;
+                }
+                
+                if (data.status === 'recording_stopped') {
+                    isRecording = false;
+                    recordingSessionId = null;
+                    
+                    // Update UI
+                    document.getElementById('btn-record').classList.remove('recording');
+                    document.getElementById('btn-record').title = 'Start Recording';
+                    
+                    // Show download link
+                    const downloadUrl = `${apiUrl}/api/recording/download/${encodeURIComponent(data.file_name)}`;
+                    document.getElementById('recording-result').innerHTML = `
+                        <div style="margin-top:8px; padding:8px; background:#C8E6C9; border-radius:4px;">
+                            ✅ Recording saved!<br>
+                            <strong>${data.total_records}</strong> records from <strong>${data.agents_tracked}</strong> agents<br>
+                            File: ${data.file_name}<br>
+                            <a href="${downloadUrl}" class="download-link" download>⬇ Download GeoParquet</a>
+                        </div>
+                    `;
+                    
+                    console.log('Recording stopped:', data);
+                } else if (data.status === 'no_recording') {
+                    // Just reset UI
+                    isRecording = false;
+                    recordingSessionId = null;
+                    document.getElementById('recording-panel').classList.add('hidden');
+                    document.getElementById('btn-record').classList.remove('recording');
+                    document.getElementById('btn-record').title = 'Start Recording';
+                } else {
+                    alert('Error stopping recording: ' + (data.message || 'Unknown error'));
+                }
+            } catch (e) {
+                alert('Failed to stop recording: ' + e.message);
+            }
+        }
+
+        async function updateRecordingStatus() {
+            const apiUrl = getApiUrl();
+            
+            try {
+                const res = await fetch(`${apiUrl}/api/recording/status`);
+                const data = await res.json();
+                
+                if (data.is_recording) {
+                    document.getElementById('rec-steps').textContent = data.steps_recorded || 0;
+                    document.getElementById('rec-records').textContent = data.total_records || 0;
+                    document.getElementById('rec-agents').textContent = data.agents_tracked || 0;
+                }
+            } catch (e) {
+                console.error('Failed to update recording status:', e);
+            }
+        }
+
         // ── Event listeners ─────────────────────────────────
         document.getElementById('btn-run').addEventListener('click', startAnimation);
         document.getElementById('btn-stop').addEventListener('click', pauseAnimation);
         document.getElementById('btn-step').addEventListener('click', stepSimulation);
+        
+        // Record button toggle
+        document.getElementById('btn-record').addEventListener('click', () => {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
 
         document.getElementById('speed-slider').addEventListener('input', e => {
             animationSpeed = parseFloat(e.target.value) * 1000;

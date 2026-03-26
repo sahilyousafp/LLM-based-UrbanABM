@@ -126,6 +126,25 @@
 
       /* Ensure Map container takes full viewport */
       #map { width: 100vw; height: 100vh; position: absolute; top:0; left:0; right:0; bottom:0; z-index: 0;}
+
+      /* Recording button and panel styles */
+      .btn-record { background: #ef4444; color: white; border-radius: 50%; width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.2s; flex-shrink: 0; }
+      .btn-record:hover { background: #dc2626; transform: scale(1.05); }
+      .btn-record.recording { animation: pulse-red 1.5s infinite; }
+      @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+      .recording-panel { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 12px; padding: 12px; margin-top: 8px; }
+      .recording-panel.hidden { display: none; }
+      .recording-status { font-size: 10px; color: #fca5a5; margin-top: 4px; }
+      .recording-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+      .recording-controls label { font-size: 9px; display: flex; align-items: center; gap: 3px; color: #bac9cc; white-space: nowrap; }
+      .download-link { display: inline-block; margin-top: 6px; padding: 6px 12px; background:rgba(34,197,94,0.2); color:#4ade80; border:1px solid rgba(34,197,94,0.3); border-radius:6px; text-decoration: none; font-size: 10px; font-weight: 600; }
+      .download-link:hover { background: rgba(34, 197, 94, 0.3); }
+      
+      /* Fix panel overflow issues */
+      #left-panel { max-height: calc(100vh - 8rem); overflow-y: auto; }
+      #left-panel::-webkit-scrollbar { width: 4px; }
+      #left-panel::-webkit-scrollbar-track { background: transparent; }
+      #left-panel::-webkit-scrollbar-thumb { background: #3b494c; border-radius: 10px; }
     </style>
 </head>
 <body class="overflow-hidden bg-surface-container-lowest text-on-surface">
@@ -180,7 +199,7 @@
         </aside>
 
         <!-- FLOATING CONTROL PANEL (LEFT) -->
-        <div class="absolute top-24 left-8 z-10 w-80 flex flex-col gap-4 transition-transform duration-500 ease-in-out" id="left-panel">
+        <div class="absolute top-20 left-8 z-10 w-80 flex flex-col gap-4 transition-transform duration-500 ease-in-out max-h-[calc(100vh-7rem)] overflow-y-auto custom-scrollbar" id="left-panel" style="padding-bottom: 1rem;">
             <button class="absolute -right-10 top-0 bg-slate-950/80 backdrop-blur-md border border-outline-variant/20 p-2 rounded-r-lg text-cyan-400 hover:text-white transition-colors" onclick="document.getElementById('left-panel').classList.toggle('-translate-x-[calc(100%+2rem)]')">
                 <span class="material-symbols-outlined text-sm">chevron_left</span>
             </button>
@@ -218,34 +237,68 @@
 
             <!-- Playback Controls -->
             <div class="glass-panel p-4 rounded-xl border border-outline-variant/20 flex flex-col gap-3">
-                <div class="flex items-center justify-between">
-                    <div class="flex gap-2">
-                        <button id="btn-run" title="Run Continuous" class="w-12 h-10 rounded-lg bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-cyan-400 hover:bg-primary-container hover:text-on-primary transition-all">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <div class="flex gap-2 flex-wrap">
+                        <button id="btn-run" title="Run Continuous" class="w-12 h-10 rounded-lg bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-cyan-400 hover:bg-primary-container hover:text-on-primary transition-all flex-shrink-0">
                             <span class="material-symbols-outlined">play_arrow</span>
                         </button>
-                        <button id="btn-stop" style="display:none;" title="Pause" class="w-12 h-10 rounded-lg bg-primary-fixed-dim flex items-center justify-center text-on-primary shadow-lg shadow-cyan-900/40">
+                        <button id="btn-stop" style="display:none;" title="Pause" class="w-12 h-10 rounded-lg bg-primary-fixed-dim flex items-center justify-center text-on-primary shadow-lg shadow-cyan-900/40 flex-shrink-0">
                             <span class="material-symbols-outlined">pause</span>
                         </button>
-                        <button id="btn-step" title="Step" class="w-10 h-10 rounded-lg bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-all">
+                        <button id="btn-step" title="Step" class="w-10 h-10 rounded-lg bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-all flex-shrink-0">
                             <span class="material-symbols-outlined">skip_next</span>
                         </button>
+                        <button id="btn-record" title="Start Recording" class="btn-record flex-shrink-0">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">radio_button_checked</span>
+                        </button>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right flex-shrink-0">
                         <div class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">TICK</div>
                         <div id="sim-step" class="text-lg font-headline font-bold text-cyan-400 leading-none">0</div>
                     </div>
                 </div>
                 <!-- Speed & Setup -->
-                <div class="flex items-center justify-between text-[10px]">
-                    <div class="flex items-center gap-2 w-1/2">
-                        <label class="text-on-surface-variant uppercase tracking-wider font-bold">Speed</label>
-                        <input id="speed-slider" class="w-full accent-cyan-400 cursor-pointer" type="range" min="0.1" max="5" step="0.1" value="1"/>
-                        <span id="speed-value" class="w-4 text-cyan-400 font-mono">1</span>
+                <div class="flex items-center justify-between text-[10px] gap-4">
+                    <div class="flex items-center gap-2 flex-1 min-w-0">
+                        <label class="text-on-surface-variant uppercase tracking-wider font-bold flex-shrink-0">Speed</label>
+                        <input id="speed-slider" class="flex-1 accent-cyan-400 cursor-pointer min-w-0" type="range" min="0.1" max="5" step="0.1" value="1"/>
+                        <span id="speed-value" class="w-8 text-cyan-400 font-mono text-right flex-shrink-0">1</span>
                     </div>
-                    <div class="flex gap-2 items-center">
-                        <label class="text-on-surface-variant uppercase tracking-wider font-bold">Agents</label>
-                        <input id="agent-count-input" value="15" min="1" max="100" class="w-12 bg-surface-container-highest border-none rounded text-[10px] px-2 py-1 text-center text-on-surface focus:ring-1 focus:ring-cyan-400" type="number"/>
+                    <div class="flex gap-2 items-center flex-shrink-0">
+                        <label class="text-on-surface-variant uppercase tracking-wider font-bold whitespace-nowrap">Agents</label>
+                        <input id="agent-count-input" value="15" min="1" max="100" class="w-14 bg-surface-container-highest border-none rounded text-[10px] px-2 py-1 text-center text-on-surface focus:ring-1 focus:ring-cyan-400 flex-shrink-0" type="number"/>
                     </div>
+                </div>
+                
+                <!-- Recording Panel -->
+                <div id="recording-panel" class="recording-panel hidden">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-red-400 text-sm">radio_button_checked</span>
+                        <h3 class="text-[10px] font-bold text-red-400 uppercase tracking-widest">Recording Session</h3>
+                    </div>
+                    <div class="recording-status">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-slate-400">Session:</span>
+                            <span id="rec-session" class="text-cyan-400 font-mono">—</span>
+                        </div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-slate-400">Steps:</span>
+                            <span id="rec-steps" class="text-cyan-400 font-mono">0</span>
+                        </div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-slate-400">Records:</span>
+                            <span id="rec-records" class="text-cyan-400 font-mono">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Agents:</span>
+                            <span id="rec-agents" class="text-cyan-400 font-mono">0</span>
+                        </div>
+                    </div>
+                    <div class="recording-controls">
+                        <label><input type="checkbox" id="rec-include-thoughts" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0"/> Thoughts</label>
+                        <label><input type="checkbox" id="rec-include-perception" checked class="rounded border-none bg-slate-800 text-cyan-400 focus:ring-0"/> Perception</label>
+                    </div>
+                    <div id="recording-result" class="mt-2"></div>
                 </div>
             </div>
 
@@ -305,7 +358,7 @@
         </div>
 
         <!-- AGENT MONITORING PANEL (RIGHT) -->
-        <div class="absolute top-24 right-8 z-10 w-96 flex flex-col gap-4 max-h-[calc(100vh-8rem)] transition-transform duration-500 ease-in-out hidden" id="agent-info">
+        <div class="absolute top-20 right-8 z-10 w-96 flex flex-col gap-4 max-h-[calc(100vh-7rem)] overflow-y-auto custom-scrollbar transition-transform duration-500 ease-in-out hidden" id="agent-info" style="padding-bottom: 1rem;">
             <button class="absolute -left-10 top-0 bg-slate-950/80 backdrop-blur-md border border-outline-variant/20 p-2 rounded-l-lg text-cyan-400 hover:text-white transition-colors" onclick="document.getElementById('agent-info').classList.toggle('translate-x-[calc(100%+2rem)]')">
                 <span class="material-symbols-outlined text-sm">chevron_right</span>
             </button>
@@ -418,6 +471,11 @@
         let summaryUpdateInterval = null;
         let currentLLMProvider = 'ollama';
         let agentsGeoJSON = null;
+        
+        // Recording state
+        let isRecording = false;
+        let recordingSessionId = null;
+        let recordingStatusInterval = null;
 
         function getApiUrl() { return document.getElementById('api-url').value; }
 
@@ -848,10 +906,120 @@
             document.getElementById('sim-status').textContent = 'Paused';
         }
 
+        // ── Recording functions ──────────────────────────────
+        async function startRecording() {
+            const apiUrl = getApiUrl();
+            const includeThoughts = document.getElementById('rec-include-thoughts').checked;
+            const includePerception = document.getElementById('rec-include-perception').checked;
+            
+            try {
+                const sessionName = `session_${new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)}`;
+                const res = await fetch(`${apiUrl}/api/recording/start?session_name=${encodeURIComponent(sessionName)}&include_thoughts=${includeThoughts}&include_perception=${includePerception}`, {
+                    method: 'POST',
+                });
+                const data = await res.json();
+                
+                if (data.status === 'recording_started') {
+                    isRecording = true;
+                    recordingSessionId = data.session_id;
+                    
+                    // Update UI
+                    document.getElementById('recording-panel').classList.remove('hidden');
+                    document.getElementById('btn-record').classList.add('recording');
+                    document.getElementById('btn-record').title = 'Stop Recording';
+                    document.getElementById('rec-session').textContent = data.session_name;
+                    document.getElementById('rec-steps').textContent = '0';
+                    document.getElementById('rec-records').textContent = '0';
+                    document.getElementById('rec-agents').textContent = '0';
+                    document.getElementById('recording-result').innerHTML = '';
+                    
+                    // Start polling status
+                    recordingStatusInterval = setInterval(updateRecordingStatus, 2000);
+                    
+                    console.log('Recording started:', data);
+                }
+            } catch (e) {
+                alert('Failed to start recording: ' + e.message);
+            }
+        }
+
+        async function stopRecording() {
+            const apiUrl = getApiUrl();
+            
+            try {
+                const res = await fetch(`${apiUrl}/api/recording/stop`, { method: 'POST' });
+                const data = await res.json();
+                
+                // Stop polling
+                if (recordingStatusInterval) {
+                    clearInterval(recordingStatusInterval);
+                    recordingStatusInterval = null;
+                }
+                
+                if (data.status === 'recording_stopped') {
+                    isRecording = false;
+                    recordingSessionId = null;
+                    
+                    // Update UI
+                    document.getElementById('btn-record').classList.remove('recording');
+                    document.getElementById('btn-record').title = 'Start Recording';
+                    
+                    // Show download link
+                    const downloadUrl = `${apiUrl}/api/recording/download/${encodeURIComponent(data.file_name)}`;
+                    document.getElementById('recording-result').innerHTML = `
+                        <div style="margin-top:6px; padding:8px; background:rgba(34,197,94,0.1); border-radius:6px; border:1px solid rgba(34,197,94,0.3);">
+                            <div style="color:#4ade80; font-size:9px; font-weight:600; margin-bottom:4px;">✅ RECORDING COMPLETE</div>
+                            <div style="color:#bac9cc; font-size:9px;"><strong>${data.total_records}</strong> records from <strong>${data.agents_tracked}</strong> agents</div>
+                            <div style="color:#849396; font-size:9px; font-family:monospace;">${data.file_name}</div>
+                            <a href="${downloadUrl}" class="download-link" style="display:inline-block; margin-top:6px; padding:4px 10px; background:rgba(34,197,94,0.2); color:#4ade80; border:1px solid rgba(34,197,94,0.3); border-radius:4px; text-decoration:none; font-size:9px; font-weight:600;">⬇ Download GeoParquet</a>
+                        </div>
+                    `;
+                    
+                    console.log('Recording stopped:', data);
+                } else if (data.status === 'no_recording') {
+                    isRecording = false;
+                    recordingSessionId = null;
+                    document.getElementById('recording-panel').classList.add('hidden');
+                    document.getElementById('btn-record').classList.remove('recording');
+                    document.getElementById('btn-record').title = 'Start Recording';
+                } else {
+                    alert('Error stopping recording: ' + (data.message || 'Unknown error'));
+                }
+            } catch (e) {
+                alert('Failed to stop recording: ' + e.message);
+            }
+        }
+
+        async function updateRecordingStatus() {
+            const apiUrl = getApiUrl();
+            
+            try {
+                const res = await fetch(`${apiUrl}/api/recording/status`);
+                const data = await res.json();
+                
+                if (data.is_recording) {
+                    document.getElementById('rec-steps').textContent = data.steps_recorded || 0;
+                    document.getElementById('rec-records').textContent = data.total_records || 0;
+                    document.getElementById('rec-agents').textContent = data.agents_tracked || 0;
+                }
+            } catch (e) {
+                console.error('Failed to update recording status:', e);
+            }
+        }
+
         // ── Event listeners ─────────────────────────────────
         document.getElementById('btn-run').addEventListener('click', startAnimation);
         document.getElementById('btn-stop').addEventListener('click', pauseAnimation);
         document.getElementById('btn-step').addEventListener('click', stepSimulation);
+        
+        // Record button toggle
+        document.getElementById('btn-record').addEventListener('click', () => {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
 
         document.getElementById('speed-slider').addEventListener('input', e => {
             animationSpeed = parseFloat(e.target.value) * 1000;

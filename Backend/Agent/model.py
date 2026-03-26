@@ -327,6 +327,9 @@ class CityModel(mesa.Model):
         self.city_agents = []
         self.edge_visit_count_global = {}  # Shared visit count for sync fallback
 
+        # --- Recorder for GeoParquet export ---
+        self._recorder = None
+
         # --- Shared LLM client (one per model, shared across all agents) ---
         llm_config = LLMConfig.from_env()
         self.llm_client = LLMClient(llm_config)
@@ -599,8 +602,37 @@ class CityModel(mesa.Model):
         self.steps += 1
         reset_step_counter(self.steps)
         random.shuffle(self.city_agents)
+        
         # Run all agent async steps concurrently
-        await asyncio.gather(*[agent._async_step() for agent in self.city_agents])
+        # If recording, capture agent states after each step
+        if self._recorder and self._recorder.is_recording:
+            # Record each agent's state after stepping
+            for agent in self.city_agents:
+                await agent._async_step()
+                # Extract decision data from agent's last mobility action
+                decision_reason = None
+                is_fallback = False
+                if hasattr(agent, 'memory') and hasattr(agent.memory, 'stream'):
+                    try:
+                        recent = await agent.memory.stream.get_recent("mobility", n=1)
+                        if recent:
+                            event = recent[0]
+                            if hasattr(event, 'step') and event.step == self.steps:
+                                decision_reason = event.description
+                                is_fallback = getattr(event, 'fallback', False) if hasattr(event, 'fallback') else False
+                    except Exception:
+                        pass
+                
+                self._recorder.record_agent_state(
+                    agent=agent,
+                    step=self.steps,
+                    decision_reason=decision_reason,
+                    is_fallback=is_fallback,
+                )
+        else:
+            # Normal step without recording
+            await asyncio.gather(*[agent._async_step() for agent in self.city_agents])
+        
         if self.tracker and self.steps % 10 == 0:
             self.tracker.flush()
     
@@ -615,3 +647,18 @@ class CityModel(mesa.Model):
             self.con.close()
         except:
             pass
+
+    def set_recorder(self, recorder) -> None:
+        """Set the GeoParquet recorder for this model."""
+        self._recorder = recorder
+        print(f"[OK] Recorder set: {recorder.session_id if recorder else None}")
+
+    def clear_recorder(self) -> None:
+        """Clear the recorder from this model."""
+        if self._recorder:
+            print(f"[OK] Recorder cleared: {self._recorder.session_id}")
+        self._recorder = None
+
+    def is_recording(self) -> bool:
+        """Check if recording is active."""
+        return self._recorder is not None and self._recorder.is_recording

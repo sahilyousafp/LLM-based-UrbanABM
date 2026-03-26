@@ -15,6 +15,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".env")
 
 from model import CityModel
+from geoparquet_recorder import create_recorder, get_recorder, clear_recorder
 
 # Ensure Backend root on path (model.py also does this, but be explicit here)
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -80,7 +81,10 @@ async def read_root():
             "/api/config/llm (POST)",
             "/api/llm/stats",
             "/api/step_continuous (POST)",
-            "/api/step (POST)"
+            "/api/step (POST)",
+            "/api/recording/start (POST)",
+            "/api/recording/stop (POST)",
+            "/api/recording/status"
         ]
     }
 
@@ -774,6 +778,145 @@ async def get_frontend_config():
             {"id": "vllm", "name": "vLLM (Docker GPU)", "description": "High-performance GPU inference via vLLM Docker"},
         ],
     }
+
+
+# ── Recording API endpoints ─────────────────────────────────────────
+
+@app.post("/api/recording/start")
+async def start_recording(
+    session_name: str = None,
+    include_thoughts: bool = True,
+    include_perception: bool = True,
+):
+    """
+    Start recording agent behaviors to GeoParquet.
+    
+    Args:
+        session_name: Optional name for the recording session
+        include_thoughts: Whether to include agent thought streams (default: True)
+        include_perception: Whether to include street perception data (default: True)
+        
+    Returns:
+        Session ID and status
+    """
+    # Stop any existing recording
+    clear_recorder()
+    
+    # Create new recorder
+    recorder = create_recorder(
+        output_dir=PROJECT_ROOT / "Documentation",
+        max_buffer_size=5000,
+        include_thoughts=include_thoughts,
+        include_perception=include_perception,
+    )
+    
+    # Start recording
+    session_id = recorder.start_recording(session_name)
+    
+    # Set recorder on city_model for integration
+    city_model.set_recorder(recorder)
+    
+    return {
+        "status": "recording_started",
+        "session_id": session_id,
+        "session_name": session_name or "auto",
+        "include_thoughts": include_thoughts,
+        "include_perception": include_perception,
+        "output_dir": str(PROJECT_ROOT / "Documentation"),
+    }
+
+
+@app.post("/api/recording/stop")
+async def stop_recording():
+    """
+    Stop recording and export to GeoParquet.
+    
+    Returns:
+        File path and recording statistics
+    """
+    recorder = get_recorder()
+    
+    if not recorder or not recorder.is_recording:
+        return {"status": "no_recording", "message": "No active recording session"}
+    
+    # Stop recording on city_model
+    city_model.clear_recorder()
+    
+    # Stop recorder and export
+    file_path = recorder.stop_recording()
+    
+    if file_path:
+        status = recorder.get_status()
+        return {
+            "status": "recording_stopped",
+            "file_path": str(file_path),
+            "file_name": file_path.name,
+            "total_records": status['total_records'],
+            "agents_tracked": status['agents_tracked'],
+            "steps_recorded": status['steps_recorded'],
+            "records_written": status['records_written'],
+        }
+    else:
+        return {
+            "status": "error",
+            "message": "Failed to export GeoParquet - check server logs",
+        }
+
+
+@app.get("/api/recording/status")
+async def get_recording_status():
+    """
+    Get current recording status.
+    
+    Returns:
+        Recording status and statistics
+    """
+    recorder = get_recorder()
+    
+    if not recorder:
+        return {
+            "is_recording": False,
+            "message": "No recorder initialized",
+        }
+    
+    status = recorder.get_status()
+    output_path = recorder.get_output_path()
+    
+    return {
+        "is_recording": status['is_recording'],
+        "session_id": status['session_id'],
+        "session_name": status['session_name'],
+        "start_time": status['start_time'],
+        "start_step": status['start_step'],
+        "total_records": status['total_records'],
+        "agents_tracked": status['agents_tracked'],
+        "steps_recorded": status['steps_recorded'],
+        "buffer_size": status['buffer_size'],
+        "output_path": str(output_path) if output_path else None,
+    }
+
+
+@app.get("/api/recording/download/{filename}")
+async def download_recording(filename: str):
+    """
+    Download a recorded GeoParquet file.
+    
+    Args:
+        filename: Name of the GeoParquet file to download
+        
+    Returns:
+        File download response
+    """
+    file_path = PROJECT_ROOT / "Documentation" / filename
+    
+    if not file_path.exists():
+        return {"error": "File not found", "filename": filename}
+    
+    return FileResponse(
+        str(file_path),
+        media_type="application/octet-stream",
+        filename=filename,
+    )
 
 
 if __name__ == "__main__":
