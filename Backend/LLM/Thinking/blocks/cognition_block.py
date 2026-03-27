@@ -33,6 +33,7 @@ class CognitionBlock(Block):
         profile = await self.memory.status.get("agent_profile", {})
         archetype = profile.get("archetype", "resident")
         current_cognition = await self.memory.status.get("cognition_state", {})
+        current_needs = await self.memory.status.get("needs", {})
 
         # Get recent experiences across all topics for context
         recent_all = await self.memory.stream.get_recent_all(n=15)
@@ -61,6 +62,7 @@ class CognitionBlock(Block):
         messages = cognition_update_prompt(
             archetype=archetype,
             current_cognition=current_cognition,
+            current_needs=current_needs,
             recent_history=history_text,
             step=step,
             streetview_perception=perception_text,

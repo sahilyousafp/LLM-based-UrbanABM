@@ -52,59 +52,86 @@ OVERTURE_DATASET = "overture_maps"
 def setup_bigquery_client():
     """
     Initialize BigQuery client for Overture data access
-    
-    Authentication methods:
-    1. Service account JSON file (set GOOGLE_APPLICATION_CREDENTIALS env var)
-    2. Application Default Credentials (gcloud auth application-default login)
-    3. Automatic discovery in GCP environment
-    
+
+    Authentication methods (in order of priority):
+    1. API Key (GOOGLE_API_KEY env var) - Simplest for development
+    2. Service account JSON file (GOOGLE_APPLICATION_CREDENTIALS env var)
+    3. Application Default Credentials (gcloud auth application-default login)
+    4. Automatic discovery in GCP environment
+
     Note: You need a GCP project with BigQuery API enabled, even for public datasets.
     Set GOOGLE_CLOUD_PROJECT environment variable to specify the project.
     """
     print("Setting up BigQuery client...")
-    
+
     # Get project from environment or use a default
     project_id = os.getenv('GOOGLE_CLOUD_PROJECT') or os.getenv('GCLOUD_PROJECT')
-    
-    # Try to get credentials from environment variable
-    creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-    
-    if creds_path and os.path.exists(creds_path):
-        credentials = service_account.Credentials.from_service_account_file(creds_path)
-        if not project_id:
-            project_id = credentials.project_id
-        client = bigquery.Client(credentials=credentials, project=project_id)
-        print(f"✓ Authenticated with service account from {creds_path}")
+    client = None
+
+    # Method 1: API Key (simplest for development)
+    api_key = os.getenv('GOOGLE_API_KEY')
+    if api_key and api_key != 'your-google-cloud-api-key':
+        from google.api_core.client_options import ClientOptions
+        client = bigquery.Client(
+            project=project_id,
+            client_options=ClientOptions(api_key=api_key)
+        )
+        print(f"✓ Authenticated with API Key")
         print(f"  Using project: {project_id}")
+
+    # Method 2: Service Account JSON file
+    elif os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
+        creds_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+        if os.path.exists(creds_path):
+            credentials = service_account.Credentials.from_service_account_file(creds_path)
+            if not project_id:
+                project_id = credentials.project_id
+            client = bigquery.Client(credentials=credentials, project=project_id)
+            print(f"✓ Authenticated with service account from {creds_path}")
+            print(f"  Using project: {project_id}")
+
+    # Method 3: Application Default Credentials
     else:
-        # Use Application Default Credentials
         try:
             import google.auth
             credentials, default_project = google.auth.default()
-            
+
             # Use explicit project if set, otherwise use default
             if not project_id:
                 project_id = default_project
-            
+
             # Add quota project to credentials to avoid quota issues
             if hasattr(credentials, 'with_quota_project'):
                 credentials = credentials.with_quota_project(project_id)
-            
+
             client = bigquery.Client(credentials=credentials, project=project_id)
             print(f"✓ Authenticated with Application Default Credentials")
             print(f"  Using project: {project_id}")
-            
+
         except Exception as e:
             print(f"✗ Authentication failed: {e}")
             print("\nTo fix this, you need:")
-            print("  1. A GCP project with BigQuery API enabled")
-            print("  2. Set the project: export GOOGLE_CLOUD_PROJECT=your-project-id")
-            print("  3. Or run: gcloud config set project your-project-id")
+            print("  Option 1 (API Key - Easiest):")
+            print("    1. Create API Key: https://console.cloud.google.com/apis/credentials")
+            print("    2. Add to .env: GOOGLE_API_KEY=your-api-key")
+            print("\n  Option 2 (Service Account):")
+            print("    1. Download service account JSON key")
+            print("    2. Add to .env: GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json")
+            print("\n  Option 3 (Application Default):")
+            print("    Run: gcloud auth application-default login")
             print("\nTo create a new project:")
             print("  1. Visit: https://console.cloud.google.com/projectcreate")
             print("  2. Enable BigQuery API: https://console.cloud.google.com/apis/library/bigquery.googleapis.com")
             raise
-    
+
+    if client is None:
+        raise ValueError(
+            "No authentication method found. Please set one of:\n"
+            "  - GOOGLE_API_KEY (easiest)\n"
+            "  - GOOGLE_APPLICATION_CREDENTIALS\n"
+            "  - Or run: gcloud auth application-default login"
+        )
+
     # Verify BigQuery API access
     try:
         # Test with a simple query
@@ -118,7 +145,7 @@ def setup_bigquery_client():
         print(f"  2. Click 'ENABLE'")
         print(f"  3. Or run: gcloud services enable bigquery.googleapis.com --project={project_id}")
         raise
-    
+
     return client
 
 def setup_duckdb_with_spatial(db_path):

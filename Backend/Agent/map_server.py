@@ -40,8 +40,20 @@ SV_OUTPUT_DIR = PROJECT_ROOT / "Backend" / "Environment" / "output"
 SV_IMAGES_DIR = SV_OUTPUT_DIR / "images"
 SV_RESULTS_DIR = SV_OUTPUT_DIR / "results"
 
+# Get spawn seed from environment (for reproducible experiments)
+spawn_seed = os.environ.get("SPAWN_SEED")
+if spawn_seed:
+    spawn_seed = int(spawn_seed)
+    print(f"[INFO] Using spawn seed from environment: {spawn_seed}")
+else:
+    print(f"[INFO] No SPAWN_SEED environment variable set (random spawning)")
+
+# Get number of agents from environment
+num_agents = int(os.getenv("NUM_AGENTS", 50))
+print(f"[INFO] Number of agents from environment: {num_agents}")
+
 # Initialize Mesa model with agents (LLMClient is initialised inside CityModel)
-city_model = CityModel(num_agents=15)
+city_model = CityModel(num_agents=num_agents, spawn_seed=spawn_seed)
 
 
 def get_db_connection():
@@ -303,43 +315,59 @@ async def get_agent_summary(agent_id: int):
     if not agent:
         return {"error": "Agent not found"}
 
-    profile = await agent.memory.status.get("agent_profile", {})
-    needs = await agent.memory.status.get("needs", {})
-    cognition = await agent.memory.status.get("cognition_state", {})
+    try:
+        profile = await agent.memory.status.get("agent_profile", {})
+        needs = await agent.memory.status.get("needs", {})
+        cognition = await agent.memory.status.get("cognition_state", {})
 
-    # Build perception context for narration using scene_analysis text fields
-    perception_ctx = ""
-    if hasattr(agent, 'street_perception') and agent.street_perception:
-        sp = agent.street_perception
-        scene_parts = []
-        for key in ("scene_overview", "vegetation", "pedestrian_activity", "lighting_atmosphere"):
-            val = sp.get(key, "")
-            if val and val.strip().lower() != "unknown":
-                scene_parts.append(val)
-        if scene_parts:
-            perception_ctx = f" Street scene: {' '.join(scene_parts[:2])}"
+        # Build perception context for narration using scene_analysis text fields
+        perception_ctx = ""
+        if hasattr(agent, 'street_perception') and agent.street_perception:
+            sp = agent.street_perception
+            scene_parts = []
+            for key in ("scene_overview", "vegetation", "pedestrian_activity", "lighting_atmosphere"):
+                val = sp.get(key, "")
+                if val and val.strip().lower() != "unknown":
+                    scene_parts.append(val)
+            if scene_parts:
+                perception_ctx = f" Street scene: {' '.join(scene_parts[:2])}"
 
-    messages = [
-        {"role": "system", "content": "You are narrating an urban simulation agent in Barcelona Eixample. Be concise (2-3 sentences)."},
-        {"role": "user", "content": (
-            f"Agent {agent_id} is a {profile.get('archetype','pedestrian')} at "
-            f"lon={agent.geometry.x:.5f}, lat={agent.geometry.y:.5f}. "
-            f"Needs: hunger={needs.get('hunger',0.5):.2f}, energy={needs.get('energy',1.0):.2f}, social={needs.get('social',0.5):.2f}. "
-            f"Mood: {cognition.get('mood','neutral')}. "
-            f"Nearby: {', '.join(a.get('type','?') for a in agent.nearby_amenities[:5]) or 'nothing notable'}."
-            f"{perception_ctx} "
-            "Narrate what this agent is experiencing right now."
-        )}
-    ]
+        # Format amenities list
+        amenities_list = ', '.join(a.get('type', '?') for a in agent.nearby_amenities[:5]) or 'nothing notable'
 
-    summary = await city_model.llm_client.chat(messages)
-    return {
-        "agent_id": agent.unique_id,
-        "summary": summary,
-        "location": {"lon": agent.geometry.x, "lat": agent.geometry.y},
-        "amenity_count": len(agent.nearby_amenities),
-        "archetype": profile.get("archetype", "unknown"),
-    }
+        messages = [
+            {"role": "system", "content": "You are narrating an urban simulation agent in Barcelona Eixample. Be concise (2-3 sentences)."},
+            {"role": "user", "content": (
+                f"Agent {agent_id} is a {profile.get('archetype','pedestrian')} at "
+                f"lon={agent.geometry.x:.5f}, lat={agent.geometry.y:.5f}. "
+                f"Needs: hunger={needs.get('hunger',0.5):.2f}, energy={needs.get('energy',1.0):.2f}, social={needs.get('social',0.5):.2f}. "
+                f"Mood: {cognition.get('mood','neutral')}. "
+                f"Nearby: {amenities_list}."
+                f"{perception_ctx} "
+                "Narrate what this agent is experiencing right now."
+            )}
+        ]
+
+        summary = await city_model.llm_client.chat(messages)
+        
+        return {
+            "agent_id": agent.unique_id,
+            "summary": summary,
+            "location": {"lon": agent.geometry.x, "lat": agent.geometry.y},
+            "amenity_count": len(agent.nearby_amenities),
+            "archetype": profile.get("archetype", "unknown"),
+            "perception_mode": getattr(city_model, 'perception_mode', 'both'),
+        }
+    except Exception as e:
+        import logging
+        logging.error(f"Error generating summary for agent {agent_id}: {e}")
+        return {
+            "agent_id": agent_id,
+            "summary": f"Error generating narrative: {str(e)}",
+            "location": {"lon": agent.geometry.x, "lat": agent.geometry.y},
+            "amenity_count": len(agent.nearby_amenities) if agent else 0,
+            "error_details": str(e),
+        }
 
 
 @app.get("/api/agents/summaries")
@@ -580,12 +608,16 @@ async def get_agent_cognition(agent_id: int):
     needs = await agent.memory.status.get("needs", {})
     profile = await agent.memory.status.get("agent_profile", {})
     plan = await agent.memory.status.get("current_plan", {})
+    satisfaction_source = await agent.memory.status.get("satisfaction_source", "none")
+    satisfaction_reasoning = await agent.memory.status.get("satisfaction_reasoning", "")
     return {
         "agent_id": agent_id,
         "archetype": profile.get("archetype", "unknown"),
         "cognition_state": cognition,
         "needs": needs,
         "current_plan": plan,
+        "satisfaction_source": satisfaction_source,
+        "satisfaction_reasoning": satisfaction_reasoning,
     }
 
 
@@ -614,14 +646,14 @@ async def update_llm_config(provider: str, model: str, base_url: str = "", api_k
 
 
 # Global perception mode setting (affects what agents query for)
-perception_mode = "both"  # Default: amenities + perception points
+perception_mode = os.getenv("PERCEPTION_MODE", "both")  # Default: amenities + perception points
 
 @app.post("/api/config/perception-mode")
 async def update_perception_mode(mode: str = Body(..., embed=True)):
-    """Update what agents perceive: 'amenities', 'perception', or 'both'."""
+    """Update what agents perceive: 'amenities', 'perception', 'both', or 'rule_based'."""
     global perception_mode
-    if mode not in ["amenities", "perception", "both"]:
-        return {"error": "Invalid mode. Must be 'amenities', 'perception', or 'both'"}
+    if mode not in ["amenities", "perception", "both", "rule_based"]:
+        return {"error": "Invalid mode. Must be 'amenities', 'perception', 'both', or 'rule_based'"}
     perception_mode = mode
     # Update the model's perception mode
     city_model.perception_mode = mode
@@ -772,6 +804,7 @@ async def get_frontend_config():
         "mapbox_token": os.environ.get("MAPBOX_TOKEN", ""),
         "llm_provider": os.environ.get("LLM_PROVIDER", "gemini"),
         "llm_model": os.environ.get("LLM_MODEL", ""),
+        "num_agents": int(os.environ.get("NUM_AGENTS", 50)),
         "available_providers": [
             {"id": "gemini", "name": "Google Gemini 2.0 Flash Lite", "description": "Fast, efficient cloud LLM by Google — no local setup required"},
             {"id": "ollama", "name": "Ollama (Local)", "description": "Local LLM via Ollama — no GPU required"},
@@ -802,12 +835,16 @@ async def start_recording(
     # Stop any existing recording
     clear_recorder()
     
+    # Get current perception mode
+    current_perception_mode = getattr(city_model, 'perception_mode', 'both')
+    
     # Create new recorder
     recorder = create_recorder(
         output_dir=PROJECT_ROOT / "Documentation",
         max_buffer_size=5000,
         include_thoughts=include_thoughts,
         include_perception=include_perception,
+        perception_mode=current_perception_mode,
     )
     
     # Start recording
@@ -822,6 +859,7 @@ async def start_recording(
         "session_name": session_name or "auto",
         "include_thoughts": include_thoughts,
         "include_perception": include_perception,
+        "perception_mode": current_perception_mode,
         "output_dir": str(PROJECT_ROOT / "Documentation"),
     }
 

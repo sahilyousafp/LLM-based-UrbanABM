@@ -10,11 +10,11 @@ from dataclasses import dataclass, field
 @dataclass
 class LLMConfig:
     provider: str = "gemini"          # gemini | ollama | vllm | docker | openai | deepseek | custom
-    model: str = "gemini-2.0-flash-lite"  # Updated: gemini-2.0-flash was deprecated
+    model: str = "gemini-2.5-flash-lite"
     api_key: str = ""
     base_url: str = ""                # Override endpoint (e.g. vLLM at http://localhost:8001/v1)
     timeout: int = 30
-    max_tokens: int = 8192
+    max_tokens: int = 4096
     temperature: float = 0.7
 
     # Computed property: resolved base_url for each provider

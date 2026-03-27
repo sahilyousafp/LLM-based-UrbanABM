@@ -4,6 +4,5 @@
       "Bash(python *)",
       "Bash(select-object *)"
     ]
-  },
-  "$version": 3
+  }
 }

@@ -47,6 +47,8 @@ class AgentRecord:
     thought_stream: List[Dict] = field(default_factory=list)
     decision_reason: Optional[str] = None
     is_fallback: bool = False
+    satisfaction_source: str = "none"              # NEW: visual, amenity, combined, none
+    satisfaction_reasoning: Optional[str] = None   # NEW: LLM reasoning for satisfaction
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame conversion."""
@@ -70,6 +72,8 @@ class AgentRecord:
             'thought_stream_json': json.dumps(self.thought_stream),
             'decision_reason': self.decision_reason,
             'is_fallback': self.is_fallback,
+            'satisfaction_source': self.satisfaction_source,
+            'satisfaction_reasoning': self.satisfaction_reasoning,
         }
 
 
@@ -94,25 +98,28 @@ class GeoParquetRecorder:
         max_buffer_size: int = 10000,
         include_thoughts: bool = True,
         include_perception: bool = True,
+        perception_mode: str = "both",
     ):
         """
         Initialize the recorder.
-        
+
         Args:
             output_dir: Directory to save GeoParquet files (default: Documentation/)
             max_buffer_size: Max records to buffer before flushing to disk
             include_thoughts: Whether to include thought stream data
             include_perception: Whether to include street perception data
+            perception_mode: Agent perception mode ('amenities', 'perception', or 'both')
         """
         if output_dir is None:
             output_dir = Path(__file__).parent.parent.parent / "Documentation"
-        
+
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
-        
+
         self.max_buffer_size = max_buffer_size
         self.include_thoughts = include_thoughts
         self.include_perception = include_perception
+        self.perception_mode = perception_mode
         
         # Recording state
         self.is_recording = False
@@ -246,7 +253,9 @@ class GeoParquetRecorder:
         visited_edges = {}
         visited_amenities = []
         agent_profile = {}
-        
+        satisfaction_source = "none"
+        satisfaction_reasoning = None
+
         if hasattr(agent, 'memory'):
             # Use synchronous access to avoid asyncio issues
             # Access internal data directly for performance
@@ -258,6 +267,8 @@ class GeoParquetRecorder:
                 visited_edges = data.get('visited_edges', {})
                 visited_amenities = data.get('visited_amenities', [])
                 agent_profile = data.get('agent_profile', {})
+                satisfaction_source = data.get('satisfaction_source', 'none')
+                satisfaction_reasoning = data.get('satisfaction_reasoning', None)
         
         # Get nearby amenities from agent
         nearby_amenities = getattr(agent, 'nearby_amenities', [])
@@ -304,6 +315,8 @@ class GeoParquetRecorder:
             thought_stream=thought_stream,
             decision_reason=decision_reason,
             is_fallback=is_fallback,
+            satisfaction_source=satisfaction_source,
+            satisfaction_reasoning=satisfaction_reasoning,
         )
     
     def _flush_to_parquet(self) -> Optional[Path]:
@@ -328,10 +341,11 @@ class GeoParquetRecorder:
             
             # Create GeoDataFrame
             gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
-            
-            # Generate filename
+
+            # Generate filename with perception mode
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"agent_recording_{self.session_name or timestamp}.parquet"
+            mode_suffix = f"_{self.perception_mode}" if self.perception_mode else ""
+            filename = f"agent_recording_{self.session_name or timestamp}{mode_suffix}.parquet"
             file_path = self.output_dir / filename
             
             # Export to GeoParquet
@@ -389,6 +403,7 @@ def create_recorder(
     max_buffer_size: int = 10000,
     include_thoughts: bool = True,
     include_perception: bool = True,
+    perception_mode: str = "both",
 ) -> GeoParquetRecorder:
     """Create and set the global recorder instance."""
     global _recorder
@@ -398,6 +413,7 @@ def create_recorder(
             max_buffer_size=max_buffer_size,
             include_thoughts=include_thoughts,
             include_perception=include_perception,
+            perception_mode=perception_mode,
         )
         return _recorder
 

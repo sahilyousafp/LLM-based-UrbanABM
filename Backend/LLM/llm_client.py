@@ -39,6 +39,7 @@ class LLMClient:
         if self._client is None:
             if not OPENAI_AVAILABLE:
                 raise ImportError("openai package required. Run: pip install openai")
+            logger.info(f"Initializing LLM client: provider={self.config.provider}, model={self.config.model}, base_url={self.config.resolved_base_url()}")
             self._client = AsyncOpenAI(
                 api_key=self.config.resolved_api_key(),
                 base_url=self.config.resolved_base_url(),
@@ -91,6 +92,8 @@ class LLMClient:
                     f"in={response.usage.prompt_tokens if response.usage else '?'} "
                     f"out={response.usage.completion_tokens if response.usage else '?'}"
                 )
+                if not content:
+                    logger.warning(f"LLM returned empty content on call #{self.total_calls}")
                 return content
 
             except Exception as e:
@@ -118,6 +121,16 @@ class LLMClient:
                     return json.loads(match.group(1))
                 except json.JSONDecodeError:
                     pass
+            
+            # Try to extract first JSON object from response (handles trailing text)
+            # This regex finds the first complete {...} object, ignoring content after
+            match = re.search(r"\{[^{}]*\}", raw, re.DOTALL)
+            if match:
+                try:
+                    return json.loads(match.group(0))
+                except json.JSONDecodeError:
+                    pass
+            
             logger.warning(f"Failed to parse LLM JSON response: {raw[:200]}")
             return {}
 

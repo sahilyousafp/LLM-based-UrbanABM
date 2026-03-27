@@ -20,6 +20,7 @@ from LLM.llm_config import LLMConfig
 from LLM.llm_client import LLMClient
 from LLM.Memory.memory import Memory
 from LLM.Thinking.dispatcher import BlockDispatcher, reset_step_counter
+from rule_based_movement import make_decision as rule_based_move
 
 # Path to the DuckDB database (Overture Maps data)
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -111,7 +112,21 @@ class CityAgent(mg.GeoAgent):
         return prefs.get(archetype, [])
 
     def step(self):
-        """Synchronous step — runs async dispatcher via event loop."""
+        """Execute agent step based on perception mode."""
+        # Get perception mode from model
+        perception_mode = getattr(self.model, 'perception_mode', 'both')
+        
+        # Rule-based mode: no LLM calls, deterministic movement
+        if perception_mode == 'rule_based':
+            try:
+                rule_based_move(self)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error(f"Agent {self.unique_id} rule-based step error: {e}")
+                self._simple_move()
+            return
+        
+        # LLM-driven modes: use dispatcher with optional fallback
         try:
             loop = asyncio.get_event_loop()
             if loop.is_running():
@@ -144,6 +159,12 @@ class CityAgent(mg.GeoAgent):
             self.street_perception = self.model.get_nearby_perception(self.geometry)
         else:
             self.street_perception = None
+
+        # Debug: Log perception mode on first step of each 10 steps
+        if self.model.steps % 10 == 0 and self.unique_id == 0:
+            amenity_count = len(self.nearby_amenities) if self.nearby_amenities else 0
+            has_perception = self.street_perception is not None
+            print(f"[DEBUG] Step {self.model.steps} | Mode: {perception_mode} | Amenities: {amenity_count} | Perception: {has_perception}")
 
         # Update position in memory
         await self.memory.status.update("position", {
@@ -218,12 +239,26 @@ class CityAgent(mg.GeoAgent):
         if not candidates:
             candidates = raw_edges  # Dead end — allow reversal
 
+        # Get perception mode to determine what data to fetch
+        perception_mode = getattr(self.model, 'perception_mode', 'both')
+
         result = []
         for eid, geom, direction in candidates:
-            # Annotate each candidate with nearby amenity types and perception for the prompt
+            # Annotate each candidate with nearby amenity types (if mode allows)
             midpoint = Point(geom.coords[len(geom.coords) // 2])
-            amenity_types = [a.get("type", "") for a in self.model.get_nearby_amenities(midpoint)[:3]]
-            perception = self.model.get_streetview_perception(midpoint)
+            
+            # Fetch amenities based on perception mode
+            if perception_mode in ['amenities', 'both']:
+                amenity_types = [a.get("type", "") for a in self.model.get_nearby_amenities(midpoint)[:3]]
+            else:
+                amenity_types = []
+            
+            # Fetch perception based on perception mode
+            if perception_mode in ['perception', 'both']:
+                perception = self.model.get_streetview_perception(midpoint)
+            else:
+                perception = None
+                
             result.append({
                 "edge_id": eid,
                 "geom": geom,
@@ -316,12 +351,26 @@ class CityAgent(mg.GeoAgent):
 
 class CityModel(mesa.Model):
     """A model with LLM-driven agents moving through a city"""
-    
-    def __init__(self, num_agents=500):
+
+    def __init__(self, num_agents=None, spawn_seed=None):
         super().__init__()
+        # Use environment variable if num_agents not explicitly provided
+        if num_agents is None:
+            num_agents = int(os.getenv("NUM_AGENTS", 50))
         self.num_agents = num_agents
         self.steps = 0
-        self.perception_mode = "both"  # 'amenities', 'perception', or 'both'
+        # Perception modes: 'amenities', 'perception', 'both', 'rule_based'
+        # rule_based = no LLM calls, deterministic least-visited movement
+        self.perception_mode = os.getenv("PERCEPTION_MODE", "both")
+        self.llm_fallback = True  # Hardcoded: LLM fallback enabled for non-rule_based modes
+        self.spawn_seed = spawn_seed
+        
+        # Set random seed for reproducibility if provided
+        if spawn_seed is not None:
+            random.seed(spawn_seed)
+            print(f"[OK] Random seed set to: {spawn_seed} (reproducible spawning)")
+        else:
+            print(f"[INFO] No spawn seed set (random spawning each run)")
 
         # Use custom attribute name (Mesa 3.0+ reserves 'agents')
         self.city_agents = []

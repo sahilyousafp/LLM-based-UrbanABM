@@ -90,6 +90,10 @@
         .needs-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
         .needs-bar-value { width: 30px; font-size: 10px; color: #888; }
 
+        .satisfaction-source { font-size: 10px; padding: 6px 8px; background: #f0f4f8; border-radius: 6px; margin-top: 8px; border-left: 3px solid #2196F3; }
+        .satisfaction-source .source-badge { font-weight: 600; color: #1976D2; margin-right: 8px; }
+        .satisfaction-source .source-reasoning { color: #555; font-style: italic; }
+
         .cognition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 11px; margin-top: 4px; }
         .cognition-item { background: #f0f4f8; padding: 4px 6px; border-radius: 3px; }
         .cognition-item .label { color: #666; }
@@ -189,7 +193,7 @@
             </div>
             <div style="display:flex; gap:4px; align-items:center; margin-top:6px;">
                 <label style="font-size:11px; white-space:nowrap;">Agents:</label>
-                <input type="number" id="agent-count-input" value="15" min="1" max="100" style="width:55px; padding:3px;">
+                <input type="number" id="agent-count-input" value="50" min="1" max="100" style="width:55px; padding:3px;">
                 <button class="btn btn-primary btn-sm" id="btn-respawn">Respawn</button>
             </div>
             <div class="speed-control">
@@ -251,6 +255,10 @@
                     <div class="needs-bar-container"><span class="needs-bar-label">Hunger</span><div class="needs-bar"><div class="needs-bar-fill" id="need-hunger" style="width:50%;background:#FF9800;"></div></div><span class="needs-bar-value" id="need-hunger-val">0.5</span></div>
                     <div class="needs-bar-container"><span class="needs-bar-label">Energy</span><div class="needs-bar"><div class="needs-bar-fill" id="need-energy" style="width:100%;background:#4CAF50;"></div></div><span class="needs-bar-value" id="need-energy-val">1.0</span></div>
                     <div class="needs-bar-container"><span class="needs-bar-label">Social</span><div class="needs-bar"><div class="needs-bar-fill" id="need-social" style="width:50%;background:#2196F3;"></div></div><span class="needs-bar-value" id="need-social-val">0.5</span></div>
+                </div>
+                <div class="satisfaction-source" id="satisfaction-source" style="display:none;">
+                    <span class="source-badge" id="source-badge">👁️ Visual</span>
+                    <span class="source-reasoning" id="source-reasoning">Beautiful streets energizing agent</span>
                 </div>
 
                 <div class="agent-section-title">🧠 Cognition</div>
@@ -518,6 +526,11 @@
             currentLLMProvider = config.llm_provider;
             document.getElementById('llm-model').value = config.llm_model || '';
 
+            // Set agent count from backend config
+            if (config.num_agents) {
+                document.getElementById('agent-count-input').value = config.num_agents;
+            }
+
             const container = document.getElementById('llm-options');
             container.innerHTML = '';
             (config.available_providers || []).forEach(prov => {
@@ -624,6 +637,32 @@
                 document.getElementById('need-social').style.width = (social * 100) + '%';
                 document.getElementById('need-social-val').textContent = social.toFixed(2);
 
+                // Satisfaction source indicator
+                const source = data.satisfaction_source || "none";
+                const sourceIcons = {
+                    "visual": "👁️",
+                    "amenity": "🏪",
+                    "combined": "🔀",
+                    "none": "⏸️"
+                };
+                const sourceLabels = {
+                    "visual": "Visual Environment",
+                    "amenity": "Amenity Visit",
+                    "combined": "Combined Input",
+                    "none": "No Update Yet"
+                };
+                const sourceEl = document.getElementById('satisfaction-source');
+                const badgeEl = document.getElementById('source-badge');
+                const reasoningEl = document.getElementById('source-reasoning');
+                
+                if (source && source !== "none") {
+                    sourceEl.style.display = 'block';
+                    badgeEl.textContent = `${sourceIcons[source] || "⏸️"} ${sourceLabels[source] || source}`;
+                    reasoningEl.textContent = data.satisfaction_reasoning || "Waiting for next step...";
+                } else {
+                    sourceEl.style.display = 'none';
+                }
+
                 // Cognition
                 const cog = data.cognition_state || {};
                 document.getElementById('cog-mood').textContent = cog.mood || 'neutral';
@@ -694,7 +733,7 @@
 
         // ── Agent respawn ──────────────────────────────────
         document.getElementById('btn-respawn').addEventListener('click', async () => {
-            const count = parseInt(document.getElementById('agent-count-input').value) || 15;
+            const count = parseInt(document.getElementById('agent-count-input').value) || 50;
             const apiUrl = getApiUrl();
             try {
                 const res = await fetch(`${apiUrl}/api/agents/respawn?count=${count}`, { method: 'POST' });

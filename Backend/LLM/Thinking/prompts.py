@@ -95,17 +95,77 @@ Respond with JSON:
 # NEEDS BLOCK prompts
 # ---------------------------------------------------------------------------
 
-NEEDS_SYSTEM = """You are evaluating whether a pedestrian agent's visit to an amenity satisfies their needs.
+NEEDS_SYSTEM = """You are evaluating how a pedestrian agent's needs are affected by their environment.
 Respond with valid JSON only."""
+
+VISUAL_SATISFACTION_SYSTEM = """You are evaluating how the visual street environment affects a pedestrian agent's needs.
+Respond with valid JSON only."""
+
+def visual_satisfaction_prompt(
+    archetype: str,
+    needs: dict,
+    cognition: dict,
+    street_perception: dict,
+) -> list[dict]:
+    """
+    Prompt to evaluate how the visual street environment affects the agent's 3 needs.
+    Considers buildings, vegetation, pedestrian activity, and lighting/atmosphere.
+    Modulated by archetype and current cognition state (mood, fatigue, curiosity).
+    """
+    # Build scene description from street perception fields
+    scene_fields = [
+        ("scene_overview",      "Scene"),
+        ("buildings",           "Buildings"),
+        ("vegetation",          "Vegetation"),
+        ("pedestrian_activity", "Pedestrian activity"),
+        ("lighting_atmosphere", "Lighting/atmosphere"),
+    ]
+    lines = []
+    for key, label in scene_fields:
+        val = street_perception.get(key, "")
+        if val and val.strip().lower() not in ("unknown", ""):
+            lines.append(f"  {label}: {val}")
+    
+    perception_text = "\n".join(lines) if lines else "  No detailed visual data available"
+    
+    user_content = f"""Agent archetype: {archetype}
+Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}
+Current mental state: mood={cognition.get('mood', 'neutral')}, curiosity={cognition.get('curiosity', 0.7):.2f}, fatigue={cognition.get('fatigue', 0.0):.2f}
+
+Street environment visible:
+{perception_text}
+
+How does being in this physical space affect the agent's 3 needs?
+Consider:
+  - Beautiful/interesting architecture energizes curious agents
+  - Green spaces restore energy and improve mood
+  - Lively pedestrian areas satisfy social needs
+  - Poor lighting/run-down areas increase fatigue, drain energy
+  - A tired agent loses energy faster in unstimulating environments
+  - A social-mood agent gains more from busy streets
+  - Different archetypes respond differently: tourists love interesting buildings, students seek lively areas, residents prefer familiar comfort, commuters value efficient pleasant routes
+
+Provide deltas 0.0-1.0 (positive = need satisfied/reduced, negative = need increased/worsened).
+Note: hunger_delta is typically small from visual alone (distraction effect); energy_delta can be positive from restoration; social_delta reflects social vibrancy of area.
+
+Respond with JSON:
+{{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "reasoning": "<one sentence: why this space affects needs this way>"}}"""
+
+    return [_system(VISUAL_SATISFACTION_SYSTEM), _user(user_content)]
+
 
 def needs_evaluation_prompt(
     archetype: str,
     needs: dict,
+    cognition: dict,
     amenity_name: str,
     amenity_type: str,
     street_perception: Optional[dict] = None,
 ) -> list[dict]:
-    """Prompt to evaluate how much visiting this amenity satisfies agent needs."""
+    """
+    Prompt to evaluate how much visiting this amenity satisfies agent needs.
+    Now includes cognition state and surrounding street perception context.
+    """
     # Build scene description from street perception fields
     perception_text = ""
     if street_perception:
@@ -127,13 +187,18 @@ def needs_evaluation_prompt(
 
     user_content = f"""Agent archetype: {archetype}
 Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}
+Current mental state: mood={cognition.get('mood', 'neutral')}, curiosity={cognition.get('curiosity', 0.7):.2f}, fatigue={cognition.get('fatigue', 0.0):.2f}
 Visited amenity: "{amenity_name}" (type: {amenity_type}){perception_text}
 
 How much does this visit satisfy each need? Provide values 0.0-1.0 (0=no satisfaction, 1=fully satisfied).
-Also give a brief description of what the agent does there, considering the surrounding environment.
+Consider:
+  - The amenity type and what it typically provides
+  - The surrounding street environment context
+  - The agent's current mental state (mood affects satisfaction)
+  - Archetype preferences (e.g., students love cafes, tourists love attractions)
 
 Respond with JSON:
-{{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "activity": "<what agent does>"}}"""
+{{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "activity": "<what agent does there>"}}"""
 
     return [_system(NEEDS_SYSTEM), _user(user_content)]
 
@@ -148,11 +213,15 @@ Respond with valid JSON only."""
 def cognition_update_prompt(
     archetype: str,
     current_cognition: dict,
+    current_needs: dict,
     recent_history: str,
     step: int,
     streetview_perception: str = "",
 ) -> list[dict]:
-    """Prompt to update agent's cognitive/emotional state based on recent experiences."""
+    """
+    Prompt to update agent's cognitive/emotional state based on recent experiences.
+    Now includes current needs state to model need-mood interactions.
+    """
     perception_section = ""
     if streetview_perception:
         perception_section = f"""
@@ -162,6 +231,7 @@ Scene description at current location (from visual analysis):
 
     user_content = f"""Agent archetype: {archetype}
 Simulation step: {step}
+Current needs: hunger={current_needs.get('hunger', 0.5):.2f}, energy={current_needs.get('energy', 1.0):.2f}, social={current_needs.get('social', 0.5):.2f}
 Current mental state:
   mood: {current_cognition.get('mood', 'neutral')}
   curiosity: {current_cognition.get('curiosity', 0.7):.2f}
@@ -170,9 +240,23 @@ Current mental state:
 Recent experiences:
 {recent_history}
 
-Update the agent's mental state based on these experiences and the surrounding environment.
-A lively, green, well-maintained scene may improve mood and curiosity; an empty, run-down, or monotonous environment may increase boredom or fatigue.
-Different archetypes respond differently: tourists are energised by interesting architecture and activity; residents find comfort in familiar, quiet streets; students seek social, lively areas.
+Update the agent's mental state based on these experiences, physical needs, and the surrounding environment.
+Consider how physical needs affect psychology:
+  - High hunger can cause irritability (worse mood, higher fatigue)
+  - Low energy increases fatigue and reduces curiosity
+  - High social need with no outlet causes frustration
+  - Well-satisfied needs improve mood and curiosity
+Environmental effects:
+  - A lively, green, well-maintained scene may improve mood and curiosity
+  - An empty, run-down, or monotonous environment may increase boredom or fatigue
+  - Beautiful architecture energizes curious agents
+  - Green spaces restore energy and improve mood
+  - Lively pedestrian areas satisfy social needs
+Archetype responses:
+  - Tourists are energised by interesting architecture and activity
+  - Residents find comfort in familiar, quiet streets
+  - Students seek social, lively areas
+  - Commuters value efficient, pleasant routes
 Mood options: happy, neutral, tired, curious, bored, energised, social, focused
 Curiosity and fatigue are floats 0.0-1.0.
 

@@ -140,6 +140,13 @@
       .download-link { display: inline-block; margin-top: 6px; padding: 6px 12px; background:rgba(34,197,94,0.2); color:#4ade80; border:1px solid rgba(34,197,94,0.3); border-radius:6px; text-decoration: none; font-size: 10px; font-weight: 600; }
       .download-link:hover { background: rgba(34, 197, 94, 0.3); }
       
+      /* Progress animation for export */
+      @keyframes progress-indeterminate {
+        0% { transform: translateX(-100%); }
+        50% { transform: translateX(0); }
+        100% { transform: translateX(100%); }
+      }
+      
       /* Fix panel overflow issues */
       #left-panel { max-height: calc(100vh - 8rem); overflow-y: auto; }
       #left-panel::-webkit-scrollbar { width: 4px; }
@@ -319,6 +326,7 @@
 <option value="both">Both (Amenities + Perception Points)</option>
 <option value="amenities">Amenities Only</option>
 <option value="perception">Perception Points Only</option>
+<option value="rule_based">Rule-Based (No LLM - Deterministic Movement)</option>
 </select>
 <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-[16px] pointer-events-none">expand_more</span>
 </div>
@@ -421,7 +429,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- LLM Narrative -->
                 <div class="p-4 flex-1 border-t border-outline-variant/10">
                     <h3 class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2 flex items-center justify-between">
@@ -444,6 +452,23 @@
         </div>
 
         <!-- ASYMMETRIC METRIC WIDGETS (BOTTOM) -->
+        <!-- Satisfaction Source (bottom center) -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+            <div class="glass-panel px-5 py-3 rounded-xl border border-outline-variant/20 min-w-[280px] max-w-[360px]">
+                <div class="text-[9px] font-bold text-on-surface-variant tracking-widest uppercase mb-2">Satisfaction Source</div>
+                <div id="satisfaction-source-widget" class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span id="source-icon" class="text-[18px]">⏸️</span>
+                        <span id="source-label" class="text-[10px] font-bold text-on-surface">No Update Yet</span>
+                    </div>
+                    <p id="source-reasoning" class="text-[9px] text-slate-400 italic leading-relaxed">
+                        Waiting for next simulation step...
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Agent count and LLM calls (bottom right) -->
         <div class="absolute bottom-6 right-8 z-10 flex gap-6 items-end">
             <div class="glass-panel px-5 py-3 rounded-xl border border-outline-variant/20">
                 <div class="text-[9px] font-bold text-on-surface-variant tracking-widest uppercase mb-1">Active Entities</div>
@@ -692,6 +717,11 @@
             currentLLMProvider = config.llm_provider;
             document.getElementById('llm-model').value = config.llm_model || '';
 
+            // Set agent count from backend config
+            if (config.num_agents) {
+                document.getElementById('agent-count-input').value = config.num_agents;
+            }
+
             const container = document.getElementById('llm-options');
             container.innerHTML = '';
             (config.available_providers || []).forEach(prov => {
@@ -781,6 +811,21 @@
                 document.getElementById('need-social').style.width = (social * 100) + '%';
                 document.getElementById('need-social-val').textContent = social.toFixed(2);
 
+                // Satisfaction source widget
+                const source = data.satisfaction_source || "none";
+                const sourceConfig = {
+                    "visual": { icon: "👁️", label: "Visual Environment", color: "cyan" },
+                    "amenity": { icon: "🏪", label: "Amenity Visit", color: "orange" },
+                    "combined": { icon: "🔀", label: "Combined Input", color: "purple" },
+                    "none": { icon: "⏸️", label: "No Update Yet", color: "slate" }
+                };
+                const config = sourceConfig[source] || sourceConfig["none"];
+                
+                document.getElementById('source-icon').textContent = config.icon;
+                document.getElementById('source-label').textContent = config.label;
+                document.getElementById('source-reasoning').textContent = 
+                    data.satisfaction_reasoning || "Waiting for next simulation step...";
+
                 const cog = data.cognition_state || {};
                 document.getElementById('cog-mood').textContent = cog.mood || 'neutral';
                 document.getElementById('cog-curiosity').textContent = (cog.curiosity ?? 0.7).toFixed(2);
@@ -839,8 +884,13 @@
                 const data = await res.json();
                 if (data.error) {
                     summaryEl.innerHTML = '<em style="color:#999;">Agent not found</em>';
-                } else if (!data.summary) {
-                    summaryEl.innerHTML = '<em style="color:#999;">LLM unavailable — start Ollama or vLLM first</em>';
+                } else if (!data.summary || data.summary.startsWith('Error generating')) {
+                    // Show error details if available
+                    if (data.error_details) {
+                        summaryEl.innerHTML = `<em style="color:#f44336; font-size:10px;">${data.error_details}</em>`;
+                    } else {
+                        summaryEl.innerHTML = '<em style="color:#999;">LLM unavailable — start Ollama or vLLM first</em>';
+                    }
                 } else {
                     summaryEl.innerHTML = parseMarkdown(data.summary);
                 }
@@ -852,7 +902,7 @@
 
         // ── Agent respawn ──────────────────────────────────
         document.getElementById('btn-respawn').addEventListener('click', async () => {
-            const count = parseInt(document.getElementById('agent-count-input').value) || 15;
+            const count = parseInt(document.getElementById('agent-count-input').value) || 50;
             const apiUrl = getApiUrl();
             try {
                 const res = await fetch(`${apiUrl}/api/agents/respawn?count=${count}`, { method: 'POST' });
@@ -946,6 +996,18 @@
         async function stopRecording() {
             const apiUrl = getApiUrl();
             
+            // Show immediate feedback
+            const resultDiv = document.getElementById('recording-result');
+            resultDiv.innerHTML = `
+                <div style="margin-top:6px; padding:8px; background:rgba(251,191,36,0.1); border-radius:6px; border:1px solid rgba(251,191,36,0.3);">
+                    <div style="color:#fbbf24; font-size:9px; font-weight:600; margin-bottom:4px;">⏳ EXPORTING DATA...</div>
+                    <div style="color:#bac9cc; font-size:9px;">Saving <strong id="export-records-count">${document.getElementById('rec-records').textContent}</strong> records to GeoParquet file...</div>
+                    <div style="margin-top:4px; height:3px; background:rgba(251,191,36,0.2); border-radius:2px; overflow:hidden;">
+                        <div style="width:100%; height:100%; background:#fbbf24; animation: progress-indeterminate 1.5s infinite ease-in-out;"></div>
+                    </div>
+                </div>
+            `;
+            
             try {
                 const res = await fetch(`${apiUrl}/api/recording/stop`, { method: 'POST' });
                 const data = await res.json();
@@ -966,7 +1028,7 @@
                     
                     // Show download link
                     const downloadUrl = `${apiUrl}/api/recording/download/${encodeURIComponent(data.file_name)}`;
-                    document.getElementById('recording-result').innerHTML = `
+                    resultDiv.innerHTML = `
                         <div style="margin-top:6px; padding:8px; background:rgba(34,197,94,0.1); border-radius:6px; border:1px solid rgba(34,197,94,0.3);">
                             <div style="color:#4ade80; font-size:9px; font-weight:600; margin-bottom:4px;">✅ RECORDING COMPLETE</div>
                             <div style="color:#bac9cc; font-size:9px;"><strong>${data.total_records}</strong> records from <strong>${data.agents_tracked}</strong> agents</div>
@@ -982,11 +1044,22 @@
                     document.getElementById('recording-panel').classList.add('hidden');
                     document.getElementById('btn-record').classList.remove('recording');
                     document.getElementById('btn-record').title = 'Start Recording';
+                    resultDiv.innerHTML = '';
                 } else {
-                    alert('Error stopping recording: ' + (data.message || 'Unknown error'));
+                    resultDiv.innerHTML = `
+                        <div style="margin-top:6px; padding:8px; background:rgba(239,68,68,0.1); border-radius:6px; border:1px solid rgba(239,68,68,0.3);">
+                            <div style="color:#ef4444; font-size:9px; font-weight:600;">❌ EXPORT FAILED</div>
+                            <div style="color:#bac9cc; font-size:9px;">${data.message || 'Unknown error'}</div>
+                        </div>
+                    `;
                 }
             } catch (e) {
-                alert('Failed to stop recording: ' + e.message);
+                resultDiv.innerHTML = `
+                    <div style="margin-top:6px; padding:8px; background:rgba(239,68,68,0.1); border-radius:6px; border:1px solid rgba(239,68,68,0.3);">
+                        <div style="color:#ef4444; font-size:9px; font-weight:600;">❌ EXPORT FAILED</div>
+                        <div style="color:#bac9cc; font-size:9px;">${e.message}</div>
+                    </div>
+                `;
             }
         }
 
