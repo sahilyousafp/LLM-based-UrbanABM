@@ -95,10 +95,12 @@ class GeoParquetRecorder:
     def __init__(
         self,
         output_dir: Optional[Path] = None,
-        max_buffer_size: int = 10000,
+        max_buffer_size: int = 500,  # Reduced for crash safety
         include_thoughts: bool = True,
         include_perception: bool = True,
         perception_mode: str = "both",
+        auto_flush_interval: float = 2.0,  # Auto-flush every 2 seconds
+        keep_temp_files: bool = True,
     ):
         """
         Initialize the recorder.
@@ -109,6 +111,8 @@ class GeoParquetRecorder:
             include_thoughts: Whether to include thought stream data
             include_perception: Whether to include street perception data
             perception_mode: Agent perception mode ('amenities', 'perception', or 'both')
+            auto_flush_interval: Seconds between auto-flush to temp file
+            keep_temp_files: Keep .tmp files for crash recovery
         """
         if output_dir is None:
             output_dir = Path(__file__).parent.parent.parent / "Documentation"
@@ -120,27 +124,39 @@ class GeoParquetRecorder:
         self.include_thoughts = include_thoughts
         self.include_perception = include_perception
         self.perception_mode = perception_mode
-        
+        self.auto_flush_interval = auto_flush_interval
+        self.keep_temp_files = keep_temp_files
+
         # Recording state
         self.is_recording = False
         self.session_name: Optional[str] = None
         self.session_id: Optional[str] = None
         self.start_time: Optional[datetime] = None
         self.start_step: int = 0
-        
+
         # Data buffer
         self.buffer: List[AgentRecord] = []
         self.buffer_lock = threading.Lock()
         self.total_records = 0
-        
+
         # Statistics
         self.stats = {
             'agents_tracked': set(),
             'steps_recorded': 0,
             'records_written': 0,
         }
-        
-        logger.info(f"GeoParquetRecorder initialized. Output: {self.output_dir}")
+
+        # Auto-flush timer
+        self._flush_timer: Optional[threading.Timer] = None
+        self._flush_timer_lock = threading.Lock()
+        self._last_flush_time: float = 0
+        self._temp_file_counter: int = 0
+        self._temp_files: List[Path] = []
+
+        logger.info(
+            f"GeoParquetRecorder initialized. Output: {self.output_dir} | "
+            f"Auto-flush: {auto_flush_interval}s | Buffer: {max_buffer_size}"
+        )
     
     def start_recording(self, session_name: Optional[str] = None) -> str:
         """
@@ -283,17 +299,20 @@ class GeoParquetRecorder:
         if self.include_thoughts and hasattr(agent, 'memory') and hasattr(agent.memory, 'stream'):
             try:
                 # Get recent events from stream memory
+                # Use synchronous access to _store (StreamMemory internal storage)
                 stream_memory = agent.memory.stream
-                if hasattr(stream_memory, '_data'):
-                    for topic, events in stream_memory._data.items():
-                        for event in events[-10:]:  # Last 10 events per topic
+                if hasattr(stream_memory, '_store'):
+                    for topic, events in stream_memory._store.items():
+                        # events is a deque of MemoryNode objects
+                        events_list = list(events)[-10:]  # Last 10 events per topic
+                        for event in events_list:
                             thought_stream.append({
                                 'topic': topic,
-                                'step': event.step if hasattr(event, 'step') else step,
-                                'description': event.description if hasattr(event, 'description') else str(event),
+                                'step': event.step,
+                                'description': event.description,
                             })
             except Exception as e:
-                logger.debug(f"Could not extract thought stream: {e}")
+                logger.warning(f"Could not extract thought stream: {e}")
         
         return AgentRecord(
             agent_id=agent.unique_id,

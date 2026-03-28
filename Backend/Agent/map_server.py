@@ -809,6 +809,7 @@ async def get_frontend_config():
             {"id": "gemini", "name": "Google Gemini 2.0 Flash Lite", "description": "Fast, efficient cloud LLM by Google — no local setup required"},
             {"id": "ollama", "name": "Ollama (Local)", "description": "Local LLM via Ollama — no GPU required"},
             {"id": "vllm", "name": "vLLM (Docker GPU)", "description": "High-performance GPU inference via vLLM Docker"},
+            {"id": "lmdeploy", "name": "LMDeploy (Docker GPU)", "description": "High-performance GPU inference via LMDeploy Docker"},
         ],
     }
 

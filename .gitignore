@@ -57,7 +57,9 @@ Backend/Agent/tracking_data/*.duckdb
 
 node_modules/
 
-# Environment files with secrets
+# Environment files with secrets (CRITICAL for security)
 .env
+.env.*
+!.env.example
 
 

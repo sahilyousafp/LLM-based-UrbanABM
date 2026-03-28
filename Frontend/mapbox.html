@@ -795,7 +795,15 @@
             try {
                 const res = await fetch(`${apiUrl}/api/agent/${agentId}/cognition`);
                 const data = await res.json();
-                if (data.error) return;
+                
+                if (data.error) {
+                    console.error('Agent cognition error:', data.error);
+                    document.getElementById('agent-summary').innerHTML = 
+                        `<em style="color:#f44;">Error loading data: ${data.error}</em>`;
+                    return;
+                }
+
+                console.log('Agent cognition data:', data);
 
                 document.getElementById('agent-id').textContent = data.agent_id;
                 document.getElementById('agent-archetype').textContent = data.archetype || 'unknown';
@@ -820,13 +828,20 @@
                     "none": { icon: "⏸️", label: "No Update Yet", color: "slate" }
                 };
                 const config = sourceConfig[source] || sourceConfig["none"];
-                
+
                 document.getElementById('source-icon').textContent = config.icon;
                 document.getElementById('source-label').textContent = config.label;
-                document.getElementById('source-reasoning').textContent = 
+                document.getElementById('source-reasoning').textContent =
                     data.satisfaction_reasoning || "Waiting for next simulation step...";
 
                 const cog = data.cognition_state || {};
+                
+                // Check if cognition data is empty (no simulation steps run yet)
+                if (Object.keys(cog).length === 0) {
+                    document.getElementById('agent-summary').innerHTML = 
+                        '<em style="color:#999;">Run simulation steps to generate cognition data</em>';
+                }
+                
                 document.getElementById('cog-mood').textContent = cog.mood || 'neutral';
                 document.getElementById('cog-curiosity').textContent = (cog.curiosity ?? 0.7).toFixed(2);
                 document.getElementById('cog-fatigue').textContent = (cog.fatigue ?? 0).toFixed(2);
@@ -843,6 +858,8 @@
                 document.getElementById('agent-amenity-count').textContent = agentData.nearby_amenities?.length || 0;
             } catch (e) {
                 console.error('Agent details error:', e);
+                document.getElementById('agent-summary').innerHTML = 
+                    `<em style="color:#f44;">Error: ${e.message}</em>`;
             }
         }
 
@@ -935,6 +952,12 @@
                         }
                     });
                     if (map.getSource('agents')) map.getSource('agents').setData(agentsGeoJSON);
+                }
+                
+                // Auto-refresh selected agent panel
+                if (selectedAgentId) {
+                    showAgentDetails(selectedAgentId);
+                    showAgentStream(selectedAgentId);
                 }
             } catch (e) { console.error('Step error:', e); }
         }
