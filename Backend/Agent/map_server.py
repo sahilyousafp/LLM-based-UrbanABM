@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import sys
 from pathlib import Path
@@ -10,12 +11,14 @@ from fastapi.responses import FileResponse
 import duckdb
 from shapely import wkt
 
+logger = logging.getLogger(__name__)
+
 # Load .env from project root before anything else
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".env")
 
 from model import CityModel
-from geoparquet_recorder import create_recorder, get_recorder, clear_recorder
+from geoparquet_recorder import create_recorder, get_recorder, clear_recorder, recover_unmerged_sessions
 
 # Ensure Backend root on path (model.py also does this, but be explicit here)
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -824,21 +827,27 @@ async def start_recording(
 ):
     """
     Start recording agent behaviors to GeoParquet.
-    
+
     Args:
         session_name: Optional name for the recording session
         include_thoughts: Whether to include agent thought streams (default: True)
         include_perception: Whether to include street perception data (default: True)
-        
+
     Returns:
         Session ID and status
     """
+    # Recover any unmerged sessions from previous crashes
+    logger.info("Checking for unmerged recording sessions...")
+    recovered = recover_unmerged_sessions(PROJECT_ROOT / "Documentation")
+    if recovered:
+        logger.info(f"Recovered {len(recovered)} session(s): {[p.name for p in recovered]}")
+
     # Stop any existing recording
     clear_recorder()
-    
+
     # Get current perception mode
     current_perception_mode = getattr(city_model, 'perception_mode', 'both')
-    
+
     # Create new recorder
     recorder = create_recorder(
         output_dir=PROJECT_ROOT / "Documentation",
@@ -847,13 +856,13 @@ async def start_recording(
         include_perception=include_perception,
         perception_mode=current_perception_mode,
     )
-    
+
     # Start recording
     session_id = recorder.start_recording(session_name)
-    
+
     # Set recorder on city_model for integration
     city_model.set_recorder(recorder)
-    
+
     return {
         "status": "recording_started",
         "session_id": session_id,
@@ -862,6 +871,7 @@ async def start_recording(
         "include_perception": include_perception,
         "perception_mode": current_perception_mode,
         "output_dir": str(PROJECT_ROOT / "Documentation"),
+        "recovered_sessions": [str(p) for p in recovered],
     }
 
 

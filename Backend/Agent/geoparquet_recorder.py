@@ -338,44 +338,61 @@ class GeoParquetRecorder:
             satisfaction_reasoning=satisfaction_reasoning,
         )
     
-    def _flush_to_parquet(self) -> Optional[Path]:
-        """Flush buffered records to GeoParquet file."""
+    def _flush_to_parquet(self, is_final_flush: bool = False) -> Optional[Path]:
+        """
+        Flush buffered records to GeoParquet file.
+        
+        Args:
+            is_final_flush: If True, write directly to final file. If False, write to temp file.
+        
+        Returns:
+            Path to the written file, or None if failed
+        """
         if not self.buffer:
             logger.debug("No data to flush")
             return None
-        
+
         try:
             import geopandas as gpd
             from shapely.geometry import Point
             import pandas as pd
-            
+
             # Convert buffer to list of dicts
             records = [record.to_dict() for record in self.buffer]
-            
+
             # Create DataFrame
             df = pd.DataFrame(records)
-            
+
             # Create geometry column from coordinates
             geometry = [Point(xy) for xy in zip(df['longitude'], df['latitude'])]
-            
+
             # Create GeoDataFrame
             gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
 
-            # Generate filename with perception mode
+            # Generate filename
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             mode_suffix = f"_{self.perception_mode}" if self.perception_mode else ""
-            filename = f"agent_recording_{self.session_name or timestamp}{mode_suffix}.parquet"
-            file_path = self.output_dir / filename
             
+            if is_final_flush and len(self._temp_files) == 0:
+                # Only one flush total, write directly to final file
+                filename = f"agent_recording_{self.session_name or timestamp}{mode_suffix}.parquet"
+                file_path = self.output_dir / filename
+            else:
+                # Write to temp file (will be merged later)
+                self._temp_file_counter += 1
+                filename = f"agent_recording_{self.session_name or timestamp}_flush_{self._temp_file_counter:03d}.tmp.parquet"
+                file_path = self.output_dir / filename
+                self._temp_files.append(file_path)
+
             # Export to GeoParquet
             gdf.to_parquet(str(file_path))
-            
+
             self.stats['records_written'] += len(self.buffer)
             self.buffer = []
-            
+
             logger.info(f"Flushed {len(records)} records to {file_path}")
             return file_path
-            
+
         except ImportError as e:
             logger.error(f"Missing dependencies for GeoParquet export: {e}")
             logger.error("Please install: pip install geopandas pyarrow")
@@ -383,7 +400,94 @@ class GeoParquetRecorder:
         except Exception as e:
             logger.error(f"Failed to flush to GeoParquet: {e}")
             return None
-    
+
+    def _merge_temp_files(self) -> Optional[Path]:
+        """
+        Merge all temp flush files into a final GeoParquet file.
+        
+        Returns:
+            Path to the merged file, or None if failed
+        """
+        if not self._temp_files:
+            logger.debug("No temp files to merge")
+            return None
+        
+        try:
+            import geopandas as gpd
+            import pandas as pd
+            
+            # Read all temp files
+            gdfs = []
+            for temp_file in self._temp_files:
+                if temp_file.exists():
+                    gdf = gpd.read_parquet(str(temp_file))
+                    gdfs.append(gdf)
+                    logger.debug(f"Loaded temp file: {temp_file.name} ({len(gdf)} records)")
+            
+            if not gdfs:
+                logger.error("No valid temp files found to merge")
+                return None
+            
+            # Concatenate all GeoDataFrames
+            merged_gdf = pd.concat(gdfs, ignore_index=True)
+            merged_gdf = gpd.GeoDataFrame(merged_gdf, crs="EPSG:4326")
+            
+            # Generate final filename
+            mode_suffix = f"_{self.perception_mode}" if self.perception_mode else ""
+            filename = f"agent_recording_{self.session_name}{mode_suffix}.parquet"
+            final_path = self.output_dir / filename
+            
+            # Export merged GeoDataFrame
+            merged_gdf.to_parquet(str(final_path))
+            
+            total_records = sum(len(gdf) for gdf in gdfs)
+            logger.info(f"Merged {len(self._temp_files)} temp files ({total_records} records) into {final_path.name}")
+            
+            # Clean up temp files if not keeping them
+            if not self.keep_temp_files:
+                for temp_file in self._temp_files:
+                    try:
+                        temp_file.unlink()
+                        logger.debug(f"Deleted temp file: {temp_file}")
+                    except Exception as e:
+                        logger.warning(f"Failed to delete temp file {temp_file}: {e}")
+            
+            return final_path
+            
+        except Exception as e:
+            logger.error(f"Failed to merge temp files: {e}")
+            return None
+
+    def stop_recording(self) -> Optional[Path]:
+        """
+        Stop recording and export to GeoParquet.
+        
+        Merges all temp flush files into a final parquet file.
+
+        Returns:
+            Path to the exported GeoParquet file, or None if no data recorded
+        """
+        if not self.is_recording:
+            logger.warning("No recording in progress")
+            return None
+
+        self.is_recording = False
+
+        # Flush remaining buffer (this will be added to temp files)
+        self._flush_to_parquet()
+
+        # Merge all temp files into final parquet
+        if self._temp_files:
+            final_path = self._merge_temp_files()
+        else:
+            # No temp files, use the single flush file (rename if needed)
+            logger.warning("No temp files found - recording may have failed")
+            final_path = None
+
+        logger.info(f"Recording stopped. Total records: {self.total_records}")
+
+        return final_path
+
     def get_status(self) -> Dict[str, Any]:
         """Get current recording status."""
         return {
@@ -397,13 +501,15 @@ class GeoParquetRecorder:
             'agents_tracked': len(self.stats['agents_tracked']),
             'steps_recorded': self.stats['steps_recorded'],
             'records_written': self.stats['records_written'],
+            'temp_files_count': len(self._temp_files),
         }
-    
+
     def get_output_path(self) -> Optional[Path]:
         """Get the expected output file path."""
         if not self.session_name:
             return None
-        return self.output_dir / f"agent_recording_{self.session_name}.parquet"
+        mode_suffix = f"_{self.perception_mode}" if self.perception_mode else ""
+        return self.output_dir / f"agent_recording_{self.session_name}{mode_suffix}.parquet"
 
 
 # Global recorder instance for the API server
@@ -444,3 +550,117 @@ def clear_recorder() -> None:
         if _recorder and _recorder.is_recording:
             _recorder.stop_recording()
         _recorder = None
+
+
+def recover_unmerged_sessions(
+    output_dir: Optional[Path] = None,
+    keep_temp_files: bool = True,
+) -> List[Path]:
+    """
+    Recover unmerged temp files from crashed recording sessions.
+    
+    Scans the output directory for temp flush files (*.tmp.parquet),
+    groups them by session name, merges each group, and saves the final parquet.
+    
+    Args:
+        output_dir: Directory to scan (default: Documentation/)
+        keep_temp_files: Whether to keep temp files after merging
+    
+    Returns:
+        List of recovered file paths
+    """
+    if output_dir is None:
+        output_dir = Path(__file__).parent.parent.parent / "Documentation"
+    
+    output_dir = Path(output_dir)
+    if not output_dir.exists():
+        logger.debug(f"Output directory does not exist: {output_dir}")
+        return []
+    
+    # Find all temp flush files
+    temp_files = list(output_dir.glob("agent_recording_*_flush_*.tmp.parquet"))
+    
+    if not temp_files:
+        logger.debug("No unmerged temp files found")
+        return []
+    
+    logger.info(f"Found {len(temp_files)} unmerged temp files for recovery")
+    
+    # Group by session name
+    # Pattern: agent_recording_{session_name}_flush_{counter:03d}.tmp.parquet
+    from collections import defaultdict
+    session_groups: Dict[str, List[Path]] = defaultdict(list)
+    
+    for temp_file in temp_files:
+        # Extract session name from filename
+        # agent_recording_SESSIONNAME_flush_001.tmp.parquet
+        filename = temp_file.name
+        # Remove prefix and suffix
+        if filename.startswith("agent_recording_"):
+            remainder = filename[len("agent_recording_"):-len(".tmp.parquet")]
+            # Find last _flush_ to extract session name
+            flush_idx = remainder.rfind("_flush_")
+            if flush_idx > 0:
+                session_name = remainder[:flush_idx]
+                session_groups[session_name].append(temp_file)
+    
+    # Merge each session group
+    recovered_paths = []
+    
+    for session_name, files in session_groups.items():
+        logger.info(f"Recovering session '{session_name}' with {len(files)} temp files")
+        
+        try:
+            import geopandas as gpd
+            import pandas as pd
+            
+            # Sort files by flush number
+            files.sort(key=lambda p: p.name)
+            
+            # Read all temp files
+            gdfs = []
+            for temp_file in files:
+                gdf = gpd.read_parquet(str(temp_file))
+                gdfs.append(gdf)
+            
+            if not gdfs:
+                logger.error(f"No valid temp files for session '{session_name}'")
+                continue
+            
+            # Merge
+            merged_gdf = pd.concat(gdfs, ignore_index=True)
+            merged_gdf = gpd.GeoDataFrame(merged_gdf, crs="EPSG:4326")
+            
+            # Determine perception mode from first temp file
+            mode_suffix = ""
+            first_name = files[0].name
+            if "_both" in first_name:
+                mode_suffix = "_both"
+            elif "_amenities" in first_name:
+                mode_suffix = "_amenities"
+            elif "_perception" in first_name:
+                mode_suffix = "_perception"
+            
+            # Save final file
+            filename = f"agent_recording_{session_name}{mode_suffix}.parquet"
+            final_path = output_dir / filename
+            merged_gdf.to_parquet(str(final_path))
+            
+            total_records = sum(len(gdf) for gdf in gdfs)
+            logger.info(f"Recovered session '{session_name}': {total_records} records -> {final_path.name}")
+            
+            recovered_paths.append(final_path)
+            
+            # Clean up temp files if not keeping them
+            if not keep_temp_files:
+                for temp_file in files:
+                    try:
+                        temp_file.unlink()
+                        logger.debug(f"Deleted temp file: {temp_file}")
+                    except Exception as e:
+                        logger.warning(f"Failed to delete temp file {temp_file}: {e}")
+            
+        except Exception as e:
+            logger.error(f"Failed to recover session '{session_name}': {e}")
+    
+    return recovered_paths
