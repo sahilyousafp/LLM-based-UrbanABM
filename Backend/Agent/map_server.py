@@ -970,4 +970,4 @@ async def download_recording(filename: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("map_server:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("map_server:app", host="127.0.0.1", port=8000, reload=False)
