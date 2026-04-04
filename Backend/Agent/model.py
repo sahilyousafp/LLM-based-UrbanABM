@@ -384,9 +384,12 @@ class CityModel(mesa.Model):
         self.llm_client = LLMClient(llm_config)
         print(f"[OK] LLM client: provider={llm_config.provider}, model={llm_config.model}")
 
-        # Initialize agent tracker
+        # Initialize agent tracker — store DB in Documentation/ (outside the source
+        # tree) so DuckDB WAL writes don't trigger Live Server / VS Code refreshes.
         try:
-            self.tracker = AgentTracker()
+            _tracker_db = PROJECT_ROOT / "Documentation" / "tracking_data" / "agent_tracking.duckdb"
+            _tracker_db.parent.mkdir(parents=True, exist_ok=True)
+            self.tracker = AgentTracker(db_path=_tracker_db)
             print(f"[OK] Agent tracker initialized: {self.tracker.db_path}")
         except Exception as e:
             print(f"[WARN] Failed to initialize agent tracker: {e}")
@@ -476,28 +479,26 @@ class CityModel(mesa.Model):
             print("[ERROR] No edges available for spawning!")
             return
         
+        # Pick a single edge for all agents to start from
+        common_edge_id = random.choice(edge_ids)
+        common_edge_geom = self.edges[common_edge_id]
+        common_start_point = Point(common_edge_geom.coords[0])
+        
         for i in range(num_agents):
             try:
-                # Pick a random edge
-                edge_id = random.choice(edge_ids)
-                edge_geom = self.edges[edge_id]
-                
-                # Start at beginning of edge
-                start_point = Point(edge_geom.coords[0])
-                
                 # Assign archetype round-robin
                 archetype = CityAgent.ARCHETYPES[i % len(CityAgent.ARCHETYPES)]
                 
                 if i == 0:
-                    print(f"  Agent 0: lon={start_point.x:.6f}, lat={start_point.y:.6f} on edge {edge_id} [{archetype}]")
+                    print(f"  Agent 0: lon={common_start_point.x:.6f}, lat={common_start_point.y:.6f} on edge {common_edge_id} [{archetype}]")
                 
                 # Create agent with edge information and archetype
                 agent = CityAgent(
                     model=self, 
-                    geometry=start_point, 
+                    geometry=common_start_point, 
                     crs="EPSG:4326",
-                    edge_id=edge_id,
-                    edge_geom=edge_geom,
+                    edge_id=common_edge_id,
+                    edge_geom=common_edge_geom,
                     archetype=archetype,
                 )
                 self.city_agents.append(agent)

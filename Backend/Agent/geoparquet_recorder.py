@@ -363,8 +363,8 @@ class GeoParquetRecorder:
             # Create DataFrame
             df = pd.DataFrame(records)
 
-            # Create geometry column from coordinates
-            geometry = [Point(xy) for xy in zip(df['longitude'], df['latitude'])]
+            # Create geometry column from coordinates and step (as Z coordinate)
+            geometry = [Point(lon, lat, step) for lon, lat, step in zip(df['longitude'], df['latitude'], df['step'])]
 
             # Create GeoDataFrame
             gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
