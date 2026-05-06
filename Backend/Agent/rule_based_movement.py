@@ -10,6 +10,7 @@ Movement Strategy:
 - No LLM calls are made in this mode
 """
 
+import random
 from shapely.geometry import Point, LineString
 from typing import Optional, Tuple, List
 
@@ -54,13 +55,29 @@ def select_next_edge(
     
     if not candidates:
         return None
-    
-    # Sort by global visit count (least visited first)
+
+    # Shortest-path navigation biased by archetype adherence
+    destination = agent.memory.status._data.get("destination") or {}
+    target_node = destination.get("target_node")
+    archetype = agent.memory.status._data.get("agent_profile", {}).get("archetype", "resident")
+    adherence = agent.model.ARCHETYPE_PATH_ADHERENCE.get(archetype, 0.5)
+
+    if target_node is not None and random.random() < adherence:
+        current_end = agent.current_edge_geom.coords[-1]
+        current_node = (round(current_end[0], 6), round(current_end[1], 6))
+        next_node = agent.model.dijkstra_next_node(current_node, target_node)
+        if next_node:
+            for e in candidates:
+                eid, geom, direction = e
+                end = geom.coords[-1] if direction == "forward" else geom.coords[0]
+                if (round(end[0], 6), round(end[1], 6)) == next_node:
+                    return eid, geom, direction
+
+    # Fallback: least-visited edge
     candidates.sort(
         key=lambda e: agent.model.edge_visit_count_global.get(e[0], 0)
     )
-    
-    # Select least-visited edge
+
     edge_id, edge_geom, direction = candidates[0]
     
     # Reverse geometry if moving in reverse direction

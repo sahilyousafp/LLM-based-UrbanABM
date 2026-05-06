@@ -16,18 +16,19 @@ DECAY_RATES = {
     "hunger": 0.015,   # Hunger increases ~1.5% per step — noticeable buildup
     "energy": 0.010,   # Energy depletes ~1.0% per step — meaningful changes
     "social": 0.010,   # Social need increases ~1.0% per step — visible growth
+    "comfort": 0.008,  # Comfort erodes ~0.8% per step — slow environmental wear; restored mainly by visual perception
 }
 
 # Amenity type to needs mapping (rule-based fallback)
 AMENITY_NEED_MAP = {
-    "restaurant": {"hunger": 0.4, "energy": 0.1, "social": 0.1},
-    "cafe": {"hunger": 0.2, "energy": 0.15, "social": 0.2},
-    "bar": {"hunger": 0.1, "energy": 0.0, "social": 0.35},
-    "supermarket": {"hunger": 0.35, "energy": 0.0, "social": 0.0},
-    "pharmacy": {"hunger": 0.0, "energy": 0.1, "social": 0.0},
-    "park": {"hunger": 0.0, "energy": 0.25, "social": 0.15},
-    "library": {"hunger": 0.0, "energy": 0.1, "social": 0.05},
-    "gym": {"hunger": 0.0, "energy": -0.1, "social": 0.1},  # Gym costs energy
+    "restaurant": {"hunger": 0.4, "energy": 0.1, "social": 0.1, "comfort": 0.05},
+    "cafe":        {"hunger": 0.2, "energy": 0.15, "social": 0.2, "comfort": 0.08},
+    "bar":         {"hunger": 0.1, "energy": 0.0, "social": 0.35, "comfort": 0.05},
+    "supermarket": {"hunger": 0.35, "energy": 0.0, "social": 0.0, "comfort": 0.02},
+    "pharmacy":    {"hunger": 0.0, "energy": 0.1, "social": 0.0, "comfort": 0.03},
+    "park":        {"hunger": 0.0, "energy": 0.25, "social": 0.15, "comfort": 0.10},
+    "library":     {"hunger": 0.0, "energy": 0.1, "social": 0.05, "comfort": 0.08},
+    "gym":         {"hunger": 0.0, "energy": -0.1, "social": 0.1, "comfort": 0.04},  # Gym costs energy
 }
 
 
@@ -50,6 +51,7 @@ class NeedsBlock(Block):
         needs["hunger"] = min(1.0, needs.get("hunger", 0.5) + DECAY_RATES["hunger"])
         needs["energy"] = max(0.0, needs.get("energy", 1.0) - DECAY_RATES["energy"])
         needs["social"] = min(1.0, needs.get("social", 0.5) + DECAY_RATES["social"])
+        needs["comfort"] = max(0.0, needs.get("comfort", 0.7) - DECAY_RATES["comfort"])
 
         visited_amenity = None
         llm_used = False
@@ -96,7 +98,7 @@ class NeedsBlock(Block):
                     topic="amenity_visit",
                     step=step,
                     description=f"{amenity_result.get('activity', f'Visited {amenity_name}')}. Needs after: hunger={needs['hunger']:.2f}, "
-                                f"energy={needs['energy']:.2f}, social={needs['social']:.2f}",
+                                f"energy={needs['energy']:.2f}, social={needs['social']:.2f}, comfort={needs['comfort']:.2f}",
                     metadata={"amenity": visited_amenity, "llm_used": llm_used},
                 )
 
@@ -146,6 +148,7 @@ class NeedsBlock(Block):
             needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - response["hunger_delta"]))
             needs["energy"] = max(0.0, min(1.0, needs["energy"] + response["energy_delta"]))
             needs["social"] = max(0.0, min(1.0, needs["social"] - response["social_delta"]))
+            needs["comfort"] = max(0.0, min(1.0, needs.get("comfort", 0.7) + response.get("comfort_delta", 0.0)))
             return {
                 "needs": needs,
                 "reasoning": response.get("reasoning", "Visual environment evaluated"),
@@ -181,6 +184,7 @@ class NeedsBlock(Block):
             needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - response["hunger_delta"]))
             needs["energy"] = max(0.0, min(1.0, needs["energy"] + response["energy_delta"]))
             needs["social"] = max(0.0, min(1.0, needs["social"] - response["social_delta"]))
+            needs["comfort"] = max(0.0, min(1.0, needs.get("comfort", 0.7) + response.get("comfort_delta", 0.0)))
             return {
                 "needs": needs,
                 "reasoning": response.get("activity", f"Visited {amenity_name}"),
@@ -193,6 +197,7 @@ class NeedsBlock(Block):
             needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - deltas.get("hunger", 0)))
             needs["energy"] = max(0.0, min(1.0, needs["energy"] + deltas.get("energy", 0)))
             needs["social"] = max(0.0, min(1.0, needs["social"] - deltas.get("social", 0)))
+            needs["comfort"] = max(0.0, min(1.0, needs.get("comfort", 0.7) + deltas.get("comfort", 0)))
             activity = f"Visited {amenity_name} ({amenity_type})"
             return {
                 "needs": needs,

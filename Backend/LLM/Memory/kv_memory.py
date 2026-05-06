@@ -4,12 +4,15 @@ Adapted from AgentSociety's KVMemory pattern (without vector embeddings in Phase
 
 Predefined schema keys for CityAgent:
   position            : {"lon": float, "lat": float, "edge_id": int}
-  needs               : {"hunger": float, "energy": float, "social": float}  (0-1)
+  needs               : {"hunger": float, "energy": float, "social": float, "comfort": float}  (0-1)
   visited_edges       : {edge_id: visit_count}
   visited_amenities   : [{"name": str, "type": str, "lon": float, "lat": float}]
   agent_profile       : {"archetype": str, "age": int, "preferences": list[str]}
   current_plan        : {"goal": str, "target_edge_id": int | None}
   cognition_state     : {"mood": str, "curiosity": float, "fatigue": float}
+  destination         : {"name": str | None, "amenity_type": str | None,
+                         "lon": float | None, "lat": float | None,
+                         "target_node": tuple | None}
 """
 import asyncio
 import copy
@@ -21,12 +24,13 @@ logger = logging.getLogger(__name__)
 # Default schema for a CityAgent memory
 DEFAULT_SCHEMA: dict[str, Any] = {
     "position": {"lon": 0.0, "lat": 0.0, "edge_id": None},
-    "needs": {"hunger": 0.5, "energy": 1.0, "social": 0.5},
+    "needs": {"hunger": 0.5, "energy": 1.0, "social": 0.5, "comfort": 0.7},
     "visited_edges": {},
     "visited_amenities": [],
     "agent_profile": {"archetype": "resident", "age": 30, "preferences": []},
     "current_plan": {"goal": "explore", "target_edge_id": None},
     "cognition_state": {"mood": "neutral", "curiosity": 0.7, "fatigue": 0.0},
+    "destination": {"name": None, "amenity_type": None, "lon": None, "lat": None, "target_node": None},
 }
 
 

@@ -29,17 +29,22 @@ def mobility_decision_prompt(
     current_position: dict,
     candidates: list[dict],
     street_perception: dict | None = None,
+    destination: dict | None = None,
+    path_hint_edge_id: int | None = None,
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
     candidates: list of {"edge_id": int, "direction": str, "amenities": list[str], "description": str}
     street_perception: optional dict with walkability, vegetation, pedestrian_activity, etc.
+    destination: agent's persistent target {"name", "amenity_type", "lon", "lat"}
+    path_hint_edge_id: edge_id of the Dijkstra-optimal next step toward destination
     """
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
         f"amenities=[{', '.join(c.get('amenities', [])[:3])}] "
         f"{'env=[' + c['perception'] + '] ' if c.get('perception') else ''}"
         f"desc={c.get('description', '')}"
+        f"{' [SHORTEST PATH TO DESTINATION]' if c['edge_id'] == path_hint_edge_id else ''}"
         for i, c in enumerate(candidates)
     )
 
@@ -65,11 +70,20 @@ def mobility_decision_prompt(
         if lines:
             perception_text = "\n\nScene description at current location (from visual analysis):\n" + "\n".join(lines)
 
+    destination_text = ""
+    if destination and destination.get("name"):
+        destination_text = (
+            f"\n\nTarget Destination: {destination['name']} "
+            f"(type: {destination.get('amenity_type', 'unknown')}) "
+            f"at lon={destination.get('lon', 0):.6f}, lat={destination.get('lat', 0):.6f}. "
+            f"This is your primary goal — navigate toward it."
+        )
+
     user_content = f"""Agent Profile:
   Archetype: {archetype}
-  Needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}
+  Needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
   Mood: {cognition.get('mood', 'neutral')}, Curiosity: {cognition.get('curiosity', 0.7):.2f}, Fatigue: {cognition.get('fatigue', 0.0):.2f}
-  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{perception_text}
+  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{perception_text}{destination_text}
 
 Recent Movement History:
 {recent_history}
@@ -78,12 +92,13 @@ Candidate Edges/Destinations:
 {candidates_text}
 
 Choose the index of the best candidate for this agent to move to next.
-Consider the agent's archetype behaviour:
-  - resident: prefers familiar streets, grocery/pharmacy/home areas
-  - commuter: moves efficiently, prefers direct routes with less revisiting
-  - tourist: prefers new/unvisited streets, cafes, attractions, interesting areas
-  - student: social, prefers cafes, parks, libraries, lively streets
-Also consider the street environment: agents respond to the scene around them. Tourists are drawn to lively, green, interesting areas; tired agents prefer quieter, less stimulating streets; residents seek familiar comfortable surroundings.
+Consider archetype behaviour and destination:
+  - resident (adherence 0.8): navigating toward home; prefers familiar streets
+  - commuter (adherence 1.0): moving efficiently to workplace; always takes shortest route
+  - tourist (adherence 0.2): heading to attraction but prefers unexplored streets
+  - student (adherence 0.5): moving to study/social venue; mix of path and detours
+The [SHORTEST PATH TO DESTINATION] candidate is the optimal next step — weight it according to your adherence level.
+Also consider the street environment: agents respond to the scene around them.
 
 Respond with JSON:
 {{"choice": <index 0-{len(candidates)-1}>, "reasoning": "<one sentence why>"}}"""
@@ -129,13 +144,13 @@ def visual_satisfaction_prompt(
     perception_text = "\n".join(lines) if lines else "  No detailed visual data available"
     
     user_content = f"""Agent archetype: {archetype}
-Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}
+Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
 Current mental state: mood={cognition.get('mood', 'neutral')}, curiosity={cognition.get('curiosity', 0.7):.2f}, fatigue={cognition.get('fatigue', 0.0):.2f}
 
 Street environment visible:
 {perception_text}
 
-How does being in this physical space affect the agent's 3 needs?
+How does being in this physical space affect the agent's 4 needs?
 Consider:
   - Beautiful/interesting architecture energizes curious agents
   - Green spaces restore energy and improve mood
@@ -144,12 +159,13 @@ Consider:
   - A tired agent loses energy faster in unstimulating environments
   - A social-mood agent gains more from busy streets
   - Different archetypes respond differently: tourists love interesting buildings, students seek lively areas, residents prefer familiar comfort, commuters value efficient pleasant routes
+  - COMFORT is primarily driven by visual environment quality: well-maintained buildings, greenery, good lighting, pleasant pedestrian activity → comfort_delta positive (up to +0.4); run-down areas, dark streets, empty/desolate spaces, visual noise → comfort_delta negative (down to -0.3)
 
 Provide deltas 0.0-1.0 (positive = need satisfied/reduced, negative = need increased/worsened).
-Note: hunger_delta is typically small from visual alone (distraction effect); energy_delta can be positive from restoration; social_delta reflects social vibrancy of area.
+Note: hunger_delta is typically small from visual alone (distraction effect); energy_delta can be positive from restoration; social_delta reflects social vibrancy; comfort_delta is the primary metric here — rate the visual environment quality honestly.
 
 Respond with JSON:
-{{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "reasoning": "<one sentence: why this space affects needs this way>"}}"""
+{{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "comfort_delta": <float>, "reasoning": "<one sentence: why this space affects needs this way>"}}"""
 
     return [_system(VISUAL_SATISFACTION_SYSTEM), _user(user_content)]
 
@@ -186,7 +202,7 @@ def needs_evaluation_prompt(
             perception_text = "\n\nSurrounding street scene:\n" + "\n".join(lines)
 
     user_content = f"""Agent archetype: {archetype}
-Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}
+Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
 Current mental state: mood={cognition.get('mood', 'neutral')}, curiosity={cognition.get('curiosity', 0.7):.2f}, fatigue={cognition.get('fatigue', 0.0):.2f}
 Visited amenity: "{amenity_name}" (type: {amenity_type}){perception_text}
 
@@ -196,9 +212,10 @@ Consider:
   - The surrounding street environment context
   - The agent's current mental state (mood affects satisfaction)
   - Archetype preferences (e.g., students love cafes, tourists love attractions)
+  - comfort_delta is small here (amenities are secondary to visual environment for comfort)
 
 Respond with JSON:
-{{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "activity": "<what agent does there>"}}"""
+{{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "comfort_delta": <float>, "activity": "<what agent does there>"}}"""
 
     return [_system(NEEDS_SYSTEM), _user(user_content)]
 
@@ -231,7 +248,7 @@ Scene description at current location (from visual analysis):
 
     user_content = f"""Agent archetype: {archetype}
 Simulation step: {step}
-Current needs: hunger={current_needs.get('hunger', 0.5):.2f}, energy={current_needs.get('energy', 1.0):.2f}, social={current_needs.get('social', 0.5):.2f}
+Current needs: hunger={current_needs.get('hunger', 0.5):.2f}, energy={current_needs.get('energy', 1.0):.2f}, social={current_needs.get('social', 0.5):.2f}, comfort={current_needs.get('comfort', 0.7):.2f}
 Current mental state:
   mood: {current_cognition.get('mood', 'neutral')}
   curiosity: {current_cognition.get('curiosity', 0.7):.2f}

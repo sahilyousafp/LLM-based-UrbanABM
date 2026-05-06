@@ -61,7 +61,8 @@ import torch
 from google.cloud import bigquery
 from huggingface_hub import login
 from PIL import Image as _PILImage
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, FieldValidationInfo
+from typing import Any
 from shapely import wkt as shapely_wkt
 from shapely.geometry import LineString  # noqa: F401
 import geopandas as gpd
@@ -110,7 +111,7 @@ SV_PITCH          = 0
 SV_RADIUS         = 50
 MODEL_ID          = "facebook/Perception-LM-1B"
 MAX_NUM_TILES     = 4    # 4 tiles; overridden dynamically by GPU VRAM in load_model()
-MAX_NEW_TOKENS    = 768  # reduced from 1536 — JSON output fits comfortably in 768 tokens
+MAX_NEW_TOKENS    = 1024  # 16 fields + quadrant scene_context fits in ~1024 tokens
 
 UTM31N = "EPSG:32631"
 
@@ -121,28 +122,41 @@ _META_BASE = "https://maps.googleapis.com/maps/api/streetview/metadata"
 # Pydantic schema
 # ---------------------------------------------------------------------------
 
-class StreetSceneAnalysis(BaseModel):
-    """Validated schema for a full street-view image analysis."""
+_QUADRANT_KEYS = ("top_left", "top_right", "bottom_left", "bottom_right")
 
-    scene_overview      : str = "unknown"
-    buildings           : str = "unknown"
-    materials           : str = "unknown"
-    building_condition  : str = "unknown"
-    street_furniture    : str = "unknown"
-    vegetation          : str = "unknown"
-    signage             : str = "unknown"
-    ground_surfaces     : str = "unknown"
-    spatial_enclosure   : str = "unknown"
-    pedestrian_activity : str = "unknown"
-    lighting_atmosphere : str = "unknown"
-    as_resident         : str = "unknown"
-    as_commuter         : str = "unknown"
-    as_tourist          : str = "unknown"
-    as_student          : str = "unknown"
+class StreetSceneAnalysis(BaseModel):
+    """Validated schema for individual comfort-focused urban-quality analysis.
+
+    scene_context is a dict with 4 quadrant keys (top_left, top_right,
+    bottom_left, bottom_right); all other fields are descriptive strings.
+    """
+
+    scene_context       : Any  = "unknown"   # dict{top_left,top_right,bottom_left,bottom_right}
+    perceived_safety    : str  = "unknown"
+    visibility          : str  = "unknown"
+    lighting_quality    : str  = "unknown"
+    cleanliness         : str  = "unknown"
+    greenery            : str  = "unknown"
+    thermal_comfort     : str  = "unknown"
+    walkability         : str  = "unknown"
+    noise_comfort       : str  = "unknown"
+    crowding            : str  = "unknown"
+    privacy             : str  = "unknown"
+    social_potential    : str  = "unknown"
+    visual_interest     : str  = "unknown"
+    enclosure_exposure  : str  = "unknown"
+    accessibility       : str  = "unknown"
+    street_activity     : str  = "unknown"
 
     @field_validator("*", mode="before")
     @classmethod
-    def _coerce(cls, v):
+    def _coerce(cls, v, info: FieldValidationInfo):
+        if info.field_name == "scene_context":
+            if isinstance(v, dict):
+                return {qk: str(v.get(qk, "unknown")).strip() or "unknown"
+                        for qk in _QUADRANT_KEYS}
+            s = str(v).strip() if v else "unknown"
+            return s or "unknown"
         if isinstance(v, list):
             return ", ".join(str(x).strip() for x in v if str(x).strip()) or "unknown"
         if isinstance(v, dict):
@@ -152,44 +166,81 @@ class StreetSceneAnalysis(BaseModel):
 
 
 _KEY_ALIASES = {
-    "scene_overview": "scene_overview", "scene overview": "scene_overview",
-    "overview": "scene_overview", "scene": "scene_overview",
-    "description": "scene_overview", "scene_description": "scene_overview",
-    "buildings": "buildings", "building": "buildings",
-    "building_typology": "buildings", "building typology": "buildings",
-    "building_description": "buildings",
-    "materials": "materials", "material": "materials",
-    "building_condition": "building_condition", "building condition": "building_condition",
-    "condition": "building_condition",
-    "street_furniture": "street_furniture", "street furniture": "street_furniture",
-    "streetfurniture": "street_furniture", "furniture": "street_furniture",
-    "vegetation": "vegetation", "greenery": "vegetation", "trees": "vegetation",
-    "signage": "signage", "signs": "signage",
-    "ground_surfaces": "ground_surfaces", "ground surfaces": "ground_surfaces",
-    "surfaces": "ground_surfaces", "pavement": "ground_surfaces", "ground": "ground_surfaces",
-    "spatial_enclosure": "spatial_enclosure", "spatial enclosure": "spatial_enclosure",
-    "enclosure": "spatial_enclosure", "spatial_impression": "spatial_enclosure",
-    "spatial impression": "spatial_enclosure",
-    "pedestrian_activity": "pedestrian_activity", "pedestrian activity": "pedestrian_activity",
-    "activity": "pedestrian_activity", "pedestrians": "pedestrian_activity",
-    "lighting_atmosphere": "lighting_atmosphere", "lighting atmosphere": "lighting_atmosphere",
-    "lighting": "lighting_atmosphere", "atmosphere": "lighting_atmosphere",
-    "light": "lighting_atmosphere",
-    "as_resident": "as_resident", "as resident": "as_resident", "resident": "as_resident",
-    "resident_perspective": "as_resident",
-    "as_commuter": "as_commuter", "as commuter": "as_commuter", "commuter": "as_commuter",
-    "commuter_perspective": "as_commuter",
-    "as_tourist": "as_tourist", "as tourist": "as_tourist", "tourist": "as_tourist",
-    "tourist_perspective": "as_tourist",
-    "as_student": "as_student", "as student": "as_student", "student": "as_student",
-    "student_perspective": "as_student",
+    # scene_context
+    "scene_context": "scene_context", "scene context": "scene_context",
+    "context": "scene_context", "overview": "scene_context",
+    "scene_overview": "scene_context", "scene overview": "scene_context",
+    "scene": "scene_context", "description": "scene_context",
+    # perceived_safety
+    "perceived_safety": "perceived_safety", "perceived safety": "perceived_safety",
+    "safety": "perceived_safety", "security": "perceived_safety",
+    "crime": "perceived_safety", "danger": "perceived_safety",
+    # visibility (sightlines, daytime visual clarity)
+    "visibility": "visibility", "visual_clarity": "visibility",
+    "visual clarity": "visibility", "sightlines": "visibility",
+    # lighting_quality (artificial + natural light comfort)
+    "lighting_quality": "lighting_quality", "lighting quality": "lighting_quality",
+    "lighting": "lighting_quality", "light": "lighting_quality",
+    "illumination": "lighting_quality",
+    # cleanliness
+    "cleanliness": "cleanliness", "clean": "cleanliness",
+    "litter": "cleanliness", "maintenance": "cleanliness",
+    "upkeep": "cleanliness", "disorder": "cleanliness",
+    # greenery
+    "greenery": "greenery", "greenery_comfort": "greenery",
+    "greenery comfort": "greenery", "vegetation": "greenery",
+    "green": "greenery", "nature": "greenery", "biophilia": "greenery",
+    # thermal_comfort
+    "thermal_comfort": "thermal_comfort", "thermal comfort": "thermal_comfort",
+    "comfort": "thermal_comfort", "shade": "thermal_comfort",
+    "microclimate": "thermal_comfort", "weather_comfort": "thermal_comfort",
+    # walkability
+    "walkability": "walkability", "walking": "walkability",
+    "pedestrian_quality": "walkability", "pedestrian quality": "walkability",
+    "pavement_quality": "walkability", "pavement quality": "walkability",
+    # noise_comfort
+    "noise_comfort": "noise_comfort", "noise comfort": "noise_comfort",
+    "noise_indicators": "noise_comfort", "noise indicators": "noise_comfort",
+    "noise": "noise_comfort", "sound": "noise_comfort",
+    "traffic_noise": "noise_comfort", "traffic noise": "noise_comfort",
+    "auditory_comfort": "noise_comfort",
+    # crowding
+    "crowding": "crowding", "crowd": "crowding",
+    "density": "crowding", "congestion": "crowding",
+    "pedestrian_density": "crowding", "pedestrian density": "crowding",
+    # privacy
+    "privacy": "privacy", "exposure": "privacy",
+    "overlooking": "privacy", "surveillance": "privacy",
+    # social_potential
+    "social_potential": "social_potential", "social potential": "social_potential",
+    "social": "social_potential", "interaction": "social_potential",
+    "gathering": "social_potential", "lingering": "social_potential",
+    # visual_interest
+    "visual_interest": "visual_interest", "visual interest": "visual_interest",
+    "interest": "visual_interest", "complexity": "visual_interest",
+    "imageability": "visual_interest", "visual_complexity": "visual_interest",
+    # enclosure_exposure
+    "enclosure_exposure": "enclosure_exposure", "enclosure exposure": "enclosure_exposure",
+    "enclosure": "enclosure_exposure", "spatial_enclosure": "enclosure_exposure",
+    "openness": "enclosure_exposure",
+    # accessibility
+    "accessibility": "accessibility", "access": "accessibility",
+    "barrier_free": "accessibility", "barrier free": "accessibility",
+    "universal_design": "accessibility", "universal design": "accessibility",
+    # street_activity
+    "street_activity": "street_activity", "street activity": "street_activity",
+    "activity": "street_activity", "liveliness": "street_activity",
+    "vitality": "street_activity", "uses": "street_activity",
 }
 
 
 def _normalise_result(raw: dict) -> dict:
     flat = {}
     for k, v in raw.items():
-        if isinstance(v, dict):
+        canonical_k = _KEY_ALIASES.get(k.strip().lower(), "")
+        if canonical_k == "scene_context":
+            flat["scene_context"] = v  # preserve quadrant dict as-is
+        elif isinstance(v, dict) and canonical_k != "scene_context":
             flat.update(v)
         else:
             flat[k] = v
@@ -198,6 +249,8 @@ def _normalise_result(raw: dict) -> dict:
         canonical = _KEY_ALIASES.get(k.strip().lower())
         if canonical:
             normalised[canonical] = v
+        elif k == "scene_context":
+            normalised["scene_context"] = v
     try:
         return StreetSceneAnalysis(**normalised).model_dump()
     except Exception:
@@ -209,58 +262,84 @@ def _normalise_result(raw: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 _SCENE_PROMPT = (
-    "You are an urban design expert analysing a street-view photograph "
+    "You are an urban comfort analyst studying a street-view photograph "
     "from Barcelona's Eixample district.\n"
     "\n"
-    "Study the image carefully. Write FULL DESCRIPTIVE SENTENCES for every field, "
-    "always stating WHERE each element appears (left, right, center, foreground, "
-    "background, upper, lower). Never use bare keyword lists.\n"
+    "Your task: assess how COMFORTABLE, SAFE, and PLEASANT this street feels "
+    "for an individual walking through it. Focus only on perceptual qualities — "
+    "things a person on foot would feel or notice. Do NOT describe architecture "
+    "or building typology.\n"
     "\n"
-    "BAD example -- too vague:\n"
-    '  "materials": "concrete, brick, glass"\n'
-    "GOOD example -- specific and located:\n"
-    '  "materials": "Left building: cream rendered facade with stone quoins at the '
-    "corners. Right: exposed red brick upper floors above a polished granite shopfront. "
-    'Foreground: hexagonal ceramic pavement tiles."\n'
+    "IMPORTANT — scene_context: Mentally divide the image into 4 quadrants "
+    "(top-left, top-right, bottom-left, bottom-right). Write ONE sentence per "
+    "quadrant describing what is there and how it affects individual comfort. "
+    "Return scene_context as a JSON object with keys: top_left, top_right, "
+    "bottom_left, bottom_right.\n"
     "\n"
-    "Return ONLY a JSON object with exactly these 15 keys. "
-    "Every value must be 1-3 full sentences describing THIS specific photo:\n"
+    "For all other fields write 1-3 full sentences. Reference spatial positions "
+    "(left, right, foreground, background) where relevant.\n"
+    "\n"
+    "Return ONLY a JSON object with exactly these 16 keys:\n"
     "{\n"
-    '  "scene_overview": "Describe the overall scene -- street type, width, '
-    'dominant features, and general atmosphere.",\n'
-    '  "buildings": "Describe EACH building visible -- style, height, use. '
-    'State whether it is on the left, right, center, or background.",\n'
-    '  "materials": "Name specific facade materials and textures you can see, '
-    'stating which building each belongs to.",\n'
-    '  "building_condition": "Describe the maintenance state of each visible '
-    'facade -- restoration, weathering, damage, graffiti, etc.",\n'
-    '  "street_furniture": "List benches, streetlights, bollards, bins, bike '
-    'racks, etc. and state exactly where each one sits in the frame.",\n'
-    '  "vegetation": "Describe trees, hedges, planters, and green areas. Note '
-    'species if recognisable and their position in the image.",\n'
-    '  "signage": "Describe shop signs, traffic signs, plaques, awnings -- '
-    'note their position and what they say if legible.",\n'
-    '  "ground_surfaces": "Describe pavement materials, road surface, '
-    'crosswalks, kerb types, and their positions.",\n'
-    '  "spatial_enclosure": "How enclosed or open does the street feel? '
-    'Mention building heights relative to street width and sky visibility.",\n'
-    '  "pedestrian_activity": "Describe any people visible -- what they are '
-    'doing, where they are standing or walking, and the overall density.",\n'
-    '  "lighting_atmosphere": "Describe time of day, shadow direction, light '
-    'quality, and overall mood of the scene.",\n'
-    '  "as_resident": "What would a local resident notice or value about '
-    'this street? Mention specific amenities or comfort features visible.",\n'
-    '  "as_commuter": "How walkable is this stretch? Comment on pavement '
-    "width, obstacles, sightlines, and route efficiency.\",\n"
-    '  "as_tourist": "What would catch a visitor\'s eye? Mention '
-    'architectural highlights, photo-worthy details, or cultural cues.",\n'
-    '  "as_student": "Comment on social spaces, seating availability, '
-    'nearby shops or cafes, and overall affordability cues visible."\n'
+    '  "scene_context": {\n'
+    '    "top_left":     "One sentence: what is in the top-left quadrant and '
+    'how does it affect comfort/mood?",\n'
+    '    "top_right":    "One sentence: what is in the top-right quadrant and '
+    'how does it affect comfort/mood?",\n'
+    '    "bottom_left":  "One sentence: what is in the bottom-left quadrant '
+    '(ground level, left side) and how does it affect walking comfort?",\n'
+    '    "bottom_right": "One sentence: what is in the bottom-right quadrant '
+    '(ground level, right side) and how does it affect walking comfort?"\n'
+    '  },\n'
+    '  "perceived_safety": "How safe does this street feel? Note sightlines, '
+    'eyes on the street (active windows, shops), hiding spots, signs of '
+    'vandalism or neglect, and whether the space feels supervised or isolated.",\n'
+    '  "visibility": "How far and clearly can a pedestrian see? Note sightline '
+    'depth, visual obstructions (parked vehicles, scaffolding, bends), daytime '
+    'clarity, and whether the environment feels legible and easy to navigate.",\n'
+    '  "lighting_quality": "Assess artificial and natural light comfort: '
+    'streetlight presence and spacing, shopfront glow, shadow pools, dark '
+    'corners or underpasses, and overall illumination quality for pedestrians.",\n'
+    '  "cleanliness": "Rate visual cleanliness: litter, graffiti, stained '
+    'surfaces, overflowing bins, construction debris, or conversely -- '
+    'well-maintained surfaces and tidy shopfronts.",\n'
+    '  "greenery": "How does vegetation contribute to individual comfort? Note '
+    'tree canopy maturity and coverage, planter boxes, ground cover, whether '
+    'trees shade the sidewalk, and the overall sensory relief green provides.",\n'
+    '  "thermal_comfort": "How thermally comfortable is this street? Note shade '
+    'from trees or awnings, sun-exposed stretches, building shadows, wind '
+    'indicators (flags, awnings), and overall thermal protection for a walker.",\n'
+    '  "walkability": "How easy and safe is it to walk here? Note pavement '
+    'condition, surface evenness, obstacles (parked vehicles, poles, bins), '
+    'curb cuts, sidewalk width relative to use, and any tripping hazards.",\n'
+    '  "noise_comfort": "Infer acoustic comfort from visual cues: traffic '
+    'volume, construction activity, outdoor dining, narrow vs wide streets, '
+    'sound-reflecting surfaces, and any noise barriers, trees, or buffers.",\n'
+    '  "crowding": "How crowded or empty does this street feel? Estimate '
+    'pedestrian density, available walking space, bottlenecks, and whether '
+    'it feels comfortably populated, uncomfortably dense, or deserted.",\n'
+    '  "privacy": "How exposed or private does a pedestrian feel? Note '
+    'overlooking windows, balconies, CCTV cameras, open vs enclosed space, '
+    'and whether one feels watched or anonymous.",\n'
+    '  "social_potential": "Are there places to stop, sit, linger, or meet? '
+    'Note benches, cafe terraces, ledges, steps, plazas, and whether the '
+    'street encourages social interaction or only pass-through movement.",\n'
+    '  "visual_interest": "Is there variety and complexity to look at? Note '
+    'facade diversity, colour, art, window displays, views, or conversely -- '
+    'monotony, blank walls, repetitive surfaces at eye level.",\n'
+    '  "enclosure_exposure": "Does the street feel spatially contained and '
+    'intimate, or wide-open and exposed? Note building height vs street width, '
+    'sky visibility, canopy ceiling effect, and whether one feels sheltered.",\n'
+    '  "accessibility": "How accessible is this street for all users? Note '
+    'ramps, tactile paving, bollard spacing, step-free paths, wheelchair '
+    'passability, and any barriers to mobility-impaired pedestrians.",\n'
+    '  "street_activity": "What activities are visible? Distinguish necessary '
+    '(commuting), optional (sitting, browsing), and social (talking, eating '
+    'outdoors) activities, and note their effect on the street atmosphere."\n'
     "}\n"
     "\n"
-    "IMPORTANT: Write 1-3 complete sentences per field using specific details "
-    "from THIS photograph. Do not use keyword lists. "
-    "Mention spatial positions (left, right, foreground, background) in every field.\n"
+    "IMPORTANT: Describe what you SEE and what it implies for individual comfort. "
+    "No architecture descriptions -- only perceptual and comfort qualities.\n"
     "No markdown, no explanation -- output ONLY the JSON object."
 )
 
@@ -605,16 +684,23 @@ def run_trial(args, images_dir: Path):
     res = analyze_image(img_path)
     log.info("PLM latency: %d ms", round((time.time() - t0) * 1000))
 
-    elem_keys   = ["scene_overview", "buildings", "materials", "building_condition",
-                   "street_furniture", "vegetation", "signage", "ground_surfaces",
-                   "spatial_enclosure", "pedestrian_activity", "lighting_atmosphere"]
-    viewer_keys = ["as_resident", "as_commuter", "as_tourist", "as_student"]
+    comfort_fields = [
+        "perceived_safety", "visibility", "lighting_quality", "cleanliness",
+        "greenery", "thermal_comfort", "walkability", "noise_comfort",
+        "crowding", "privacy", "social_potential", "visual_interest",
+        "enclosure_exposure", "accessibility", "street_activity",
+    ]
 
-    print("\n--- Scene elements ---")
-    for k in elem_keys:
-        print(f"  {k:22s}: {res.get(k, 'unknown')}")
-    print("\n--- Viewer perspectives ---")
-    for k in viewer_keys:
+    print("\n--- Scene Context (4 Quadrants) ---")
+    sc = res.get("scene_context", {})
+    if isinstance(sc, dict):
+        for qk in _QUADRANT_KEYS:
+            print(f"  {qk:15s}: {sc.get(qk, 'unknown')}")
+    else:
+        print(f"  {sc}")
+
+    print("\n--- Individual Comfort Criteria ---")
+    for k in comfort_fields:
         print(f"  {k:22s}: {res.get(k, 'unknown')}")
     print()
 

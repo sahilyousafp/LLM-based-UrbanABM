@@ -419,11 +419,17 @@ async def step_continuous():
     
     agents_data = []
     for agent in city_model.city_agents:
+        needs = {}
+        try:
+            needs = await agent.memory.status.get("needs", {})
+        except Exception:
+            pass
         agents_data.append({
             "id": agent.unique_id,
             "lon": agent.geometry.x,
             "lat": agent.geometry.y,
-            "nearby_count": len(agent.nearby_amenities)
+            "nearby_count": len(agent.nearby_amenities),
+            "needs": needs,
         })
     
     return {

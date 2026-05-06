@@ -35,7 +35,7 @@ class CityAgent(mg.GeoAgent):
     # Archetype pool — assigned round-robin during model init
     ARCHETYPES = ["resident", "commuter", "tourist", "student"]
 
-    def __init__(self, model, geometry, crs="EPSG:4326", edge_id=None, edge_geom=None, archetype="resident"):
+    def __init__(self, model, geometry, crs="EPSG:4326", edge_id=None, edge_geom=None, archetype="resident", target_info=None):
         super().__init__(model=model, geometry=geometry, crs=crs)
         self.agent_type = "CityAgent"
         self.nearby_amenities = []
@@ -57,7 +57,7 @@ class CityAgent(mg.GeoAgent):
         )
 
         # Initialise memory with agent profile (sync — safe at init time, no loop running)
-        self._init_memory_sync(edge_id, geometry, archetype)
+        self._init_memory_sync(edge_id, geometry, archetype, target_info)
 
         # Log initial position to tracker
         if hasattr(model, 'tracker') and model.tracker:
@@ -71,7 +71,7 @@ class CityAgent(mg.GeoAgent):
                 speed=self.move_speed
             )
 
-    def _init_memory_sync(self, edge_id, geometry, archetype: str) -> None:
+    def _init_memory_sync(self, edge_id, geometry, archetype: str, target_info=None) -> None:
         """Initialise memory synchronously at agent creation (no asyncio loop needed)."""
         self.memory.status._data["agent_profile"] = {
             "archetype": archetype,
@@ -85,6 +85,10 @@ class CityAgent(mg.GeoAgent):
         }
         if edge_id is not None:
             self.memory.status._data["visited_edges"] = {str(edge_id): 1}
+        self.memory.status._data["destination"] = target_info or {
+            "name": None, "amenity_type": None,
+            "lon": None, "lat": None, "target_node": None,
+        }
 
     async def _init_memory(self, edge_id, geometry, archetype: str) -> None:
         """Set up initial memory state for this agent."""
@@ -215,8 +219,9 @@ class CityAgent(mg.GeoAgent):
         # Advance position along current edge
         self._advance_along_edge()
 
-        # Log to tracker
+        # Log to tracker (with current needs)
         if hasattr(self.model, 'tracker') and self.model.tracker:
+            current_needs = await self.memory.status.get("needs", {})
             self.model.tracker.log_movement(
                 agent_id=self.unique_id,
                 step_number=self.model.steps,
@@ -225,7 +230,11 @@ class CityAgent(mg.GeoAgent):
                 edge_id=self.current_edge_id,
                 position_along_edge=self.position_along_edge,
                 speed=self.move_speed,
-                nearby_amenities_count=len(self.nearby_amenities)
+                nearby_amenities_count=len(self.nearby_amenities),
+                energy=current_needs.get("energy"),
+                hunger=current_needs.get("hunger"),
+                social=current_needs.get("social"),
+                comfort=current_needs.get("comfort"),
             )
 
     def _get_candidate_edges(self) -> list[dict]:
@@ -351,6 +360,21 @@ class CityAgent(mg.GeoAgent):
 
 class CityModel(mesa.Model):
     """A model with LLM-driven agents moving through a city"""
+
+    # Archetype → amenity types for DB target query (resident uses random node)
+    ARCHETYPE_AMENITY_TYPES: dict = {
+        "commuter": ["bus_station", "train_station", "office"],
+        "tourist":  ["attraction", "museum", "cafe", "viewpoint"],
+        "student":  ["library", "university", "cafe"],
+    }
+
+    # Probability of following Dijkstra shortest path at each intersection
+    ARCHETYPE_PATH_ADHERENCE: dict = {
+        "commuter": 1.0,
+        "resident": 0.8,
+        "student":  0.5,
+        "tourist":  0.2,
+    }
 
     def __init__(self, num_agents=None, spawn_seed=None):
         super().__init__()
@@ -484,22 +508,49 @@ class CityModel(mesa.Model):
         common_edge_geom = self.edges[common_edge_id]
         common_start_point = Point(common_edge_geom.coords[0])
         
+        node_keys = list(self.node_to_edges.keys())
+
         for i in range(num_agents):
             try:
                 # Assign archetype round-robin
                 archetype = CityAgent.ARCHETYPES[i % len(CityAgent.ARCHETYPES)]
-                
+
+                # Resolve target destination for this agent
+                if archetype == "resident":
+                    # Home = a random street intersection node
+                    home_key = random.choice(node_keys)
+                    target_info = {
+                        "name": "home", "amenity_type": "residential",
+                        "lon": home_key[0], "lat": home_key[1],
+                        "target_node": home_key,
+                    }
+                else:
+                    target_info = self._pick_target_for_archetype(archetype)
+                    if target_info:
+                        node = self._find_nearest_node(target_info["lon"], target_info["lat"])
+                        target_info["target_node"] = node
+                    elif node_keys:
+                        fallback_key = random.choice(node_keys)
+                        target_info = {
+                            "name": "random_destination", "amenity_type": "unknown",
+                            "lon": fallback_key[0], "lat": fallback_key[1],
+                            "target_node": fallback_key,
+                        }
+                    else:
+                        target_info = None
+
                 if i == 0:
-                    print(f"  Agent 0: lon={common_start_point.x:.6f}, lat={common_start_point.y:.6f} on edge {common_edge_id} [{archetype}]")
-                
-                # Create agent with edge information and archetype
+                    print(f"  Agent 0: lon={common_start_point.x:.6f}, lat={common_start_point.y:.6f} on edge {common_edge_id} [{archetype}] → target: {target_info}")
+
+                # Create agent with edge information, archetype, and destination
                 agent = CityAgent(
-                    model=self, 
-                    geometry=common_start_point, 
+                    model=self,
+                    geometry=common_start_point,
                     crs="EPSG:4326",
                     edge_id=common_edge_id,
                     edge_geom=common_edge_geom,
                     archetype=archetype,
+                    target_info=target_info,
                 )
                 self.city_agents.append(agent)
                 
@@ -634,6 +685,73 @@ class CityModel(mesa.Model):
                     best_dist = dist
                     best = entry
             return dict(best["scene_analysis"]) if best else None
+
+    def _pick_target_for_archetype(self, archetype: str) -> dict | None:
+        """Query a random amenity matching the archetype's preferred types. Returns None on failure."""
+        amenity_types = self.ARCHETYPE_AMENITY_TYPES.get(archetype, [])
+        if not amenity_types:
+            return None
+        placeholders = ", ".join(["?"] * len(amenity_types))
+        query = f"""
+            SELECT name, amenity,
+                   ST_X(ST_Centroid(geometry)) AS lon,
+                   ST_Y(ST_Centroid(geometry)) AS lat
+            FROM amenities
+            WHERE amenity IN ({placeholders})
+            ORDER BY RANDOM() LIMIT 1
+        """
+        try:
+            row = self.con.execute(query, amenity_types).fetchone()
+            if row is None:
+                return None
+            return {"name": str(row[0] or "Unknown"), "amenity_type": str(row[1]),
+                    "lon": float(row[2]), "lat": float(row[3])}
+        except Exception as e:
+            print(f"[WARN] _pick_target_for_archetype({archetype}): {e}")
+            return None
+
+    def _find_nearest_node(self, lon: float, lat: float) -> tuple | None:
+        """Find the nearest network node key to (lon, lat). O(N) — for spawn-time use only."""
+        best_key, best_dist_sq = None, float("inf")
+        for node_key in self.node_to_edges:
+            dx, dy = node_key[0] - lon, node_key[1] - lat
+            d = dx * dx + dy * dy
+            if d < best_dist_sq:
+                best_dist_sq, best_key = d, node_key
+        return best_key
+
+    def dijkstra_next_node(self, from_node: tuple, to_node: tuple) -> tuple | None:
+        """Return the next node key on the shortest path from from_node to to_node."""
+        import heapq
+        if from_node == to_node or from_node not in self.node_to_edges:
+            return None
+        dist = {from_node: 0.0}
+        prev: dict = {from_node: None}
+        heap = [(0.0, from_node)]
+        while heap:
+            d, u = heapq.heappop(heap)
+            if d > dist.get(u, float("inf")):
+                continue
+            if u == to_node:
+                break
+            for _eid, geom, direction in self.node_to_edges.get(u, []):
+                if direction == "forward":
+                    v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
+                else:
+                    v = (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
+                new_dist = d + geom.length
+                if new_dist < dist.get(v, float("inf")):
+                    dist[v] = new_dist
+                    prev[v] = u
+                    heapq.heappush(heap, (new_dist, v))
+        if to_node not in prev:
+            return None
+        node = to_node
+        while prev.get(node) != from_node:
+            node = prev.get(node)
+            if node is None:
+                return None
+        return node
 
     def step(self):
         self.steps += 1

@@ -43,6 +43,27 @@ class MobilityBlock(Block):
         cognition = await self.memory.status.get("cognition_state", {})
         profile = await self.memory.status.get("agent_profile", {})
         archetype = profile.get("archetype", "resident")
+        destination = await self.memory.status.get("destination", {})
+
+        # Compute Dijkstra path hint for the LLM
+        path_hint_edge_id = None
+        model = self.context.get("model")
+        target_node = destination.get("target_node") if destination else None
+        if target_node and model:
+            current_node = model._find_nearest_node(
+                position.get("lon", 0.0), position.get("lat", 0.0)
+            )
+            if current_node:
+                next_node = model.dijkstra_next_node(current_node, target_node)
+                if next_node:
+                    for c in candidate_edges[:8]:
+                        geom = c.get("geom")
+                        if geom:
+                            direction = c.get("direction", "forward")
+                            end = geom.coords[-1] if direction == "forward" else geom.coords[0]
+                            if (round(end[0], 6), round(end[1], 6)) == next_node:
+                                path_hint_edge_id = c["edge_id"]
+                                break
 
         # Get recent movement history for context
         recent_moves = await self.memory.stream.get_recent("mobility", n=5)
@@ -69,6 +90,8 @@ class MobilityBlock(Block):
             current_position=position,
             candidates=prompt_cands,
             street_perception=street_perception,
+            destination=destination,
+            path_hint_edge_id=path_hint_edge_id,
         )
 
         response = await self.llm.chat_json(messages)

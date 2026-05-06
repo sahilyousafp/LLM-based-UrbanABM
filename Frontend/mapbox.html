@@ -427,6 +427,15 @@
                                 <div id="need-hunger" class="h-full bg-secondary-container rounded-full shadow-[0_0_8px_rgba(255,191,0,0.4)] transition-all duration-300"></div>
                             </div>
                         </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[9px] font-medium text-slate-400 uppercase">
+                                <span>Comfort Level</span>
+                                <span id="need-comfort-val">0.7</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                                <div id="need-comfort" class="h-full bg-green-400 rounded-full shadow-[0_0_8px_rgba(74,222,128,0.4)] transition-all duration-300" style="width:70%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -812,12 +821,15 @@
                 const hunger = needs.hunger ?? 0.5;
                 const energy = needs.energy ?? 1.0;
                 const social = needs.social ?? 0.5;
+                const comfort = needs.comfort ?? 0.7;
                 document.getElementById('need-hunger').style.width = (hunger * 100) + '%';
                 document.getElementById('need-hunger-val').textContent = hunger.toFixed(2);
                 document.getElementById('need-energy').style.width = (energy * 100) + '%';
                 document.getElementById('need-energy-val').textContent = energy.toFixed(2);
                 document.getElementById('need-social').style.width = (social * 100) + '%';
                 document.getElementById('need-social-val').textContent = social.toFixed(2);
+                document.getElementById('need-comfort').style.width = (comfort * 100) + '%';
+                document.getElementById('need-comfort-val').textContent = comfort.toFixed(2);
 
                 // Satisfaction source widget
                 const source = data.satisfaction_source || "none";
@@ -952,9 +964,25 @@
                         }
                     });
                     if (map.getSource('agents')) map.getSource('agents').setData(agentsGeoJSON);
+
+                    // Live-update needs bars for selected agent from step response
+                    if (selectedAgentId !== null) {
+                        const sel = data.agents.find(a => a.id === selectedAgentId);
+                        if (sel && sel.needs) {
+                            const n = sel.needs;
+                            ['energy', 'hunger', 'social', 'comfort'].forEach(k => {
+                                const bar = document.getElementById(`need-${k}`);
+                                const val = document.getElementById(`need-${k}-val`);
+                                if (bar && val && n[k] !== undefined) {
+                                    bar.style.width = (n[k] * 100) + '%';
+                                    val.textContent = n[k].toFixed(2);
+                                }
+                            });
+                        }
+                    }
                 }
-                
-                // Auto-refresh selected agent panel
+
+                // Auto-refresh selected agent panel (stream + full cognition details)
                 if (selectedAgentId) {
                     showAgentDetails(selectedAgentId);
                     showAgentStream(selectedAgentId);

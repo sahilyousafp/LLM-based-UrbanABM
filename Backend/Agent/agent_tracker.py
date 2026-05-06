@@ -119,6 +119,13 @@ class AgentTracker:
                 ON agent_decisions(timestamp);
             """)
             
+            # Migration: add needs columns if they don't exist yet
+            for col_def in ["energy DOUBLE", "hunger DOUBLE", "social DOUBLE", "comfort DOUBLE"]:
+                try:
+                    self.con.execute(f"ALTER TABLE agent_movements ADD COLUMN {col_def};")
+                except Exception:
+                    pass  # Column already exists
+
             logger.info(f"Agent tracker initialized: {self.db_path}")
             logger.info("Tables created: agent_movements, agent_decisions")
             
@@ -128,10 +135,11 @@ class AgentTracker:
 
     def log_movement(self, agent_id, step_number, longitude, latitude,
                      edge_id=None, position_along_edge=None, speed=None,
-                     nearby_amenities_count=0):
+                     nearby_amenities_count=0,
+                     energy=None, hunger=None, social=None, comfort=None):
         """
         Log an agent's movement to the database.
-        
+
         Args:
             agent_id: Unique identifier of the agent
             step_number: Current simulation step
@@ -141,25 +149,30 @@ class AgentTracker:
             position_along_edge: Position along edge (0.0 to 1.0) (optional)
             speed: Agent's current speed (optional)
             nearby_amenities_count: Number of nearby amenities detected (optional)
+            energy: Agent energy level 0-1 (optional)
+            hunger: Agent hunger level 0-1 (optional)
+            social: Agent social need level 0-1 (optional)
+            comfort: Agent comfort level 0-1 (optional)
         """
         try:
             timestamp = datetime.now()
-            
+
             # Create geometry point for spatial queries
             self.con.execute("""
-                INSERT INTO agent_movements 
-                (movement_id, agent_id, timestamp, step_number, longitude, latitude, 
-                 geometry, edge_id, position_along_edge, speed, nearby_amenities_count)
+                INSERT INTO agent_movements
+                (movement_id, agent_id, timestamp, step_number, longitude, latitude,
+                 geometry, edge_id, position_along_edge, speed, nearby_amenities_count,
+                 energy, hunger, social, comfort)
                 VALUES (
                     (SELECT COALESCE(MAX(movement_id), 0) + 1 FROM agent_movements),
                     ?, ?, ?, ?, ?,
                     ST_Point(?, ?),
-                    ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?
                 )
             """, [agent_id, timestamp, step_number, longitude, latitude,
                   longitude, latitude, edge_id, position_along_edge, speed,
-                  nearby_amenities_count])
-            
+                  nearby_amenities_count, energy, hunger, social, comfort])
+
         except Exception as e:
             logger.error(f"Failed to log movement for agent {agent_id}: {e}")
     

@@ -7,6 +7,7 @@ Priority-based dispatch (no LLM cost at dispatch level):
 """
 import logging
 import os
+import random
 from dataclasses import dataclass
 from typing import Optional
 
@@ -119,17 +120,46 @@ class BlockDispatcher:
         )
 
     async def _rule_based_mobility(self, step: int, candidate_edges: list[dict]) -> BlockResult:
-        """Fallback: choose least-visited edge without LLM."""
+        """Fallback: shortest-path toward destination (archetype-adherence weighted), else least-visited."""
         if not candidate_edges:
             return BlockResult(action="stay", params={}, reasoning="No candidates", fallback=True)
 
         visit_counts = await self.memory.status.get("visited_edges", {})
-        sorted_edges = sorted(candidate_edges, key=lambda e: visit_counts.get(str(e["edge_id"]), 0))
-        chosen = sorted_edges[0]
+        destination = await self.memory.status.get("destination", {})
+        profile = await self.memory.status.get("agent_profile", {})
+        archetype = profile.get("archetype", "resident")
+
+        model = self.context.get("model")
+        target_node = destination.get("target_node") if destination else None
+        adherence = model.ARCHETYPE_PATH_ADHERENCE.get(archetype, 0.5) if model else 0.5
+
+        chosen = None
+        reasoning = "Rule-based: least-visited edge"
+
+        if target_node is not None and model is not None and random.random() < adherence:
+            pos = await self.memory.status.get("position", {})
+            current_node = model._find_nearest_node(pos.get("lon", 0.0), pos.get("lat", 0.0))
+            if current_node:
+                next_node = model.dijkstra_next_node(current_node, target_node)
+                if next_node:
+                    for e in candidate_edges:
+                        geom = e.get("geom")
+                        if geom:
+                            direction = e.get("direction", "forward")
+                            end = geom.coords[-1] if direction == "forward" else geom.coords[0]
+                            if (round(end[0], 6), round(end[1], 6)) == next_node:
+                                chosen = e
+                                reasoning = (f"Shortest path toward {destination.get('name', 'destination')} "
+                                             f"({archetype}, adherence={adherence})")
+                                break
+
+        if chosen is None:
+            sorted_edges = sorted(candidate_edges, key=lambda e: visit_counts.get(str(e["edge_id"]), 0))
+            chosen = sorted_edges[0]
 
         visit_counts[str(chosen["edge_id"])] = visit_counts.get(str(chosen["edge_id"]), 0) + 1
         await self.memory.status.update("visited_edges", visit_counts)
-        await self.memory.status.update("current_plan", {"goal": "explore", "target_edge_id": chosen["edge_id"]})
+        await self.memory.status.update("current_plan", {"goal": "navigate", "target_edge_id": chosen["edge_id"]})
 
         return BlockResult(
             action="move_to_edge",
@@ -138,6 +168,6 @@ class BlockDispatcher:
                 "direction": chosen.get("direction", "forward"),
                 "geom": chosen.get("geom"),
             },
-            reasoning="Rule-based: least-visited edge (LLM budget exhausted)",
+            reasoning=reasoning,
             fallback=True,
         )
