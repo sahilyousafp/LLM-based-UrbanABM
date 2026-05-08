@@ -8,13 +8,13 @@ What this script does:
      2 km x 2 km Eixample study area (same filter as Backend/Environment/overture_to_duckdb.py)
   2. Samples points every 250 m along each walk edge, heading aligned with street direction
   3. Checks Street View availability and fetches one 640x640 image per sample point
-  4. Runs Meta PerceptionLM-1B (full-image urban analysis) on each image
+  4. Runs Qwen2.5-VL-3B-Instruct (full-image urban analysis) on each image
   5. Saves one JSON + JPG per location to OUTPUT_DIR
      (default /teamspace/studios/this_studio/StreetPLM)
 
 Required environment variables (set as Lightning AI Secrets):
   GOOGLE_STREETVIEW_API_KEY  -- Google Maps Platform Street View Static API key
-  HF_TOKEN                   -- Hugging Face token with access to facebook/Perception-LM-1B
+  HF_TOKEN                   -- Hugging Face token with access to Qwen/Qwen2.5-VL-3B-Instruct
   GCP_PROJECT_ID             -- GCP project with BigQuery API enabled
 
 Optional environment variable:
@@ -68,7 +68,7 @@ from shapely.geometry import LineString  # noqa: F401
 import geopandas as gpd
 from tqdm.auto import tqdm
 from dotenv import load_dotenv
-from transformers import AutoModelForImageTextToText, AutoProcessor
+from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -109,9 +109,11 @@ SV_SIZE           = "640x640"
 SV_FOV            = 90
 SV_PITCH          = 0
 SV_RADIUS         = 50
-MODEL_ID          = "facebook/Perception-LM-1B"
-MAX_NUM_TILES     = 4    # 4 tiles; overridden dynamically by GPU VRAM in load_model()
-MAX_NEW_TOKENS    = 1024  # 16 fields + quadrant scene_context fits in ~1024 tokens
+MODEL_ID          = "Qwen/Qwen2.5-VL-3B-Instruct"
+# Qwen2.5-VL uses dynamic-resolution patches (min/max pixels) instead of tiles.
+# Scaled in load_model() based on available VRAM.
+MAX_PIXELS        = 1280 * 28 * 28   # ~1 M pixels — good for L4/A100 (24 GB+)
+MAX_NEW_TOKENS    = 1500              # 16 fields + scene_context quadrants
 
 UTM31N = "EPSG:32631"
 
@@ -144,9 +146,17 @@ class StreetSceneAnalysis(BaseModel):
     privacy             : str  = "unknown"
     social_potential    : str  = "unknown"
     visual_interest     : str  = "unknown"
-    enclosure_exposure  : str  = "unknown"
-    accessibility       : str  = "unknown"
-    street_activity     : str  = "unknown"
+    enclosure_exposure      : str  = "unknown"
+    accessibility           : str  = "unknown"
+    street_activity         : str  = "unknown"
+    # --- fields only observable from imagery (not derivable from GIS/sensor data) ---
+    facade_materials        : str  = "unknown"
+    ground_surface_material : str  = "unknown"
+    seating                 : str  = "unknown"
+    street_furniture        : str  = "unknown"
+    active_frontage         : str  = "unknown"
+    architectural_style     : str  = "unknown"
+    facade_articulation     : str  = "unknown"
 
     @field_validator("*", mode="before")
     @classmethod
@@ -231,6 +241,36 @@ _KEY_ALIASES = {
     "street_activity": "street_activity", "street activity": "street_activity",
     "activity": "street_activity", "liveliness": "street_activity",
     "vitality": "street_activity", "uses": "street_activity",
+    # facade_materials
+    "facade_materials": "facade_materials", "facade materials": "facade_materials",
+    "building materials": "facade_materials", "facade material": "facade_materials",
+    "materials": "facade_materials", "cladding": "facade_materials",
+    # ground_surface_material
+    "ground_surface_material": "ground_surface_material",
+    "ground surface material": "ground_surface_material",
+    "pavement material": "ground_surface_material",
+    "surface material": "ground_surface_material",
+    "ground material": "ground_surface_material",
+    "pavement": "ground_surface_material", "paving": "ground_surface_material",
+    # seating
+    "seating": "seating", "seats": "seating", "benches": "seating",
+    "rest spots": "seating", "sitting": "seating",
+    # street_furniture
+    "street_furniture": "street_furniture", "street furniture": "street_furniture",
+    "urban furniture": "street_furniture", "furniture": "street_furniture",
+    "amenities": "street_furniture",
+    # active_frontage
+    "active_frontage": "active_frontage", "active frontage": "active_frontage",
+    "frontage": "active_frontage", "ground floor activation": "active_frontage",
+    "shopfronts": "active_frontage", "storefronts": "active_frontage",
+    # architectural_style
+    "architectural_style": "architectural_style", "architectural style": "architectural_style",
+    "architecture": "architectural_style", "building style": "architectural_style",
+    "style": "architectural_style", "period": "architectural_style",
+    # facade_articulation
+    "facade_articulation": "facade_articulation", "facade articulation": "facade_articulation",
+    "facade detail": "facade_articulation", "building detail": "facade_articulation",
+    "facade complexity": "facade_articulation", "ornamentation": "facade_articulation",
 }
 
 
@@ -261,92 +301,87 @@ def _normalise_result(raw: dict) -> dict:
 # PLM prompt
 # ---------------------------------------------------------------------------
 
+# NOTE: Deliberately uses short placeholder values ("your X observation") instead of
+# long descriptive hints. PLM-1B echoes the prompt template verbatim when given
+# 100-character hint strings as example values — short, clearly synthetic placeholders
+# break that pattern and force the model to generate from the image.
 _SCENE_PROMPT = (
-    "You are an urban comfort analyst studying a street-view photograph "
-    "from Barcelona's Eixample district.\n"
+    "You are an urban comfort analyst. Study this street-view photo from Barcelona carefully.\n"
     "\n"
-    "Your task: assess how COMFORTABLE, SAFE, and PLEASANT this street feels "
-    "for an individual walking through it. Focus only on perceptual qualities — "
-    "things a person on foot would feel or notice. Do NOT describe architecture "
-    "or building typology.\n"
+    "Assess how comfortable, safe, and pleasant this specific street feels for a pedestrian.\n"
+    "Cover both perceptual comfort qualities AND visual/material characteristics of the built fabric.\n"
+    "Write 1-2 sentences per field describing what you actually observe in the image.\n"
     "\n"
-    "IMPORTANT — scene_context: Mentally divide the image into 4 quadrants "
-    "(top-left, top-right, bottom-left, bottom-right). Write ONE sentence per "
-    "quadrant describing what is there and how it affects individual comfort. "
-    "Return scene_context as a JSON object with keys: top_left, top_right, "
-    "bottom_left, bottom_right.\n"
-    "\n"
-    "For all other fields write 1-3 full sentences. Reference spatial positions "
-    "(left, right, foreground, background) where relevant.\n"
-    "\n"
-    "Return ONLY a JSON object with exactly these 16 keys:\n"
+    "Return ONLY a valid JSON object. Replace every placeholder with your real observation:\n"
     "{\n"
     '  "scene_context": {\n'
-    '    "top_left":     "One sentence: what is in the top-left quadrant and '
-    'how does it affect comfort/mood?",\n'
-    '    "top_right":    "One sentence: what is in the top-right quadrant and '
-    'how does it affect comfort/mood?",\n'
-    '    "bottom_left":  "One sentence: what is in the bottom-left quadrant '
-    '(ground level, left side) and how does it affect walking comfort?",\n'
-    '    "bottom_right": "One sentence: what is in the bottom-right quadrant '
-    '(ground level, right side) and how does it affect walking comfort?"\n'
+    '    "top_left":     "describe top-left quadrant",\n'
+    '    "top_right":    "describe top-right quadrant",\n'
+    '    "bottom_left":  "describe bottom-left area",\n'
+    '    "bottom_right": "describe bottom-right area"\n'
     '  },\n'
-    '  "perceived_safety": "How safe does this street feel? Note sightlines, '
-    'eyes on the street (active windows, shops), hiding spots, signs of '
-    'vandalism or neglect, and whether the space feels supervised or isolated.",\n'
-    '  "visibility": "How far and clearly can a pedestrian see? Note sightline '
-    'depth, visual obstructions (parked vehicles, scaffolding, bends), daytime '
-    'clarity, and whether the environment feels legible and easy to navigate.",\n'
-    '  "lighting_quality": "Assess artificial and natural light comfort: '
-    'streetlight presence and spacing, shopfront glow, shadow pools, dark '
-    'corners or underpasses, and overall illumination quality for pedestrians.",\n'
-    '  "cleanliness": "Rate visual cleanliness: litter, graffiti, stained '
-    'surfaces, overflowing bins, construction debris, or conversely -- '
-    'well-maintained surfaces and tidy shopfronts.",\n'
-    '  "greenery": "How does vegetation contribute to individual comfort? Note '
-    'tree canopy maturity and coverage, planter boxes, ground cover, whether '
-    'trees shade the sidewalk, and the overall sensory relief green provides.",\n'
-    '  "thermal_comfort": "How thermally comfortable is this street? Note shade '
-    'from trees or awnings, sun-exposed stretches, building shadows, wind '
-    'indicators (flags, awnings), and overall thermal protection for a walker.",\n'
-    '  "walkability": "How easy and safe is it to walk here? Note pavement '
-    'condition, surface evenness, obstacles (parked vehicles, poles, bins), '
-    'curb cuts, sidewalk width relative to use, and any tripping hazards.",\n'
-    '  "noise_comfort": "Infer acoustic comfort from visual cues: traffic '
-    'volume, construction activity, outdoor dining, narrow vs wide streets, '
-    'sound-reflecting surfaces, and any noise barriers, trees, or buffers.",\n'
-    '  "crowding": "How crowded or empty does this street feel? Estimate '
-    'pedestrian density, available walking space, bottlenecks, and whether '
-    'it feels comfortably populated, uncomfortably dense, or deserted.",\n'
-    '  "privacy": "How exposed or private does a pedestrian feel? Note '
-    'overlooking windows, balconies, CCTV cameras, open vs enclosed space, '
-    'and whether one feels watched or anonymous.",\n'
-    '  "social_potential": "Are there places to stop, sit, linger, or meet? '
-    'Note benches, cafe terraces, ledges, steps, plazas, and whether the '
-    'street encourages social interaction or only pass-through movement.",\n'
-    '  "visual_interest": "Is there variety and complexity to look at? Note '
-    'facade diversity, colour, art, window displays, views, or conversely -- '
-    'monotony, blank walls, repetitive surfaces at eye level.",\n'
-    '  "enclosure_exposure": "Does the street feel spatially contained and '
-    'intimate, or wide-open and exposed? Note building height vs street width, '
-    'sky visibility, canopy ceiling effect, and whether one feels sheltered.",\n'
-    '  "accessibility": "How accessible is this street for all users? Note '
-    'ramps, tactile paving, bollard spacing, step-free paths, wheelchair '
-    'passability, and any barriers to mobility-impaired pedestrians.",\n'
-    '  "street_activity": "What activities are visible? Distinguish necessary '
-    '(commuting), optional (sitting, browsing), and social (talking, eating '
-    'outdoors) activities, and note their effect on the street atmosphere."\n'
+    '  "perceived_safety":        "your safety observation",\n'
+    '  "visibility":              "your visibility observation",\n'
+    '  "lighting_quality":        "your lighting observation",\n'
+    '  "cleanliness":             "your cleanliness observation",\n'
+    '  "greenery":                "your greenery observation",\n'
+    '  "thermal_comfort":         "your thermal comfort observation",\n'
+    '  "walkability":             "your walkability observation",\n'
+    '  "noise_comfort":           "your noise observation",\n'
+    '  "crowding":                "your crowding observation",\n'
+    '  "privacy":                 "your privacy observation",\n'
+    '  "social_potential":        "your social potential observation",\n'
+    '  "visual_interest":         "your visual interest observation",\n'
+    '  "enclosure_exposure":      "your enclosure observation",\n'
+    '  "accessibility":           "your accessibility observation",\n'
+    '  "street_activity":         "your street activity observation",\n'
+    '  "facade_materials":        "your facade materials observation",\n'
+    '  "ground_surface_material": "your pavement material observation",\n'
+    '  "seating":                 "your seating observation",\n'
+    '  "street_furniture":        "your street furniture observation",\n'
+    '  "active_frontage":         "your active frontage observation",\n'
+    '  "architectural_style":     "your architectural style observation",\n'
+    '  "facade_articulation":     "your facade detail observation"\n'
     "}\n"
     "\n"
-    "IMPORTANT: Describe what you SEE and what it implies for individual comfort. "
-    "No architecture descriptions -- only perceptual and comfort qualities.\n"
-    "No markdown, no explanation -- output ONLY the JSON object."
+    "Write actual observations of this image. Output only the JSON object, no other text."
 )
 
 
 # ---------------------------------------------------------------------------
 # JSON parsing
 # ---------------------------------------------------------------------------
+
+_ECHO_SENTINELS = frozenset({
+    # Placeholders from the prompt template — if present the model echoed the template
+    "your safety observation", "your visibility observation",
+    "your lighting observation", "your cleanliness observation",
+    "your greenery observation", "your thermal comfort observation",
+    "your walkability observation", "your noise observation",
+    "your crowding observation", "your privacy observation",
+    "your social potential observation", "your visual interest observation",
+    "your enclosure observation", "your accessibility observation",
+    "your street activity observation",
+    "your facade materials observation", "your pavement material observation",
+    "your seating observation", "your street furniture observation",
+    "your active frontage observation", "your architectural style observation",
+    "your facade detail observation",
+    "describe top-left quadrant", "describe top-right quadrant",
+    "describe bottom-left area", "describe bottom-right area",
+})
+
+
+def _model_echoed_template(parsed: dict) -> bool:
+    """Return True if the parsed JSON is just the prompt placeholder values."""
+    for v in parsed.values():
+        if isinstance(v, str) and v.lower() in _ECHO_SENTINELS:
+            return True
+        if isinstance(v, dict):
+            for sv in v.values():
+                if isinstance(sv, str) and sv.lower() in _ECHO_SENTINELS:
+                    return True
+    return False
+
 
 def _parse_scene_json(text: str) -> dict:
     candidate = None
@@ -386,6 +421,9 @@ def _parse_scene_json(text: str) -> dict:
         if pairs:
             candidate = pairs
     if candidate and isinstance(candidate, dict):
+        if _model_echoed_template(candidate):
+            log.warning("Model echoed prompt template — returning default (all unknown)")
+            return StreetSceneAnalysis().model_dump()
         return _normalise_result(candidate)
     return StreetSceneAnalysis().model_dump()
 
@@ -401,7 +439,7 @@ _dtype     = torch.float32
 
 
 def load_model():
-    global _model, _processor, _device, _dtype, MAX_NUM_TILES
+    global _model, _processor, _device, _dtype, MAX_PIXELS
 
     login(token=HF_TOKEN, add_to_git_credential=False)
 
@@ -411,46 +449,48 @@ def load_model():
     if _device == "cuda":
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         log.info("GPU: %s  (%.1f GB)", torch.cuda.get_device_name(0), vram_gb)
-        # Scale tile budget to VRAM — PLM-1B peak ~1.5 GB/tile + ~3 GB base
-        if vram_gb >= 20:
-            MAX_NUM_TILES = 4   # L4 / A100 — keep at 4 for speed
+        # Qwen2.5-VL-3B weights occupy ~15 GB in bfloat16.
+        # Scale max_pixels to leave enough headroom for the KV cache.
+        if vram_gb >= 24:
+            MAX_PIXELS = 1280 * 28 * 28   # ~1 M — full resolution
         elif vram_gb >= 16:
-            MAX_NUM_TILES = 4   # T4 / similar
-        elif vram_gb >= 10:
-            MAX_NUM_TILES = 4
+            MAX_PIXELS = 784 * 28 * 28    # ~615 K — safe on 16 GB
         else:
-            MAX_NUM_TILES = 2
+            MAX_PIXELS = 512 * 28 * 28    # ~401 K — minimum quality
         os.environ.setdefault("PYTORCH_ALLOC_CONF", "expandable_segments:True")
     else:
         log.warning("No GPU detected -- inference will be very slow on CPU")
-        MAX_NUM_TILES = 1
+        MAX_PIXELS = 256 * 28 * 28        # CPU: use minimum resolution
 
-    log.info("Tile budget: %d", MAX_NUM_TILES)
+    log.info("max_pixels: %d  (%d vision tokens budget)", MAX_PIXELS, MAX_PIXELS // (28 * 28))
     log.info("Loading %s ...", MODEL_ID)
 
-    _processor = AutoProcessor.from_pretrained(MODEL_ID, token=HF_TOKEN, use_fast=True)
-    _processor.image_processor.max_num_tiles = MAX_NUM_TILES
+    _processor = AutoProcessor.from_pretrained(
+        MODEL_ID,
+        token      = HF_TOKEN,
+        use_fast   = True,
+        min_pixels = 256 * 28 * 28,
+        max_pixels = MAX_PIXELS,
+    )
 
-    _model = AutoModelForImageTextToText.from_pretrained(
+    _model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         MODEL_ID,
         token             = HF_TOKEN,
         torch_dtype       = _dtype,
         device_map        = "auto",
         low_cpu_mem_usage = True,
     )
-    # PLM omits lm_head.weight -- manually bridge to embed_tokens
-    _model.lm_head.weight = _model.model.language_model.embed_tokens.weight
     _model.eval()
 
     if _device == "cuda":
         torch.cuda.empty_cache()
         gc.collect()
 
-    log.info("PerceptionLM-1B loaded and ready")
+    log.info("Qwen2.5-VL-3B-Instruct loaded and ready")
 
 
 # ---------------------------------------------------------------------------
-# PLM inference
+# Inference
 # ---------------------------------------------------------------------------
 
 def _infer_scene(image):
@@ -467,7 +507,13 @@ def _infer_scene(image):
         messages, tokenize=False, add_generation_prompt=True
     )
     text += "{"
-    inputs = _processor(images=image, text=text, return_tensors="pt")
+    # Qwen2.5-VL processor expects text as a list and images as a list
+    inputs = _processor(
+        text=[text],
+        images=[image],
+        padding=True,
+        return_tensors="pt",
+    )
 
     log.debug("Processor output keys: %s", list(inputs.keys()))
     for k in list(inputs.keys()):
@@ -689,6 +735,9 @@ def run_trial(args, images_dir: Path):
         "greenery", "thermal_comfort", "walkability", "noise_comfort",
         "crowding", "privacy", "social_potential", "visual_interest",
         "enclosure_exposure", "accessibility", "street_activity",
+        # imagery-only fields
+        "facade_materials", "ground_surface_material", "seating",
+        "street_furniture", "active_frontage", "architectural_style", "facade_articulation",
     ]
 
     print("\n--- Scene Context (4 Quadrants) ---")
