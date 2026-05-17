@@ -65,13 +65,20 @@ def select_next_edge(
     if target_node is not None and random.random() < adherence:
         current_end = agent.current_edge_geom.coords[-1]
         current_node = (round(current_end[0], 6), round(current_end[1], 6))
-        next_node = agent.model.dijkstra_next_node(current_node, target_node)
-        if next_node:
-            for e in candidates:
-                eid, geom, direction = e
-                end = geom.coords[-1] if direction == "forward" else geom.coords[0]
-                if (round(end[0], 6), round(end[1], 6)) == next_node:
-                    return eid, geom, direction
+
+        # Check if we've arrived at the target
+        if current_node == target_node:
+            # Clear target so we don't bounce back and forth forever
+            destination["target_node"] = None
+            agent.memory.status._data["destination"] = destination
+        else:
+            next_node = agent.model.dijkstra_next_node(current_node, target_node)
+            if next_node:
+                for e in candidates:
+                    eid, geom, direction = e
+                    end = geom.coords[-1] if direction == "forward" else geom.coords[0]
+                    if (round(end[0], 6), round(end[1], 6)) == next_node:
+                        return eid, geom, direction
 
     # Fallback: least-visited edge
     candidates.sort(

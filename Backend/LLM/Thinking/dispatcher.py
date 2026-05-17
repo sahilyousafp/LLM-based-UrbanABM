@@ -67,6 +67,7 @@ class BlockDispatcher:
         self.llm = llm_client
         self.memory = memory
         ctx = context or {}
+        self.context = ctx
         self.needs_block = NeedsBlock(llm_client, memory, ctx)
         self.cognition_block = CognitionBlock(llm_client, memory, ctx)
         self.mobility_block = MobilityBlock(llm_client, memory, ctx)
@@ -138,20 +139,34 @@ class BlockDispatcher:
 
         if target_node is not None and model is not None and random.random() < adherence:
             pos = await self.memory.status.get("position", {})
-            current_node = model._find_nearest_node(pos.get("lon", 0.0), pos.get("lat", 0.0))
+            # Use the actual current node (end of current edge) for accurate pathfinding
+            # instead of snapping interpolated position, which can cause oscillation
+            current_node = pos.get("current_node")
             if current_node:
-                next_node = model.dijkstra_next_node(current_node, target_node)
-                if next_node:
-                    for e in candidate_edges:
-                        geom = e.get("geom")
-                        if geom:
-                            direction = e.get("direction", "forward")
-                            end = geom.coords[-1] if direction == "forward" else geom.coords[0]
-                            if (round(end[0], 6), round(end[1], 6)) == next_node:
-                                chosen = e
-                                reasoning = (f"Shortest path toward {destination.get('name', 'destination')} "
-                                             f"({archetype}, adherence={adherence})")
-                                break
+                # Check if we've arrived at the target
+                if current_node == target_node:
+                    # Clear target so we don't bounce back and forth forever
+                    destination["target_node"] = None
+                    await self.memory.status.update("destination", destination)
+                    await self.memory.stream.add(
+                        topic="mobility",
+                        step=step,
+                        description="Reached destination — stopping (rule-based).",
+                    )
+                    return BlockResult(action="stay", params={}, reasoning="Reached destination")
+                else:
+                    next_node = model.dijkstra_next_node(current_node, target_node)
+                    if next_node:
+                        for e in candidate_edges:
+                            geom = e.get("geom")
+                            if geom:
+                                direction = e.get("direction", "forward")
+                                end = geom.coords[-1] if direction == "forward" else geom.coords[0]
+                                if (round(end[0], 6), round(end[1], 6)) == next_node:
+                                    chosen = e
+                                    reasoning = (f"Shortest path toward {destination.get('name', 'destination')} "
+                                                 f"({archetype}, adherence={adherence})")
+                                    break
 
         if chosen is None:
             sorted_edges = sorted(candidate_edges, key=lambda e: visit_counts.get(str(e["edge_id"]), 0))
@@ -160,6 +175,14 @@ class BlockDispatcher:
         visit_counts[str(chosen["edge_id"])] = visit_counts.get(str(chosen["edge_id"]), 0) + 1
         await self.memory.status.update("visited_edges", visit_counts)
         await self.memory.status.update("current_plan", {"goal": "navigate", "target_edge_id": chosen["edge_id"]})
+
+        chosen_edge_id = chosen["edge_id"]
+        await self.memory.stream.add(
+            topic="mobility",
+            step=step,
+            description=f"[rule-based] moved to edge {chosen_edge_id}",
+            metadata={"edge_id": chosen_edge_id, "fallback": True},
+        )
 
         return BlockResult(
             action="move_to_edge",

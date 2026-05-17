@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spatial Cognition Lab</title>
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3/tailwind.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Inter", sans-serif; background: #0a0e27; color: #e6e6e6; }
+
+        #map { position: absolute; top: 56px; left: 0; right: 0; bottom: 0; }
+
+        .tab-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 100;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; align-items: center; gap: 24px; padding: 0 16px;
+        }
+
+        .tab-bar h1 { font-size: 16px; font-weight: 600; margin-right: auto; }
+        .tab-button { padding: 8px 12px; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s; }
+        .tab-button.active { background: rgba(76, 214, 255, 0.2); color: #4cd6ff; }
+        .tab-button:hover { background: rgba(76, 214, 255, 0.1); }
+
+        .side-panel {
+            position: fixed; top: 72px; width: 384px; bottom: 0; background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; overflow-y: auto; padding: 16px;
+            z-index: 50;
+        }
+
+        .left-panel { left: 24px; }
+        .right-panel { right: 24px; }
+
+        .scrollable { max-height: calc(100vh - 120px); overflow-y: auto; }
+
+        .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #4cd6ff; margin-top: 12px; margin-bottom: 8px; }
+        .input-field { width: 100%; padding: 8px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; color: #e6e6e6; font-size: 13px; margin-bottom: 8px; }
+        .button { padding: 8px 12px; background: rgba(76, 214, 255, 0.2); color: #4cd6ff; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; transition: all 0.2s; margin-bottom: 8px; }
+        .button:hover { background: rgba(76, 214, 255, 0.3); }
+        .button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .button.danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .button.danger:hover { background: rgba(239, 68, 68, 0.3); }
+
+        .needs-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+        .needs-label { font-size: 12px; min-width: 60px; }
+        .needs-progress { flex: 1; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
+        .needs-fill { height: 100%; background: #4cd6ff; }
+        .needs-val { font-size: 11px; min-width: 28px; text-align: right; }
+
+        .tag { display: inline-block; padding: 4px 8px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; font-size: 11px; margin-right: 4px; margin-bottom: 4px; }
+
+        .narrative-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 4px; padding: 12px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; }
+        .narrative-label { font-size: 11px; font-weight: 600; color: #4cd6ff; margin-bottom: 6px; text-transform: uppercase; }
+
+        .timeline-entry { padding: 12px; border-left: 2px solid #4cd6ff; margin-bottom: 12px; background: rgba(76, 214, 255, 0.05); border-radius: 4px; }
+        .timeline-step { font-size: 11px; font-weight: 600; color: #4cd6ff; margin-bottom: 4px; }
+        .timeline-scene { font-size: 12px; color: #c6c6c6; margin-bottom: 6px; font-style: italic; }
+        .timeline-meta { font-size: 11px; color: #888; }
+
+        .amenity-badge { display: inline-block; padding: 4px 8px; background: rgba(168, 139, 250, 0.2); color: #a78bfa; border-radius: 3px; font-size: 11px; margin-right: 4px; margin-bottom: 4px; }
+
+        .audit-field { display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .audit-label { color: #888; }
+        .audit-value { color: #e6e6e6; font-weight: 600; }
+
+        .collapsible-toggle { cursor: pointer; padding: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 4px; font-size: 12px; margin-bottom: 8px; user-select: none; }
+        .collapsible-content { display: none; padding: 8px; background: rgba(0, 0, 0, 0.3); border-radius: 4px; margin-bottom: 12px; font-family: monospace; font-size: 11px; max-height: 200px; overflow-y: auto; }
+        .collapsible-content.open { display: block; }
+
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(76, 214, 255, 0.2); color: #4cd6ff; padding: 12px 16px; border-radius: 4px; border: 1px solid rgba(76, 214, 255, 0.3); font-size: 13px; z-index: 999; display: none; }
+        .toast.show { display: block; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+        /* Tab-specific visibility */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Sparkline (simple SVG chart) */
+        .sparkline-container { width: 100%; height: 40px; margin-bottom: 8px; }
+    </style>
+</head>
+
+<body>
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+        <h1>🧠 Spatial Cognition Lab</h1>
+        <button class="tab-button active" onclick="switchTab('movement')">Movement</button>
+        <button class="tab-button" onclick="switchTab('spatial')">Spatial Experience</button>
+        <button class="tab-button" onclick="switchTab('mind')">Agent Mind</button>
+        <button class="tab-button" onclick="switchTab('narrative')">Narrative Lab</button>
+        <span style="font-size: 11px; color: #888;">Port 8100</span>
+    </div>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- Left Panel: Config -->
+    <div class="side-panel left-panel">
+        <div class="scrollable">
+            <div class="section-title">API URL</div>
+            <input type="text" id="api-url" class="input-field" value="http://127.0.0.1:8100" />
+
+            <div class="section-title">Archetype</div>
+            <select id="archetype" class="input-field">
+                <option value="resident">Resident (0.8)</option>
+                <option value="commuter">Commuter (1.0)</option>
+                <option value="student">Student (0.5)</option>
+                <option value="tourist" selected>Tourist (0.2)</option>
+            </select>
+
+            <div class="section-title">Map Interaction</div>
+            <button class="button" onclick="setPickMode('start')" id="pick-start-btn" style="background: rgba(34, 197, 94, 0.2); color: #22c55e;">📍 Pick Start</button>
+            <button class="button" onclick="setPickMode('target')" id="pick-target-btn">📌 Pick Target</button>
+
+            <div style="padding: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 4px; margin-bottom: 8px; font-size: 12px;">
+                <div>Start: <span id="start-coords">—</span></div>
+                <div>Target: <span id="target-coords">—</span></div>
+            </div>
+
+            <button class="button" id="configure-btn" onclick="configureAgent()" disabled>⚙️ Configure Agent</button>
+            <button class="button danger" onclick="resetAgent()">🔄 Reset</button>
+
+            <div class="section-title">Perception Mode</div>
+            <select id="perception-mode" class="input-field">
+                <option value="both" selected>Both (LLM + amenity)</option>
+                <option value="perception">Perception only</option>
+                <option value="amenities">Amenities only</option>
+                <option value="rule_based">Rule-based</option>
+            </select>
+
+            <div class="section-title">Control</div>
+            <button class="button" onclick="stepOnce()">⏭️ Step</button>
+            <button class="button" onclick="startRun()" id="run-btn">▶️ Run</button>
+            <button class="button" onclick="stopRun()" id="pause-btn" disabled>⏸️ Pause</button>
+
+            <div class="section-title">Recording</div>
+            <button class="button" onclick="startRecording()" id="record-start-btn">🔴 Record</button>
+            <button class="button" onclick="stopRecording()" id="record-stop-btn" disabled>⏹️ Stop</button>
+
+            <div class="section-title">Speed</div>
+            <input type="range" id="speed-slider" min="200" max="3000" value="1000" style="width: 100%;" />
+            <div style="font-size: 12px; color: #888; margin-bottom: 12px;"><span id="speed-val">1000</span>ms</div>
+
+            <div style="padding: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 4px; font-size: 11px; color: #888; line-height: 1.6;">
+                Step: <span id="step-num">0</span><br>
+                LLM calls: <span id="llm-calls">0</span><br>
+                Tokens: <span id="llm-tokens">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Panel: Tabs -->
+    <div class="side-panel right-panel">
+        <div class="scrollable">
+
+            <!-- Tab: Movement -->
+            <div id="tab-movement" class="tab-content active">
+                <div id="agent-card" style="padding: 12px; background: rgba(76, 214, 255, 0.1); border-radius: 4px; margin-bottom: 12px;">
+                    <div style="font-size: 11px; color: #888;">Agent</div>
+                    <div style="font-size: 18px; font-weight: 700; color: #4cd6ff;" id="agent-id">—</div>
+                    <div style="font-size: 12px; color: #c6c6c6; margin-top: 4px;">
+                        <span id="agent-loc">—</span> <span id="agent-arch" class="tag" style="margin-right: 0;"></span>
+                    </div>
+                </div>
+
+                <div class="section-title">Cognition</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px;">
+                    <span class="tag">Mood: <span id="cog-mood">—</span></span>
+                    <span class="tag">Fatigue: <span id="cog-fatigue">—</span></span>
+                    <span class="tag">Curiosity: <span id="cog-curiosity">—</span></span>
+                </div>
+
+                <div class="section-title">Needs</div>
+                <div class="needs-bar">
+                    <div class="needs-label">Energy</div>
+                    <div class="needs-progress"><div class="needs-fill" id="need-energy-bar" style="width: 50%; background: #06b6d4;"></div></div>
+                    <div class="needs-val" id="need-energy-val">0.50</div>
+                </div>
+                <div class="needs-bar">
+                    <div class="needs-label">Hunger</div>
+                    <div class="needs-progress"><div class="needs-fill" id="need-hunger-bar" style="width: 50%; background: #f43f5e;"></div></div>
+                    <div class="needs-val" id="need-hunger-val">0.50</div>
+                </div>
+                <div class="needs-bar">
+                    <div class="needs-label">Social</div>
+                    <div class="needs-progress"><div class="needs-fill" id="need-social-bar" style="width: 50%; background: #f59e0b;"></div></div>
+                    <div class="needs-val" id="need-social-val">0.50</div>
+                </div>
+                <div class="needs-bar">
+                    <div class="needs-label">Comfort</div>
+                    <div class="needs-progress"><div class="needs-fill" id="need-comfort-bar" style="width: 50%; background: #10b981;"></div></div>
+                    <div class="needs-val" id="need-comfort-val">0.50</div>
+                </div>
+
+                <div class="section-title">Narrative</div>
+                <div id="narrative-text" style="font-size: 12px; color: #c6c6c6; line-height: 1.5; margin-bottom: 8px; font-style: italic;">—</div>
+                <button class="button" onclick="refreshNarrative()" style="width: 100%;">🔄 Regenerate</button>
+
+                <div class="section-title">Perception</div>
+                <div id="perception-panel" style="font-size: 12px; line-height: 1.5;">—</div>
+            </div>
+
+            <!-- Tab: Spatial Experience -->
+            <div id="tab-spatial" class="tab-content">
+                <div class="section-title">Perception Diary</div>
+                <div id="diary-timeline" style="max-height: 300px; overflow-y: auto; margin-bottom: 12px;">—</div>
+
+                <div class="section-title">Visited Amenities</div>
+                <div id="visited-amenities" style="margin-bottom: 12px;">—</div>
+
+                <div class="section-title">Current Scene</div>
+                <div id="current-perception" style="font-size: 12px; line-height: 1.5;">—</div>
+            </div>
+
+            <!-- Tab: Agent Mind -->
+            <div id="tab-mind" class="tab-content">
+                <div class="section-title">Path Adherence</div>
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 32px; font-weight: 700; color: #4cd6ff;" id="adherence-pct">—</div>
+                    <div style="font-size: 12px; color: #888;" id="adherence-steps">—</div>
+                </div>
+
+                <div class="section-title">Needs Over Time</div>
+                <div id="sparklines" style="margin-bottom: 16px;">—</div>
+
+                <div class="section-title">Thought Stream</div>
+                <div id="thought-stream" style="max-height: 200px; overflow-y: auto;">—</div>
+            </div>
+
+            <!-- Tab: Narrative Lab -->
+            <div id="tab-narrative" class="tab-content">
+                <div class="section-title">Narrative Comparison</div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                    <div>
+                        <div class="narrative-label">Generic</div>
+                        <div class="narrative-box" id="narrative-generic">—</div>
+                    </div>
+                    <div>
+                        <div class="narrative-label">History-Aware</div>
+                        <div class="narrative-box" id="narrative-history">—</div>
+                    </div>
+                </div>
+
+                <button class="button" onclick="refreshNarrativeComparison()" style="width: 100%; margin-bottom: 12px;">🔄 Refresh Both</button>
+
+                <div class="section-title">Memory Audit</div>
+                <div id="memory-audit" style="font-size: 12px;">—</div>
+
+                <div class="section-title">Raw Prompt (toggle)</div>
+                <div class="collapsible-toggle" onclick="toggleCollapsible(this)">+ Show prompt</div>
+                <div class="collapsible-content" id="raw-prompt">—</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // State
+        const state = {
+            apiUrl: "http://127.0.0.1:8100",
+            pickMode: null,
+            startPt: null,
+            targetPt: null,
+            agentId: null,
+            runInterval: null,
+            stepIntervalMs: 1000,
+            isRecording: false,
+            map: null,
+        };
+
+        function toast(msg, ms = 2000) {
+            const el = document.getElementById("toast");
+            el.textContent = msg;
+            el.classList.add("show");
+            setTimeout(() => el.classList.remove("show"), ms);
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+            document.querySelectorAll(".tab-button").forEach(el => el.classList.remove("active"));
+            document.getElementById(`tab-${name}`).classList.add("active");
+            event.target.classList.add("active");
+        }
+
+        function setPickMode(mode) {
+            state.pickMode = state.pickMode === mode ? null : mode;
+            document.getElementById("pick-start-btn").style.outline = state.pickMode === "start" ? "2px solid #22c55e" : "none";
+            document.getElementById("pick-target-btn").style.outline = state.pickMode === "target" ? "2px solid #f59e0b" : "none";
+        }
+
+        function updateConfigureBtn() {
+            const btn = document.getElementById("configure-btn");
+            btn.disabled = !(state.startPt && state.targetPt && !state.agentId);
+        }
+
+        async function bootstrap() {
+            const cfg = await fetch(`${state.apiUrl}/api/config/frontend`).then(r => r.json());
+            mapboxgl.accessToken = cfg.mapbox_token;
+
+            state.map = new mapboxgl.Map({
+                container: "map",
+                style: "mapbox://styles/mapbox/dark-v11",
+                center: [2.17, 41.39],
+                zoom: 14,
+            });
+
+            state.map.on("load", async () => {
+                loadStaticLayers();
+                state.map.on("click", onMapClick);
+            });
+
+            document.getElementById("api-url").addEventListener("change", e => state.apiUrl = e.target.value);
+            document.getElementById("perception-mode").addEventListener("change", async e => {
+                await fetch(`${state.apiUrl}/api/config/perception-mode`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(e.target.value),
+                });
+            });
+            document.getElementById("speed-slider").addEventListener("input", e => {
+                state.stepIntervalMs = parseInt(e.target.value);
+                document.getElementById("speed-val").textContent = e.target.value;
+            });
+        }
+
+        function loadStaticLayers() {
+            const map = state.map;
+
+            // Buildings
+            map.addSource("buildings", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "buildings-layer", type: "fill", source: "buildings", paint: { "fill-color": "#1b2025", "fill-opacity": 0.6 } });
+            fetch(`${state.apiUrl}/api/buildings`).then(r => r.json()).then(data => {
+                if (data.features) map.getSource("buildings").setData(data);
+            });
+
+            // Walk network
+            map.addSource("walk", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "walk-layer", type: "line", source: "walk", paint: { "line-color": "#3b494c", "line-width": 1, "line-opacity": 0.6 } });
+            fetch(`${state.apiUrl}/api/walk_network`).then(r => r.json()).then(data => {
+                if (data.features) map.getSource("walk").setData(data);
+            });
+
+            // Amenities
+            map.addSource("amenities", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "amenities-layer", type: "circle", source: "amenities", paint: { "circle-radius": 3, "circle-color": "#a78bfa" } });
+            fetch(`${state.apiUrl}/api/amenities`).then(r => r.json()).then(data => {
+                if (data.features) map.getSource("amenities").setData(data);
+            });
+
+            // Streetview grid
+            map.addSource("streetview", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "streetview-layer", type: "circle", source: "streetview", paint: { "circle-radius": 4, "circle-color": "#f97316" } });
+            fetch(`${state.apiUrl}/api/streetview_grid`).then(r => r.json()).then(data => {
+                if (data.features) map.getSource("streetview").setData(data);
+            });
+
+            // Agent
+            map.addSource("agent", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "agent-layer", type: "circle", source: "agent", paint: { "circle-radius": 8, "circle-color": "#4cd6ff", "circle-stroke-width": 2, "circle-stroke-color": "#0a0e27" } });
+
+            // Trail
+            map.addSource("trail", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "trail-layer", type: "line", source: "trail", paint: { "line-color": "#fbbf24", "line-width": 3 } });
+
+            // Planned path
+            map.addSource("planned-path", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "planned-path-layer", type: "line", source: "planned-path", paint: { "line-color": "#ffffff", "line-width": 5, "line-dasharray": [6, 3] } });
+
+            // Comfort heatmap
+            map.addSource("heatmap", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "heatmap-layer", type: "circle", source: "heatmap", paint: { "circle-radius": 5, "circle-color": "#4cd6ff", "circle-opacity": 0.3 } });
+
+            // Pins
+            map.addSource("pins", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "pins-layer", type: "circle", source: "pins", paint: { "circle-radius": 9, "circle-color": ["get", "color"] } });
+
+            // Reachable area (green dots showing where target can be placed)
+            map.addSource("reachable", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "reachable-layer", type: "circle", source: "reachable", paint: { "circle-radius": 2, "circle-color": "#22c55e", "circle-opacity": 0.25 } });
+        }
+
+        function onMapClick(e) {
+            if (!state.pickMode) return;
+            const [lon, lat] = [e.lngLat.lng, e.lngLat.lat];
+            if (state.pickMode === "start") {
+                state.startPt = [lon, lat];
+                document.getElementById("start-coords").textContent = `${lon.toFixed(5)}, ${lat.toFixed(5)}`;
+                // Show reachable area for target placement
+                fetchReachableArea(lon, lat);
+            } else {
+                state.targetPt = [lon, lat];
+                document.getElementById("target-coords").textContent = `${lon.toFixed(5)}, ${lat.toFixed(5)}`;
+            }
+            updateConfigureBtn();
+            updatePins();
+        }
+
+        async function fetchReachableArea(lon, lat) {
+            try {
+                const res = await fetch(`${state.apiUrl}/api/reachable-area?lon=${lon}&lat=${lat}&max_nodes=2000`).then(r => r.json());
+                if (res.features) {
+                    state.map.getSource("reachable").setData(res);
+                    toast(`Start set — ${res.total_reachable} reachable nodes. Click target within green area.`);
+                }
+            } catch (e) {
+                console.warn("Could not fetch reachable area:", e);
+            }
+        }
+
+        function updatePins() {
+            const features = [];
+            if (state.startPt) features.push({ type: "Feature", geometry: { type: "Point", coordinates: state.startPt }, properties: { color: "#22c55e" } });
+            if (state.targetPt) features.push({ type: "Feature", geometry: { type: "Point", coordinates: state.targetPt }, properties: { color: "#f59e0b" } });
+            state.map.getSource("pins").setData({ type: "FeatureCollection", features });
+        }
+
+        async function configureAgent() {
+            if (!state.startPt || !state.targetPt) return;
+            const archetype = document.getElementById("archetype").value;
+            const res = await fetch(`${state.apiUrl}/api/single-agent/configure`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    start_lon: state.startPt[0], start_lat: state.startPt[1],
+                    target_lon: state.targetPt[0], target_lat: state.targetPt[1],
+                    archetype
+                }),
+            }).then(r => r.json());
+
+            if (res.agent_id !== undefined) {
+                state.agentId = res.agent_id;
+                if (res.target && res.target.lon != null && res.target.lat != null) {
+                    state.targetPt = [res.target.lon, res.target.lat];
+                    updatePins();
+                }
+                // Clear reachable area overlay after configuration
+                state.map.getSource("reachable").setData({ type: "FeatureCollection", features: [] });
+                toast(`Agent configured (${archetype})`);
+                document.getElementById("configure-btn").disabled = true;
+                updateConfigureBtn();
+                await refreshAll();
+            } else {
+                toast(`Error: ${res.error}`, 5000);
+            }
+        }
+
+        async function resetAgent() {
+            await fetch(`${state.apiUrl}/api/single-agent/reset`, { method: "POST" });
+            state.agentId = null;
+            state.startPt = null;
+            state.targetPt = null;
+            updateConfigureBtn();
+            document.getElementById("configure-btn").disabled = false;
+            document.getElementById("agent-id").textContent = "—";
+            clearAllPanels();
+            // Clear pins and reachable area
+            state.map.getSource("pins").setData({ type: "FeatureCollection", features: [] });
+            state.map.getSource("reachable").setData({ type: "FeatureCollection", features: [] });
+            state.map.getSource("trail").setData({ type: "FeatureCollection", features: [] });
+            state.map.getSource("planned-path").setData({ type: "FeatureCollection", features: [] });
+            toast("Reset");
+        }
+
+        async function stepOnce() {
+            if (!state.agentId) return;
+            const res = await fetch(`${state.apiUrl}/api/step_continuous`, { method: "POST" }).then(r => r.json());
+            document.getElementById("step-num").textContent = res.step;
+            if (res.llm_stats) {
+                document.getElementById("llm-calls").textContent = res.llm_stats.total_calls || 0;
+                document.getElementById("llm-tokens").textContent = res.llm_stats.total_tokens || 0;
+            }
+            await refreshAll();
+        }
+
+        function startRun() {
+            if (state.runInterval) return;
+            state.runInterval = setInterval(stepOnce, state.stepIntervalMs);
+            document.getElementById("run-btn").disabled = true;
+            document.getElementById("pause-btn").disabled = false;
+        }
+
+        function stopRun() {
+            if (state.runInterval) clearInterval(state.runInterval);
+            state.runInterval = null;
+            document.getElementById("run-btn").disabled = false;
+            document.getElementById("pause-btn").disabled = true;
+        }
+
+        async function refreshAll() {
+            if (!state.agentId) return;
+            await Promise.all([
+                refreshCognition(),
+                refreshPerception(),
+                refreshPlannedPath(),
+                refreshTrail(),
+                refreshDiary(),
+                refreshNarrative(),
+            ]);
+        }
+
+        async function refreshCognition() {
+            if (!state.agentId) return;
+            const res = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/cognition`).then(r => r.json());
+            if (res.error) return;
+            document.getElementById("agent-id").textContent = res.agent_id;
+            document.getElementById("agent-arch").textContent = res.archetype;
+            document.getElementById("cog-mood").textContent = res.cognition_state?.mood || "—";
+            document.getElementById("cog-fatigue").textContent = (res.cognition_state?.fatigue || 0).toFixed(2);
+            document.getElementById("cog-curiosity").textContent = (res.cognition_state?.curiosity || 0).toFixed(2);
+
+            const needs = res.needs || {};
+            setNeed("energy", needs.energy || 0.5);
+            setNeed("hunger", needs.hunger || 0.5);
+            setNeed("social", needs.social || 0.5);
+            setNeed("comfort", needs.comfort || 0.5);
+        }
+
+        function setNeed(name, val) {
+            const pct = Math.max(0, Math.min(100, val * 100));
+            document.getElementById(`need-${name}-bar`).style.width = pct + "%";
+            document.getElementById(`need-${name}-val`).textContent = val.toFixed(2);
+        }
+
+        async function refreshPerception() {
+            if (!state.agentId) return;
+            const res = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/perception-text`).then(r => r.json());
+            if (res.error) return;
+
+            let html = "";
+            if (res.perception) {
+                for (const [key, val] of Object.entries(res.perception)) {
+                    if (val && val.trim()) {
+                        html += `<div style="margin-bottom: 6px;"><strong>${key.replace(/_/g, " ")}:</strong> ${val.substring(0, 80)}...</div>`;
+                    }
+                }
+            }
+            if (res.image_url) html += `<div><img src="${res.image_url}" style="max-width: 100%; border-radius: 4px; margin-top: 8px;" /></div>`;
+            document.getElementById("perception-panel").innerHTML = html || "—";
+            document.getElementById("current-perception").innerHTML = html || "—";
+        }
+
+        async function refreshPlannedPath() {
+            if (!state.agentId) return;
+            const res = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/planned-path`).then(r => r.json());
+            if (res.type === "Feature" && res.geometry) {
+                state.map.getSource("planned-path").setData(res);
+            } else {
+                state.map.getSource("planned-path").setData({ type: "FeatureCollection", features: [] });
+                if (res.error) console.warn("planned-path error:", res.error);
+            }
+        }
+
+        async function refreshTrail() {
+            if (!state.agentId) return;
+            const res = await fetch(`${state.apiUrl}/api/single-agent/path`).then(r => r.json());
+            if (res.features && res.features.length) {
+                state.map.getSource("trail").setData(res);
+            }
+        }
+
+        async function refreshNarrative() {
+            if (!state.agentId) return;
+            const res = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/narrative?include_history=true`).then(r => r.json());
+            if (res.narrative) {
+                document.getElementById("narrative-text").textContent = res.narrative;
+            }
+        }
+
+        async function refreshNarrativeComparison() {
+            if (!state.agentId) return;
+            const res = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/narrative-compare`).then(r => r.json());
+            if (res.generic) document.getElementById("narrative-generic").textContent = res.generic;
+            if (res.history_aware) document.getElementById("narrative-history").textContent = res.history_aware;
+        }
+
+        async function refreshDiary() {
+            if (!state.agentId) return;
+            const res = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/perception-diary`).then(r => r.json());
+            if (!res.entries || res.entries.length === 0) {
+                document.getElementById("diary-timeline").innerHTML = "No diary entries yet";
+                return;
+            }
+
+            let html = "";
+            res.entries.slice(-15).forEach(entry => {
+                const scene = entry.perception?.scene_overview || "unknown";
+                const amenities = entry.nearby_amenities?.map(a => a.name).join(", ") || "none";
+                const comfort = (entry.needs?.comfort || 0).toFixed(2);
+                html += `
+                    <div class="timeline-entry">
+                        <div class="timeline-step">Step ${entry.step}</div>
+                        <div class="timeline-scene">${scene}</div>
+                        <div class="timeline-meta">Nearby: ${amenities} | Comfort: ${comfort}</div>
+                    </div>
+                `;
+            });
+            document.getElementById("diary-timeline").innerHTML = html;
+
+            // Heatmap
+            const heatmapFeatures = res.entries.map(e => ({
+                type: "Feature",
+                geometry: { type: "Point", coordinates: e.position },
+                properties: { comfort: e.needs?.comfort || 0.5 }
+            }));
+            state.map.getSource("heatmap").setData({ type: "FeatureCollection", features: heatmapFeatures });
+        }
+
+        function clearAllPanels() {
+            document.getElementById("narrative-text").textContent = "—";
+            document.getElementById("perception-panel").textContent = "—";
+            document.getElementById("diary-timeline").textContent = "—";
+            document.getElementById("visited-amenities").textContent = "—";
+            document.getElementById("current-perception").textContent = "—";
+            document.getElementById("narrative-generic").textContent = "—";
+            document.getElementById("narrative-history").textContent = "—";
+            document.getElementById("memory-audit").textContent = "—";
+            document.getElementById("thought-stream").textContent = "—";
+            document.getElementById("adherence-pct").textContent = "—";
+        }
+
+        function toggleCollapsible(el) {
+            const content = el.nextElementSibling;
+            content.classList.toggle("open");
+            el.textContent = content.classList.contains("open") ? "- Hide prompt" : "+ Show prompt";
+        }
+
+        async function startRecording() {
+            const res = await fetch(`${state.apiUrl}/api/recording/start`, { method: "POST" }).then(r => r.json());
+            state.isRecording = true;
+            document.getElementById("record-start-btn").disabled = true;
+            document.getElementById("record-stop-btn").disabled = false;
+            toast("Recording started");
+        }
+
+        async function stopRecording() {
+            const res = await fetch(`${state.apiUrl}/api/recording/stop`, { method: "POST" }).then(r => r.json());
+            state.isRecording = false;
+            document.getElementById("record-start-btn").disabled = false;
+            document.getElementById("record-stop-btn").disabled = true;
+            toast(`Recording saved: ${res.file_name}`);
+        }
+
+        bootstrap();
+    </script>
+</body>
+</html>

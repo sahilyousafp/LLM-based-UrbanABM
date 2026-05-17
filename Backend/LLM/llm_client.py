@@ -34,6 +34,8 @@ class LLMClient:
         self.total_output_tokens = 0
         self.total_calls = 0
         self.total_latency_ms = 0.0
+        self.total_errors = 0
+        self.total_fallbacks = 0
 
     def _get_client(self) -> Any:
         if self._client is None:
@@ -103,12 +105,14 @@ class LLMClient:
                 await asyncio.sleep(wait)
 
         logger.error(f"LLM unavailable after {max_retries} retries: {last_error}")
+        self.total_errors += 1
         return ""
 
     async def chat_json(self, messages: list[dict], max_retries: int = 3) -> dict:
         """Request structured JSON response. Returns empty dict on failure."""
         raw = await self.chat(messages, response_format="json", max_retries=max_retries)
         if not raw:
+            self.total_fallbacks += 1
             return {}
         try:
             return json.loads(raw)
@@ -121,7 +125,7 @@ class LLMClient:
                     return json.loads(match.group(1))
                 except json.JSONDecodeError:
                     pass
-            
+
             # Try to extract first JSON object from response (handles trailing text)
             # This regex finds the first complete {...} object, ignoring content after
             match = re.search(r"\{[^{}]*\}", raw, re.DOTALL)
@@ -130,8 +134,9 @@ class LLMClient:
                     return json.loads(match.group(0))
                 except json.JSONDecodeError:
                     pass
-            
-            logger.warning(f"Failed to parse LLM JSON response: {raw[:200]}")
+
+            logger.warning(f"Failed to parse LLM JSON response: {raw[:600]}")
+            self.total_fallbacks += 1
             return {}
 
     def stats(self) -> dict:
@@ -142,4 +147,6 @@ class LLMClient:
             "total_input_tokens": self.total_input_tokens,
             "total_output_tokens": self.total_output_tokens,
             "avg_latency_ms": round(avg_latency, 1),
+            "total_errors": self.total_errors,
+            "total_fallbacks": self.total_fallbacks,
         }

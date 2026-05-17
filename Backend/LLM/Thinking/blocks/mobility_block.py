@@ -43,27 +43,43 @@ class MobilityBlock(Block):
         cognition = await self.memory.status.get("cognition_state", {})
         profile = await self.memory.status.get("agent_profile", {})
         archetype = profile.get("archetype", "resident")
+        preferences = profile.get("preferences", [])
         destination = await self.memory.status.get("destination", {})
+
+        _ADHERENCE = {"commuter": 1.0, "resident": 0.8, "student": 0.5, "tourist": 0.2}
+        adherence = _ADHERENCE.get(archetype, 0.5)
 
         # Compute Dijkstra path hint for the LLM
         path_hint_edge_id = None
         model = self.context.get("model")
         target_node = destination.get("target_node") if destination else None
         if target_node and model:
-            current_node = model._find_nearest_node(
-                position.get("lon", 0.0), position.get("lat", 0.0)
-            )
+            # Use the actual current node (end of current edge) instead of snapping interpolated position
+            # This prevents directing the LLM toward a backward path mid-edge
+            current_node = position.get("current_node")
             if current_node:
-                next_node = model.dijkstra_next_node(current_node, target_node)
-                if next_node:
-                    for c in candidate_edges[:8]:
-                        geom = c.get("geom")
-                        if geom:
-                            direction = c.get("direction", "forward")
-                            end = geom.coords[-1] if direction == "forward" else geom.coords[0]
-                            if (round(end[0], 6), round(end[1], 6)) == next_node:
-                                path_hint_edge_id = c["edge_id"]
-                                break
+                # Check if we've arrived at the target
+                if current_node == target_node:
+                    # Clear target so we don't bounce back and forth forever
+                    destination["target_node"] = None
+                    await self.memory.status.update("destination", destination)
+                    await self.memory.stream.add(
+                        topic="mobility",
+                        step=step,
+                        description="Reached destination — stopping.",
+                    )
+                    return BlockResult(action="stay", params={}, reasoning="Reached destination")
+                else:
+                    next_node = model.dijkstra_next_node(current_node, target_node)
+                    if next_node:
+                        for c in candidate_edges[:8]:
+                            geom = c.get("geom")
+                            if geom:
+                                direction = c.get("direction", "forward")
+                                end = geom.coords[-1] if direction == "forward" else geom.coords[0]
+                                if (round(end[0], 6), round(end[1], 6)) == next_node:
+                                    path_hint_edge_id = c["edge_id"]
+                                    break
 
         # Get recent movement history for context
         recent_moves = await self.memory.stream.get_recent("mobility", n=5)
@@ -92,6 +108,8 @@ class MobilityBlock(Block):
             street_perception=street_perception,
             destination=destination,
             path_hint_edge_id=path_hint_edge_id,
+            preferences=preferences,
+            adherence=adherence,
         )
 
         response = await self.llm.chat_json(messages)

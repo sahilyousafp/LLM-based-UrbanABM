@@ -221,24 +221,24 @@ class AgentTracker:
         try:
             if self.con:
                 self.con.execute("CHECKPOINT;")
-        except Exception as e:
-            logger.error(f"Failed to flush data: {e}")
-    
+        except Exception:
+            pass
+
     def get_stats(self):
         """Get statistics about tracked data."""
         try:
             movements_count = self.con.execute(
                 "SELECT COUNT(*) FROM agent_movements"
             ).fetchone()[0]
-            
+
             decisions_count = self.con.execute(
                 "SELECT COUNT(*) FROM agent_decisions"
             ).fetchone()[0]
-            
+
             unique_agents = self.con.execute(
                 "SELECT COUNT(DISTINCT agent_id) FROM agent_movements"
             ).fetchone()[0]
-            
+
             return {
                 "movements_count": movements_count,
                 "decisions_count": decisions_count,
@@ -248,16 +248,16 @@ class AgentTracker:
         except Exception as e:
             logger.error(f"Failed to get stats: {e}")
             return {}
-    
+
     def close(self):
         """Close the database connection."""
         try:
             if self.con:
-                self.flush()
                 self.con.close()
+                self.con = None
                 logger.info("Agent tracker closed")
-        except Exception as e:
-            logger.error(f"Error closing tracker: {e}")
+        except Exception:
+            pass
     
     def __del__(self):
         """Cleanup on deletion."""

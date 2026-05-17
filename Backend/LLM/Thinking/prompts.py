@@ -31,6 +31,8 @@ def mobility_decision_prompt(
     street_perception: dict | None = None,
     destination: dict | None = None,
     path_hint_edge_id: int | None = None,
+    preferences: list | None = None,
+    adherence: float = 0.5,
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
@@ -42,7 +44,7 @@ def mobility_decision_prompt(
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
         f"amenities=[{', '.join(c.get('amenities', [])[:3])}] "
-        f"{'env=[' + c['perception'] + '] ' if c.get('perception') else ''}"
+        f"{'env=[' + c['perception'][:100] + '] ' if c.get('perception') else ''}"
         f"desc={c.get('description', '')}"
         f"{' [SHORTEST PATH TO DESTINATION]' if c['edge_id'] == path_hint_edge_id else ''}"
         for i, c in enumerate(candidates)
@@ -92,13 +94,10 @@ Candidate Edges/Destinations:
 {candidates_text}
 
 Choose the index of the best candidate for this agent to move to next.
-Consider archetype behaviour and destination:
-  - resident (adherence 0.8): navigating toward home; prefers familiar streets
-  - commuter (adherence 1.0): moving efficiently to workplace; always takes shortest route
-  - tourist (adherence 0.2): heading to attraction but prefers unexplored streets
-  - student (adherence 0.5): moving to study/social venue; mix of path and detours
-The [SHORTEST PATH TO DESTINATION] candidate is the optimal next step — weight it according to your adherence level.
-Also consider the street environment: agents respond to the scene around them.
+Your path adherence weight is {adherence:.1f} — follow the [SHORTEST PATH TO DESTINATION] candidate with roughly that probability.
+Your preferences: {', '.join(preferences) if preferences else 'none'}.
+Deviate from the shortest path when nearby streets or amenities match your preferences; otherwise stay on route.
+Also consider the street environment and how it suits your archetype.
 
 Respond with JSON:
 {{"choice": <index 0-{len(candidates)-1}>, "reasoning": "<one sentence why>"}}"""

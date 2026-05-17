@@ -630,6 +630,66 @@ async def get_agent_cognition(agent_id: int):
     }
 
 
+@app.get("/api/agent/{agent_id}/perception-text")
+async def get_agent_perception(agent_id: int):
+    """Return perception data and streetview image for the agent's current location."""
+    import json as json_lib
+    import re
+    from math import radians, cos, sin, asin, sqrt
+
+    agent = next((a for a in city_model.city_agents if a.unique_id == agent_id), None)
+    if not agent:
+        return {"error": "Agent not found", "image_url": "", "perception": {}}
+
+    # Get agent's current position
+    agent_lon = agent.geometry.x
+    agent_lat = agent.geometry.y
+
+    # Find closest streetview analysis to agent's current position
+    closest_file = None
+    closest_distance = float('inf')
+
+    if SV_RESULTS_DIR.is_dir():
+        for json_file in SV_RESULTS_DIR.glob("*_analysis.json"):
+            # Parse lat/lon from filename: {lat}_{lon}_analysis.json
+            m = re.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", json_file.name)
+            if not m:
+                continue
+            sv_lat, sv_lon = float(m.group(1)), float(m.group(2))
+
+            # Simple Euclidean distance (good enough for nearby points)
+            dist = sqrt((sv_lon - agent_lon)**2 + (sv_lat - agent_lat)**2)
+            if dist < closest_distance:
+                closest_distance = dist
+                closest_file = json_file
+
+    # Load the closest streetview data
+    perception_data = {}
+    image_url = ""
+    if closest_file:
+        try:
+            data = json_lib.loads(closest_file.read_text(encoding="utf-8"))
+            meta = data.get("metadata", {})
+            scene = data.get("scene_analysis", {})
+            src_img = meta.get("source_image", "")
+            perception_data = scene
+            image_url = f"/api/streetview_grid/image/{src_img}" if src_img else ""
+        except Exception as e:
+            logger.warning(f"Error loading streetview data: {e}")
+
+    # Fall back to agent's street_perception if available
+    if hasattr(agent, 'street_perception') and agent.street_perception:
+        perception_data = agent.street_perception
+
+    return {
+        "agent_id": agent_id,
+        "image_url": image_url,
+        "perception": perception_data,
+        "location": {"lon": agent_lon, "lat": agent_lat},
+        "closest_distance_km": closest_distance if closest_distance != float('inf') else None,
+    }
+
+
 @app.post("/api/config/llm")
 async def update_llm_config(provider: str, model: str, base_url: str = "", api_key: str = ""):
     """Hot-swap the LLM provider/model at runtime (takes effect on next agent step)."""

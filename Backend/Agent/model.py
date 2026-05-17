@@ -7,7 +7,7 @@ from shapely.geometry import Point, LineString
 import random
 import os
 import sys
-from collections import defaultdict
+from collections import defaultdict, deque
 from pathlib import Path
 from agent_tracker import AgentTracker
 
@@ -19,6 +19,7 @@ if str(_BACKEND_ROOT) not in sys.path:
 from LLM.llm_config import LLMConfig
 from LLM.llm_client import LLMClient
 from LLM.Memory.memory import Memory
+from LLM.Memory.stream_memory import MemoryNode
 from LLM.Thinking.dispatcher import BlockDispatcher, reset_step_counter
 from rule_based_movement import make_decision as rule_based_move
 
@@ -59,6 +60,15 @@ class CityAgent(mg.GeoAgent):
         # Initialise memory with agent profile (sync — safe at init time, no loop running)
         self._init_memory_sync(edge_id, geometry, archetype, target_info)
 
+        # Add initial "spawned" event to stream so it's not empty at start
+        self.memory.stream._store["cognition"] = deque([
+            MemoryNode(
+                topic="cognition",
+                step=model.steps,
+                description=f"Initialised as {archetype}. Current goal: {target_info['name'] if target_info else 'none'}"
+            )
+        ], maxlen=self.memory.stream._max)
+
         # Log initial position to tracker
         if hasattr(model, 'tracker') and model.tracker:
             model.tracker.log_movement(
@@ -78,16 +88,35 @@ class CityAgent(mg.GeoAgent):
             "age": random.randint(18, 70),
             "preferences": self._archetype_preferences(archetype),
         }
+        # Compute initial current_node (end of starting edge) for accurate pathfinding
+        # This is the node the agent is heading TOWARD
+        # Note: spawn edge_geom is pre-flipped in configure endpoint if reverse, so coords[-1] is always correct
+        current_node = None
+        if hasattr(self, 'current_edge_geom') and self.current_edge_geom is not None:
+            end_coords = self.current_edge_geom.coords[-1]
+            current_node = (round(end_coords[0], 6), round(end_coords[1], 6))
         self.memory.status._data["position"] = {
             "lon": geometry.x,
             "lat": geometry.y,
             "edge_id": edge_id,
+            "current_node": current_node,
         }
         if edge_id is not None:
             self.memory.status._data["visited_edges"] = {str(edge_id): 1}
         self.memory.status._data["destination"] = target_info or {
             "name": None, "amenity_type": None,
             "lon": None, "lat": None, "target_node": None,
+        }
+        self.memory.status._data["needs"] = {
+            "hunger": 0.5,
+            "energy": 1.0,
+            "social": 0.5,
+            "comfort": 0.7,
+        }
+        self.memory.status._data["cognition_state"] = {
+            "mood": "neutral",
+            "curiosity": 0.7,
+            "fatigue": 0.0,
         }
 
     async def _init_memory(self, edge_id, geometry, archetype: str) -> None:
@@ -170,11 +199,18 @@ class CityAgent(mg.GeoAgent):
             has_perception = self.street_perception is not None
             print(f"[DEBUG] Step {self.model.steps} | Mode: {perception_mode} | Amenities: {amenity_count} | Perception: {has_perception}")
 
+        # Compute current node (end of current edge) for accurate pathfinding
+        current_node = None
+        if self.current_edge_geom is not None:
+            end_coords = self.current_edge_geom.coords[-1]
+            current_node = (round(end_coords[0], 6), round(end_coords[1], 6))
+
         # Update position in memory
         await self.memory.status.update("position", {
             "lon": self.geometry.x,
             "lat": self.geometry.y,
             "edge_id": self.current_edge_id,
+            "current_node": current_node,
         })
 
         # Only evaluate a new edge if we've reached the end of the current one
@@ -631,6 +667,7 @@ class CityModel(mesa.Model):
         Find the nearest street view scene analysis point within ~150m from DuckDB.
         Returns the full scene_analysis dict, or None if nothing nearby.
         """
+        result = None
         try:
             # Query DuckDB for nearest perception point within ~150m
             # 0.0015 degrees ≈ 150m at Barcelona latitude
@@ -649,10 +686,10 @@ class CityModel(mesa.Model):
             LIMIT 1
             """
             result = self.con.execute(query).fetchone()
-            
-            if not result:
-                return None
-            
+        except Exception as e:
+            print(f"Perception DB query error: {e}")
+
+        if result:
             # Map database columns to scene_analysis dict format
             return {
                 "scene_overview": result[0] or "",
@@ -671,20 +708,19 @@ class CityModel(mesa.Model):
                 "as_tourist": result[13] or "",
                 "as_student": result[14] or "",
             }
-        except Exception as e:
-            print(f"Perception query error: {e}")
-            # Fallback to JSON cache if DuckDB query fails
-            _THRESHOLD_DEG = 0.0015
-            best = None
-            best_dist = _THRESHOLD_DEG
-            for entry in self._sv_cache:
-                dx = entry["lon"] - point_geom.x
-                dy = entry["lat"] - point_geom.y
-                dist = (dx * dx + dy * dy) ** 0.5
-                if dist < best_dist:
-                    best_dist = dist
-                    best = entry
-            return dict(best["scene_analysis"]) if best else None
+        
+        # Fallback to JSON cache if DuckDB returns no result or fails
+        _THRESHOLD_DEG = 0.0015
+        best = None
+        best_dist = _THRESHOLD_DEG
+        for entry in self._sv_cache:
+            dx = entry["lon"] - point_geom.x
+            dy = entry["lat"] - point_geom.y
+            dist = (dx * dx + dy * dy) ** 0.5
+            if dist < best_dist:
+                best_dist = dist
+                best = entry
+        return dict(best["scene_analysis"]) if best else None
 
     def _pick_target_for_archetype(self, archetype: str) -> dict | None:
         """Query a random amenity matching the archetype's preferred types. Returns None on failure."""
