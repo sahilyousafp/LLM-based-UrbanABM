@@ -33,6 +33,7 @@ def mobility_decision_prompt(
     path_hint_edge_id: int | None = None,
     preferences: list | None = None,
     adherence: float = 0.5,
+    adherence_failed: bool = False,
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
@@ -40,6 +41,7 @@ def mobility_decision_prompt(
     street_perception: optional dict with walkability, vegetation, pedestrian_activity, etc.
     destination: agent's persistent target {"name", "amenity_type", "lon", "lat"}
     path_hint_edge_id: edge_id of the Dijkstra-optimal next step toward destination
+    adherence_failed: True means the agent rolled to deviate — it is now free to explore
     """
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
@@ -81,11 +83,22 @@ def mobility_decision_prompt(
             f"This is your primary goal — navigate toward it."
         )
 
+    # Deviation context: explain WHY the agent is free to choose
+    deviation_context = ""
+    if adherence_failed:
+        deviation_context = (
+            f"\n\n** You rolled to deviate from your proposed path (adherence={adherence:.1f}). "
+            f"You are now free to choose based on your current needs, nearby amenities, and preferences. "
+            f"Consider: Do you have low energy or hunger that a nearby amenity could satisfy? "
+            f"Does a candidate edge lead through an environment that matches your archetype's preferences? "
+            f"The [SHORTEST PATH TO DESTINATION] candidate is still available if you prefer to stay on route. **"
+        )
+
     user_content = f"""Agent Profile:
   Archetype: {archetype}
   Needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
   Mood: {cognition.get('mood', 'neutral')}, Curiosity: {cognition.get('curiosity', 0.7):.2f}, Fatigue: {cognition.get('fatigue', 0.0):.2f}
-  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{perception_text}{destination_text}
+  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{perception_text}{destination_text}{deviation_context}
 
 Recent Movement History:
 {recent_history}
@@ -94,7 +107,7 @@ Candidate Edges/Destinations:
 {candidates_text}
 
 Choose the index of the best candidate for this agent to move to next.
-Your path adherence weight is {adherence:.1f} — follow the [SHORTEST PATH TO DESTINATION] candidate with roughly that probability.
+Your path adherence weight is {adherence:.1f} — this determines how often you follow the [SHORTEST PATH TO DESTINATION].
 Your preferences: {', '.join(preferences) if preferences else 'none'}.
 Deviate from the shortest path when nearby streets or amenities match your preferences; otherwise stay on route.
 Also consider the street environment and how it suits your archetype.

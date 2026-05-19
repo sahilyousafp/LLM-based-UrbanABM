@@ -1,252 +1,147 @@
-# Graph Report - LLM_Based_UrbanABM  (2026-04-27)
+# Graph Report - D:\IaaC\2ND_YEAR\THESIS\LLM_Based_UrbanABM  (2026-05-19)
 
 ## Corpus Check
-- 354 files · ~5,775,673 words
+- 64 files · ~129,042 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 29634 nodes · 120755 edges · 36 communities detected
-- Extraction: 74% EXTRACTED · 26% INFERRED · 0% AMBIGUOUS · INFERRED: 31265 edges (avg confidence: 0.8)
+- 646 nodes · 1571 edges · 17 communities detected
+- Extraction: 56% EXTRACTED · 44% INFERRED · 0% AMBIGUOUS · INFERRED: 698 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Community 0|Community 0]]
-- [[_COMMUNITY_Community 1|Community 1]]
-- [[_COMMUNITY_Community 2|Community 2]]
-- [[_COMMUNITY_Community 3|Community 3]]
-- [[_COMMUNITY_Community 4|Community 4]]
-- [[_COMMUNITY_Community 5|Community 5]]
-- [[_COMMUNITY_Community 6|Community 6]]
-- [[_COMMUNITY_Community 7|Community 7]]
-- [[_COMMUNITY_Community 8|Community 8]]
-- [[_COMMUNITY_Community 9|Community 9]]
-- [[_COMMUNITY_Community 10|Community 10]]
-- [[_COMMUNITY_Community 11|Community 11]]
-- [[_COMMUNITY_Community 12|Community 12]]
-- [[_COMMUNITY_Community 13|Community 13]]
-- [[_COMMUNITY_Community 14|Community 14]]
-- [[_COMMUNITY_Community 15|Community 15]]
-- [[_COMMUNITY_Community 16|Community 16]]
-- [[_COMMUNITY_Community 17|Community 17]]
-- [[_COMMUNITY_Community 18|Community 18]]
-- [[_COMMUNITY_Community 19|Community 19]]
-- [[_COMMUNITY_Community 20|Community 20]]
-- [[_COMMUNITY_Community 21|Community 21]]
-- [[_COMMUNITY_Community 22|Community 22]]
-- [[_COMMUNITY_Community 23|Community 23]]
-- [[_COMMUNITY_Community 24|Community 24]]
-- [[_COMMUNITY_Community 25|Community 25]]
-- [[_COMMUNITY_Community 26|Community 26]]
-- [[_COMMUNITY_Community 27|Community 27]]
-- [[_COMMUNITY_Community 28|Community 28]]
-- [[_COMMUNITY_Community 29|Community 29]]
-- [[_COMMUNITY_Community 30|Community 30]]
-- [[_COMMUNITY_Community 31|Community 31]]
-- [[_COMMUNITY_Community 32|Community 32]]
-- [[_COMMUNITY_Community 35|Community 35]]
-- [[_COMMUNITY_Community 38|Community 38]]
-- [[_COMMUNITY_Community 52|Community 52]]
+- [[_COMMUNITY_Agent Lab Server|Agent Lab Server]]
+- [[_COMMUNITY_Thinking Block System|Thinking Block System]]
+- [[_COMMUNITY_Project Documentation|Project Documentation]]
+- [[_COMMUNITY_Recording & Tracking|Recording & Tracking]]
+- [[_COMMUNITY_Spatial Data Access|Spatial Data Access]]
+- [[_COMMUNITY_Frontend Monitoring UI|Frontend Monitoring UI]]
+- [[_COMMUNITY_Network Comparison|Network Comparison]]
+- [[_COMMUNITY_LLM Memory System|LLM Memory System]]
+- [[_COMMUNITY_Perceptual Comfort Metrics|Perceptual Comfort Metrics]]
+- [[_COMMUNITY_Street View PLM Pipeline|Street View PLM Pipeline]]
+- [[_COMMUNITY_Network Connector|Network Connector]]
+- [[_COMMUNITY_Overture to DuckDB|Overture to DuckDB]]
+- [[_COMMUNITY_LLM Client Service|LLM Client Service]]
+- [[_COMMUNITY_Thinking Prompts|Thinking Prompts]]
+- [[_COMMUNITY_Graph Infrastructure|Graph Infrastructure]]
+- [[_COMMUNITY_Street PLM Job Launcher|Street PLM Job Launcher]]
+- [[_COMMUNITY_LLM Config Rationale|LLM Config Rationale]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `forEach()` - 922 edges
-2. `max()` - 832 edges
-3. `bg()` - 813 edges
-4. `filter()` - 680 edges
-5. `min()` - 568 edges
-6. `t()` - 396 edges
-7. `split()` - 392 edges
-8. `"node_modules/@plotly/mapbox-gl/dist/mapbox-gl-unminified.js"()` - 385 edges
-9. `ct()` - 374 edges
-10. `zfn()` - 365 edges
+1. `LLMClient` - 79 edges
+2. `CityModel` - 71 edges
+3. `LLMConfig` - 66 edges
+4. `AgentTracker` - 49 edges
+5. `Memory` - 43 edges
+6. `CityAgent` - 36 edges
+7. `BlockDispatcher` - 35 edges
+8. `BlockResult` - 29 edges
+9. `MemoryNode` - 27 edges
+10. `PerceptionDiary` - 27 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `a()` --calls--> `split()`  [INFERRED]
-  UrbanABM\share\jupyter\lab\static\1189.c1482e88f0e949753db6.js → UrbanABM\share\jupyter\nbextensions\jupyter-leaflet\index.js
-- `ut()` --calls--> `apply()`  [INFERRED]
-  UrbanABM\share\jupyter\lab\static\1218.856189c1ebf3c45164d6.js → UrbanABM\share\jupyter\labextensions\@jupyter-widgets\jupyterlab-manager\static\lib_index_js.56f37fb50492d0d63a45.js
-- `dt()` --calls--> `apply()`  [INFERRED]
-  UrbanABM\share\jupyter\lab\static\1218.856189c1ebf3c45164d6.js → UrbanABM\share\jupyter\labextensions\@jupyter-widgets\jupyterlab-manager\static\lib_index_js.56f37fb50492d0d63a45.js
-- `xt()` --calls--> `appendChild()`  [INFERRED]
-  UrbanABM\share\jupyter\lab\static\1218.856189c1ebf3c45164d6.js → UrbanABM\share\jupyter\labextensions\@jupyter-widgets\jupyterlab-manager\static\vendors-node_modules_base64-js_index_js-node_modules_sanitize-html_index_js.c79fc2bcc3f69676beda.js
-- `re()` --calls--> `Of()`  [INFERRED]
-  UrbanABM\share\jupyter\lab\static\1423.b6936536b4deed7b0d2a.js → UrbanABM\share\jupyter\nbextensions\jupyter-vuetify\nodeps.js
+- `Agent Archetypes Resident Commuter Tourist Student` --semantically_similar_to--> `Walker Perspectives (Resident/Commuter/Tourist/Student)`  [INFERRED] [semantically similar]
+  README.md → scripts/streetview_analysis/viewer.html
+- `Humanistic Dimensions (archetype consistency, diversity, decision coherence, spatial realism, amenity plausibility)` --conceptually_related_to--> `Agent Archetypes Resident Commuter Tourist Student`  [INFERRED]
+  benchmark/results_05_system_benchmark.png → README.md
+- `GeoParquet Behavior Recording System` --semantically_similar_to--> `Recording Session Feature`  [INFERRED] [semantically similar]
+  Documentation/RECORDING_GUIDE.md → Frontend/mapbox.html
+- `Perception Mode (both/perception/amenities/rule_based)` --conceptually_related_to--> `LLM-Driven Simulation Mode`  [INFERRED]
+  test/README.md → benchmark/results_05_system_benchmark.png
+- `DuckDB Database Engine` --shares_data_with--> `Backend REST API`  [INFERRED]
+  benchmark/results_01_db_latency.png → Frontend/mapbox.html
 
 ## Communities
 
-### Community 0 - "Community 0"
-Cohesion: 0.0
-Nodes (347): e(), n(), r(), t(), f(), n(), o(), t() (+339 more)
-
-### Community 1 - "Community 1"
-Cohesion: 0.0
-Nodes (2016): flattenNodes(), generateEdges(), c(), ci(), deleteAll(), destroy(), Ji(), k() (+2008 more)
-
-### Community 2 - "Community 2"
-Cohesion: 0.0
-Nodes (1781): An(), $n(), n(), fr(), unregister(), s(), x(), setupToolTips() (+1773 more)
-
-### Community 3 - "Community 3"
-Cohesion: 0.01
-Nodes (1624): $(), $0(), $1(), $2(), $3(), $4(), $5(), $6() (+1616 more)
-
-### Community 4 - "Community 4"
-Cohesion: 0.0
-Nodes (465): _, A, b(), c, D(), E(), F, g (+457 more)
-
-### Community 5 - "Community 5"
-Cohesion: 0.0
-Nodes (485): gt(), wt(), W, $(), A(), aa, ae(), ao (+477 more)
-
-### Community 6 - "Community 6"
-Cohesion: 0.01
-Nodes (759): scale(), _(), A(), an(), At(), b(), be(), Bn() (+751 more)
-
-### Community 7 - "Community 7"
-Cohesion: 0.0
-Nodes (377): a(), Ar(), b(), Br(), C(), cr(), e(), er() (+369 more)
-
-### Community 8 - "Community 8"
-Cohesion: 0.0
-Nodes (308): ii, oi, _(), b(), d(), f(), g(), j() (+300 more)
-
-### Community 9 - "Community 9"
-Cohesion: 0.0
-Nodes (186): wh(), _(), a(), ae(), ai(), an(), ar(), At() (+178 more)
-
-### Community 10 - "Community 10"
-Cohesion: 0.01
-Nodes (763): xn(), $r(), Zr(), "lib/barpolar.js"(), "lib/calendars.js"(), "lib/carpet.js"(), "lib/choropleth.js"(), "lib/cone.js"() (+755 more)
-
-### Community 11 - "Community 11"
-Cohesion: 0.01
-Nodes (637): a(), c(), f(), o(), s(), u(), s(), c() (+629 more)
-
-### Community 12 - "Community 12"
-Cohesion: 0.01
-Nodes (516): $n(), te(), t(), "lib/icicle.js"(), "lib/scattergl.js"(), "lib/splom.js"(), $(), A() (+508 more)
-
-### Community 13 - "Community 13"
-Cohesion: 0.01
-Nodes (232): $e(), t9(), a(), ac(), Ae(), ai, al(), an() (+224 more)
-
-### Community 14 - "Community 14"
-Cohesion: 0.01
-Nodes (491): _(), a(), add(), addAll(), addAndReturn(), _addButton(), addControls(), addDraggingClass() (+483 more)
-
-### Community 15 - "Community 15"
-Cohesion: 0.01
-Nodes (110): clear(), clearListeners(), dispose(), fire(), i(), n, register(), value() (+102 more)
-
-### Community 16 - "Community 16"
-Cohesion: 0.01
-Nodes (253): _(), a(), b(), c(), d(), E(), g(), i() (+245 more)
-
-### Community 17 - "Community 17"
-Cohesion: 0.01
-Nodes (347): wi(), $(), A(), b(), be(), c(), ce(), d() (+339 more)
-
-### Community 18 - "Community 18"
-Cohesion: 0.01
-Nodes (280): le(), application(), e(), n(), e(), o(), r(), t() (+272 more)
-
-### Community 19 - "Community 19"
-Cohesion: 0.01
-Nodes (53): ki(), a(), b(), c(), d(), e(), f(), g() (+45 more)
-
-### Community 20 - "Community 20"
-Cohesion: 0.01
-Nodes (136): en(), bu(), cu(), du(), Fu(), gu(), lu(), mu() (+128 more)
-
-### Community 21 - "Community 21"
+### Community 0 - "Agent Lab Server"
 Cohesion: 0.04
-Nodes (123): addNode(), assignSections(), clear(), constructor(), E(), getData(), getMindmap(), getParent() (+115 more)
+Nodes (74): configure_single_agent(), _find_agent(), FixedAgentTracker, get_agent_cognition(), get_agent_info(), get_agent_memory(), get_agent_narrative(), get_agent_perception_text() (+66 more)
 
-### Community 22 - "Community 22"
-Cohesion: 0.02
-Nodes (86): Jt(), A(), E(), f(), g(), h(), j, k() (+78 more)
+### Community 1 - "Thinking Block System"
+Cohesion: 0.07
+Nodes (64): Block, Block, BlockResult, Block base class — the fundamental unit of agent reasoning. Adapted from AgentSo, Standardised return type from any Block.run()., Base class for all agent thinking blocks.     Each subclass implements run() whi, Override in subclasses. Returns a BlockResult., CognitionBlock (+56 more)
 
-### Community 23 - "Community 23"
-Cohesion: 0.02
-Nodes (107): e(), r(), t(), _(), a(), b(), c(), d() (+99 more)
-
-### Community 24 - "Community 24"
-Cohesion: 0.06
-Nodes (111): _(), a(), ae(), An(), ao(), ar(), At(), b() (+103 more)
-
-### Community 25 - "Community 25"
-Cohesion: 0.05
-Nodes (10): b, dispose(), f, _focusMain(), handleEvent(), hide(), show(), w (+2 more)
-
-### Community 26 - "Community 26"
-Cohesion: 0.05
-Nodes (49): _(), a(), ai(), bi(), ce(), d(), de(), di() (+41 more)
-
-### Community 27 - "Community 27"
-Cohesion: 0.06
-Nodes (43): cleanUpNextTick(), cmp(), coerce(), Comparator, compare(), compareBuild(), compareIdentifiers(), compareLoose() (+35 more)
-
-### Community 28 - "Community 28"
+### Community 2 - "Project Documentation"
 Cohesion: 0.1
-Nodes (42): $(), a(), an(), B(), bn(), c(), cn(), D() (+34 more)
+Nodes (63): Mesa-Geo Agents README, Backend API README, Configuration Guide, Crash-Safe Recording Guide, DuckDB Inspection Guide, Environment Spatial Database README, GCP BigQuery Access Guide, Backend LLM Providers README (+55 more)
 
-### Community 29 - "Community 29"
+### Community 3 - "Recording & Tracking"
+Cohesion: 0.05
+Nodes (42): get_llm_stats(), get_recording_status(), start_recording(), stop_recording(), Ensure all data is written to disk., AgentRecord, clear_recorder(), create_recorder() (+34 more)
+
+### Community 4 - "Spatial Data Access"
+Cohesion: 0.05
+Nodes (53): get_amenities(), get_buildings(), get_db_connection(), get_walk_network(), Close the database connection., download_recording(), get_agent_cognition(), get_agent_info() (+45 more)
+
+### Community 5 - "Frontend Monitoring UI"
+Cohesion: 0.07
+Nodes (50): agent_lab.html - Spatial Cognition Lab Interactive UI, Agent Lab 4-Tab Interface (Movement/Spatial Experience/Agent Mind/Narrative Lab), Agent Monitoring Panel, Amber Secondary Color (#ffbf00), Backend REST API, Barcelona Urban Context (El Raval/Eixample), results_01_db_latency.png - Database Latency Comparison, results_03_map_comparison.png - POI Data Source Comparison (+42 more)
+
+### Community 6 - "Network Comparison"
+Cohesion: 0.07
+Nodes (25): Agent Movement and Decision Tracker  This module stores agent movements and deci, build_graph(), find_nearest_node(), main(), Compare Original vs Updated Walk Network Database  Tests: 1. Edge count and type, Test network connectivity., Test geographic coverage., Build NetworkX graph from walk_edges. (+17 more)
+
+### Community 7 - "LLM Memory System"
+Cohesion: 0.08
+Nodes (18): KVMemory, KVMemory — async key-value memory store with locking. Adapted from AgentSociety', Thread-safe async key-value store for agent state., Return full snapshot of memory (deepcopy)., Increment a numeric value inside a nested dict key., Clamp a numeric subkey value to [lo, hi]., get_agent_memory(), get_agent_stream() (+10 more)
+
+### Community 8 - "Perceptual Comfort Metrics"
 Cohesion: 0.11
-Nodes (1): As
+Nodes (28): Accessibility Metric, Cleanliness Metric, Crowding Metric, Enclosure/Exposure Metric, GeoPandas + Shapely Spatial Libraries, Google Cloud BigQuery, Greenery Metric, Hugging Face Hub (+20 more)
 
-### Community 30 - "Community 30"
-Cohesion: 0.12
-Nodes (2): f, u
+### Community 9 - "Street View PLM Pipeline"
+Cohesion: 0.14
+Nodes (25): BaseModel, analyze_image(), _coerce(), fetch_sv(), _infer_scene(), load_model(), main(), _model_echoed_template() (+17 more)
 
-### Community 31 - "Community 31"
-Cohesion: 0.24
-Nodes (3): A, B(), n()
+### Community 10 - "Network Connector"
+Cohesion: 0.13
+Nodes (21): analyze_components(), backup_database(), bridge_gaps(), build_graph_from_edges(), distance_degrees_to_meters(), insert_bridges(), main(), merge_pedestrian_roads() (+13 more)
 
-### Community 32 - "Community 32"
-Cohesion: 0.25
-Nodes (1): pushWord()
+### Community 11 - "Overture to DuckDB"
+Cohesion: 0.13
+Nodes (21): _aggregate_quadrant_field(), create_spatial_indexes(), extract_buildings(), extract_places(), extract_transportation(), load_streetview_perception(), main(), Overture Maps to DuckDB Pipeline (GCP BigQuery) -------------------------------- (+13 more)
 
-### Community 35 - "Community 35"
+### Community 12 - "LLM Client Service"
+Cohesion: 0.11
+Nodes (13): Async LLM client — provider-agnostic via OpenAI-compatible API. Ollama exposes /, from_env(), Provider-agnostic LLM configuration. Adapted from AgentSociety's LLMConfig patte, get_llm_service(), LLMService, LLM Service for Agent Perspective Summarization Uses Ollama with local Llama 3.1, Service to interact with Ollama for generating agent perspective summaries, Fallback summary when LLM is not available (+5 more)
+
+### Community 13 - "Thinking Prompts"
+Cohesion: 0.29
+Nodes (11): cognition_update_prompt(), mobility_decision_prompt(), needs_evaluation_prompt(), Prompt templates for agent thinking blocks. Each template is a callable that fil, Prompt to evaluate how the visual street environment affects the agent's 3 needs, Prompt to evaluate how much visiting this amenity satisfies agent needs.     Now, Prompt to update agent's cognitive/emotional state based on recent experiences., Prompt asking the LLM to choose the next movement destination.     candidates: l (+3 more)
+
+### Community 14 - "Graph Infrastructure"
+Cohesion: 0.53
+Nodes (6): Community Detection (103 communities), graph.html - Knowledge Graph Vis-Network Visualization, GRAPH_REPORT.md - Knowledge Graph Extraction Report, Knowledge Graph Structure, Tree-sitter AST Extraction, Vis-Network Graph Visualization Library
+
+### Community 15 - "Street PLM Job Launcher"
 Cohesion: 0.67
-Nodes (2): g(), n()
+Nodes (3): main(), _parse_args(), launch_job.py ============= Submit street_plm_job.py as a Lightning AI Job on an
 
-### Community 38 - "Community 38"
-Cohesion: 0.67
-Nodes (1): load_ipython_extension()
-
-### Community 52 - "Community 52"
+### Community 16 - "LLM Config Rationale"
 Cohesion: 1.0
 Nodes (1): Construct from environment variables (loaded from .env or shell).
 
 ## Knowledge Gaps
-- **118 isolated node(s):** `Agent Movement and Decision Tracker  This module stores agent movements and deci`, `Tracks agent movements and decisions in a DuckDB database with spatial indexing.`, `Initialize the agent tracker.                  Args:             db_path: Path t`, `Initialize database connection and create tables with spatial indexing.`, `Log an agent's movement to the database.                  Args:             agen` (+113 more)
+- **128 isolated node(s):** `Agent Movement and Decision Tracker  This module stores agent movements and deci`, `Tracks agent movements and decisions in a DuckDB database with spatial indexing.`, `Initialize the agent tracker.                  Args:             db_path: Path t`, `Initialize database connection and create tables with spatial indexing.`, `Log an agent's movement to the database.          Args:             agent_id: Un` (+123 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 29`** (19 nodes): `As`, `.args()`, `.caption()`, `.className()`, `.command()`, `.constructor()`, `.dataset()`, `.icon()`, `.iconClass()`, `.iconLabel()`, `.isDisposed()`, `.isEnabled()`, `.isToggled()`, `.isVisible()`, `.keyBinding()`, `.label()`, `.mnemonic()`, `.submenu()`, `.type()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (16 nodes): `f`, `.cmp()`, `.constructor()`, `.eof()`, `.error()`, `.inline()`, `.interesting()`, `.nodeType()`, `.preserve()`, `.repeated()`, `.terminal()`, `.top()`, `.toString()`, `u`, `.constructor()`, `.toString()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (8 nodes): `clear()`, `constructor()`, `db()`, `getConfig()`, `getPacket()`, `i()`, `pushWord()`, `2089.b46fb224dcf021a15dbf.js`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 35`** (4 nodes): `g()`, `n()`, `U()`, `7250.b88d0a5e237ff5ff1aad.js`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 38`** (3 nodes): `load_ipython_extension()`, `extension.js`, `extension.js`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 52`** (1 nodes): `Construct from environment variables (loaded from .env or shell).`
+- **Thin community `LLM Config Rationale`** (1 nodes): `Construct from environment variables (loaded from .env or shell).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `max()` connect `Community 6` to `Community 0`, `Community 1`, `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 7`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 14`, `Community 15`, `Community 16`, `Community 17`, `Community 19`, `Community 20`, `Community 21`, `Community 22`, `Community 24`, `Community 26`?**
-  _High betweenness centrality (0.099) - this node is a cross-community bridge._
-- **Why does `forEach()` connect `Community 1` to `Community 0`, `Community 2`, `Community 4`, `Community 5`, `Community 6`, `Community 7`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 14`, `Community 16`, `Community 17`, `Community 18`, `Community 19`, `Community 20`, `Community 21`, `Community 23`, `Community 24`, `Community 25`, `Community 27`, `Community 28`?**
-  _High betweenness centrality (0.048) - this node is a cross-community bridge._
-- **Why does `"node_modules/@plotly/mapbox-gl/dist/mapbox-gl-unminified.js"()` connect `Community 2` to `Community 0`, `Community 1`, `Community 3`, `Community 4`, `Community 5`, `Community 6`, `Community 7`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 13`, `Community 14`, `Community 15`, `Community 16`, `Community 17`, `Community 18`, `Community 19`, `Community 23`, `Community 25`, `Community 27`?**
-  _High betweenness centrality (0.042) - this node is a cross-community bridge._
-- **Are the 851 inferred relationships involving `forEach()` (e.g. with `T()` and `.gatherNonSkippedNodes()`) actually correct?**
-  _`forEach()` has 851 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 823 inferred relationships involving `max()` (e.g. with `.record_agent_state()` and `respawn_agents()`) actually correct?**
-  _`max()` has 823 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 672 inferred relationships involving `filter()` (e.g. with `.finish()` and `fe()`) actually correct?**
-  _`filter()` has 672 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 564 inferred relationships involving `min()` (e.g. with `respawn_agents()` and `._advance_along_edge()`) actually correct?**
-  _`min()` has 564 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `DuckDB Database Engine` connect `Network Comparison` to `Agent Lab Server`, `Spatial Data Access`, `Frontend Monitoring UI`, `Network Connector`, `Overture to DuckDB`?**
+  _High betweenness centrality (0.223) - this node is a cross-community bridge._
+- **Why does `CityModel` connect `Agent Lab Server` to `Thinking Block System`, `Recording & Tracking`, `Spatial Data Access`, `LLM Memory System`, `LLM Client Service`?**
+  _High betweenness centrality (0.142) - this node is a cross-community bridge._
+- **Why does `Backend REST API` connect `Frontend Monitoring UI` to `Network Comparison`?**
+  _High betweenness centrality (0.137) - this node is a cross-community bridge._
+- **Are the 72 inferred relationships involving `LLMClient` (e.g. with `Get DuckDB connection` and `API root - health check`) actually correct?**
+  _`LLMClient` has 72 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 55 inferred relationships involving `CityModel` (e.g. with `Get DuckDB connection` and `API root - health check`) actually correct?**
+  _`CityModel` has 55 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 63 inferred relationships involving `LLMConfig` (e.g. with `Get DuckDB connection` and `API root - health check`) actually correct?**
+  _`LLMConfig` has 63 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 39 inferred relationships involving `AgentTracker` (e.g. with `CityAgent` and `CityModel`) actually correct?**
+  _`AgentTracker` has 39 INFERRED edges - model-reasoned connections that need verification._

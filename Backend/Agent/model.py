@@ -20,7 +20,7 @@ from LLM.llm_config import LLMConfig
 from LLM.llm_client import LLMClient
 from LLM.Memory.memory import Memory
 from LLM.Memory.stream_memory import MemoryNode
-from LLM.Thinking.dispatcher import BlockDispatcher, reset_step_counter
+from LLM.Thinking.dispatcher import BlockDispatcher
 from rule_based_movement import make_decision as rule_based_move
 
 # Path to the DuckDB database (Overture Maps data)
@@ -47,7 +47,7 @@ class CityAgent(mg.GeoAgent):
         self.current_edge_geom = edge_geom
         self.previous_edge_id = None
         self.position_along_edge = 0.0
-        self.move_speed = random.uniform(0.15, 0.25)
+        self.move_speed = random.uniform(0.10, 0.20)
 
         # --- LLM + Memory + Thinking ---
         self.memory = Memory(agent_id=self.unique_id)
@@ -89,8 +89,6 @@ class CityAgent(mg.GeoAgent):
             "preferences": self._archetype_preferences(archetype),
         }
         # Compute initial current_node (end of starting edge) for accurate pathfinding
-        # This is the node the agent is heading TOWARD
-        # Note: spawn edge_geom is pre-flipped in configure endpoint if reverse, so coords[-1] is always correct
         current_node = None
         if hasattr(self, 'current_edge_geom') and self.current_edge_geom is not None:
             end_coords = self.current_edge_geom.coords[-1]
@@ -107,6 +105,9 @@ class CityAgent(mg.GeoAgent):
             "name": None, "amenity_type": None,
             "lon": None, "lat": None, "target_node": None,
         }
+        # Compute and store the proposed path at spawn time
+        proposed_path = self.model._compute_proposed_path(current_node, target_info)
+        self.memory.status._data["proposed_path"] = proposed_path
         self.memory.status._data["needs"] = {
             "hunger": 0.5,
             "energy": 1.0,
@@ -118,21 +119,6 @@ class CityAgent(mg.GeoAgent):
             "curiosity": 0.7,
             "fatigue": 0.0,
         }
-
-    async def _init_memory(self, edge_id, geometry, archetype: str) -> None:
-        """Set up initial memory state for this agent."""
-        await self.memory.status.update("agent_profile", {
-            "archetype": archetype,
-            "age": random.randint(18, 70),
-            "preferences": self._archetype_preferences(archetype),
-        })
-        await self.memory.status.update("position", {
-            "lon": geometry.x,
-            "lat": geometry.y,
-            "edge_id": edge_id,
-        })
-        if edge_id is not None:
-            await self.memory.status.update("visited_edges", {str(edge_id): 1})
 
     @staticmethod
     def _archetype_preferences(archetype: str) -> list:
@@ -178,34 +164,28 @@ class CityAgent(mg.GeoAgent):
 
     async def _async_step(self) -> None:
         """Full async step: query amenities, run dispatcher, update geometry."""
-        # Get current perception mode from model
         perception_mode = getattr(self.model, 'perception_mode', 'both')
 
-        # Query DuckDB for nearby amenities (if mode allows)
         if perception_mode in ['amenities', 'both']:
             self.nearby_amenities = self.model.get_nearby_amenities(self.geometry)
         else:
             self.nearby_amenities = []
 
-        # Query nearest street view perception data (if mode allows)
         if perception_mode in ['perception', 'both']:
             self.street_perception = self.model.get_nearby_perception(self.geometry)
         else:
             self.street_perception = None
 
-        # Debug: Log perception mode on first step of each 10 steps
         if self.model.steps % 10 == 0 and self.unique_id == 0:
             amenity_count = len(self.nearby_amenities) if self.nearby_amenities else 0
             has_perception = self.street_perception is not None
             print(f"[DEBUG] Step {self.model.steps} | Mode: {perception_mode} | Amenities: {amenity_count} | Perception: {has_perception}")
 
-        # Compute current node (end of current edge) for accurate pathfinding
         current_node = None
         if self.current_edge_geom is not None:
             end_coords = self.current_edge_geom.coords[-1]
             current_node = (round(end_coords[0], 6), round(end_coords[1], 6))
 
-        # Update position in memory
         await self.memory.status.update("position", {
             "lon": self.geometry.x,
             "lat": self.geometry.y,
@@ -213,17 +193,13 @@ class CityAgent(mg.GeoAgent):
             "current_node": current_node,
         })
 
-        # Only evaluate a new edge if we've reached the end of the current one
-        # or if we don't have an edge yet.
         needs_new_edge = (
-            self.current_edge_id is None or 
+            self.current_edge_id is None or
             self.position_along_edge >= 1.0
         )
 
-        # Build candidate edges for mobility decision
         candidate_edges = self._get_candidate_edges()
 
-        # Run all thinking blocks (needs + cognition + mobility)
         result = await self.dispatcher.run(
             step=self.model.steps,
             candidate_edges=candidate_edges,
@@ -232,10 +208,12 @@ class CityAgent(mg.GeoAgent):
             needs_new_edge=needs_new_edge,
         )
 
-        # Apply mobility decision — move to chosen edge
         if needs_new_edge and result.mobility.action == "move_to_edge":
             self._apply_mobility(result.mobility.params)
-            # Log decision with fallback status
+            # Update proposed path if agent deviated from it
+            on_path = result.mobility.params.get("on_proposed_path", False)
+            if not on_path and current_node:
+                await self._update_proposed_path(current_node)
             if hasattr(self.model, 'tracker') and self.model.tracker:
                 self.model.tracker.log_decision(
                     agent_id=self.unique_id,
@@ -247,15 +225,13 @@ class CityAgent(mg.GeoAgent):
                     to_edge_id=self.current_edge_id,
                     alternatives_count=len(candidate_edges) if candidate_edges else 0,
                     decision_reason=result.mobility.reasoning,
-                    is_fallback=result.mobility.fallback
+                    is_fallback=result.mobility.fallback,
                 )
         elif result.mobility.action == "stay":
-            pass # Stay on current edge
+            pass
 
-        # Advance position along current edge
         self._advance_along_edge()
 
-        # Log to tracker (with current needs)
         if hasattr(self.model, 'tracker') and self.model.tracker:
             current_needs = await self.memory.status.get("needs", {})
             self.model.tracker.log_movement(
@@ -273,14 +249,31 @@ class CityAgent(mg.GeoAgent):
                 comfort=current_needs.get("comfort"),
             )
 
+    async def _update_proposed_path(self, current_node) -> None:
+        """Recompute the proposed path from current position to target."""
+        destination = await self.memory.status.get("destination", {})
+        target_node = destination.get("target_node") if destination else None
+        if not target_node or not current_node:
+            return
+        if isinstance(target_node, (list, tuple)):
+            target_node = (round(float(target_node[0]), 6), round(float(target_node[1]), 6))
+        if current_node == target_node:
+            return
+
+        proposed_path = self.model._compute_proposed_path(current_node, destination)
+        await self.memory.status.update("proposed_path", proposed_path)
+
     def _get_candidate_edges(self) -> list[dict]:
         """Get reachable edges from current position as dicts for the dispatcher."""
         if self.current_edge_geom is None:
             return []
         end_point = Point(self.current_edge_geom.coords[-1])
         raw_edges = self.model.find_connected_edges(end_point)
-        # Exclude current edge to prevent immediate reversal
-        candidates = [(eid, geom, d) for eid, geom, d in raw_edges if eid != self.current_edge_id]
+        # Exclude current edge and previous edge to prevent immediate reversal and backtracking
+        candidates = [
+            (eid, geom, d) for eid, geom, d in raw_edges
+            if eid != self.current_edge_id and eid != self.previous_edge_id
+        ]
         if not candidates:
             candidates = raw_edges  # Dead end — allow reversal
 
@@ -369,7 +362,10 @@ class CityAgent(mg.GeoAgent):
             return
         end_point = Point(self.current_edge_geom.coords[-1])
         next_edges = self.model.find_connected_edges(end_point)
-        candidates = [(eid, g, d) for eid, g, d in next_edges if eid != self.current_edge_id]
+        candidates = [
+            (eid, g, d) for eid, g, d in next_edges
+            if eid != self.current_edge_id and eid != self.previous_edge_id
+        ]
         if not candidates:
             candidates = next_edges
         if not candidates:
@@ -789,9 +785,62 @@ class CityModel(mesa.Model):
                 return None
         return node
 
+    def _compute_proposed_path(self, current_node, destination: dict) -> dict:
+        """Compute the full Dijkstra path from current node to target destination.
+
+        Returns a dict with:
+            nodes: list of (lon, lat) tuples along the path
+            total_distance: total path length in degrees
+            created_at_step: simulation step when path was computed
+        """
+        if not current_node or not destination or not destination.get("target_node"):
+            return {"nodes": [], "total_distance": 0.0, "created_at_step": self.steps}
+
+        target_node = destination["target_node"]
+        if isinstance(target_node, (list, tuple)):
+            target_node = (round(float(target_node[0]), 6), round(float(target_node[1]), 6))
+        if current_node == target_node:
+            return {"nodes": [], "total_distance": 0.0, "created_at_step": self.steps}
+
+        import heapq
+        dist = {current_node: 0.0}
+        prev: dict = {current_node: None}
+        heap = [(0.0, current_node)]
+        while heap:
+            d, u = heapq.heappop(heap)
+            if d > dist.get(u, float("inf")):
+                continue
+            if u == target_node:
+                break
+            for _eid, geom, direction in self.node_to_edges.get(u, []):
+                if direction == "forward":
+                    v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
+                else:
+                    v = (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
+                new_dist = d + geom.length
+                if new_dist < dist.get(v, float("inf")):
+                    dist[v] = new_dist
+                    prev[v] = u
+                    heapq.heappush(heap, (new_dist, v))
+
+        if target_node not in prev:
+            return {"nodes": [], "total_distance": 0.0, "created_at_step": self.steps}
+
+        path_nodes = []
+        node = target_node
+        while node is not None:
+            path_nodes.append(node)
+            node = prev.get(node)
+        path_nodes.reverse()
+
+        return {
+            "nodes": path_nodes,
+            "total_distance": dist.get(target_node, 0.0),
+            "created_at_step": self.steps,
+        }
+
     def step(self):
         self.steps += 1
-        reset_step_counter(self.steps)
         # Step all agents
         random.shuffle(self.city_agents)
         for agent in self.city_agents:
@@ -804,7 +853,6 @@ class CityModel(mesa.Model):
     async def async_step(self):
         """Async-native step for use within FastAPI endpoints."""
         self.steps += 1
-        reset_step_counter(self.steps)
         random.shuffle(self.city_agents)
         
         # Run all agent async steps concurrently

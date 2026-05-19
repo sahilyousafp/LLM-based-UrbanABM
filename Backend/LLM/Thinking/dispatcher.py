@@ -3,11 +3,9 @@ BlockDispatcher — routes each simulation step to the appropriate Blocks.
 Priority-based dispatch (no LLM cost at dispatch level):
   - NeedsBlock: always runs (cheap — rule-based with optional LLM at amenities)
   - CognitionBlock: always runs (cheap between intervals; LLM only every 10 steps)
-  - MobilityBlock: runs if agent needs to select next edge (guarded by LLM_CALLS_PER_STEP)
+  - MobilityBlock: runs if agent needs to select next edge (always uses LLM)
 """
 import logging
-import os
-import random
 from dataclasses import dataclass
 from typing import Optional
 
@@ -19,34 +17,6 @@ from LLM.llm_client import LLMClient
 from LLM.Memory.memory import Memory
 
 logger = logging.getLogger(__name__)
-
-# Read from env: max number of agents that call LLM for mobility per simulation step.
-# Remaining agents fall back to rule-based movement. 0 = all agents use rules.
-LLM_CALLS_PER_STEP = int(os.environ.get("LLM_CALLS_PER_STEP", "50"))
-
-# Global counter per step (reset externally by the model before each step)
-_step_llm_call_count = 0
-_current_tracked_step = -1
-
-
-def reset_step_counter(step: int) -> None:
-    """Called by CityModel before each step to reset the per-step LLM budget."""
-    global _step_llm_call_count, _current_tracked_step
-    _step_llm_call_count = 0
-    _current_tracked_step = step
-
-
-def _can_use_llm_for_mobility(step: int) -> bool:
-    """Check if this agent can use LLM for mobility (within per-step budget)."""
-    global _step_llm_call_count, _current_tracked_step
-    if _current_tracked_step != step:
-        reset_step_counter(step)
-    if LLM_CALLS_PER_STEP <= 0:
-        return False
-    if _step_llm_call_count < LLM_CALLS_PER_STEP:
-        _step_llm_call_count += 1
-        return True
-    return False
 
 
 @dataclass
@@ -99,17 +69,12 @@ class BlockDispatcher:
             step=step, street_perception=street_perception
         )
 
-        # 3. MobilityBlock — LLM only if within per-step budget AND we need a new edge
+        # 3. MobilityBlock — always uses LLM when a new edge is needed
         if needs_new_edge:
-            use_llm = _can_use_llm_for_mobility(step)
-            if use_llm:
-                mobility_result = await self.mobility_block.run(
-                    step=step, candidate_edges=candidate_edges,
-                    street_perception=street_perception,
-                )
-            else:
-                # Rule-based fallback: prefer least-visited edge
-                mobility_result = await self._rule_based_mobility(step, candidate_edges)
+            mobility_result = await self.mobility_block.run(
+                step=step, candidate_edges=candidate_edges,
+                street_perception=street_perception,
+            )
         else:
             # We are still traversing the current edge
             mobility_result = BlockResult(action="stay", params={}, reasoning="Traversing current edge")
@@ -118,79 +83,4 @@ class BlockDispatcher:
             needs=needs_result,
             cognition=cognition_result,
             mobility=mobility_result,
-        )
-
-    async def _rule_based_mobility(self, step: int, candidate_edges: list[dict]) -> BlockResult:
-        """Fallback: shortest-path toward destination (archetype-adherence weighted), else least-visited."""
-        if not candidate_edges:
-            return BlockResult(action="stay", params={}, reasoning="No candidates", fallback=True)
-
-        visit_counts = await self.memory.status.get("visited_edges", {})
-        destination = await self.memory.status.get("destination", {})
-        profile = await self.memory.status.get("agent_profile", {})
-        archetype = profile.get("archetype", "resident")
-
-        model = self.context.get("model")
-        target_node = destination.get("target_node") if destination else None
-        adherence = model.ARCHETYPE_PATH_ADHERENCE.get(archetype, 0.5) if model else 0.5
-
-        chosen = None
-        reasoning = "Rule-based: least-visited edge"
-
-        if target_node is not None and model is not None and random.random() < adherence:
-            pos = await self.memory.status.get("position", {})
-            # Use the actual current node (end of current edge) for accurate pathfinding
-            # instead of snapping interpolated position, which can cause oscillation
-            current_node = pos.get("current_node")
-            if current_node:
-                # Check if we've arrived at the target
-                if current_node == target_node:
-                    # Clear target so we don't bounce back and forth forever
-                    destination["target_node"] = None
-                    await self.memory.status.update("destination", destination)
-                    await self.memory.stream.add(
-                        topic="mobility",
-                        step=step,
-                        description="Reached destination — stopping (rule-based).",
-                    )
-                    return BlockResult(action="stay", params={}, reasoning="Reached destination")
-                else:
-                    next_node = model.dijkstra_next_node(current_node, target_node)
-                    if next_node:
-                        for e in candidate_edges:
-                            geom = e.get("geom")
-                            if geom:
-                                direction = e.get("direction", "forward")
-                                end = geom.coords[-1] if direction == "forward" else geom.coords[0]
-                                if (round(end[0], 6), round(end[1], 6)) == next_node:
-                                    chosen = e
-                                    reasoning = (f"Shortest path toward {destination.get('name', 'destination')} "
-                                                 f"({archetype}, adherence={adherence})")
-                                    break
-
-        if chosen is None:
-            sorted_edges = sorted(candidate_edges, key=lambda e: visit_counts.get(str(e["edge_id"]), 0))
-            chosen = sorted_edges[0]
-
-        visit_counts[str(chosen["edge_id"])] = visit_counts.get(str(chosen["edge_id"]), 0) + 1
-        await self.memory.status.update("visited_edges", visit_counts)
-        await self.memory.status.update("current_plan", {"goal": "navigate", "target_edge_id": chosen["edge_id"]})
-
-        chosen_edge_id = chosen["edge_id"]
-        await self.memory.stream.add(
-            topic="mobility",
-            step=step,
-            description=f"[rule-based] moved to edge {chosen_edge_id}",
-            metadata={"edge_id": chosen_edge_id, "fallback": True},
-        )
-
-        return BlockResult(
-            action="move_to_edge",
-            params={
-                "edge_id": chosen["edge_id"],
-                "direction": chosen.get("direction", "forward"),
-                "geom": chosen.get("geom"),
-            },
-            reasoning=reasoning,
-            fallback=True,
         )

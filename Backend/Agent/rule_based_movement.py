@@ -42,11 +42,11 @@ def select_next_edge(
     if not connected_edges:
         return None
     
-    # Filter out current edge (prevent immediate U-turn)
+    # Filter out current edge and previous edge (prevent immediate U-turn and backtracking)
     candidates = [
         (eid, geom, direction) 
         for eid, geom, direction in connected_edges 
-        if eid != agent.current_edge_id
+        if eid != agent.current_edge_id and eid != agent.previous_edge_id
     ]
     
     # If no candidates, allow U-turn
@@ -167,6 +167,19 @@ def make_decision(agent) -> None:
         if result:
             edge_id, edge_geom, direction = result
             
+            # Check if this edge is on the proposed Dijkstra path
+            destination = agent.memory.status._data.get("destination") or {}
+            target_node = destination.get("target_node")
+            on_path = False
+            if target_node:
+                current_end = agent.current_edge_geom.coords[-1]
+                current_node = (round(current_end[0], 6), round(current_end[1], 6))
+                next_node = agent.model.dijkstra_next_node(current_node, target_node)
+                if next_node:
+                    end = edge_geom.coords[-1] if direction == "forward" else edge_geom.coords[0]
+                    end_key = (round(end[0], 6), round(end[1], 6))
+                    on_path = (end_key == next_node)
+
             # Update edge visit count
             agent.model.edge_visit_count_global[edge_id] = (
                 agent.model.edge_visit_count_global.get(edge_id, 0) + 1
@@ -178,6 +191,16 @@ def make_decision(agent) -> None:
             agent.current_edge_geom = edge_geom
             agent.position_along_edge = 0.0
             
+            # Update geometry to the start of the new edge (prevents one-frame discontinuity)
+            agent.geometry = Point(edge_geom.coords[0])
+
+            # Update proposed path if deviated
+            if not on_path and target_node:
+                current_node = (round(agent.current_edge_geom.coords[-1][0], 6),
+                                round(agent.current_edge_geom.coords[-1][1], 6))
+                proposed_path = agent.model._compute_proposed_path(current_node, destination)
+                agent.memory.status._data["proposed_path"] = proposed_path
+            
             # Log to tracker
             if hasattr(agent.model, 'tracker') and agent.model.tracker:
                 agent.model.tracker.log_movement(
@@ -188,7 +211,6 @@ def make_decision(agent) -> None:
                     edge_id=edge_id,
                     position_along_edge=0.0,
                     speed=agent.move_speed,
-                    is_rule_based=True
                 )
         else:
             # No connected edges - stay at endpoint
@@ -198,10 +220,10 @@ def make_decision(agent) -> None:
 def step_all_agents(model) -> None:
     """
     Execute rule-based movement for all agents in the model.
-    
+
     This is the main entry point for rule-based simulation steps.
     Call this instead of individual agent.step() when using rule_based mode.
-    
+
     Parameters
     ----------
     model : CityModel
@@ -209,6 +231,3 @@ def step_all_agents(model) -> None:
     """
     for agent in model.city_agents:
         make_decision(agent)
-    
-    # Increment model step counter
-    model.steps += 1

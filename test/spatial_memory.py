@@ -94,7 +94,8 @@ class PerceptionDiary:
 
         lines = []
         for entry in entries:
-            scene = entry.perception.get("scene_overview", "unknown scene")
+            perception = entry.perception or {}
+            scene = perception.get("scene_overview", "unknown scene")
             amenities_str = ", ".join([a.get("name", "") for a in entry.nearby_amenities])
             if not amenities_str:
                 amenities_str = "no amenities nearby"
@@ -160,10 +161,11 @@ class PerceptionDiary:
         busy_count = 0
         vegetation_count = 0
         for e in self.entries:
-            ped_activity = e.perception.get("pedestrian_activity", "").lower()
+            perception = e.perception or {}
+            ped_activity = perception.get("pedestrian_activity", "").lower()
             if any(w in ped_activity for w in ["busy", "crowded", "bustling", "active"]):
                 busy_count += 1
-            veg = e.perception.get("vegetation", "").lower()
+            veg = perception.get("vegetation", "").lower()
             if any(w in veg for w in ["abundant", "lush", "trees", "green", "planted"]):
                 vegetation_count += 1
 

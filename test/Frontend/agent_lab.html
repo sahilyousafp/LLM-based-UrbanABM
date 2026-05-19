@@ -91,10 +91,10 @@
     <!-- Tab Bar -->
     <div class="tab-bar">
         <h1>🧠 Spatial Cognition Lab</h1>
-        <button class="tab-button active" onclick="switchTab('movement')">Movement</button>
-        <button class="tab-button" onclick="switchTab('spatial')">Spatial Experience</button>
-        <button class="tab-button" onclick="switchTab('mind')">Agent Mind</button>
-        <button class="tab-button" onclick="switchTab('narrative')">Narrative Lab</button>
+        <button class="tab-button active" onclick="switchTab('movement', event)">Movement</button>
+        <button class="tab-button" onclick="switchTab('spatial', event)">Spatial Experience</button>
+        <button class="tab-button" onclick="switchTab('mind', event)">Agent Mind</button>
+        <button class="tab-button" onclick="switchTab('narrative', event)">Narrative Lab</button>
         <span style="font-size: 11px; color: #888;">Port 8100</span>
     </div>
 
@@ -285,7 +285,7 @@
             setTimeout(() => el.classList.remove("show"), ms);
         }
 
-        function switchTab(name) {
+        function switchTab(name, event) {
             document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
             document.querySelectorAll(".tab-button").forEach(el => el.classList.remove("active"));
             document.getElementById(`tab-${name}`).classList.add("active");
@@ -364,10 +364,6 @@
                 if (data.features) map.getSource("streetview").setData(data);
             });
 
-            // Agent
-            map.addSource("agent", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-            map.addLayer({ id: "agent-layer", type: "circle", source: "agent", paint: { "circle-radius": 8, "circle-color": "#4cd6ff", "circle-stroke-width": 2, "circle-stroke-color": "#0a0e27" } });
-
             // Trail
             map.addSource("trail", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
             map.addLayer({ id: "trail-layer", type: "line", source: "trail", paint: { "line-color": "#fbbf24", "line-width": 3 } });
@@ -387,6 +383,11 @@
             // Reachable area (green dots showing where target can be placed)
             map.addSource("reachable", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
             map.addLayer({ id: "reachable-layer", type: "circle", source: "reachable", paint: { "circle-radius": 2, "circle-color": "#22c55e", "circle-opacity": 0.25 } });
+
+            // Agent (added last so it renders on top of all layers)
+            map.addSource("agent", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+            map.addLayer({ id: "agent-glow", type: "circle", source: "agent", paint: { "circle-radius": 16, "circle-color": "#4cd6ff", "circle-opacity": 0.25, "circle-blur": 0.5 } });
+            map.addLayer({ id: "agent-layer", type: "circle", source: "agent", paint: { "circle-radius": 10, "circle-color": "#4cd6ff", "circle-stroke-width": 3, "circle-stroke-color": "#ffffff" } });
         }
 
         function onMapClick(e) {
@@ -477,7 +478,7 @@
             document.getElementById("step-num").textContent = res.step;
             if (res.llm_stats) {
                 document.getElementById("llm-calls").textContent = res.llm_stats.total_calls || 0;
-                document.getElementById("llm-tokens").textContent = res.llm_stats.total_tokens || 0;
+                document.getElementById("llm-tokens").textContent = (res.llm_stats.total_input_tokens || 0) + (res.llm_stats.total_output_tokens || 0);
             }
             await refreshAll();
         }
@@ -505,6 +506,7 @@
                 refreshTrail(),
                 refreshDiary(),
                 refreshNarrative(),
+                refreshMind(),
             ]);
         }
 
@@ -537,14 +539,46 @@
             if (res.error) return;
 
             let html = "";
+            
+            // Show image first if available
+            if (res.image_url) {
+                html += `<div style="margin-bottom: 12px; position: relative;">
+                    <img src="${state.apiUrl}${res.image_url}" style="width: 100%; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);" />
+                </div>`;
+            }
+            
+            // Show current scene overview prominently
+            if (res.perception?.scene_overview?.trim()) {
+                html += `<div style="margin-bottom: 10px; padding: 10px; background: rgba(76, 214, 255, 0.08); border-radius: 4px; border-left: 3px solid #4cd6ff;">
+                    <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #4cd6ff; margin-bottom: 4px;">Current Scene</div>
+                    <div style="font-size: 12px; line-height: 1.5;">${res.perception.scene_overview}</div>
+                </div>`;
+            }
+            
+            // Show other perception fields
             if (res.perception) {
+                const skipFields = ['scene_overview'];
                 for (const [key, val] of Object.entries(res.perception)) {
+                    if (skipFields.includes(key)) continue;
                     if (val && val.trim()) {
-                        html += `<div style="margin-bottom: 6px;"><strong>${key.replace(/_/g, " ")}:</strong> ${val.substring(0, 80)}...</div>`;
+                        html += `<div style="margin-bottom: 6px;">
+                            <strong style="color: #4cd6ff;">${key.replace(/_/g, " ")}:</strong> 
+                            <span style="color: #c6c6c6;">${val}</span>
+                        </div>`;
                     }
                 }
             }
-            if (res.image_url) html += `<div><img src="${res.image_url}" style="max-width: 100%; border-radius: 4px; margin-top: 8px;" /></div>`;
+            
+            // Show nearby amenities
+            if (res.nearby_amenities && res.nearby_amenities.length > 0) {
+                html += `<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #a78bfa; margin-bottom: 6px;">Nearby Amenities</div>`;
+                res.nearby_amenities.forEach(a => {
+                    html += `<span class="amenity-badge">${a.type}${a.distance_m ? ` (${Math.round(a.distance_m)}m)` : ''}</span>`;
+                });
+                html += `</div>`;
+            }
+            
             document.getElementById("perception-panel").innerHTML = html || "—";
             document.getElementById("current-perception").innerHTML = html || "—";
         }
@@ -553,7 +587,7 @@
             if (!state.agentId) return;
             const res = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/planned-path`).then(r => r.json());
             if (res.type === "Feature" && res.geometry) {
-                state.map.getSource("planned-path").setData(res);
+                state.map.getSource("planned-path").setData({ type: "FeatureCollection", features: [res] });
             } else {
                 state.map.getSource("planned-path").setData({ type: "FeatureCollection", features: [] });
                 if (res.error) console.warn("planned-path error:", res.error);
@@ -613,6 +647,83 @@
                 properties: { comfort: e.needs?.comfort || 0.5 }
             }));
             state.map.getSource("heatmap").setData({ type: "FeatureCollection", features: heatmapFeatures });
+
+            // Visited amenities
+            if (res.stats?.amenity_encounters) {
+                const visitedAmenities = Object.entries(res.stats.amenity_encounters)
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([name, count]) => `${name} (${count})`);
+                document.getElementById("visited-amenities").textContent = visitedAmenities.length > 0 ? visitedAmenities.join(", ") : "—";
+            }
+        }
+
+        async function refreshMind() {
+            if (!state.agentId) return;
+
+            // Path adherence
+            try {
+                const adh = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/path-adherence`).then(r => r.json());
+                if (!adh.error && adh.adherence) {
+                    const pct = adh.adherence.pct_followed ?? 0;
+                    const total = adh.adherence.total_steps ?? 0;
+                    document.getElementById("adherence-pct").textContent = pct + "%";
+                    document.getElementById("adherence-steps").textContent = `${adh.adherence.steps_followed ?? 0} / ${total} steps followed`;
+                }
+            } catch (e) {
+                console.warn("Could not fetch adherence:", e);
+            }
+
+            // Thought stream
+            try {
+                const stream = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/stream?n=30`).then(r => r.json());
+                if (stream.events && stream.events.length > 0) {
+                    let html = "";
+                    stream.events.reverse().forEach(ev => {
+                        const topicColor = ev.topic === "mobility" ? "#4cd6ff" : ev.topic === "cognition" ? "#a78bfa" : "#10b981";
+                        html += `<div style="padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 11px;">
+                            <span style="color: ${topicColor}; font-weight: 600;">[${ev.topic}]</span>
+                            <span style="color: #888;"> step ${ev.step}</span>
+                            <span style="color: #c6c6c6;"> — ${ev.description}</span>
+                        </div>`;
+                    });
+                    document.getElementById("thought-stream").innerHTML = html;
+                }
+            } catch (e) {
+                console.warn("Could not fetch stream:", e);
+            }
+
+            // Needs over time sparklines (from diary entries)
+            try {
+                const diary = await fetch(`${state.apiUrl}/api/agent/${state.agentId}/perception-diary`).then(r => r.json());
+                if (diary.entries && diary.entries.length > 1) {
+                    const entries = diary.entries.slice(-60);
+                    const buildSparkline = (key, color) => {
+                        const vals = entries.map(e => e.needs?.[key] ?? 0.5);
+                        const min = Math.min(...vals), max = Math.max(...vals);
+                        const w = 340, h = 36;
+                        const pts = vals.map((v, i) => {
+                            const x = (i / (vals.length - 1)) * w;
+                            const y = h - ((v - min) / (max - min || 1)) * (h - 4) - 2;
+                            return `${x},${y}`;
+                        }).join(" ");
+                        const lastVal = vals[vals.length - 1].toFixed(2);
+                        return `<div style="margin-bottom: 4px; font-size: 11px; display: flex; align-items: center; gap: 8px;">
+                            <span style="min-width: 56px; color: #888;">${key}</span>
+                            <svg width="${w}" height="${h}" style="background: rgba(0,0,0,0.2); border-radius: 4px;">
+                                <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5"/>
+                            </svg>
+                            <span style="min-width: 32px; color: #c6c6c6;">${lastVal}</span>
+                        </div>`;
+                    };
+                    document.getElementById("sparklines").innerHTML =
+                        buildSparkline("energy", "#06b6d4") +
+                        buildSparkline("hunger", "#f43f5e") +
+                        buildSparkline("social", "#f59e0b") +
+                        buildSparkline("comfort", "#10b981");
+                }
+            } catch (e) {
+                console.warn("Could not fetch sparklines:", e);
+            }
         }
 
         function clearAllPanels() {

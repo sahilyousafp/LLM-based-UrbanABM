@@ -133,6 +133,8 @@ class GeoParquetRecorder:
         self.session_id: Optional[str] = None
         self.start_time: Optional[datetime] = None
         self.start_step: int = 0
+        self._recording_date: Optional[str] = None  # YYYY-MM-DD folder
+        self._first_archetype: Optional[str] = None  # Track first archetype for output path
 
         # Data buffer
         self.buffer: List[AgentRecord] = []
@@ -146,16 +148,13 @@ class GeoParquetRecorder:
             'records_written': 0,
         }
 
-        # Auto-flush timer
-        self._flush_timer: Optional[threading.Timer] = None
-        self._flush_timer_lock = threading.Lock()
-        self._last_flush_time: float = 0
+        # Temp file tracking for merge
         self._temp_file_counter: int = 0
         self._temp_files: List[Path] = []
 
         logger.info(
             f"GeoParquetRecorder initialized. Output: {self.output_dir} | "
-            f"Auto-flush: {auto_flush_interval}s | Buffer: {max_buffer_size}"
+            f"Buffer: {max_buffer_size}"
         )
     
     def start_recording(self, session_name: Optional[str] = None) -> str:
@@ -176,6 +175,8 @@ class GeoParquetRecorder:
         self.session_id = f"{self.session_name}_{id(self)}"
         self.start_time = datetime.now()
         self.start_step = 0
+        self._recording_date = self.start_time.strftime("%Y-%m-%d")
+        self._first_archetype = None
         self.is_recording = True
         self.buffer = []
         self.total_records = 0
@@ -187,27 +188,7 @@ class GeoParquetRecorder:
         
         logger.info(f"Recording started: {self.session_id}")
         return self.session_id
-    
-    def stop_recording(self) -> Optional[Path]:
-        """
-        Stop recording and export to GeoParquet.
-        
-        Returns:
-            Path to the exported GeoParquet file, or None if no data recorded
-        """
-        if not self.is_recording:
-            logger.warning("No recording in progress")
-            return None
-        
-        self.is_recording = False
-        
-        # Flush remaining buffer
-        file_path = self._flush_to_parquet()
-        
-        logger.info(f"Recording stopped. Total records: {self.total_records}")
-        
-        return file_path
-    
+
     def record_agent_state(
         self,
         agent: Any,
@@ -235,13 +216,17 @@ class GeoParquetRecorder:
                 decision_reason=decision_reason,
                 is_fallback=is_fallback,
             )
-            
+
+            # Capture first archetype for get_output_path utility
+            if self._first_archetype is None and record.archetype:
+                self._first_archetype = record.archetype
+
             with self.buffer_lock:
                 self.buffer.append(record)
                 self.total_records += 1
                 self.stats['agents_tracked'].add(agent.unique_id)
                 self.stats['steps_recorded'] = max(self.stats['steps_recorded'], step)
-                
+
                 # Auto-flush if buffer is full
                 if len(self.buffer) >= self.max_buffer_size:
                     self._flush_to_parquet()
@@ -371,27 +356,39 @@ class GeoParquetRecorder:
 
             # Generate filename
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            mode_suffix = f"_{self.perception_mode}" if self.perception_mode else ""
             
-            if is_final_flush and len(self._temp_files) == 0:
-                # Only one flush total, write directly to final file
-                filename = f"agent_recording_{self.session_name or timestamp}{mode_suffix}.parquet"
-                file_path = self.output_dir / filename
-            else:
-                # Write to temp file (will be merged later)
-                self._temp_file_counter += 1
-                filename = f"agent_recording_{self.session_name or timestamp}_flush_{self._temp_file_counter:03d}.tmp.parquet"
-                file_path = self.output_dir / filename
-                self._temp_files.append(file_path)
+            # Group by archetype and save separate files in date/archetype/perception_mode folders
+            archetypes = df['archetype'].unique()
+            written_paths = []
+            
+            for archetype in archetypes:
+                archetype_gdf = gdf[gdf['archetype'] == archetype]
+                archetype_clean = archetype.lower().replace(' ', '_')
+                
+                # Build folder structure: <date>/<archetype>/<perception_mode>/
+                base_dir = self.output_dir / self._recording_date / archetype_clean / self.perception_mode
+                base_dir.mkdir(parents=True, exist_ok=True)
+                
+                if is_final_flush and len(self._temp_files) == 0:
+                    # Only one flush total, write directly to final file
+                    filename = f"agent_recording_{self.session_name or timestamp}.parquet"
+                    file_path = base_dir / filename
+                else:
+                    # Write to temp file (will be merged later)
+                    self._temp_file_counter += 1
+                    filename = f"agent_recording_{self.session_name or timestamp}_flush_{self._temp_file_counter:03d}.tmp.parquet"
+                    file_path = base_dir / filename
+                    self._temp_files.append(file_path)
 
-            # Export to GeoParquet
-            gdf.to_parquet(str(file_path))
+                # Export to GeoParquet
+                archetype_gdf.to_parquet(str(file_path))
+                written_paths.append(file_path)
+                logger.info(f"Flushed {len(archetype_gdf)} records for archetype '{archetype}' to {file_path}")
 
             self.stats['records_written'] += len(self.buffer)
             self.buffer = []
 
-            logger.info(f"Flushed {len(records)} records to {file_path}")
-            return file_path
+            return written_paths[0] if written_paths else None
 
         except ImportError as e:
             logger.error(f"Missing dependencies for GeoParquet export: {e}")
@@ -403,10 +400,10 @@ class GeoParquetRecorder:
 
     def _merge_temp_files(self) -> Optional[Path]:
         """
-        Merge all temp flush files into a final GeoParquet file.
+        Merge all temp flush files into final GeoParquet files (one per archetype).
         
         Returns:
-            Path to the merged file, or None if failed
+            Path to the first merged file, or None if failed
         """
         if not self._temp_files:
             logger.debug("No temp files to merge")
@@ -417,31 +414,39 @@ class GeoParquetRecorder:
             import pandas as pd
             
             # Read all temp files
-            gdfs = []
+            all_records = []
             for temp_file in self._temp_files:
                 if temp_file.exists():
                     gdf = gpd.read_parquet(str(temp_file))
-                    gdfs.append(gdf)
+                    all_records.append(gdf)
                     logger.debug(f"Loaded temp file: {temp_file.name} ({len(gdf)} records)")
             
-            if not gdfs:
+            if not all_records:
                 logger.error("No valid temp files found to merge")
                 return None
             
             # Concatenate all GeoDataFrames
-            merged_gdf = pd.concat(gdfs, ignore_index=True)
+            merged_gdf = pd.concat(all_records, ignore_index=True)
             merged_gdf = gpd.GeoDataFrame(merged_gdf, crs="EPSG:4326")
             
-            # Generate final filename
-            mode_suffix = f"_{self.perception_mode}" if self.perception_mode else ""
-            filename = f"agent_recording_{self.session_name}{mode_suffix}.parquet"
-            final_path = self.output_dir / filename
+            # Group by archetype and save one file per archetype in the same folder structure
+            archetypes = merged_gdf['archetype'].unique()
+            written_paths = []
             
-            # Export merged GeoDataFrame
-            merged_gdf.to_parquet(str(final_path))
-            
-            total_records = sum(len(gdf) for gdf in gdfs)
-            logger.info(f"Merged {len(self._temp_files)} temp files ({total_records} records) into {final_path.name}")
+            for archetype in archetypes:
+                archetype_gdf = merged_gdf[merged_gdf['archetype'] == archetype]
+                archetype_clean = archetype.lower().replace(' ', '_')
+                
+                # Build folder structure: <date>/<archetype>/<perception_mode>/
+                base_dir = self.output_dir / self._recording_date / archetype_clean / self.perception_mode
+                base_dir.mkdir(parents=True, exist_ok=True)
+                
+                filename = f"agent_recording_{self.session_name}.parquet"
+                final_path = base_dir / filename
+                
+                archetype_gdf.to_parquet(str(final_path))
+                written_paths.append(final_path)
+                logger.info(f"Merged {len(archetype_gdf)} records for archetype '{archetype}' -> {final_path.name}")
             
             # Clean up temp files if not keeping them
             if not self.keep_temp_files:
@@ -452,7 +457,7 @@ class GeoParquetRecorder:
                     except Exception as e:
                         logger.warning(f"Failed to delete temp file {temp_file}: {e}")
             
-            return final_path
+            return written_paths[0] if written_paths else None
             
         except Exception as e:
             logger.error(f"Failed to merge temp files: {e}")
@@ -474,7 +479,7 @@ class GeoParquetRecorder:
         self.is_recording = False
 
         # Flush remaining buffer (this will be added to temp files)
-        self._flush_to_parquet()
+        self._flush_to_parquet(is_final_flush=True)
 
         # Merge all temp files into final parquet
         if self._temp_files:
@@ -505,11 +510,11 @@ class GeoParquetRecorder:
         }
 
     def get_output_path(self) -> Optional[Path]:
-        """Get the expected output file path."""
-        if not self.session_name:
+        """Get the expected output file path (based on first archetype recorded)."""
+        if not self.session_name or not self._recording_date:
             return None
-        mode_suffix = f"_{self.perception_mode}" if self.perception_mode else ""
-        return self.output_dir / f"agent_recording_{self.session_name}{mode_suffix}.parquet"
+        archetype_folder = (self._first_archetype or "unknown").lower().replace(" ", "_")
+        return self.output_dir / self._recording_date / archetype_folder / self.perception_mode / f"agent_recording_{self.session_name}.parquet"
 
 
 # Global recorder instance for the API server
@@ -559,8 +564,9 @@ def recover_unmerged_sessions(
     """
     Recover unmerged temp files from crashed recording sessions.
     
-    Scans the output directory for temp flush files (*.tmp.parquet),
-    groups them by session name, merges each group, and saves the final parquet.
+    Scans the output directory recursively for temp flush files (*.tmp.parquet),
+    groups them by session name within each archetype/perception_mode folder,
+    merges each group, and saves the final parquet.
     
     Args:
         output_dir: Directory to scan (default: Documentation/)
@@ -577,8 +583,8 @@ def recover_unmerged_sessions(
         logger.debug(f"Output directory does not exist: {output_dir}")
         return []
     
-    # Find all temp flush files
-    temp_files = list(output_dir.glob("agent_recording_*_flush_*.tmp.parquet"))
+    # Find all temp flush files recursively
+    temp_files = list(output_dir.rglob("agent_recording_*_flush_*.tmp.parquet"))
     
     if not temp_files:
         logger.debug("No unmerged temp files found")
@@ -586,29 +592,27 @@ def recover_unmerged_sessions(
     
     logger.info(f"Found {len(temp_files)} unmerged temp files for recovery")
     
-    # Group by session name
-    # Pattern: agent_recording_{session_name}_flush_{counter:03d}.tmp.parquet
+    # Group by folder (date/archetype/perception_mode) and session name
     from collections import defaultdict
     session_groups: Dict[str, List[Path]] = defaultdict(list)
     
     for temp_file in temp_files:
-        # Extract session name from filename
-        # agent_recording_SESSIONNAME_flush_001.tmp.parquet
         filename = temp_file.name
-        # Remove prefix and suffix
         if filename.startswith("agent_recording_"):
             remainder = filename[len("agent_recording_"):-len(".tmp.parquet")]
-            # Find last _flush_ to extract session name
             flush_idx = remainder.rfind("_flush_")
             if flush_idx > 0:
                 session_name = remainder[:flush_idx]
-                session_groups[session_name].append(temp_file)
+                # Group by parent folder to keep archetypes separate
+                folder_key = str(temp_file.parent)
+                session_groups[f"{folder_key}::{session_name}"].append(temp_file)
     
     # Merge each session group
     recovered_paths = []
     
-    for session_name, files in session_groups.items():
-        logger.info(f"Recovering session '{session_name}' with {len(files)} temp files")
+    for group_key, files in session_groups.items():
+        folder_path, session_name = group_key.rsplit("::", 1)
+        logger.info(f"Recovering session '{session_name}' in {folder_path} with {len(files)} temp files")
         
         try:
             import geopandas as gpd
@@ -631,19 +635,9 @@ def recover_unmerged_sessions(
             merged_gdf = pd.concat(gdfs, ignore_index=True)
             merged_gdf = gpd.GeoDataFrame(merged_gdf, crs="EPSG:4326")
             
-            # Determine perception mode from first temp file
-            mode_suffix = ""
-            first_name = files[0].name
-            if "_both" in first_name:
-                mode_suffix = "_both"
-            elif "_amenities" in first_name:
-                mode_suffix = "_amenities"
-            elif "_perception" in first_name:
-                mode_suffix = "_perception"
-            
-            # Save final file
-            filename = f"agent_recording_{session_name}{mode_suffix}.parquet"
-            final_path = output_dir / filename
+            # Save final file in the same folder
+            filename = f"agent_recording_{session_name}.parquet"
+            final_path = Path(folder_path) / filename
             merged_gdf.to_parquet(str(final_path))
             
             total_records = sum(len(gdf) for gdf in gdfs)

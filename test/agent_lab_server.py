@@ -271,6 +271,16 @@ async def get_streetview_grid():
     return {"type": "FeatureCollection", "features": features}
 
 
+@app.get("/api/streetview_grid/image/{filename}")
+async def get_streetview_image(filename: str):
+    import mimetypes
+    file_path = SV_RESULTS_DIR / filename
+    if not file_path.exists():
+        return {"error": "Image not found"}
+    content_type, _ = mimetypes.guess_type(str(file_path))
+    return FileResponse(str(file_path), media_type=content_type or "image/jpeg")
+
+
 # ── 10. Single-agent lifecycle ─────────────────────────────────────────────
 @app.post("/api/single-agent/configure")
 async def configure_single_agent(payload: dict = Body(...)):
@@ -365,11 +375,66 @@ async def configure_single_agent(payload: dict = Body(...)):
         edge_geom = LineString(list(edge_geom.coords)[::-1])
     start_point = Point(edge_geom.coords[0])
 
+    # Find archetype-aligned amenity near the target node (test-only)
+    ARCHETYPE_AMENITY_MAP = {
+        "commuter": ["bus_station", "train_station", "subway_entrance"],
+        "tourist":  ["attraction", "museum", "cafe", "restaurant"],
+        "student":  ["library", "university", "cafe", "fast_food"],
+        "resident": ["supermarket", "pharmacy", "park", "bakery"],
+    }
+    target_amenity_types = ARCHETYPE_AMENITY_MAP.get(archetype, [])
+    target_lon_final = float(target_node[0])
+    target_lat_final = float(target_node[1])
+    target_name = "user_target"
+    target_amenity_type = "user_pin"
+
+    if target_amenity_types:
+        try:
+            con = get_db_connection()
+            placeholders = ", ".join(["?"] * len(target_amenity_types))
+            query = f"""
+            SELECT name, amenity, ST_X(geometry) as lon, ST_Y(geometry) as lat,
+                   ST_Distance(geometry, ST_Point(?, ?)) as dist_deg
+            FROM amenities
+            WHERE amenity IN ({placeholders})
+              AND ST_DWithin(geometry, ST_Point(?, ?), 0.002)
+            ORDER BY dist_deg
+            LIMIT 1
+            """
+            params = [target_node[0], target_node[1]] + target_amenity_types + [target_node[0], target_node[1]]
+            row = con.execute(query, params).fetchone()
+            con.close()
+            if row:
+                amenity_lon = float(row[2])
+                amenity_lat = float(row[3])
+                # Re-snap target_node to nearest network node of the amenity
+                amenity_snapped = city_model._find_nearest_node(amenity_lon, amenity_lat)
+                if amenity_snapped:
+                    # CRITICAL: Re-check reachability after amenity snapping
+                    # The amenity might be on a different connected component
+                    reach_check = city_model.dijkstra_next_node(start_node, amenity_snapped)
+                    if reach_check is not None:
+                        # Amenity is reachable — use it
+                        target_lon_final = amenity_lon
+                        target_lat_final = amenity_lat
+                        target_name = str(row[0]) if row[0] else "Unnamed"
+                        target_amenity_type = str(row[1])
+                        target_node = amenity_snapped
+                    else:
+                        # Amenity unreachable — fall back to original click target
+                        logger.info(
+                            f"Amenity '{row[0]}' at ({amenity_lon:.6f}, {amenity_lat:.6f}) "
+                            f"snapped to unreachable node {amenity_snapped}. "
+                            f"Falling back to original target {target_node}."
+                        )
+        except Exception as e:
+            logger.warning(f"Failed to find archetype-aligned amenity: {e}")
+
     target_info = {
-        "name": "user_target",
-        "amenity_type": "user_pin",
-        "lon": float(target_node[0]),
-        "lat": float(target_node[1]),
+        "name": target_name,
+        "amenity_type": target_amenity_type,
+        "lon": target_lon_final,
+        "lat": target_lat_final,
         "target_node": target_node,
     }
 
@@ -440,14 +505,14 @@ async def step_continuous():
                 visited.append(amenity_copy)
         await agent.memory.status.update("visited_amenities", visited)
 
-        # Record path adherence — read target_edge_id from current_plan (set by mobility_block)
+        # Record path adherence — read on_proposed_path from current_plan (set by mobility_block)
         plan = await agent.memory.status.get("current_plan", {})
-        dijkstra_edge = plan.get("target_edge_id")
+        on_path = plan.get("on_proposed_path", False)
         perception_diary.record_adherence(
             step=city_model.steps,
-            followed=(str(edge_id) == str(dijkstra_edge)) if dijkstra_edge else False,
+            followed=on_path,
             chosen_edge=str(edge_id),
-            dijkstra_edge=str(dijkstra_edge) if dijkstra_edge else "none",
+            dijkstra_edge=str(plan.get("target_edge_id", "none")),
         )
 
     agents_data = []
@@ -615,7 +680,7 @@ async def get_agent_perception_text(agent_id: int):
 
 @app.get("/api/agent/{agent_id}/planned-path")
 async def get_agent_planned_path(agent_id: int):
-    """Return Dijkstra path as GeoJSON LineString."""
+    """Return Dijkstra path as GeoJSON LineString (current shortest path to target)."""
     agent = _find_agent(agent_id)
     if not agent:
         return {"error": "Agent not found"}
@@ -625,14 +690,12 @@ async def get_agent_planned_path(agent_id: int):
         return {"agent_id": agent_id, "path": None}
 
     try:
-        # Bug A fix: read current_node from KVMemory (direction-aware) instead of coords[-1]
         position = await agent.memory.status.get("position", {})
         current_node = position.get("current_node")
         if not current_node:
             return {"agent_id": agent_id, "path": None}
         current_node = (round(current_node[0], 6), round(current_node[1], 6))
 
-        # Bug B fix: safely unpack target_node whether it's a tuple or list
         raw_target = target_info.get("target_node")
         target_node = (round(float(raw_target[0]), 6), round(float(raw_target[1]), 6))
 
@@ -654,7 +717,6 @@ async def get_agent_planned_path(agent_id: int):
         if len(path_nodes) < 2:
             return {"agent_id": agent_id, "path": None}
 
-        # Convert node sequence to coordinates
         coords = []
         for i in range(len(path_nodes) - 1):
             u, v = path_nodes[i], path_nodes[i + 1]
@@ -693,6 +755,78 @@ async def get_agent_planned_path(agent_id: int):
     except Exception as e:
         logger.error(f"Planned path error: {e}")
         return {"agent_id": agent_id, "path": None, "error": str(e)}
+
+
+@app.get("/api/agent/{agent_id}/proposed-path")
+async def get_agent_proposed_path(agent_id: int):
+    """Return the originally proposed path and current shortest path side-by-side.
+
+    The proposed path is the Dijkstra route computed at spawn/target-set time.
+    The current path is the shortest path from the agent's current position.
+    Deviations from the proposed path reveal agent decision-making behavior.
+    """
+    agent = _find_agent(agent_id)
+    if not agent:
+        return {"error": "Agent not found"}
+
+    try:
+        proposed = await agent.memory.status.get("proposed_path", {})
+        destination = await agent.memory.status.get("destination", {})
+        position = await agent.memory.status.get("position", {})
+        current_plan = await agent.memory.status.get("current_plan", {})
+
+        result = {
+            "agent_id": agent_id,
+            "proposed_path": proposed,
+            "destination": destination,
+            "current_plan": current_plan,
+            "shortest_path": None,
+        }
+
+        # Also compute current shortest path for comparison
+        current_node = position.get("current_node")
+        target_node = destination.get("target_node") if destination else None
+        if current_node and target_node:
+            if isinstance(target_node, (list, tuple)):
+                target_node = (round(float(target_node[0]), 6), round(float(target_node[1]), 6))
+            if current_node != target_node:
+                path_nodes = [current_node]
+                current = current_node
+                for _ in range(1000):
+                    next_node = city_model.dijkstra_next_node(current, target_node)
+                    if next_node is None:
+                        break
+                    path_nodes.append(next_node)
+                    current = next_node
+                    if current == target_node:
+                        break
+
+                if len(path_nodes) >= 2:
+                    coords = []
+                    for i in range(len(path_nodes) - 1):
+                        u, v = path_nodes[i], path_nodes[i + 1]
+                        for edge_id, edge_geom, direction in city_model.node_to_edges.get(u, []):
+                            end = edge_geom.coords[-1] if direction == "forward" else edge_geom.coords[0]
+                            end_key = (round(end[0], 6), round(end[1], 6))
+                            if end_key == v:
+                                edge_coords = list(edge_geom.coords) if direction == "forward" else list(edge_geom.coords)[::-1]
+                                if i == 0:
+                                    coords.extend([(lon, lat) for lon, lat in edge_coords])
+                                else:
+                                    coords.extend([(lon, lat) for lon, lat in edge_coords[1:]])
+                                break
+
+                    if len(coords) >= 2:
+                        result["shortest_path"] = {
+                            "type": "Feature",
+                            "geometry": {"type": "LineString", "coordinates": coords},
+                            "properties": {"num_nodes": len(path_nodes)},
+                        }
+
+        return result
+    except Exception as e:
+        logger.error(f"Proposed path error: {e}")
+        return {"agent_id": agent_id, "error": str(e)}
 
 
 # ── 13. NEW: Perception Diary endpoints ────────────────────────────────────
@@ -874,7 +1008,7 @@ async def get_single_agent_path():
     agent_id = city_model.city_agents[0].unique_id
     try:
         rows = city_model.tracker.con.execute(
-            "SELECT longitude, latitude FROM agent_movements WHERE agent_id = ? ORDER BY step_number",
+            "SELECT longitude, latitude FROM agent_movements WHERE agent_id = ? ORDER BY step_number, movement_id",
             [agent_id],
         ).fetchall()
     except Exception as e:
@@ -882,7 +1016,14 @@ async def get_single_agent_path():
 
     if len(rows) < 1:
         return {"type": "FeatureCollection", "features": []}
-    coords = [[r[0], r[1]] for r in rows]
+
+    # Deduplicate consecutive identical coordinates
+    deduped = [rows[0]]
+    for r in rows[1:]:
+        if r[0] != deduped[-1][0] or r[1] != deduped[-1][1]:
+            deduped.append(r)
+
+    coords = [[r[0], r[1]] for r in deduped]
     if len(coords) == 1:
         return {
             "type": "FeatureCollection",
@@ -959,13 +1100,13 @@ async def get_recording_status():
     }
 
 
-@app.get("/api/recording/download/{filename}")
+@app.get("/api/recording/download/{filename:path}")
 async def download_recording(filename: str):
     file_path = TEST_RECORDING_DIR / filename
     if not file_path.exists():
         return {"error": "File not found"}
     return FileResponse(
-        str(file_path), media_type="application/octet-stream", filename=filename
+        str(file_path), media_type="application/octet-stream", filename=file_path.name
     )
 
 
