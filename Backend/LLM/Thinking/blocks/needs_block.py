@@ -16,7 +16,7 @@ DECAY_RATES = {
     "hunger": 0.015,   # Hunger increases ~1.5% per step — noticeable buildup
     "energy": 0.010,   # Energy depletes ~1.0% per step — meaningful changes
     "social": 0.010,   # Social need increases ~1.0% per step — visible growth
-    "comfort": 0.008,  # Comfort erodes ~0.8% per step — slow environmental wear; restored mainly by visual perception
+    "comfort": 0.015,  # Comfort erodes ~1.5% per step — matches the calibrated visual restoration scale
 }
 
 # Amenity type to needs mapping (rule-based fallback)
@@ -58,8 +58,8 @@ class NeedsBlock(Block):
         satisfaction_source = "none"
         satisfaction_reasoning = "Needs updated via decay only"
 
-        # 1. Visual satisfaction evaluation (if perception data exists)
-        if street_perception:
+        # 1. Visual satisfaction evaluation (every 5 steps to avoid fully cancelling decay)
+        if street_perception and step % 5 == 0:
             visual_result = await self._evaluate_visual_satisfaction(
                 archetype=archetype,
                 needs=needs,

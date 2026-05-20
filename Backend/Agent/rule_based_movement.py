@@ -44,9 +44,8 @@ def select_next_edge(
     
     # Filter out current edge and previous edge (prevent immediate U-turn and backtracking)
     candidates = [
-        (eid, geom, direction) 
-        for eid, geom, direction in connected_edges 
-        if eid != agent.current_edge_id and eid != agent.previous_edge_id
+        entry for entry in connected_edges
+        if entry[0] != agent.current_edge_id and entry[0] != agent.previous_edge_id
     ]
     
     # If no candidates, allow U-turn
@@ -75,7 +74,7 @@ def select_next_edge(
             next_node = agent.model.dijkstra_next_node(current_node, target_node)
             if next_node:
                 for e in candidates:
-                    eid, geom, direction = e
+                    eid, geom, direction = e[0], e[1], e[2]
                     end = geom.coords[-1] if direction == "forward" else geom.coords[0]
                     if (round(end[0], 6), round(end[1], 6)) == next_node:
                         return eid, geom, direction
@@ -85,7 +84,7 @@ def select_next_edge(
         key=lambda e: agent.model.edge_visit_count_global.get(e[0], 0)
     )
 
-    edge_id, edge_geom, direction = candidates[0]
+    edge_id, edge_geom, direction = candidates[0][0], candidates[0][1], candidates[0][2]
     
     # Reverse geometry if moving in reverse direction
     if direction == "reverse":

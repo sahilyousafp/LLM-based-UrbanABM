@@ -47,9 +47,15 @@ class AgentRecord:
     thought_stream: List[Dict] = field(default_factory=list)
     decision_reason: Optional[str] = None
     is_fallback: bool = False
-    satisfaction_source: str = "none"              # NEW: visual, amenity, combined, none
-    satisfaction_reasoning: Optional[str] = None   # NEW: LLM reasoning for satisfaction
-    
+    satisfaction_source: str = "none"
+    satisfaction_reasoning: Optional[str] = None
+    start_lon: Optional[float] = None
+    start_lat: Optional[float] = None
+    target_name: Optional[str] = None
+    target_amenity_type: Optional[str] = None
+    target_lon: Optional[float] = None
+    target_lat: Optional[float] = None
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame conversion."""
         return {
@@ -74,6 +80,12 @@ class AgentRecord:
             'is_fallback': self.is_fallback,
             'satisfaction_source': self.satisfaction_source,
             'satisfaction_reasoning': self.satisfaction_reasoning,
+            'start_lon': self.start_lon,
+            'start_lat': self.start_lat,
+            'target_name': self.target_name,
+            'target_amenity_type': self.target_amenity_type,
+            'target_lon': self.target_lon,
+            'target_lat': self.target_lat,
         }
 
 
@@ -95,11 +107,11 @@ class GeoParquetRecorder:
     def __init__(
         self,
         output_dir: Optional[Path] = None,
-        max_buffer_size: int = 500,  # Reduced for crash safety
+        max_buffer_size: int = 50,
         include_thoughts: bool = True,
         include_perception: bool = True,
         perception_mode: str = "both",
-        auto_flush_interval: float = 2.0,  # Auto-flush every 2 seconds
+        auto_flush_interval: float = 2.0,
         keep_temp_files: bool = True,
     ):
         """
@@ -158,15 +170,6 @@ class GeoParquetRecorder:
         )
     
     def start_recording(self, session_name: Optional[str] = None) -> str:
-        """
-        Start a new recording session.
-        
-        Args:
-            session_name: Optional name for the session (used in filename)
-            
-        Returns:
-            Session ID string
-        """
         if self.is_recording:
             logger.warning("Recording already in progress")
             return self.session_id
@@ -180,6 +183,29 @@ class GeoParquetRecorder:
         self.is_recording = True
         self.buffer = []
         self.total_records = 0
+        self._temp_files = []
+        self.stats = {
+            'agents_tracked': set(),
+            'steps_recorded': 0,
+            'records_written': 0,
+        }
+        
+        logger.info(f"Recording started: {self.session_id}")
+        return self.session_id
+        
+        # Sequential run numbering
+        existing = sorted(self.output_dir.glob("run_*.parquet"))
+        run_num = len(existing) + 1
+        self.session_name = session_name or f"run_{run_num:04d}"
+        self.session_id = f"{self.session_name}_{id(self)}"
+        self.start_time = datetime.now()
+        self.start_step = 0
+        self._recording_date = self.start_time.strftime("%Y-%m-%d")
+        self._first_archetype = None
+        self.is_recording = True
+        self.buffer = []
+        self.total_records = 0
+        self._temp_files = []
         self.stats = {
             'agents_tracked': set(),
             'steps_recorded': 0,
@@ -257,6 +283,7 @@ class GeoParquetRecorder:
         satisfaction_source = "none"
         satisfaction_reasoning = None
 
+        destination = {}
         if hasattr(agent, 'memory'):
             # Use synchronous access to avoid asyncio issues
             # Access internal data directly for performance
@@ -270,6 +297,7 @@ class GeoParquetRecorder:
                 agent_profile = data.get('agent_profile', {})
                 satisfaction_source = data.get('satisfaction_source', 'none')
                 satisfaction_reasoning = data.get('satisfaction_reasoning', None)
+                destination = data.get('destination', {})
         
         # Get nearby amenities from agent
         nearby_amenities = getattr(agent, 'nearby_amenities', [])
@@ -313,26 +341,23 @@ class GeoParquetRecorder:
             cognition_state=cognition_state,
             current_plan=current_plan,
             visited_edges=visited_edges,
-            visited_amenities=visited_amenities[-20:] if visited_amenities else [],  # Last 20
-            nearby_amenities=nearby_amenities[:10] if nearby_amenities else [],  # Nearest 10
+            visited_amenities=visited_amenities[-20:] if visited_amenities else [],
+            nearby_amenities=nearby_amenities[:10] if nearby_amenities else [],
             street_perception=street_perception,
             thought_stream=thought_stream,
             decision_reason=decision_reason,
             is_fallback=is_fallback,
             satisfaction_source=satisfaction_source,
             satisfaction_reasoning=satisfaction_reasoning,
+            start_lon=destination.get('start_lon'),
+            start_lat=destination.get('start_lat'),
+            target_name=destination.get('name'),
+            target_amenity_type=destination.get('amenity_type'),
+            target_lon=destination.get('lon'),
+            target_lat=destination.get('lat'),
         )
     
     def _flush_to_parquet(self, is_final_flush: bool = False) -> Optional[Path]:
-        """
-        Flush buffered records to GeoParquet file.
-        
-        Args:
-            is_final_flush: If True, write directly to final file. If False, write to temp file.
-        
-        Returns:
-            Path to the written file, or None if failed
-        """
         if not self.buffer:
             logger.debug("No data to flush")
             return None
@@ -342,57 +367,38 @@ class GeoParquetRecorder:
             from shapely.geometry import Point
             import pandas as pd
 
-            # Convert buffer to list of dicts
             records = [record.to_dict() for record in self.buffer]
-
-            # Create DataFrame
             df = pd.DataFrame(records)
-
-            # Create geometry column from coordinates and step (as Z coordinate)
-            geometry = [Point(lon, lat, step) for lon, lat, step in zip(df['longitude'], df['latitude'], df['step'])]
-
-            # Create GeoDataFrame
+            geometry = [Point(lon, lat) for lon, lat in zip(df['longitude'], df['latitude'])]
             gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
 
-            # Generate filename
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            
-            # Group by archetype and save separate files in date/archetype/perception_mode folders
+            # Nested folder structure: date/archetype/perception_mode/
             archetypes = df['archetype'].unique()
             written_paths = []
-            
+
             for archetype in archetypes:
                 archetype_gdf = gdf[gdf['archetype'] == archetype]
                 archetype_clean = archetype.lower().replace(' ', '_')
-                
-                # Build folder structure: <date>/<archetype>/<perception_mode>/
                 base_dir = self.output_dir / self._recording_date / archetype_clean / self.perception_mode
                 base_dir.mkdir(parents=True, exist_ok=True)
-                
-                if is_final_flush and len(self._temp_files) == 0:
-                    # Only one flush total, write directly to final file
-                    filename = f"agent_recording_{self.session_name or timestamp}.parquet"
-                    file_path = base_dir / filename
-                else:
-                    # Write to temp file (will be merged later)
-                    self._temp_file_counter += 1
-                    filename = f"agent_recording_{self.session_name or timestamp}_flush_{self._temp_file_counter:03d}.tmp.parquet"
-                    file_path = base_dir / filename
-                    self._temp_files.append(file_path)
+                filename = f"{self.session_name}.parquet"
+                file_path = base_dir / filename
 
-                # Export to GeoParquet
+                if file_path.exists():
+                    existing = gpd.read_parquet(str(file_path))
+                    archetype_gdf = pd.concat([existing, archetype_gdf], ignore_index=True)
+                    archetype_gdf = gpd.GeoDataFrame(archetype_gdf, crs="EPSG:4326")
+
                 archetype_gdf.to_parquet(str(file_path))
                 written_paths.append(file_path)
-                logger.info(f"Flushed {len(archetype_gdf)} records for archetype '{archetype}' to {file_path}")
+                logger.info(f"Flushed {len(archetype_gdf)} records for '{archetype}' to {file_path}")
 
             self.stats['records_written'] += len(self.buffer)
             self.buffer = []
-
             return written_paths[0] if written_paths else None
 
         except ImportError as e:
             logger.error(f"Missing dependencies for GeoParquet export: {e}")
-            logger.error("Please install: pip install geopandas pyarrow")
             return None
         except Exception as e:
             logger.error(f"Failed to flush to GeoParquet: {e}")
@@ -464,33 +470,13 @@ class GeoParquetRecorder:
             return None
 
     def stop_recording(self) -> Optional[Path]:
-        """
-        Stop recording and export to GeoParquet.
-        
-        Merges all temp flush files into a final parquet file.
-
-        Returns:
-            Path to the exported GeoParquet file, or None if no data recorded
-        """
         if not self.is_recording:
             logger.warning("No recording in progress")
             return None
 
         self.is_recording = False
-
-        # Flush remaining buffer (this will be added to temp files)
-        self._flush_to_parquet(is_final_flush=True)
-
-        # Merge all temp files into final parquet
-        if self._temp_files:
-            final_path = self._merge_temp_files()
-        else:
-            # No temp files, use the single flush file (rename if needed)
-            logger.warning("No temp files found - recording may have failed")
-            final_path = None
-
-        logger.info(f"Recording stopped. Total records: {self.total_records}")
-
+        final_path = self._flush_to_parquet(is_final_flush=True)
+        logger.info(f"Recording stopped. Total records: {self.total_records} -> {final_path}")
         return final_path
 
     def get_status(self) -> Dict[str, Any]:
@@ -510,11 +496,10 @@ class GeoParquetRecorder:
         }
 
     def get_output_path(self) -> Optional[Path]:
-        """Get the expected output file path (based on first archetype recorded)."""
         if not self.session_name or not self._recording_date:
             return None
         archetype_folder = (self._first_archetype or "unknown").lower().replace(" ", "_")
-        return self.output_dir / self._recording_date / archetype_folder / self.perception_mode / f"agent_recording_{self.session_name}.parquet"
+        return self.output_dir / self._recording_date / archetype_folder / self.perception_mode / f"{self.session_name}.parquet"
 
 
 # Global recorder instance for the API server
@@ -530,7 +515,7 @@ def get_recorder() -> Optional[GeoParquetRecorder]:
 
 def create_recorder(
     output_dir: Optional[Path] = None,
-    max_buffer_size: int = 10000,
+    max_buffer_size: int = 50,
     include_thoughts: bool = True,
     include_perception: bool = True,
     perception_mode: str = "both",

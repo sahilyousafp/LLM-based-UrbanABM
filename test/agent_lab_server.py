@@ -42,7 +42,6 @@ from geoparquet_recorder import (
     create_recorder,
     get_recorder,
     clear_recorder,
-    recover_unmerged_sessions,
 )
 from datetime import datetime
 
@@ -153,8 +152,8 @@ async def read_root():
 async def get_frontend_config():
     return {
         "mapbox_token": os.environ.get("MAPBOX_TOKEN", ""),
-        "llm_provider": os.environ.get("LLM_PROVIDER", "ollama"),
-        "llm_model": os.environ.get("LLM_MODEL", "qwen2.5-coder:3b"),
+        "llm_provider": os.environ.get("LLM_PROVIDER", "deepseek"),
+        "llm_model": os.environ.get("LLM_MODEL", "deepseek-chat"),
         "llm_locked": True,
         "perception_mode": getattr(city_model, "perception_mode", "both"),
         "archetypes": list(CityAgent.ARCHETYPES),
@@ -338,7 +337,8 @@ async def configure_single_agent(payload: dict = Body(...)):
             if u in visited:
                 continue
             visited.add(u)
-            for _eid, geom, direction in city_model.node_to_edges.get(u, []):
+            for entry in city_model.node_to_edges.get(u, []):
+                geom, direction = entry[1], entry[2]
                 if direction == "forward":
                     v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
                 else:
@@ -368,7 +368,7 @@ async def configure_single_agent(payload: dict = Body(...)):
 
     forward_edges = [e for e in edges_at_start if e[2] == "forward"]
     chosen = forward_edges[0] if forward_edges else edges_at_start[0]
-    edge_id, edge_geom, direction = chosen
+    edge_id, edge_geom, direction = chosen[0], chosen[1], chosen[2]
     # Pre-flip reverse edges so coords[-1] in _init_memory_sync is always the destination node
     if direction == "reverse":
         from shapely.geometry import LineString
@@ -462,6 +462,11 @@ async def configure_single_agent(payload: dict = Body(...)):
 @app.post("/api/single-agent/reset")
 async def reset_single_agent():
     """Drop the agent and clear the diary."""
+    # Clear movement history for all previous agents so old trails don't bleed into the next session
+    try:
+        city_model.tracker.con.execute("DELETE FROM agent_movements")
+    except Exception as e:
+        logger.warning(f"Could not clear agent_movements on reset: {e}")
     city_model.city_agents = []
     city_model.steps = 0
     perception_diary.entries.clear()
@@ -720,7 +725,8 @@ async def get_agent_planned_path(agent_id: int):
         coords = []
         for i in range(len(path_nodes) - 1):
             u, v = path_nodes[i], path_nodes[i + 1]
-            for edge_id, edge_geom, direction in city_model.node_to_edges.get(u, []):
+            for entry in city_model.node_to_edges.get(u, []):
+                edge_id, edge_geom, direction = entry[0], entry[1], entry[2]
                 if direction == "forward":
                     end_node = edge_geom.coords[-1]
                 else:
@@ -805,7 +811,8 @@ async def get_agent_proposed_path(agent_id: int):
                     coords = []
                     for i in range(len(path_nodes) - 1):
                         u, v = path_nodes[i], path_nodes[i + 1]
-                        for edge_id, edge_geom, direction in city_model.node_to_edges.get(u, []):
+                        for entry in city_model.node_to_edges.get(u, []):
+                            edge_id, edge_geom, direction = entry[0], entry[1], entry[2]
                             end = edge_geom.coords[-1] if direction == "forward" else edge_geom.coords[0]
                             end_key = (round(end[0], 6), round(end[1], 6))
                             if end_key == v:
@@ -1050,22 +1057,21 @@ async def start_recording(
     include_thoughts: bool = True,
     include_perception: bool = True,
 ):
-    recover_unmerged_sessions(TEST_RECORDING_DIR)
     clear_recorder()
     current_mode = getattr(city_model, "perception_mode", "both")
     recorder = create_recorder(
         output_dir=TEST_RECORDING_DIR,
-        max_buffer_size=5000,
+        max_buffer_size=50,
         include_thoughts=include_thoughts,
         include_perception=include_perception,
         perception_mode=current_mode,
     )
-    session_id = recorder.start_recording(session_name or "agent_lab")
+    session_id = recorder.start_recording(session_name)
     city_model.set_recorder(recorder)
     return {
         "status": "recording_started",
         "session_id": session_id,
-        "session_name": session_name or "agent_lab",
+        "session_name": recorder.session_name,
         "perception_mode": current_mode,
     }
 
@@ -1146,7 +1152,8 @@ async def get_reachable_area(lon: float, lat: float, max_nodes: int = 500):
         if u in visited:
             continue
         visited.add(u)
-        for _eid, geom, direction in city_model.node_to_edges.get(u, []):
+        for entry in city_model.node_to_edges.get(u, []):
+            geom, direction = entry[1], entry[2]
             if direction == "forward":
                 v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
             else:

@@ -41,7 +41,8 @@ def mobility_decision_prompt(
     street_perception: optional dict with walkability, vegetation, pedestrian_activity, etc.
     destination: agent's persistent target {"name", "amenity_type", "lon", "lat"}
     path_hint_edge_id: edge_id of the Dijkstra-optimal next step toward destination
-    adherence_failed: True means the agent rolled to deviate — it is now free to explore
+    adherence: probability of following Dijkstra path (archetype-based)
+    adherence_failed: True when the agent's adherence roll failed — it may take a detour
     """
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
@@ -83,15 +84,15 @@ def mobility_decision_prompt(
             f"This is your primary goal — navigate toward it."
         )
 
-    # Deviation context: explain WHY the agent is free to choose
+    # Deviation context: agent may take a detour but destination remains primary goal
     deviation_context = ""
     if adherence_failed:
         deviation_context = (
-            f"\n\n** You rolled to deviate from your proposed path (adherence={adherence:.1f}). "
-            f"You are now free to choose based on your current needs, nearby amenities, and preferences. "
-            f"Consider: Do you have low energy or hunger that a nearby amenity could satisfy? "
-            f"Does a candidate edge lead through an environment that matches your archetype's preferences? "
-            f"The [SHORTEST PATH TO DESTINATION] candidate is still available if you prefer to stay on route. **"
+            f"\n\n** You may take a brief detour this step (adherence={adherence:.1f} — you explore more than you follow). "
+            f"You can follow your curiosity, satisfy a nearby need, or enjoy an interesting street — "
+            f"but your destination is still your PRIMARY GOAL. Do not stray so far that you lose progress toward it. "
+            f"Prefer candidates that are directionally toward your destination OR satisfy an urgent need (hunger/energy < 0.3). "
+            f"The [SHORTEST PATH TO DESTINATION] candidate is always the safest choice if nothing compelling draws you away. **"
         )
 
     user_content = f"""Agent Profile:
@@ -109,8 +110,8 @@ Candidate Edges/Destinations:
 Choose the index of the best candidate for this agent to move to next.
 Your path adherence weight is {adherence:.1f} — this determines how often you follow the [SHORTEST PATH TO DESTINATION].
 Your preferences: {', '.join(preferences) if preferences else 'none'}.
-Deviate from the shortest path when nearby streets or amenities match your preferences; otherwise stay on route.
-Also consider the street environment and how it suits your archetype.
+Deviate when nearby streets or amenities match your preferences; otherwise stay on route.
+If comfort < 0.4, prefer edges toward parks, plazas, or streets with greenery. If hunger > 0.7 or energy < 0.3, prioritise edges near relevant amenities.
 
 Respond with JSON:
 {{"choice": <index 0-{len(candidates)-1}>, "reasoning": "<one sentence why>"}}"""
@@ -171,10 +172,10 @@ Consider:
   - A tired agent loses energy faster in unstimulating environments
   - A social-mood agent gains more from busy streets
   - Different archetypes respond differently: tourists love interesting buildings, students seek lively areas, residents prefer familiar comfort, commuters value efficient pleasant routes
-  - COMFORT is primarily driven by visual environment quality: well-maintained buildings, greenery, good lighting, pleasant pedestrian activity → comfort_delta positive (up to +0.4); run-down areas, dark streets, empty/desolate spaces, visual noise → comfort_delta negative (down to -0.3)
+  - COMFORT is driven by visual environment quality. Use a SMALL calibrated scale: excellent space (greenery, good lighting, lively pedestrian activity) → +0.06 to +0.08 max; average urban street → 0.00 to +0.02; poor quality (run-down, dark, desolate, heavy traffic noise) → −0.05 to −0.08. Most streets should score near zero — only truly exceptional or notably unpleasant spaces warrant ±0.05+.
 
-Provide deltas 0.0-1.0 (positive = need satisfied/reduced, negative = need increased/worsened).
-Note: hunger_delta is typically small from visual alone (distraction effect); energy_delta can be positive from restoration; social_delta reflects social vibrancy; comfort_delta is the primary metric here — rate the visual environment quality honestly.
+Provide deltas as small floats (positive = need satisfied, negative = need worsened).
+Note: hunger_delta is typically small from visual alone; energy_delta can be positive from restoration; social_delta reflects social vibrancy; comfort_delta uses the small calibrated scale above — most streets score near 0.0.
 
 Respond with JSON:
 {{"hunger_delta": <float>, "energy_delta": <float>, "social_delta": <float>, "comfort_delta": <float>, "reasoning": "<one sentence: why this space affects needs this way>"}}"""

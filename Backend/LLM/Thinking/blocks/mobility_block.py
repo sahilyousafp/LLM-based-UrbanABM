@@ -5,8 +5,8 @@ Decision pipeline:
   1. Read agent memory (position, needs, cognition, recent stream)
   2. Compute Dijkstra shortest path to target node
   3. Roll adherence dice: if succeeds, force the shortest-path edge (no LLM)
-  4. If roll fails, let LLM choose freely based on needs/cognition/amenities
-  5. Fallback to least-visited edge on LLM failure
+  4. If roll fails, let LLM choose freely — destination still shown as primary goal
+  5. Fallback to Dijkstra (then least-visited) on LLM failure
   6. Log decision to stream memory
 """
 import random
@@ -18,7 +18,7 @@ from LLM.Thinking.prompts import mobility_decision_prompt
 
 logger = logging.getLogger(__name__)
 
-_ADHERENCE = {"commuter": 1.0, "resident": 0.8, "student": 0.5, "tourist": 0.2}
+_ADHERENCE = {"commuter": 1.0, "resident": 0.8, "student": 0.5, "tourist": 0.35}
 
 
 class MobilityBlock(Block):
@@ -60,7 +60,6 @@ class MobilityBlock(Block):
 
             next_node = model.dijkstra_next_node(current_node, target_node)
             if next_node:
-                # Search ALL candidates for the Dijkstra edge (not just first 8)
                 for c in candidate_edges:
                     geom = c.get("geom")
                     if geom:
@@ -72,13 +71,10 @@ class MobilityBlock(Block):
                             break
 
         # --- Hard adherence enforcement ---
-        # Roll the adherence dice: if it succeeds, force the Dijkstra edge
-        # This matches rule_based_movement.py behavior exactly
         adherence_roll = random.random()
         should_follow_path = adherence_roll < adherence
 
         if should_follow_path and dijkstra_edge_data is not None:
-            # Force the shortest-path edge — no LLM call needed
             chosen = dijkstra_edge_data
             reasoning = f"Path adherence roll {adherence_roll:.2f} < {adherence:.1f} — following shortest path"
 
@@ -114,7 +110,7 @@ class MobilityBlock(Block):
                 fallback=False,
             )
 
-        # --- LLM-driven decision (adherence roll failed — agent is free to explore) ---
+        # --- LLM-driven decision (adherence roll failed — agent may take a detour) ---
         recent_moves = await self.memory.stream.get_recent("mobility", n=5)
         history_text = self.memory.stream.format_for_prompt(recent_moves)
 
@@ -151,13 +147,17 @@ class MobilityBlock(Block):
 
         fallback = False
         if chosen_idx is None or not isinstance(chosen_idx, int) or chosen_idx >= len(prompt_cands):
-            visit_counts = await self.memory.status.get("visited_edges", {})
-            candidate_edges_sorted = sorted(
-                candidate_edges,
-                key=lambda e: visit_counts.get(str(e["edge_id"]), 0)
-            )
-            chosen = candidate_edges_sorted[0]
-            reasoning = "LLM fallback: least-visited edge"
+            if dijkstra_edge_data is not None:
+                chosen = dijkstra_edge_data
+                reasoning = "LLM fallback: following Dijkstra toward destination"
+            else:
+                visit_counts = await self.memory.status.get("visited_edges", {})
+                candidate_edges_sorted = sorted(
+                    candidate_edges,
+                    key=lambda e: visit_counts.get(str(e["edge_id"]), 0)
+                )
+                chosen = candidate_edges_sorted[0]
+                reasoning = "LLM fallback: least-visited edge (no destination set)"
             fallback = True
         else:
             chosen = candidate_edges[chosen_idx]

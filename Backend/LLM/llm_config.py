@@ -9,8 +9,8 @@ from dataclasses import dataclass, field
 
 @dataclass
 class LLMConfig:
-    provider: str = "gemini"          # gemini | ollama | vllm | docker | openai | deepseek | custom
-    model: str = "gemini-2.5-flash-lite"
+    provider: str = "deepseek"         # deepseek | openrouter | groq | gemini | ollama | vllm | docker | openai | custom
+    model: str = "deepseek-chat"
     api_key: str = ""
     base_url: str = ""                # Override endpoint (e.g. vLLM at http://localhost:8001/v1)
     timeout: int = 30
@@ -22,6 +22,8 @@ class LLMConfig:
         if self.base_url:
             return self.base_url
         defaults = {
+            "openrouter": "https://openrouter.ai/api/v1",
+            "groq": "https://api.groq.com/openai/v1",
             "ollama": "http://localhost:11434/v1",
             "vllm": "http://localhost:8001/v1",
             "docker": "http://localhost:12434/engines/llama.cpp/v1",
@@ -39,6 +41,8 @@ class LLMConfig:
             "openai": "OPENAI_API_KEY",
             "deepseek": "DEEPSEEK_API_KEY",
             "gemini": "GEMINI_API_KEY",
+            "groq": "GROQ_API_KEY",
+            "openrouter": "OPENROUTER_API_KEY",
             "ollama": "ollama",  # Ollama doesn't need a real key
             "vllm": "vllm",     # vLLM accepts any non-empty key sentinel
             "docker": "docker", # Docker Model Runner needs no key; use sentinel

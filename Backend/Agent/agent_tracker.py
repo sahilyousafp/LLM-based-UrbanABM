@@ -167,7 +167,7 @@ class AgentTracker:
                     (SELECT COALESCE(MAX(movement_id), 0) + 1 FROM agent_movements),
                     ?, ?, ?, ?, ?,
                     ST_Point(?, ?),
-                    ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?
                 )
             """, [agent_id, timestamp, step_number, longitude, latitude,
                   longitude, latitude, edge_id, position_along_edge, speed,

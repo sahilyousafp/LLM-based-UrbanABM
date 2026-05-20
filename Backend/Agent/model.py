@@ -27,6 +27,20 @@ from rule_based_movement import make_decision as rule_based_move
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
 
+# Walkability weights based on Overture road_class — lower = more preferred for pedestrian routing
+WALKABILITY_WEIGHT = {
+    "pedestrian":    0.3,
+    "footway":       0.5,
+    "living_street": 0.6,
+    "path":          0.7,
+    "cycleway":      0.7,
+    "steps":         0.85,
+    "residential":   1.0,
+    "tertiary":      1.1,
+    "service":       1.1,
+    "connector":     1.2,
+}
+
 class CityAgent(mg.GeoAgent):
     """
     A pedestrian agent with LLM-driven movement decisions.
@@ -101,10 +115,14 @@ class CityAgent(mg.GeoAgent):
         }
         if edge_id is not None:
             self.memory.status._data["visited_edges"] = {str(edge_id): 1}
-        self.memory.status._data["destination"] = target_info or {
+        destination_entry = target_info or {
             "name": None, "amenity_type": None,
             "lon": None, "lat": None, "target_node": None,
         }
+        # Store spawn position so recorders can log start→target per row
+        destination_entry["start_lon"] = geometry.x
+        destination_entry["start_lat"] = geometry.y
+        self.memory.status._data["destination"] = destination_entry
         # Compute and store the proposed path at spawn time
         proposed_path = self.model._compute_proposed_path(current_node, target_info)
         self.memory.status._data["proposed_path"] = proposed_path
@@ -119,6 +137,7 @@ class CityAgent(mg.GeoAgent):
             "curiosity": 0.7,
             "fatigue": 0.0,
         }
+        self.memory.status._data["explore_steps"] = 0
 
     @staticmethod
     def _archetype_preferences(archetype: str) -> list:
@@ -271,8 +290,8 @@ class CityAgent(mg.GeoAgent):
         raw_edges = self.model.find_connected_edges(end_point)
         # Exclude current edge and previous edge to prevent immediate reversal and backtracking
         candidates = [
-            (eid, geom, d) for eid, geom, d in raw_edges
-            if eid != self.current_edge_id and eid != self.previous_edge_id
+            entry for entry in raw_edges
+            if entry[0] != self.current_edge_id and entry[0] != self.previous_edge_id
         ]
         if not candidates:
             candidates = raw_edges  # Dead end — allow reversal
@@ -281,7 +300,8 @@ class CityAgent(mg.GeoAgent):
         perception_mode = getattr(self.model, 'perception_mode', 'both')
 
         result = []
-        for eid, geom, direction in candidates:
+        for entry in candidates:
+            eid, geom, direction = entry[0], entry[1], entry[2]
             # Annotate each candidate with nearby amenity types (if mode allows)
             midpoint = Point(geom.coords[len(geom.coords) // 2])
             
@@ -363,8 +383,8 @@ class CityAgent(mg.GeoAgent):
         end_point = Point(self.current_edge_geom.coords[-1])
         next_edges = self.model.find_connected_edges(end_point)
         candidates = [
-            (eid, g, d) for eid, g, d in next_edges
-            if eid != self.current_edge_id and eid != self.previous_edge_id
+            entry for entry in next_edges
+            if entry[0] != self.current_edge_id and entry[0] != self.previous_edge_id
         ]
         if not candidates:
             candidates = next_edges
@@ -372,7 +392,7 @@ class CityAgent(mg.GeoAgent):
             self.position_along_edge = 0.0
             return
         candidates.sort(key=lambda e: self.model.edge_visit_count_global.get(e[0], 0))
-        eid, geom, direction = candidates[0]
+        eid, geom, direction = candidates[0][0], candidates[0][1], candidates[0][2]
         if direction == "reverse":
             geom = LineString(list(geom.coords)[::-1])
         self.previous_edge_id = self.current_edge_id
@@ -400,12 +420,13 @@ class CityModel(mesa.Model):
         "student":  ["library", "university", "cafe"],
     }
 
-    # Probability of following Dijkstra shortest path at each intersection
+    # Probability of following Dijkstra at each intersection (rule-based mode).
+    # Aligned with LLM-mode explore budgets: budget N → 1 forced per N+1 steps → prob 1/(N+1).
     ARCHETYPE_PATH_ADHERENCE: dict = {
-        "commuter": 1.0,
-        "resident": 0.8,
-        "student":  0.5,
-        "tourist":  0.2,
+        "commuter": 1.00,  # budget 0 → always
+        "resident": 0.50,  # budget 1 → every 2nd step
+        "student":  0.33,  # budget 2 → every 3rd step
+        "tourist":  0.25,  # budget 3 → every 4th step
     }
 
     def __init__(self, num_agents=None, spawn_seed=None):
@@ -464,39 +485,51 @@ class CityModel(mesa.Model):
         
         # Load walk_edges network for pathfinding
         print("Loading walk_edges network...")
+        # Penalty multipliers so Dijkstra prefers pedestrian paths over car roads.
+        # Car roads exist in walk_edges only for network connectivity (added by network_connector).
+        _ROAD_WEIGHT = {
+            'footway': 1.0, 'pedestrian': 1.0, 'path': 1.0,
+            'steps': 1.0, 'cycleway': 1.1, 'living_street': 1.2,
+            'connector': 1.0,
+            'residential': 2.0, 'service': 2.0,
+            'tertiary': 3.0, 'unclassified': 2.0,
+        }
         try:
             edges_df = self.con.execute("""
-                SELECT 
+                SELECT
                     rowid as edge_id,
                     ST_AsText(geometry) as wkt,
                     ST_AsText(ST_StartPoint(geometry)) as start_wkt,
-                    ST_AsText(ST_EndPoint(geometry)) as end_wkt
+                    ST_AsText(ST_EndPoint(geometry)) as end_wkt,
+                    road_class
                 FROM walk_edges
             """).fetchdf()
             print(f"[OK] Loaded {len(edges_df)} walk edges")
-            
+
             # Build BIDIRECTIONAL network graph for efficient lookup
             self.edges = {}
             self.node_to_edges = defaultdict(list)
-            
+
             for _, row in edges_df.iterrows():
                 edge_id = row['edge_id']
                 edge_geom = wkt.loads(row['wkt'])
                 start_point = wkt.loads(row['start_wkt'])
                 end_point = wkt.loads(row['end_wkt'])
-                
+                road_class = row.get('road_class') or 'connector'
+                weight_multiplier = _ROAD_WEIGHT.get(road_class, 2.0)
+
                 self.edges[edge_id] = edge_geom
-                
+
                 # BIDIRECTIONAL: Map BOTH start and end points to edges
                 # This allows agents to traverse edges in both directions
                 start_key = (round(start_point.x, 6), round(start_point.y, 6))
                 end_key = (round(end_point.x, 6), round(end_point.y, 6))
-                
+
                 # From start point: can take this edge in forward direction
-                self.node_to_edges[start_key].append((edge_id, edge_geom, 'forward'))
-                # From end point: can take this edge in reverse direction  
-                self.node_to_edges[end_key].append((edge_id, edge_geom, 'reverse'))
-            
+                self.node_to_edges[start_key].append((edge_id, edge_geom, 'forward', weight_multiplier))
+                # From end point: can take this edge in reverse direction
+                self.node_to_edges[end_key].append((edge_id, edge_geom, 'reverse', weight_multiplier))
+
             print(f"[OK] Built BIDIRECTIONAL network graph with {len(self.node_to_edges)} nodes")
             
         except Exception as e:
@@ -753,7 +786,7 @@ class CityModel(mesa.Model):
         return best_key
 
     def dijkstra_next_node(self, from_node: tuple, to_node: tuple) -> tuple | None:
-        """Return the next node key on the shortest path from from_node to to_node."""
+        """Return the next node key on the shortest weighted path from from_node to to_node."""
         import heapq
         if from_node == to_node or from_node not in self.node_to_edges:
             return None
@@ -766,12 +799,14 @@ class CityModel(mesa.Model):
                 continue
             if u == to_node:
                 break
-            for _eid, geom, direction in self.node_to_edges.get(u, []):
+            for entry in self.node_to_edges.get(u, []):
+                _eid, geom, direction = entry[0], entry[1], entry[2]
+                weight_mult = entry[3] if len(entry) > 3 else 1.0
                 if direction == "forward":
                     v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
                 else:
                     v = (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
-                new_dist = d + geom.length
+                new_dist = d + geom.length * weight_mult
                 if new_dist < dist.get(v, float("inf")):
                     dist[v] = new_dist
                     prev[v] = u
@@ -812,12 +847,14 @@ class CityModel(mesa.Model):
                 continue
             if u == target_node:
                 break
-            for _eid, geom, direction in self.node_to_edges.get(u, []):
+            for entry in self.node_to_edges.get(u, []):
+                _eid, geom, direction = entry[0], entry[1], entry[2]
+                weight_mult = entry[3] if len(entry) > 3 else 1.0
                 if direction == "forward":
                     v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
                 else:
                     v = (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
-                new_dist = d + geom.length
+                new_dist = d + geom.length * weight_mult
                 if new_dist < dist.get(v, float("inf")):
                     dist[v] = new_dist
                     prev[v] = u
