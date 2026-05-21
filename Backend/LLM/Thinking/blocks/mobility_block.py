@@ -1,15 +1,20 @@
 """
-MobilityBlock — LLM-driven movement decision with hard path adherence enforcement.
+MobilityBlock — LLM-driven movement with guaranteed destination enforcement.
 
 Decision pipeline:
-  1. Read agent memory (position, needs, cognition, recent stream)
+  1. Read agent memory (position, needs, cognition, explore_steps counter)
   2. Compute Dijkstra shortest path to target node
-  3. Roll adherence dice: if succeeds, force the shortest-path edge (no LLM)
-  4. If roll fails, let LLM choose freely — destination still shown as primary goal
+  3. Check exploration budget: if free steps exhausted, FORCE Dijkstra (no LLM)
+  4. Otherwise let LLM choose freely — destination still shown as primary goal
   5. Fallback to Dijkstra (then least-visited) on LLM failure
   6. Log decision to stream memory
+
+Exploration budgets (free steps before one forced Dijkstra step):
+  commuter: 0  — always Dijkstra
+  resident: 1  — F→D→F→D
+  student:  2  — FF→D→FF→D
+  tourist:  3  — FFF→D→FFF→D
 """
-import random
 import logging
 from typing import Any
 
@@ -18,7 +23,8 @@ from LLM.Thinking.prompts import mobility_decision_prompt
 
 logger = logging.getLogger(__name__)
 
-_ADHERENCE = {"commuter": 1.0, "resident": 0.8, "student": 0.5, "tourist": 0.35}
+# Free LLM-choice steps allowed before one forced Dijkstra step toward destination
+_EXPLORE_BUDGET = {"commuter": 0, "resident": 1, "student": 2, "tourist": 3}
 
 
 class MobilityBlock(Block):
@@ -38,7 +44,8 @@ class MobilityBlock(Block):
         preferences = profile.get("preferences", [])
         destination = await self.memory.status.get("destination", {})
 
-        adherence = _ADHERENCE.get(archetype, 0.5)
+        explore_budget = _EXPLORE_BUDGET.get(archetype, 1)
+        explore_steps = await self.memory.status.get("explore_steps", 0)
         model = self.context.get("model")
         target_node = destination.get("target_node") if destination else None
         current_node = position.get("current_node")
@@ -52,6 +59,7 @@ class MobilityBlock(Block):
             if current_node == target_node:
                 destination["target_node"] = None
                 await self.memory.status.update("destination", destination)
+                await self.memory.status.update("explore_steps", 0)
                 await self.memory.stream.add(
                     topic="mobility", step=step,
                     description="Reached destination — stopping.",
@@ -70,13 +78,15 @@ class MobilityBlock(Block):
                             dijkstra_edge_data = c
                             break
 
-        # --- Hard adherence enforcement ---
-        adherence_roll = random.random()
-        should_follow_path = adherence_roll < adherence
+        # --- Exploration budget enforcement ---
+        # Force Dijkstra when budget is exhausted; otherwise let LLM choose freely.
+        # This guarantees the agent always makes periodic progress toward its destination.
+        force_dijkstra = (explore_steps >= explore_budget) and dijkstra_edge_data is not None
 
-        if should_follow_path and dijkstra_edge_data is not None:
+        if force_dijkstra:
             chosen = dijkstra_edge_data
-            reasoning = f"Path adherence roll {adherence_roll:.2f} < {adherence:.1f} — following shortest path"
+            reasoning = f"Forced destination step after {explore_steps} free exploration step(s)"
+            await self.memory.status.update("explore_steps", 0)
 
             chosen_edge_id = chosen["edge_id"]
             visit_counts = await self.memory.status.get("visited_edges", {})
@@ -110,7 +120,10 @@ class MobilityBlock(Block):
                 fallback=False,
             )
 
-        # --- LLM-driven decision (adherence roll failed — agent may take a detour) ---
+        # --- LLM-driven free exploration step ---
+        free_steps_remaining = explore_budget - explore_steps - 1  # after this step
+        await self.memory.status.update("explore_steps", explore_steps + 1)
+
         recent_moves = await self.memory.stream.get_recent("mobility", n=5)
         history_text = self.memory.stream.format_for_prompt(recent_moves)
 
@@ -137,8 +150,8 @@ class MobilityBlock(Block):
             destination=destination,
             path_hint_edge_id=dijkstra_edge_id,
             preferences=preferences,
-            adherence=adherence,
-            adherence_failed=True,
+            explore_budget=explore_budget,
+            free_steps_remaining=free_steps_remaining,
         )
 
         response = await self.llm.chat_json(messages)

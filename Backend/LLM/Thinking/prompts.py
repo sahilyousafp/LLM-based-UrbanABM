@@ -32,8 +32,8 @@ def mobility_decision_prompt(
     destination: dict | None = None,
     path_hint_edge_id: int | None = None,
     preferences: list | None = None,
-    adherence: float = 0.5,
-    adherence_failed: bool = False,
+    explore_budget: int = 1,
+    free_steps_remaining: int = 0,
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
@@ -41,8 +41,8 @@ def mobility_decision_prompt(
     street_perception: optional dict with walkability, vegetation, pedestrian_activity, etc.
     destination: agent's persistent target {"name", "amenity_type", "lon", "lat"}
     path_hint_edge_id: edge_id of the Dijkstra-optimal next step toward destination
-    adherence: probability of following Dijkstra path (archetype-based)
-    adherence_failed: True when the agent's adherence roll failed — it may take a detour
+    explore_budget: total free steps per forced-Dijkstra cycle (0=commuter, 1=resident, 2=student, 3=tourist)
+    free_steps_remaining: free steps left in the current exploration window after this one
     """
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
@@ -84,16 +84,23 @@ def mobility_decision_prompt(
             f"This is your primary goal — navigate toward it."
         )
 
-    # Deviation context: agent may take a detour but destination remains primary goal
-    deviation_context = ""
-    if adherence_failed:
-        deviation_context = (
-            f"\n\n** You may take a brief detour this step (adherence={adherence:.1f} — you explore more than you follow). "
-            f"You can follow your curiosity, satisfy a nearby need, or enjoy an interesting street — "
-            f"but your destination is still your PRIMARY GOAL. Do not stray so far that you lose progress toward it. "
-            f"Prefer candidates that are directionally toward your destination OR satisfy an urgent need (hunger/energy < 0.3). "
-            f"The [SHORTEST PATH TO DESTINATION] candidate is always the safest choice if nothing compelling draws you away. **"
-        )
+    # Exploration context: how many free steps remain before a forced destination step
+    if explore_budget > 0:
+        if free_steps_remaining > 0:
+            deviation_context = (
+                f"\n\n** FREE EXPLORATION STEP — {free_steps_remaining} free step(s) left before a forced move toward your destination. "
+                f"Follow your curiosity, satisfy a need, or enjoy an interesting environment. "
+                f"Your destination is still your goal — don't stray so far that reaching it becomes very hard. "
+                f"The [SHORTEST PATH TO DESTINATION] is available if nothing compelling draws you elsewhere. **"
+            )
+        else:
+            deviation_context = (
+                f"\n\n** LAST FREE STEP before a forced destination move next turn. "
+                f"Make it count — satisfy a need or see something interesting nearby. "
+                f"Strongly consider the [SHORTEST PATH TO DESTINATION] to stay on track. **"
+            )
+    else:
+        deviation_context = ""
 
     user_content = f"""Agent Profile:
   Archetype: {archetype}
@@ -108,9 +115,8 @@ Candidate Edges/Destinations:
 {candidates_text}
 
 Choose the index of the best candidate for this agent to move to next.
-Your path adherence weight is {adherence:.1f} — this determines how often you follow the [SHORTEST PATH TO DESTINATION].
 Your preferences: {', '.join(preferences) if preferences else 'none'}.
-Deviate when nearby streets or amenities match your preferences; otherwise stay on route.
+On free steps: explore streets and amenities that match your archetype and needs. On forced steps (handled automatically): the system routes you toward your destination.
 If comfort < 0.4, prefer edges toward parks, plazas, or streets with greenery. If hunger > 0.7 or energy < 0.3, prioritise edges near relevant amenities.
 
 Respond with JSON:
