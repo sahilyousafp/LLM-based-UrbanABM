@@ -127,6 +127,18 @@ class MobilityBlock(Block):
         recent_moves = await self.memory.stream.get_recent("mobility", n=5)
         history_text = self.memory.stream.format_for_prompt(recent_moves)
 
+        # Read plan state for context
+        plan = await self.memory.status.get("plan", {})
+        current_phase = plan.get("current_phase")
+        plan_context = None
+        if current_phase:
+            plan_context = {
+                "goal": current_phase.get("goal", ""),
+                "perception_preferences": current_phase.get("perception_preferences", []),
+                "perception_avoid": current_phase.get("perception_avoid", []),
+                "active_target": current_phase.get("active_target"),
+            }
+
         prompt_candidates = candidate_edges[:8]
         prompt_cands = [
             {
@@ -152,6 +164,7 @@ class MobilityBlock(Block):
             preferences=preferences,
             explore_budget=explore_budget,
             free_steps_remaining=free_steps_remaining,
+            plan_context=plan_context,
         )
 
         response = await self.llm.chat_json(messages)

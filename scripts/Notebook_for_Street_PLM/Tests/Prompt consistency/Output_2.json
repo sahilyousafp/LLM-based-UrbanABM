@@ -1,0 +1,86 @@
+{
+  "image": "/teamspace/studios/this_studio/StreetPLM/images/sv_41.396306_2.159444_h90.jpg",
+  "latency_ms": 20627.4,
+  "approx_tokens": 153,
+  "scene_analysis": {
+    "scene": "A wide city street lined with tall buildings on either side, featuring multiple buses and cars in motion. Pedestrians are walking along the sidewalks, and there is a mix of modern and older architectural styles. The area appears to be busy but not overly crowded.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "natural daylight",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "pedestrian crossing"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate",
+        "people_count": "many"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "trees",
+        "coverage": "sparse"
+      }
+    ],
+    "street_furniture": [
+      {
+        "zone": "right",
+        "element": "bollards",
+        "presence": "few"
+      }
+    ],
+    "architecture": [
+      {
+        "zone": "left",
+        "element": "modern buildings",
+        "style": "contemporary"
+      }
+    ],
+    "material": [
+      {
+        "zone": "center",
+        "surface": "concrete"
+      }
+    ],
+    "color": [
+      {
+        "zone": "left",
+        "tone": "neutral"
+      }
+    ],
+    "clarity": [
+      {
+        "zone": "center",
+        "level": "good"
+      }
+    ],
+    "cleanliness": [
+      {
+        "zone": "center",
+        "level": "clean",
+        "litter": "none"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Carrer de Provenca",
+        "zone": "upper 90%",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

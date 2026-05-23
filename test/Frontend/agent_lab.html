@@ -307,6 +307,12 @@
             const cfg = await fetch(`${state.apiUrl}/api/config/frontend`).then(r => r.json());
             mapboxgl.accessToken = cfg.mapbox_token;
 
+            // Sync perception mode dropdown with server state
+            const modeSelect = document.getElementById("perception-mode");
+            if (cfg.perception_mode && modeSelect.querySelector(`option[value="${cfg.perception_mode}"]`)) {
+                modeSelect.value = cfg.perception_mode;
+            }
+
             state.map = new mapboxgl.Map({
                 container: "map",
                 style: "mapbox://styles/mapbox/dark-v11",

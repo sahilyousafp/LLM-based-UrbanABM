@@ -11,8 +11,60 @@ Movement Strategy:
 """
 
 import random
+import logging
 from shapely.geometry import Point, LineString
 from typing import Optional, Tuple, List
+
+logger = logging.getLogger(__name__)
+
+
+def _filter_by_plan_avoid(
+    agent, edges: List[Tuple[str, LineString, str]]
+) -> List[Tuple[str, LineString, str]]:
+    """
+    Filter connected edges based on plan's perception_avoid keywords.
+    Hard filter: remove edges whose perception matches any avoid keyword.
+    If all edges filtered out, return originals (forced deviation).
+    """
+    plan = agent.memory.status._data.get("plan", {})
+    current_phase = plan.get("current_phase")
+    if not current_phase:
+        return edges
+    avoid_list = current_phase.get("perception_avoid", [])
+    if not avoid_list:
+        return edges
+
+    filtered = []
+    for entry in edges:
+        edge_id, geom, direction = entry
+        midpoint = Point(geom.coords[len(geom.coords) // 2])
+        perception = agent.model.get_nearby_perception(midpoint)
+        if not perception:
+            filtered.append(entry)
+            continue
+        # Concatenate all perception text fields for substring matching
+        perception_text = " ".join(str(v) for v in perception.values())
+        has_avoided = any(
+            ak.lower() in perception_text.lower() for ak in avoid_list
+        )
+        if not has_avoided:
+            filtered.append(entry)
+
+    if not filtered:
+        # Forced deviation — no valid edges, use original candidates
+        current_phase["forced_deviation"] = True
+        current_phase["deviation_reason"] = (
+            "All edges filtered by perception_avoid — forced deviation"
+        )
+        return edges
+
+    if len(filtered) < len(edges):
+        current_phase["forced_deviation"] = False
+        current_phase["deviation_reason"] = (
+            f"Filtered {len(edges) - len(filtered)} edge(s) with avoided qualities"
+        )
+
+    return filtered
 
 
 def select_next_edge(
@@ -160,6 +212,9 @@ def make_decision(agent) -> None:
         end_point = Point(agent.current_edge_geom.coords[-1])
         connected_edges = agent.model.find_connected_edges(end_point)
         
+        # Apply plan perception_avoid hard filter
+        connected_edges = _filter_by_plan_avoid(agent, connected_edges)
+
         # Select next edge using rule-based strategy
         result = select_next_edge(agent, connected_edges)
         

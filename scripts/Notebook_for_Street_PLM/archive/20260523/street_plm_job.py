@@ -54,27 +54,6 @@ except ImportError:
         [sys.executable, "-m", "pip", "install", "-q", "accelerate>=0.30"]
     )
 
-try:
-    from lmformatenforcer import JsonSchemaParser as _LmfeSchemaParser
-    from lmformatenforcer.integrations.transformers import (
-        build_transformers_prefix_allowed_tokens_fn as _lmfe_build_prefix_fn,
-    )
-    _LMFE_AVAILABLE = True
-except ImportError:
-    subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "-q", "lm-format-enforcer"]
-    )
-    try:
-        from lmformatenforcer import JsonSchemaParser as _LmfeSchemaParser
-        from lmformatenforcer.integrations.transformers import (
-            build_transformers_prefix_allowed_tokens_fn as _lmfe_build_prefix_fn,
-        )
-        _LMFE_AVAILABLE = True
-    except ImportError:
-        _LMFE_AVAILABLE = False
-        _LmfeSchemaParser = None        # type: ignore[assignment]
-        _lmfe_build_prefix_fn = None    # type: ignore[assignment]
-
 import numpy as np
 import pyproj
 import requests
@@ -82,7 +61,7 @@ import torch
 from google.cloud import bigquery
 from huggingface_hub import login
 from PIL import Image as _PILImage
-from pydantic import BaseModel, Field, field_validator, FieldValidationInfo
+from pydantic import BaseModel, field_validator, FieldValidationInfo
 from typing import Any
 from shapely import wkt as shapely_wkt
 from shapely.geometry import LineString  # noqa: F401
@@ -113,14 +92,13 @@ STREETVIEW_API_KEY = os.environ.get("GOOGLE_STREETVIEW_API_KEY", "")
 HF_TOKEN           = os.environ.get("HF_TOKEN", "")
 GCP_PROJECT_ID     = os.environ.get("GCP_PROJECT_ID", "")
 
-# Bounding box for study area
-# Previous (2 km x 2 km centred on Passeig de Gracia):
-# BBOX = {"min_lon": 2.1500, "min_lat": 41.3862, "max_lon": 2.1740, "max_lat": 41.4042}
+# Bounding box -- 2 km x 2 km centred on Passeig de Gracia
+# Mirrors Backend/Environment/overture_to_duckdb.py
 BBOX = {
-    "min_lon": 2.166667,
-    "min_lat": 41.396468,
-    "max_lon": 2.172096,
-    "max_lat": 41.399895,
+    "min_lon": 2.1500,
+    "min_lat": 41.3862,
+    "max_lon": 2.1740,
+    "max_lat": 41.4042,
 }
 
 BIGQUERY_PROJECT  = "bigquery-public-data"
@@ -135,12 +113,9 @@ MODEL_ID          = "Qwen/Qwen2.5-VL-3B-Instruct"
 # Qwen2.5-VL uses dynamic-resolution patches (min/max pixels) instead of tiles.
 # Scaled in load_model() based on available VRAM.
 MAX_PIXELS        = 1280 * 28 * 28   # ~1 M pixels — good for L4/A100 (24 GB+)
-MAX_NEW_TOKENS    = 640               # hybrid: free-text element + key enums — 10 cats × 1.5 obs × ~35 tok ≈ 525
+MAX_NEW_TOKENS    = 1500              # 16 fields + scene_context quadrants
 
 UTM31N = "EPSG:32631"
-# Optional: path to a DuckDB containing an OSM/Overture 'places' table.
-# Set as a Lightning AI Secret or pass --landmark-db on the command line.
-LANDMARK_DB_PATH = os.environ.get("LANDMARK_DB_PATH", "")
 
 _SV_BASE   = "https://maps.googleapis.com/maps/api/streetview"
 _META_BASE = "https://maps.googleapis.com/maps/api/streetview/metadata"
@@ -149,232 +124,227 @@ _META_BASE = "https://maps.googleapis.com/maps/api/streetview/metadata"
 # Pydantic schema
 # ---------------------------------------------------------------------------
 
-_ZONE_ATTRS = (
-    "lighting", "spatial_character", "crowdedness", "greenery",
-    "street_amenities", "architecture", "material", "color", "clarity",
-    "cleanliness",
-)
-
+_QUADRANT_KEYS = ("top_left", "top_right", "bottom_left", "bottom_right")
 
 class StreetSceneAnalysis(BaseModel):
-    """Compact zone-aware schema: scene overview + 10 zone-attribute lists + OCR list."""
+    """Validated schema for individual comfort-focused urban-quality analysis.
 
-    scene            : str  = "unknown"
-    lighting         : list = Field(default_factory=list)
-    spatial_character: list = Field(default_factory=list)
-    crowdedness      : list = Field(default_factory=list)
-    greenery         : list = Field(default_factory=list)
-    street_amenities : list = Field(default_factory=list)
-    architecture     : list = Field(default_factory=list)
-    material         : list = Field(default_factory=list)
-    color            : list = Field(default_factory=list)
-    clarity          : list = Field(default_factory=list)
-    cleanliness      : list = Field(default_factory=list)
-    visible_text     : list = Field(default_factory=list)
+    scene_context is a dict with 4 quadrant keys (top_left, top_right,
+    bottom_left, bottom_right); all other fields are descriptive strings.
+    """
 
-    @field_validator("scene", mode="before")
+    scene_context       : Any  = "unknown"   # dict{top_left,top_right,bottom_left,bottom_right}
+    perceived_safety    : str  = "unknown"
+    visibility          : str  = "unknown"
+    lighting_quality    : str  = "unknown"
+    cleanliness         : str  = "unknown"
+    greenery            : str  = "unknown"
+    thermal_comfort     : str  = "unknown"
+    walkability         : str  = "unknown"
+    noise_comfort       : str  = "unknown"
+    crowding            : str  = "unknown"
+    privacy             : str  = "unknown"
+    social_potential    : str  = "unknown"
+    visual_interest     : str  = "unknown"
+    enclosure_exposure      : str  = "unknown"
+    accessibility           : str  = "unknown"
+    street_activity         : str  = "unknown"
+    # --- fields only observable from imagery (not derivable from GIS/sensor data) ---
+    facade_materials        : str  = "unknown"
+    ground_surface_material : str  = "unknown"
+    seating                 : str  = "unknown"
+    street_furniture        : str  = "unknown"
+    active_frontage         : str  = "unknown"
+    architectural_style     : str  = "unknown"
+    facade_articulation     : str  = "unknown"
+
+    @field_validator("*", mode="before")
     @classmethod
-    def _coerce_scene(cls, v):
-        s = str(v).strip() if v else "unknown"
-        return s or "unknown"
-
-    @field_validator(
-        "lighting", "spatial_character", "crowdedness", "greenery",
-        "street_amenities", "architecture", "material", "color", "clarity",
-        "cleanliness", "visible_text",
-        mode="before",
-    )
-    @classmethod
-    def _coerce_to_list(cls, v):
+    def _coerce(cls, v, info: FieldValidationInfo):
+        if info.field_name == "scene_context":
+            if isinstance(v, dict):
+                return {qk: str(v.get(qk, "unknown")).strip() or "unknown"
+                        for qk in _QUADRANT_KEYS}
+            s = str(v).strip() if v else "unknown"
+            return s or "unknown"
         if isinstance(v, list):
-            return v
+            return ", ".join(str(x).strip() for x in v if str(x).strip()) or "unknown"
         if isinstance(v, dict):
-            return [v]  # bare dict → single-item list
-        return []
+            return str(v)
+        s = str(v).strip() if v else "unknown"
+        return s if s else "unknown"
 
 
 _KEY_ALIASES = {
-    "scene"               : "scene",
-    "scene_description"   : "scene",
-    "overview"            : "scene",
-    "general"             : "scene",
-    "lighting"            : "lighting",
-    "light"               : "lighting",
-    "lighting_quality"    : "lighting",
-    "spatial_character"   : "spatial_character",
-    "openness"            : "spatial_character",
-    "open"                : "spatial_character",
-    "spatial_openness"    : "spatial_character",
-    "enclosure_exposure"  : "spatial_character",
-    "enclosure"           : "spatial_character",
-    "width"               : "spatial_character",
-    "navigability"        : "spatial_character",
-    "passability"         : "spatial_character",
-    "crowdedness"         : "crowdedness",
-    "crowding"            : "crowdedness",
-    "crowd"               : "crowdedness",
-    "greenery"            : "greenery",
-    "vegetation"          : "greenery",
-    "green"               : "greenery",
-    "street_amenities"    : "street_amenities",
-    "street_furniture"    : "street_amenities",
-    "furniture"           : "street_amenities",
-    "urban_furniture"     : "street_amenities",
-    "amenities"           : "street_amenities",
-    "installations"       : "street_amenities",
-    "street_installations": "street_amenities",
-    "fixtures"            : "street_amenities",
-    "seating"             : "street_amenities",
-    "bins"                : "street_amenities",
-    "waste_bins"          : "street_amenities",
-    "signage"             : "street_amenities",
-    "street_signs"        : "street_amenities",
-    "architecture"        : "architecture",
-    "architectural_design": "architecture",
-    "architectural_style" : "architecture",
-    "material"            : "material",
-    "materials"           : "material",
-    "facade_materials"    : "material",
-    "color"               : "color",
-    "colour"              : "color",
-    "colors"              : "color",
-    "clarity"             : "clarity",
-    "visual_clarity"      : "clarity",
-    "visibility"          : "clarity",
-    "cleanliness"         : "cleanliness",
-    "clean"               : "cleanliness",
-    "litter"              : "cleanliness",
-    "littering"           : "cleanliness",
-    "tidiness"            : "cleanliness",
-    "visible_text"        : "visible_text",
-    "ocr"                 : "visible_text",
-    "text"                : "visible_text",
-    "signs"               : "visible_text",
+    # scene_context
+    "scene_context": "scene_context", "scene context": "scene_context",
+    "context": "scene_context", "overview": "scene_context",
+    "scene_overview": "scene_context", "scene overview": "scene_context",
+    "scene": "scene_context", "description": "scene_context",
+    # perceived_safety
+    "perceived_safety": "perceived_safety", "perceived safety": "perceived_safety",
+    "safety": "perceived_safety", "security": "perceived_safety",
+    "crime": "perceived_safety", "danger": "perceived_safety",
+    # visibility (sightlines, daytime visual clarity)
+    "visibility": "visibility", "visual_clarity": "visibility",
+    "visual clarity": "visibility", "sightlines": "visibility",
+    # lighting_quality (artificial + natural light comfort)
+    "lighting_quality": "lighting_quality", "lighting quality": "lighting_quality",
+    "lighting": "lighting_quality", "light": "lighting_quality",
+    "illumination": "lighting_quality",
+    # cleanliness
+    "cleanliness": "cleanliness", "clean": "cleanliness",
+    "litter": "cleanliness", "maintenance": "cleanliness",
+    "upkeep": "cleanliness", "disorder": "cleanliness",
+    # greenery
+    "greenery": "greenery", "greenery_comfort": "greenery",
+    "greenery comfort": "greenery", "vegetation": "greenery",
+    "green": "greenery", "nature": "greenery", "biophilia": "greenery",
+    # thermal_comfort
+    "thermal_comfort": "thermal_comfort", "thermal comfort": "thermal_comfort",
+    "comfort": "thermal_comfort", "shade": "thermal_comfort",
+    "microclimate": "thermal_comfort", "weather_comfort": "thermal_comfort",
+    # walkability
+    "walkability": "walkability", "walking": "walkability",
+    "pedestrian_quality": "walkability", "pedestrian quality": "walkability",
+    "pavement_quality": "walkability", "pavement quality": "walkability",
+    # noise_comfort
+    "noise_comfort": "noise_comfort", "noise comfort": "noise_comfort",
+    "noise_indicators": "noise_comfort", "noise indicators": "noise_comfort",
+    "noise": "noise_comfort", "sound": "noise_comfort",
+    "traffic_noise": "noise_comfort", "traffic noise": "noise_comfort",
+    "auditory_comfort": "noise_comfort",
+    # crowding
+    "crowding": "crowding", "crowd": "crowding",
+    "density": "crowding", "congestion": "crowding",
+    "pedestrian_density": "crowding", "pedestrian density": "crowding",
+    # privacy
+    "privacy": "privacy", "exposure": "privacy",
+    "overlooking": "privacy", "surveillance": "privacy",
+    # social_potential
+    "social_potential": "social_potential", "social potential": "social_potential",
+    "social": "social_potential", "interaction": "social_potential",
+    "gathering": "social_potential", "lingering": "social_potential",
+    # visual_interest
+    "visual_interest": "visual_interest", "visual interest": "visual_interest",
+    "interest": "visual_interest", "complexity": "visual_interest",
+    "imageability": "visual_interest", "visual_complexity": "visual_interest",
+    # enclosure_exposure
+    "enclosure_exposure": "enclosure_exposure", "enclosure exposure": "enclosure_exposure",
+    "enclosure": "enclosure_exposure", "spatial_enclosure": "enclosure_exposure",
+    "openness": "enclosure_exposure",
+    # accessibility
+    "accessibility": "accessibility", "access": "accessibility",
+    "barrier_free": "accessibility", "barrier free": "accessibility",
+    "universal_design": "accessibility", "universal design": "accessibility",
+    # street_activity
+    "street_activity": "street_activity", "street activity": "street_activity",
+    "activity": "street_activity", "liveliness": "street_activity",
+    "vitality": "street_activity", "uses": "street_activity",
+    # facade_materials
+    "facade_materials": "facade_materials", "facade materials": "facade_materials",
+    "building materials": "facade_materials", "facade material": "facade_materials",
+    "materials": "facade_materials", "cladding": "facade_materials",
+    # ground_surface_material
+    "ground_surface_material": "ground_surface_material",
+    "ground surface material": "ground_surface_material",
+    "pavement material": "ground_surface_material",
+    "surface material": "ground_surface_material",
+    "ground material": "ground_surface_material",
+    "pavement": "ground_surface_material", "paving": "ground_surface_material",
+    # seating
+    "seating": "seating", "seats": "seating", "benches": "seating",
+    "rest spots": "seating", "sitting": "seating",
+    # street_furniture
+    "street_furniture": "street_furniture", "street furniture": "street_furniture",
+    "urban furniture": "street_furniture", "furniture": "street_furniture",
+    "amenities": "street_furniture",
+    # active_frontage
+    "active_frontage": "active_frontage", "active frontage": "active_frontage",
+    "frontage": "active_frontage", "ground floor activation": "active_frontage",
+    "shopfronts": "active_frontage", "storefronts": "active_frontage",
+    # architectural_style
+    "architectural_style": "architectural_style", "architectural style": "architectural_style",
+    "architecture": "architectural_style", "building style": "architectural_style",
+    "style": "architectural_style", "period": "architectural_style",
+    # facade_articulation
+    "facade_articulation": "facade_articulation", "facade articulation": "facade_articulation",
+    "facade detail": "facade_articulation", "building detail": "facade_articulation",
+    "facade complexity": "facade_articulation", "ornamentation": "facade_articulation",
 }
-
-# ---------------------------------------------------------------------------
-# Grammar-constrained generation schema (used with lm-format-enforcer)
-# ---------------------------------------------------------------------------
-# minItems:1 on zone attributes makes it impossible for the model to emit [].
-# visible_text is 0+ (some locations genuinely have no readable text).
-# Items are typed as generic objects so the model fills fields freely from the
-# few-shot example rather than being blocked by strict property enums.
-_GENERATION_SCHEMA: dict = {
-    "type": "object",
-    "required": [
-        "scene", "lighting", "spatial_character", "crowdedness", "greenery",
-        "street_amenities", "architecture", "material", "color", "clarity",
-        "cleanliness", "visible_text",
-    ],
-    "properties": {
-        "scene": {"type": "string"},
-        **{
-            attr: {
-                "type": "array",
-                "minItems": 1,
-                "maxItems": 3,
-                "items": {"type": "object"},
-            }
-            for attr in (
-                "lighting", "spatial_character", "crowdedness", "greenery",
-                "street_amenities", "architecture", "material", "color",
-                "clarity", "cleanliness",
-            )
-        },
-        "visible_text": {
-            "type": "array",
-            "minItems": 0,
-            "maxItems": 4,
-            "items": {"type": "object"},
-        },
-    },
-}
-
-
-# Google Street View watermark: "Google", "© Google", "© 2024 Google Maps", etc.
-_GOOGLE_WATERMARK_RE = re.compile(
-    r"^(©\s*)?(20\d{2}\s+)?google(\s+maps)?[\s.,]*$",
-    re.IGNORECASE,
-)
-
-# License plate patterns — these typically appear on vehicles in the lower frame.
-# Covers common EU/Spanish formats: "VJL 360", "1234 ABC", "AB·1234·CD", etc.
-_LICENSE_PLATE_RE = re.compile(
-    r"^[A-Z]{1,4}[\s·\-]?\d{2,4}[\s·\-]?[A-Z]{0,3}$"
-    r"|^\d{4}[\s·\-][A-Z]{2,3}$",
-    re.IGNORECASE,
-)
-
-
-def _filter_ocr_noise(entries: list) -> list:
-    """Remove noisy visible_text entries:
-    - Google watermarks
-    - License plates (lower-frame vehicle text)
-    - Entries where the model echoed the raw enum string (type contains '|')
-    """
-    kept = []
-    for e in entries:
-        if not isinstance(e, dict):
-            continue
-        text = str(e.get("text", "")).strip()
-        typ  = str(e.get("type", ""))
-        if not text:
-            continue
-        if _GOOGLE_WATERMARK_RE.match(text):
-            continue
-        if _LICENSE_PLATE_RE.match(text):
-            continue
-        if "|" in typ:
-            # Model echoed the enum options — fix by defaulting to "other"
-            e = {**e, "type": "other"}
-        kept.append(e)
-    return kept
 
 
 def _normalise_result(raw: dict) -> dict:
-    normalised = {}
+    flat = {}
     for k, v in raw.items():
+        canonical_k = _KEY_ALIASES.get(k.strip().lower(), "")
+        if canonical_k == "scene_context":
+            flat["scene_context"] = v  # preserve quadrant dict as-is
+        elif isinstance(v, dict) and canonical_k != "scene_context":
+            flat.update(v)
+        else:
+            flat[k] = v
+    normalised = {}
+    for k, v in flat.items():
         canonical = _KEY_ALIASES.get(k.strip().lower())
         if canonical:
             normalised[canonical] = v
+        elif k == "scene_context":
+            normalised["scene_context"] = v
     try:
-        result = StreetSceneAnalysis(**normalised).model_dump()
+        return StreetSceneAnalysis(**normalised).model_dump()
     except Exception:
-        result = StreetSceneAnalysis().model_dump()
-    result["visible_text"] = _filter_ocr_noise(result["visible_text"])
-    return result
+        return StreetSceneAnalysis().model_dump()
 
 
 # ---------------------------------------------------------------------------
 # PLM prompt
 # ---------------------------------------------------------------------------
 
-# Few-shot prompted: a compact filled example shows the model exactly what output
-# is expected. Without this, Qwen-3B defaults to empty arrays when the schema is complex.
-# spatial_character has NO element field — geometry-only, prevents greenery bleed.
+# NOTE: Deliberately uses short placeholder values ("your X observation") instead of
+# long descriptive hints. PLM-1B echoes the prompt template verbatim when given
+# 100-character hint strings as example values — short, clearly synthetic placeholders
+# break that pattern and force the model to generate from the image.
 _SCENE_PROMPT = (
-    "You are an urban perception analyst. Analyse this Barcelona street-view image.\n"
-    "Zones left-to-right: far_left | left | center | right | far_right\n"
-    "Fill EVERY list field with 1-2 real observations — arrays MUST start with [{ not [].\n"
-    "For labelled options (e.g. dark|dim|adequate|bright) pick the closest value.\n"
-    "street_amenities: any fixed street object — seating, lamps, bins, bollards, "
-    "fountains, hydrants, bike racks, info boards, bus shelters, kiosks, ad panels.\n"
-    "scene: 1 sentence max 20 words summarising the street at the end.\n"
-    "Example output for a different image (scene comes last):\n"
-    '{"lighting":[{"zone":"left","element":"dappled tree shade","condition":"dim"},{"zone":"center","element":"natural daylight","condition":"adequate"}],'
-    '"spatial_character":[{"zone":"center","width":"moderate","enclosure":"semi","passability":"clear","lane_type":"sidewalk","crossing":"none"},{"zone":"right","width":"narrow","enclosure":"enclosed","passability":"clear","lane_type":"road","crossing":"none"}],'
-    '"crowdedness":[{"zone":"left","density_level":"sparse"},{"zone":"center","density_level":"sparse"}],'
-    '"greenery":[{"zone":"left","element":"tall plane trees","coverage":"moderate"},{"zone":"right","element":"potted plants","coverage":"sparse"}],'
-    '"street_amenities":[{"zone":"left","element":"street lamp","presence":"few"},{"zone":"right","element":"waste bin","presence":"few"}],'
-    '"architecture":[{"zone":"left","element":"residential apartment blocks","style":"historic"},{"zone":"right","element":"stone facade","style":"historic"}],'
-    '"material":[{"zone":"center","surface":"stone"},{"zone":"left","surface":"concrete"}],'
-    '"color":[{"zone":"left","tone":"warm"},{"zone":"center","tone":"neutral"}],'
-    '"clarity":[{"zone":"left","level":"fair"},{"zone":"center","level":"good"}],'
-    '"cleanliness":[{"zone":"center","level":"clean","litter":"none"},{"zone":"right","level":"moderate","litter":"some"}],'
-    '"visible_text":[{"text":"Carrer de Provenca","zone":"far_left","type":"sign"},{"text":"Bar Calvet","zone":"right","type":"label"}],'
-    '"scene":"Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians."}\n'
-    "Now analyse the given image. visible_text: upper 90% of frame only.\n"
-    "Output only JSON (scene last):"
+    "You are an urban comfort analyst. Study this street-view photo from Barcelona carefully.\n"
+    "\n"
+    "Assess how comfortable, safe, and pleasant this specific street feels for a pedestrian.\n"
+    "Cover both perceptual comfort qualities AND visual/material characteristics of the built fabric.\n"
+    "Write 1-2 sentences per field describing what you actually observe in the image.\n"
+    "\n"
+    "Return ONLY a valid JSON object. Replace every placeholder with your real observation:\n"
+    "{\n"
+    '  "scene_context": {\n'
+    '    "top_left":     "describe top-left quadrant",\n'
+    '    "top_right":    "describe top-right quadrant",\n'
+    '    "bottom_left":  "describe bottom-left area",\n'
+    '    "bottom_right": "describe bottom-right area"\n'
+    '  },\n'
+    '  "perceived_safety":        "your safety observation",\n'
+    '  "visibility":              "your visibility observation",\n'
+    '  "lighting_quality":        "your lighting observation",\n'
+    '  "cleanliness":             "your cleanliness observation",\n'
+    '  "greenery":                "your greenery observation",\n'
+    '  "thermal_comfort":         "your thermal comfort observation",\n'
+    '  "walkability":             "your walkability observation",\n'
+    '  "noise_comfort":           "your noise observation",\n'
+    '  "crowding":                "your crowding observation",\n'
+    '  "privacy":                 "your privacy observation",\n'
+    '  "social_potential":        "your social potential observation",\n'
+    '  "visual_interest":         "your visual interest observation",\n'
+    '  "enclosure_exposure":      "your enclosure observation",\n'
+    '  "accessibility":           "your accessibility observation",\n'
+    '  "street_activity":         "your street activity observation",\n'
+    '  "facade_materials":        "your facade materials observation",\n'
+    '  "ground_surface_material": "your pavement material observation",\n'
+    '  "seating":                 "your seating observation",\n'
+    '  "street_furniture":        "your street furniture observation",\n'
+    '  "active_frontage":         "your active frontage observation",\n'
+    '  "architectural_style":     "your architectural style observation",\n'
+    '  "facade_articulation":     "your facade detail observation"\n'
+    "}\n"
+    "\n"
+    "Write actual observations of this image. Output only the JSON object, no other text."
 )
 
 
@@ -383,25 +353,21 @@ _SCENE_PROMPT = (
 # ---------------------------------------------------------------------------
 
 _ECHO_SENTINELS = frozenset({
-    # Pipe-separated enum strings from the prompt — any of these as a literal value
-    # means the model echoed the template rather than filling it in.
-    "<zone>", "<element>", "<text>",
-    "dark|dim|adequate|bright",
-    "narrow|moderate|wide",
-    "open|semi|enclosed",
-    "clear|obstructed",
-    "pedestrian_only|sidewalk|shared|road",
-    "zebra|signalized|none",
-    "sparse|moderate|dense",
-    "none|sparse|moderate|dense",
-    "none|few|several",
-    "modernist|historic|mixed|industrial",
-    "stone|brick|concrete|glass|tile|mixed",
-    "warm|cool|neutral|vibrant|muted",
-    "poor|fair|good",
-    "clean|moderate|dirty",
-    "none|some|heavy",
-    "sign|label|number|other",
+    # Placeholders from the prompt template — if present the model echoed the template
+    "your safety observation", "your visibility observation",
+    "your lighting observation", "your cleanliness observation",
+    "your greenery observation", "your thermal comfort observation",
+    "your walkability observation", "your noise observation",
+    "your crowding observation", "your privacy observation",
+    "your social potential observation", "your visual interest observation",
+    "your enclosure observation", "your accessibility observation",
+    "your street activity observation",
+    "your facade materials observation", "your pavement material observation",
+    "your seating observation", "your street furniture observation",
+    "your active frontage observation", "your architectural style observation",
+    "your facade detail observation",
+    "describe top-left quadrant", "describe top-right quadrant",
+    "describe bottom-left area", "describe bottom-right area",
 })
 
 
@@ -417,37 +383,6 @@ def _model_echoed_template(parsed: dict) -> bool:
     return False
 
 
-def _extract_first_json_obj(text: str) -> str | None:
-    """Return the first syntactically balanced {...} substring.
-
-    Handles junk after the closing brace (e.g. repeated }}} from min_new_tokens
-    padding) without being fooled by greedy regex that spans to the last }.
-    """
-    start = text.find("{")
-    if start == -1:
-        return None
-    depth, in_str, escape = 0, False, False
-    for i, ch in enumerate(text[start:], start):
-        if escape:
-            escape = False
-            continue
-        if ch == "\\" and in_str:
-            escape = True
-            continue
-        if ch == '"':
-            in_str = not in_str
-            continue
-        if in_str:
-            continue
-        if ch == "{":
-            depth += 1
-        elif ch == "}":
-            depth -= 1
-            if depth == 0:
-                return text[start : i + 1]
-    return None
-
-
 def _parse_scene_json(text: str) -> dict:
     candidate = None
     for attempt in (text, text + "}"):
@@ -457,11 +392,10 @@ def _parse_scene_json(text: str) -> dict:
         except json.JSONDecodeError:
             pass
     if candidate is None:
-        # brace-counting extractor: immune to junk/repeated-} after the object
-        obj_str = _extract_first_json_obj(text)
-        if obj_str:
+        m = re.search(r"\{[\s\S]*\}", text)
+        if m:
             try:
-                candidate = json.loads(obj_str)
+                candidate = json.loads(m.group())
             except json.JSONDecodeError:
                 pass
     if candidate is None and "{" in text:
@@ -498,11 +432,10 @@ def _parse_scene_json(text: str) -> dict:
 # Model globals (populated by load_model())
 # ---------------------------------------------------------------------------
 
-from typing import Optional
-_model     : Optional[Qwen2_5_VLForConditionalGeneration] = None
-_processor : Optional[AutoProcessor]                      = None
-_device    : str   = "cpu"
-_dtype            = torch.float32
+_model     = None
+_processor = None
+_device    = "cpu"
+_dtype     = torch.float32
 
 
 def load_model():
@@ -561,9 +494,6 @@ def load_model():
 # ---------------------------------------------------------------------------
 
 def _infer_scene(image):
-    if _processor is None or _model is None:
-        raise RuntimeError("Model not loaded — call load_model() first.")
-
     messages = [
         {
             "role": "user",
@@ -573,15 +503,10 @@ def _infer_scene(image):
             ],
         }
     ]
-    text = str(_processor.apply_chat_template(
+    text = _processor.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
-    ))
-    # Deep prime: skip past the opening brace and the first array name so the
-    # model is forced to generate the first observation object directly.
-    # This prevents the model from outputting [] before any content is written.
-    _PRIME = '{"lighting":[{'
-    text += _PRIME
-
+    )
+    text += "{"
     # Qwen2.5-VL processor expects text as a list and images as a list
     inputs = _processor(
         text=[text],
@@ -596,21 +521,17 @@ def _infer_scene(image):
         if hasattr(v, "to"):
             inputs[k] = v.to(_device, dtype=_dtype) if v.is_floating_point() else v.to(_device)
 
-    gen_kwargs: dict = dict(
-        max_new_tokens     = MAX_NEW_TOKENS,
-        do_sample          = True,
-        temperature        = 0.4,
-        top_p              = 0.9,
-        repetition_penalty = 1.05,
-        eos_token_id       = _processor.tokenizer.eos_token_id,
-        pad_token_id       = _processor.tokenizer.pad_token_id,
-    )
-
     with torch.no_grad():
-        gen_ids = _model.generate(**inputs, **gen_kwargs)
+        gen_ids = _model.generate(
+            **inputs,
+            max_new_tokens     = MAX_NEW_TOKENS,
+            eos_token_id       = _processor.tokenizer.eos_token_id,
+            pad_token_id       = _processor.tokenizer.pad_token_id,
+            repetition_penalty = 1.1,
+        )
 
     new_ids  = gen_ids[:, inputs["input_ids"].shape[1]:]
-    raw_text = _PRIME + _processor.tokenizer.batch_decode(new_ids, skip_special_tokens=True)[0]
+    raw_text = "{" + _processor.tokenizer.batch_decode(new_ids, skip_special_tokens=True)[0]
 
     if _device == "cuda":
         del gen_ids, new_ids, inputs
@@ -620,37 +541,23 @@ def _infer_scene(image):
     return _parse_scene_json(raw_text), raw_text
 
 
-def _is_blank_image(img: _PILImage.Image, std_threshold: float = 18.0) -> bool:
-    """Return True if the image is near-uniform in brightness (grey SV placeholder)."""
-    arr = np.array(img.convert("L"), dtype=np.float32)
-    return float(arr.std()) < std_threshold
-
-
 def analyze_image(image_path):
     """
-    Run the VLM on a full street-view image.
+    Run PerceptionLM-1B on a full street-view image.
     Returns a dict with scene analysis fields and _latency_ms.
-    Skips grey/blank placeholder images before sending to the model.
     """
     img = _PILImage.open(image_path).convert("RGB")
-    if _is_blank_image(img):
-        log.warning("  Blank/placeholder image skipped: %s", image_path)
-        result = StreetSceneAnalysis().model_dump()
-        result["_latency_ms"] = 0.0
-        result["_blank"]      = True
-        return result
     t0  = time.perf_counter()
     result, raw = _infer_scene(img)
     latency_ms  = (time.perf_counter() - t0) * 1000
 
     populated = sum(
         1 for k, v in result.items()
-        if v not in ("unknown", "", None, {}, []) and not k.startswith("_")
+        if v not in ("unknown", "", None) and not k.startswith("_")
     )
     total = sum(1 for k in result if not k.startswith("_"))
     log.info("  Scene analysis: %d ms  %d/%d fields populated", int(latency_ms), populated, total)
-    if populated == 0:
-        log.warning("  0 fields — raw VLM output: %r", raw[:500])
+    log.debug("  Raw output (%d chars): %r", len(raw), raw[:150])
 
     result["_latency_ms"] = round(latency_ms, 1)
     return result
@@ -698,150 +605,12 @@ def fetch_sv(lat: float, lon: float, heading: float, images_dir: Path):
         return None
 
 
-def _bearing_label(deg: float) -> str:
-    """Convert a bearing in degrees to an 8-point cardinal label."""
-    dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
-    return dirs[int((deg % 360 + 22.5) / 45) % 8]
-
-
-def fetch_nearby_landmarks(
-    lat: float,
-    lon: float,
-    db_path: str = "",
-    radius_m: float = 150.0,
-    max_results: int = 8,
-) -> list:
-    """Query a DuckDB Overture/OSM database for named amenities near (lat, lon).
-
-    Auto-detects table and column names so it works with both eixample_overture.duckdb
-    (table: amenities, cols: lat/lon/amenity) and eixample_osm.duckdb variants.
-    Returns [] silently if db_path is unset or the query fails.
-    """
-    resolved = db_path or LANDMARK_DB_PATH
-    if not resolved:
-        return []
-    try:
-        import duckdb
-        con = duckdb.connect(resolved, read_only=True)
-        try:
-            con.execute("LOAD spatial")
-        except Exception:
-            pass
-
-        # --- discover table ---
-        tables = [r[0] for r in con.execute("SHOW TABLES").fetchall()]
-        preferred = ["amenities", "places", "poi", "points_of_interest", "nodes", "features"]
-        table = next((t for t in preferred if t in tables), tables[0] if tables else None)
-        if table is None:
-            log.warning("Landmark DB has no tables: %s", resolved)
-            con.close()
-            return []
-
-        # --- discover columns ---
-        col_map = {r[0].lower(): r[0] for r in con.execute(f'DESCRIBE "{table}"').fetchall()}
-        log.debug("Landmark table=%s  cols=%s", table, sorted(col_map))
-
-        # name column
-        name_col = next((col_map[c] for c in ("name", "display_name") if c in col_map), None)
-        if name_col is None:
-            log.warning("No name column in '%s' (cols: %s)", table, sorted(col_map))
-            con.close()
-            return []
-
-        # category column (Overture uses 'amenity'; OSM variants use 'type'/'class')
-        cat_col  = next((col_map[c] for c in ("amenity", "category", "type", "class", "subtype") if c in col_map), None)
-        cat_expr = f'CAST("{cat_col}" AS VARCHAR)' if cat_col else "'unknown'"
-
-        # coordinate columns
-        delta = radius_m / 111_000.0
-        if "lat" in col_map and "lon" in col_map:
-            lat_c, lon_c = col_map["lat"], col_map["lon"]
-        elif "latitude" in col_map and "longitude" in col_map:
-            lat_c, lon_c = col_map["latitude"], col_map["longitude"]
-        else:
-            log.warning("No lat/lon columns in '%s'", table)
-            con.close()
-            return []
-
-        rows = con.execute(f"""
-            SELECT "{name_col}", {cat_expr},
-                   6371000 * acos(LEAST(1.0,
-                       cos(radians({lat})) * cos(radians("{lat_c}")) *
-                       cos(radians("{lon_c}") - radians({lon})) +
-                       sin(radians({lat})) * sin(radians("{lat_c}"))
-                   )) AS dist_m,
-                   degrees(atan2("{lon_c}" - {lon}, "{lat_c}" - {lat})) AS bearing_deg
-            FROM   "{table}"
-            WHERE  "{name_col}" IS NOT NULL
-              AND  "{lat_c}" BETWEEN {lat - delta} AND {lat + delta}
-              AND  "{lon_c}" BETWEEN {lon - delta} AND {lon + delta}
-            ORDER  BY dist_m
-            LIMIT  {max_results}
-        """).fetchall()
-        con.close()
-        return [
-            {
-                "name"      : r[0],
-                "category"  : r[1] or "unknown",
-                "distance_m": round(r[2], 1),
-                "bearing"   : _bearing_label(r[3]),
-            }
-            for r in rows
-            if r[2] is not None and r[2] <= radius_m
-        ]
-    except Exception as exc:
-        log.warning("Landmark query failed (%s): %s", resolved, exc)
-        return []
-
-
 # ---------------------------------------------------------------------------
 # BigQuery / point sampling
 # ---------------------------------------------------------------------------
 
-def _grid_sample_bbox(output_root: Path) -> list:
-    """Fallback: uniform grid of sample points across BBOX — no BigQuery needed.
-    Uses 50 m spacing with two headings (0° north, 90° east) per location.
-    """
-    GRID_STEP_M = 50
-    mid_lat     = (BBOX["min_lat"] + BBOX["max_lat"]) / 2
-    lat_step    = GRID_STEP_M / 111_320.0
-    lon_step    = GRID_STEP_M / (111_320.0 * np.cos(np.radians(mid_lat)))
-
-    points, seen = [], set()
-    lat = BBOX["min_lat"]
-    while lat <= BBOX["max_lat"] + 1e-9:
-        lon = BBOX["min_lon"]
-        while lon <= BBOX["max_lon"] + 1e-9:
-            for heading in (0.0, 90.0):
-                key = (round(lat, 5), round(lon, 5), int(heading))
-                if key in seen:
-                    lon += lon_step
-                    continue
-                seen.add(key)
-                rlat, rlon = round(lat, 6), round(lon, 6)
-                points.append({
-                    "id"               : f"{rlat:.6f}_{rlon:.6f}_h{int(heading)}",
-                    "lat"              : rlat,
-                    "lon"              : rlon,
-                    "heading"          : heading,
-                    "street_name"      : "",
-                    "highway_type"     : "unknown",
-                    "edge_id"          : "grid",
-                    "dist_along_edge_m": None,
-                })
-            lon += lon_step
-        lat += lat_step
-
-    log.info("Grid fallback: %d sample points (%d m spacing) across BBOX", len(points), GRID_STEP_M)
-    points_file = output_root / "sample_points.json"
-    points_file.write_text(json.dumps(points, indent=2, ensure_ascii=False), encoding="utf-8")
-    return points
-
-
 def query_and_sample_points(output_root: Path) -> list:
-    """Query BigQuery for walk edges and sample points. Caches to disk.
-    Falls back to a uniform BBOX grid if BigQuery credentials are unavailable.
-    """
+    """Query BigQuery for walk edges and sample points. Caches to disk."""
     points_file = output_root / "sample_points.json"
 
     if points_file.exists():
@@ -851,11 +620,7 @@ def query_and_sample_points(output_root: Path) -> list:
         return pts
 
     log.info("Querying Overture Maps walk edges from BigQuery ...")
-    try:
-        bq_client = bigquery.Client(project=GCP_PROJECT_ID)
-    except Exception as exc:
-        log.warning("BigQuery unavailable (%s) — falling back to BBOX grid sampler.", exc)
-        return _grid_sample_bbox(output_root)
+    bq_client = bigquery.Client(project=GCP_PROJECT_ID)
 
     bq_query = f"""
     SELECT
@@ -873,11 +638,7 @@ def query_and_sample_points(output_root: Path) -> list:
       AND bbox.ymax <= {BBOX["max_lat"]}
     """
 
-    try:
-        df = bq_client.query(bq_query).to_dataframe()
-    except Exception as exc:
-        log.warning("BigQuery query failed (%s) — falling back to BBOX grid sampler.", exc)
-        return _grid_sample_bbox(output_root)
+    df = bq_client.query(bq_query).to_dataframe()
     log.info("%d walk edges returned from BigQuery", len(df))
 
     df["geometry"] = df["wkt"].apply(shapely_wkt.loads)
@@ -969,42 +730,27 @@ def run_trial(args, images_dir: Path):
     res = analyze_image(img_path)
     log.info("PLM latency: %d ms", round((time.time() - t0) * 1000))
 
-    print(f"\n--- Scene ---\n  {res.get('scene', 'unknown')}")
+    comfort_fields = [
+        "perceived_safety", "visibility", "lighting_quality", "cleanliness",
+        "greenery", "thermal_comfort", "walkability", "noise_comfort",
+        "crowding", "privacy", "social_potential", "visual_interest",
+        "enclosure_exposure", "accessibility", "street_activity",
+        # imagery-only fields
+        "facade_materials", "ground_surface_material", "seating",
+        "street_furniture", "active_frontage", "architectural_style", "facade_articulation",
+    ]
 
-    print("\n--- Zone Attributes ---")
-    for attr in _ZONE_ATTRS:
-        items = res.get(attr, [])
-        if not isinstance(items, list):
-            items = [items] if items else []
-        if not items:
-            print(f"  {attr:18s}: (no data)")
-            continue
-        for obs in items:
-            if not isinstance(obs, dict) or not obs:
-                continue
-            zone = obs.get("zone", "?")
-            elem = obs.get("element", "")
-            # all non-zone/element keys are enum tags — display them generically
-            tags = {k: v for k, v in obs.items() if k not in ("zone", "element")}
-            tag_str = "  " + "  ".join(f"{k}={v}" for k, v in tags.items()) if tags else ""
-            elem_str = f"[{str(elem)[:18]}] " if elem else ""
-            print(f"  {attr:18s} [{zone:10s}] {elem_str}{tag_str}")
+    print("\n--- Scene Context (4 Quadrants) ---")
+    sc = res.get("scene_context", {})
+    if isinstance(sc, dict):
+        for qk in _QUADRANT_KEYS:
+            print(f"  {qk:15s}: {sc.get(qk, 'unknown')}")
+    else:
+        print(f"  {sc}")
 
-    vt = res.get("visible_text", [])
-    if vt:
-        print("\n--- Visible Text (OCR) ---")
-        for entry in vt:
-            if isinstance(entry, dict):
-                print(f"  [{entry.get('zone', '?'):10s}] "
-                      f"{entry.get('text', '?')}  "
-                      f"({entry.get('type', '?')})")
-
-    landmarks = fetch_nearby_landmarks(pt["lat"], pt["lon"])
-    if landmarks:
-        print("\n--- Nearby Landmarks ---")
-        for lm in landmarks:
-            print(f"  {lm['bearing']:2s}  {lm['distance_m']:5.0f} m  "
-                  f"{lm['name']} ({lm['category']})")
+    print("\n--- Individual Comfort Criteria ---")
+    for k in comfort_fields:
+        print(f"  {k:22s}: {res.get(k, 'unknown')}")
     print()
 
 
@@ -1051,8 +797,7 @@ def run_pipeline(sample_points: list, images_dir: Path, results_dir: Path):
                         "device"            : _device,
                         "status"            : "no_streetview",
                     },
-                    "scene_analysis"  : None,
-                    "nearby_landmarks": [],
+                    "scene_analysis": None,
                 }
                 _result_path(results_dir, pt["id"]).write_text(
                     json.dumps(stub, indent=2, ensure_ascii=False), encoding="utf-8"
@@ -1081,8 +826,7 @@ def run_pipeline(sample_points: list, images_dir: Path, results_dir: Path):
                     "latency_ms"        : scene_result.pop("_latency_ms", None),
                     "status"            : "ok",
                 },
-                "scene_analysis"  : scene_result,
-                "nearby_landmarks": fetch_nearby_landmarks(pt["lat"], pt["lon"]),
+                "scene_analysis": scene_result,
             }
             _result_path(results_dir, pt["id"]).write_text(
                 json.dumps(record, indent=2, ensure_ascii=False), encoding="utf-8"
@@ -1156,19 +900,12 @@ def _parse_args():
     p.add_argument("--trial-index",  type=int,   default=0,    help="Index into sample_points list")
     p.add_argument("--trial-lat",    type=float, default=None, help="Manual latitude override")
     p.add_argument("--trial-lon",    type=float, default=None, help="Manual longitude override")
-    p.add_argument("--trial-heading", type=float, default=None,
-                   help="Manual heading override (0-360)")
-    p.add_argument("--landmark-db",   type=str,   default="",
-                   help="Path to DuckDB with OSM/Overture 'places' table for nearby landmark lookup")
+    p.add_argument("--trial-heading",type=float, default=None, help="Manual heading override (0-360)")
     return p.parse_args()
 
 
 def main():
     args = _parse_args()
-
-    global LANDMARK_DB_PATH
-    if args.landmark_db:
-        LANDMARK_DB_PATH = args.landmark_db
 
     assert STREETVIEW_API_KEY, "Set GOOGLE_STREETVIEW_API_KEY env var (Lightning AI Secret)"
     assert HF_TOKEN,           "Set HF_TOKEN env var (Lightning AI Secret)"

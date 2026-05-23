@@ -1,0 +1,91 @@
+{
+  "_comment": "Default plans for main system. Edit to change archetype behavior across the full simulation.",
+  "tourist": {
+    "phases": [
+      {
+        "id": "explore_1",
+        "goal": "visit_attractions",
+        "target_types": ["attraction", "museum"],
+        "max_visits": 3,
+        "priority": "high",
+        "perception_preferences": ["vegetation", "lighting_atmosphere", "buildings"],
+        "perception_avoid": []
+      },
+      {
+        "id": "rest_1",
+        "goal": "find_cafe",
+        "target_types": ["cafe", "restaurant"],
+        "max_visits": 1,
+        "priority": "medium",
+        "perception_preferences": ["vegetation", "pedestrian_activity"],
+        "perception_avoid": []
+      },
+      {
+        "id": "explore_2",
+        "goal": "scenic_walk",
+        "target_types": ["park", "viewpoint"],
+        "max_visits": 2,
+        "priority": "low",
+        "perception_preferences": ["vegetation", "lighting_atmosphere", "spatial_enclosure"],
+        "perception_avoid": []
+      }
+    ]
+  },
+  "resident": {
+    "phases": [
+      {
+        "id": "errands_1",
+        "goal": "grocery_shopping",
+        "target_types": ["supermarket", "bakery"],
+        "max_visits": 1,
+        "priority": "high",
+        "perception_preferences": ["ground_surfaces", "building_condition"],
+        "perception_avoid": []
+      },
+      {
+        "id": "leisure_1",
+        "goal": "relax",
+        "target_types": ["park", "pharmacy"],
+        "max_visits": 1,
+        "priority": "low",
+        "perception_preferences": ["vegetation", "lighting_atmosphere"],
+        "perception_avoid": []
+      }
+    ]
+  },
+  "commuter": {
+    "phases": [
+      {
+        "id": "transit_1",
+        "goal": "reach_destination",
+        "target_types": [],
+        "max_visits": 0,
+        "priority": "critical",
+        "perception_preferences": ["ground_surfaces", "lighting_atmosphere"],
+        "perception_avoid": []
+      }
+    ]
+  },
+  "student": {
+    "phases": [
+      {
+        "id": "study_1",
+        "goal": "reach_campus",
+        "target_types": ["university", "library"],
+        "max_visits": 1,
+        "priority": "high",
+        "perception_preferences": ["pedestrian_activity", "lighting_atmosphere"],
+        "perception_avoid": []
+      },
+      {
+        "id": "social_1",
+        "goal": "meet_friends",
+        "target_types": ["cafe", "fast_food"],
+        "max_visits": 2,
+        "priority": "medium",
+        "perception_preferences": ["pedestrian_activity", "vegetation"],
+        "perception_avoid": []
+      }
+    ]
+  }
+}

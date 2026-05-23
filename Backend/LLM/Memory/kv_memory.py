@@ -29,6 +29,15 @@ DEFAULT_SCHEMA: dict[str, Any] = {
     "visited_amenities": [],
     "agent_profile": {"archetype": "resident", "age": 30, "preferences": []},
     "current_plan": {"goal": "explore", "target_edge_id": None},
+    "plan": {
+        "phases": [],
+        "current_phase_index": 0,
+        "current_phase": None,
+        "completed_phases": [],
+        "target_override": None,
+        "encountered_qualities": [],
+        "status": "active",
+    },
     "cognition_state": {"mood": "neutral", "curiosity": 0.7, "fatigue": 0.0},
     "destination": {"name": None, "amenity_type": None, "lon": None, "lat": None, "target_node": None},
 }

@@ -21,6 +21,7 @@ from LLM.llm_client import LLMClient
 from LLM.Memory.memory import Memory
 from LLM.Memory.stream_memory import MemoryNode
 from LLM.Thinking.dispatcher import BlockDispatcher
+from LLM.Thinking.blocks.plan_block import load_plans_json
 from rule_based_movement import make_decision as rule_based_move
 
 # Path to the DuckDB database (Overture Maps data)
@@ -65,10 +66,14 @@ class CityAgent(mg.GeoAgent):
 
         # --- LLM + Memory + Thinking ---
         self.memory = Memory(agent_id=self.unique_id)
+        ctx = {"model": model}
+        plans_path = getattr(model, "plans_path", None)
+        if plans_path:
+            ctx["plans_path"] = plans_path
         self.dispatcher = BlockDispatcher(
             llm_client=model.llm_client,
             memory=self.memory,
-            context={"model": model},
+            context=ctx,
         )
 
         # Initialise memory with agent profile (sync — safe at init time, no loop running)
@@ -139,6 +144,9 @@ class CityAgent(mg.GeoAgent):
         }
         self.memory.status._data["explore_steps"] = 0
 
+        # Initialize plan from plans.json (used by both LLM and rule_based modes)
+        self.memory.status._data["plan"] = self._init_plan(archetype)
+
     @staticmethod
     def _archetype_preferences(archetype: str) -> list:
         prefs = {
@@ -148,6 +156,25 @@ class CityAgent(mg.GeoAgent):
             "student": ["cafe", "library", "park", "social", "cheap_food"],
         }
         return prefs.get(archetype, [])
+
+    def _init_plan(self, archetype: str) -> dict:
+        """Initialize plan from plans.json config for given archetype.
+        Auto-advances to first phase so rule_based mode has current_phase set."""
+        plans_path = getattr(self.model, "plans_path", None)
+        plans_config = load_plans_json(plans_path)
+        archetype_plan = plans_config.get(archetype, {})
+        phases = archetype_plan.get("phases", [])
+        current_phase = phases[0] if phases else None
+        return {
+            "phases": phases,
+            "current_phase_index": 0,
+            "current_phase": current_phase,
+            "completed_phases": [],
+            "target_override": None,
+            "encountered_qualities": [],
+            "phase_start_steps": {current_phase["id"]: 0} if current_phase else {},
+            "status": "active" if phases else "completed",
+        }
 
     def step(self):
         """Execute agent step based on perception mode."""
@@ -531,11 +558,36 @@ class CityModel(mesa.Model):
                 self.node_to_edges[end_key].append((edge_id, edge_geom, 'reverse', weight_multiplier))
 
             print(f"[OK] Built BIDIRECTIONAL network graph with {len(self.node_to_edges)} nodes")
-            
+
+            # Find the largest connected component so _find_nearest_node only snaps to reachable nodes
+            all_nodes = set(self.node_to_edges.keys())
+            unvisited = set(all_nodes)
+            best_component: set = set()
+            while unvisited:
+                start = next(iter(unvisited))
+                component: set = set()
+                stack = [start]
+                while stack:
+                    u = stack.pop()
+                    if u in component:
+                        continue
+                    component.add(u)
+                    unvisited.discard(u)
+                    for entry in self.node_to_edges.get(u, []):
+                        geom, direction = entry[1], entry[2]
+                        v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6)) if direction == 'forward' else (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
+                        if v not in component:
+                            stack.append(v)
+                if len(component) > len(best_component):
+                    best_component = component
+            self.main_component_nodes = best_component
+            print(f"[OK] Main connected component: {len(self.main_component_nodes)}/{len(all_nodes)} nodes")
+
         except Exception as e:
             print(f"[ERROR] Failed to load walk edges: {e}")
             self.edges = {}
             self.node_to_edges = defaultdict(list)
+            self.main_component_nodes = set()
         
         print(f"Spawning {num_agents} agents on network...")
 
@@ -776,9 +828,10 @@ class CityModel(mesa.Model):
             return None
 
     def _find_nearest_node(self, lon: float, lat: float) -> tuple | None:
-        """Find the nearest network node key to (lon, lat). O(N) — for spawn-time use only."""
+        """Find the nearest node in the main connected component to (lon, lat). O(N)."""
+        search_space = self.main_component_nodes if getattr(self, 'main_component_nodes', None) else self.node_to_edges.keys()
         best_key, best_dist_sq = None, float("inf")
-        for node_key in self.node_to_edges:
+        for node_key in search_space:
             dx, dy = node_key[0] - lon, node_key[1] - lat
             d = dx * dx + dy * dy
             if d < best_dist_sq:

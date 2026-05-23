@@ -34,6 +34,7 @@ def mobility_decision_prompt(
     preferences: list | None = None,
     explore_budget: int = 1,
     free_steps_remaining: int = 0,
+    plan_context: dict | None = None,
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
@@ -43,6 +44,7 @@ def mobility_decision_prompt(
     path_hint_edge_id: edge_id of the Dijkstra-optimal next step toward destination
     explore_budget: total free steps per forced-Dijkstra cycle (0=commuter, 1=resident, 2=student, 3=tourist)
     free_steps_remaining: free steps left in the current exploration window after this one
+    plan_context: optional dict with {"goal", "perception_preferences", "perception_avoid", "active_target"}
     """
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
@@ -102,11 +104,31 @@ def mobility_decision_prompt(
     else:
         deviation_context = ""
 
+    # Build plan context block
+    plan_text = ""
+    if plan_context and plan_context.get("goal"):
+        goal = plan_context["goal"]
+        prefs = plan_context.get("perception_preferences", [])
+        avoid = plan_context.get("perception_avoid", [])
+        active_target = plan_context.get("active_target")
+
+        lines = [f"\n\nCurrent Plan Phase: {goal}"]
+        if prefs:
+            lines.append(f"  Prefer streets with: {', '.join(prefs)}")
+        if avoid:
+            lines.append(f"  Avoid streets with: {', '.join(avoid)}")
+        if active_target:
+            target_name = active_target.get("name", "unknown")
+            target_type = active_target.get("type", "")
+            target_dist = active_target.get("dist", 0)
+            lines.append(f"  Active target: {target_name} ({target_type}) — {target_dist:.0f}m away")
+        plan_text = "\n".join(lines)
+
     user_content = f"""Agent Profile:
   Archetype: {archetype}
   Needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
   Mood: {cognition.get('mood', 'neutral')}, Curiosity: {cognition.get('curiosity', 0.7):.2f}, Fatigue: {cognition.get('fatigue', 0.0):.2f}
-  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{perception_text}{destination_text}{deviation_context}
+  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{perception_text}{destination_text}{deviation_context}{plan_text}
 
 Recent Movement History:
 {recent_history}

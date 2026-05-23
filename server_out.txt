@@ -1,0 +1,22 @@
+======================================================================
+Spatial Cognition Lab — bootstrapping…
+======================================================================
+[OK] Random seed set to: 42 (reproducible spawning)
+[OK] LLM client: provider=deepseek, model=deepseek-chat
+[OK] Agent tracker initialized: D:\IaaC\2ND_YEAR\THESIS\LLM_Based_UrbanABM\Documentation\tracking_data\agent_tracking.duckdb
+Connecting to DB at: D:\IaaC\2ND_YEAR\THESIS\LLM_Based_UrbanABM\Backend\Environment\eixample_overture.duckdb
+[OK] Database connected
+Loading walk_edges network...
+[OK] Loaded 3349 walk edges
+[OK] Built BIDIRECTIONAL network graph with 3441 nodes
+[OK] Main connected component: 2281/3441 nodes
+Spawning 0 agents on network...
+[OK] Loaded 854 street view scene analysis points
+[WARN] No agents were spawned!
+  Check the errors above for details
+[OK] Test tracker DB: D:\IaaC\2ND_YEAR\THESIS\LLM_Based_UrbanABM\test\tracking_data\agent_lab.duckdb
+[OK] PerceptionDiary ready (max_entries=50)
+======================================================================
+Booting Uvicorn on http://127.0.0.1:8100 ...
+INFO:     127.0.0.1:64041 - "GET /api/reachable-area?lon=2.1694&lat=41.3907&max_nodes=5000 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64050 - "GET / HTTP/1.1" 200 OK

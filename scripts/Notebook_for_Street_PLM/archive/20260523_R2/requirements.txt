@@ -15,4 +15,3 @@ torch
 torchvision
 torchaudio
 accelerate>=0.30
-lm-format-enforcer>=0.10

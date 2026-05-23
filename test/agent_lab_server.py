@@ -93,6 +93,7 @@ print("Spatial Cognition Lab — bootstrapping…")
 print("=" * 70)
 
 city_model = CityModel(num_agents=0, spawn_seed=int(os.getenv("SPAWN_SEED", "42")))
+city_model.plans_path = TEST_DIR / "plans.json"
 perception_diary = PerceptionDiary(
     max_entries=int(os.getenv("SPATIAL_MEMORY_DEPTH", "50"))
 )
@@ -485,8 +486,13 @@ async def step_continuous():
     await city_model.async_step()
 
     # Record to perception diary
+    perception_mode = getattr(city_model, "perception_mode", "both")
     for agent in city_model.city_agents:
-        perception = city_model.get_nearby_perception(agent.geometry)
+        # Diary respects the same perception mode as the agent
+        if perception_mode in ("perception", "both"):
+            perception = city_model.get_nearby_perception(agent.geometry)
+        else:
+            perception = None
         nearby = agent.nearby_amenities or []
         needs = await agent.memory.status.get("needs", {})
         position = await agent.memory.status.get("position", {})
@@ -988,6 +994,53 @@ async def get_path_adherence(agent_id: int):
     }
 
 
+@app.get("/api/agent/{agent_id}/plan")
+async def get_agent_plan(agent_id: int):
+    """Return the agent's current daily plan state."""
+    agent = _find_agent(agent_id)
+    if not agent:
+        return {"error": "Agent not found"}
+    try:
+        plan = await agent.memory.status.get("plan", {})
+        return {
+            "agent_id": agent_id,
+            "plan": plan,
+        }
+    except Exception as e:
+        logger.error(f"Plan error: {e}")
+        return {"agent_id": agent_id, "error": str(e)}
+
+
+@app.get("/api/agent/{agent_id}/plan-adherence")
+async def get_agent_plan_adherence(agent_id: int):
+    """Return plan adherence statistics."""
+    agent = _find_agent(agent_id)
+    if not agent:
+        return {"error": "Agent not found"}
+    try:
+        plan = await agent.memory.status.get("plan", {})
+        current_phase = plan.get("current_phase")
+        completed = plan.get("completed_phases", [])
+        total_phases = len(plan.get("phases", []))
+        encountered = plan.get("encountered_qualities", [])
+        forced_deviation = (
+            current_phase.get("forced_deviation", False)
+            if current_phase else False
+        )
+        return {
+            "agent_id": agent_id,
+            "phase_progress": f"{len(completed)}/{total_phases}",
+            "current_phase_goal": current_phase.get("goal") if current_phase else None,
+            "forced_deviation": forced_deviation,
+            "deviation_reason": current_phase.get("deviation_reason") if current_phase else None,
+            "encountered_qualities_count": len(encountered),
+            "status": plan.get("status", "active"),
+        }
+    except Exception as e:
+        logger.error(f"Plan adherence error: {e}")
+        return {"agent_id": agent_id, "error": str(e)}
+
+
 # ── 15. Perception mode & LLM stats ────────────────────────────────────────
 @app.post("/api/config/perception-mode")
 async def update_perception_mode(mode: str = Body(..., embed=True)):
@@ -1065,6 +1118,7 @@ async def start_recording(
         include_thoughts=include_thoughts,
         include_perception=include_perception,
         perception_mode=current_mode,
+        mode_callback=lambda: getattr(city_model, "perception_mode", "both"),
     )
     session_id = recorder.start_recording(session_name)
     city_model.set_recorder(recorder)

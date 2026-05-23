@@ -55,6 +55,8 @@ class AgentRecord:
     target_amenity_type: Optional[str] = None
     target_lon: Optional[float] = None
     target_lat: Optional[float] = None
+    perception_mode: str = "both"
+    plan: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for DataFrame conversion."""
@@ -86,6 +88,8 @@ class AgentRecord:
             'target_amenity_type': self.target_amenity_type,
             'target_lon': self.target_lon,
             'target_lat': self.target_lat,
+            'perception_mode': self.perception_mode,
+            'plan_json': json.dumps(self.plan),
         }
 
 
@@ -113,6 +117,7 @@ class GeoParquetRecorder:
         perception_mode: str = "both",
         auto_flush_interval: float = 2.0,
         keep_temp_files: bool = True,
+        mode_callback=None,
     ):
         """
         Initialize the recorder.
@@ -122,9 +127,10 @@ class GeoParquetRecorder:
             max_buffer_size: Max records to buffer before flushing to disk
             include_thoughts: Whether to include thought stream data
             include_perception: Whether to include street perception data
-            perception_mode: Agent perception mode ('amenities', 'perception', or 'both')
+            perception_mode: Agent perception mode ('amenities', 'perception', or 'both') — fallback if no callback
             auto_flush_interval: Seconds between auto-flush to temp file
             keep_temp_files: Keep .tmp files for crash recovery
+            mode_callback: Optional callable that returns current perception_mode (overrides perception_mode param)
         """
         if output_dir is None:
             output_dir = Path(__file__).parent.parent.parent / "Documentation"
@@ -138,6 +144,7 @@ class GeoParquetRecorder:
         self.perception_mode = perception_mode
         self.auto_flush_interval = auto_flush_interval
         self.keep_temp_files = keep_temp_files
+        self.mode_callback = mode_callback
 
         # Recording state
         self.is_recording = False
@@ -168,6 +175,15 @@ class GeoParquetRecorder:
             f"GeoParquetRecorder initialized. Output: {self.output_dir} | "
             f"Buffer: {max_buffer_size}"
         )
+
+    def _get_current_mode(self) -> str:
+        """Get the current perception mode, using callback if available."""
+        if self.mode_callback:
+            try:
+                return self.mode_callback()
+            except Exception:
+                pass
+        return self.perception_mode
     
     def start_recording(self, session_name: Optional[str] = None) -> str:
         if self.is_recording:
@@ -355,6 +371,7 @@ class GeoParquetRecorder:
             target_amenity_type=destination.get('amenity_type'),
             target_lon=destination.get('lon'),
             target_lat=destination.get('lat'),
+            perception_mode=self._get_current_mode(),
         )
     
     def _flush_to_parquet(self, is_final_flush: bool = False) -> Optional[Path]:
@@ -373,25 +390,26 @@ class GeoParquetRecorder:
             gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
 
             # Nested folder structure: date/archetype/perception_mode/
-            archetypes = df['archetype'].unique()
+            # Group by both archetype AND perception_mode (records may span mode changes)
+            groups = gdf.groupby(['archetype', 'perception_mode'])
             written_paths = []
 
-            for archetype in archetypes:
-                archetype_gdf = gdf[gdf['archetype'] == archetype]
+            for (archetype, mode), group_gdf in groups:
                 archetype_clean = archetype.lower().replace(' ', '_')
-                base_dir = self.output_dir / self._recording_date / archetype_clean / self.perception_mode
+                mode_clean = mode.lower().replace(' ', '_')
+                base_dir = self.output_dir / self._recording_date / archetype_clean / mode_clean
                 base_dir.mkdir(parents=True, exist_ok=True)
                 filename = f"{self.session_name}.parquet"
                 file_path = base_dir / filename
 
                 if file_path.exists():
                     existing = gpd.read_parquet(str(file_path))
-                    archetype_gdf = pd.concat([existing, archetype_gdf], ignore_index=True)
-                    archetype_gdf = gpd.GeoDataFrame(archetype_gdf, crs="EPSG:4326")
+                    group_gdf = pd.concat([existing, group_gdf], ignore_index=True)
+                    group_gdf = gpd.GeoDataFrame(group_gdf, crs="EPSG:4326")
 
-                archetype_gdf.to_parquet(str(file_path))
+                group_gdf.to_parquet(str(file_path))
                 written_paths.append(file_path)
-                logger.info(f"Flushed {len(archetype_gdf)} records for '{archetype}' to {file_path}")
+                logger.info(f"Flushed {len(group_gdf)} records for '{archetype}/{mode}' to {file_path}")
 
             self.stats['records_written'] += len(self.buffer)
             self.buffer = []
@@ -406,7 +424,7 @@ class GeoParquetRecorder:
 
     def _merge_temp_files(self) -> Optional[Path]:
         """
-        Merge all temp flush files into final GeoParquet files (one per archetype).
+        Merge all temp flush files into final GeoParquet files (one per archetype/perception_mode).
         
         Returns:
             Path to the first merged file, or None if failed
@@ -435,24 +453,24 @@ class GeoParquetRecorder:
             merged_gdf = pd.concat(all_records, ignore_index=True)
             merged_gdf = gpd.GeoDataFrame(merged_gdf, crs="EPSG:4326")
             
-            # Group by archetype and save one file per archetype in the same folder structure
-            archetypes = merged_gdf['archetype'].unique()
+            # Group by both archetype AND perception_mode
+            groups = merged_gdf.groupby(['archetype', 'perception_mode'])
             written_paths = []
             
-            for archetype in archetypes:
-                archetype_gdf = merged_gdf[merged_gdf['archetype'] == archetype]
+            for (archetype, mode), group_gdf in groups:
                 archetype_clean = archetype.lower().replace(' ', '_')
+                mode_clean = mode.lower().replace(' ', '_')
                 
                 # Build folder structure: <date>/<archetype>/<perception_mode>/
-                base_dir = self.output_dir / self._recording_date / archetype_clean / self.perception_mode
+                base_dir = self.output_dir / self._recording_date / archetype_clean / mode_clean
                 base_dir.mkdir(parents=True, exist_ok=True)
                 
                 filename = f"agent_recording_{self.session_name}.parquet"
                 final_path = base_dir / filename
                 
-                archetype_gdf.to_parquet(str(final_path))
+                group_gdf.to_parquet(str(final_path))
                 written_paths.append(final_path)
-                logger.info(f"Merged {len(archetype_gdf)} records for archetype '{archetype}' -> {final_path.name}")
+                logger.info(f"Merged {len(group_gdf)} records for '{archetype}/{mode}' -> {final_path.name}")
             
             # Clean up temp files if not keeping them
             if not self.keep_temp_files:
@@ -519,6 +537,7 @@ def create_recorder(
     include_thoughts: bool = True,
     include_perception: bool = True,
     perception_mode: str = "both",
+    mode_callback=None,
 ) -> GeoParquetRecorder:
     """Create and set the global recorder instance."""
     global _recorder
@@ -529,6 +548,7 @@ def create_recorder(
             include_thoughts=include_thoughts,
             include_perception=include_perception,
             perception_mode=perception_mode,
+            mode_callback=mode_callback,
         )
         return _recorder
 
