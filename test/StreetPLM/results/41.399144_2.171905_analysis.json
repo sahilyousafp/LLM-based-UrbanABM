@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "timestamp": "20260523_212514",
+    "latitude": 41.399143899999984,
+    "longitude": 2.1719053999999995,
+    "heading": 46.3,
+    "street_name": "Carrer de València",
+    "highway_type": "secondary",
+    "edge_id": "30243120_6762255485_0",
+    "dist_along_edge_m": 16.6,
+    "source_image": "sv_41.399144_2.171905_h46.jpg",
+    "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22149.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "dappled shade from plane-tree canopy",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead sunlight",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature plane trees with mottled grey-green bark",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "terracotta potted geraniums on windowsills",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron double-arm street lamp",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "grey cylindrical municipal waste bin",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Carrer de Provenca",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "Bar Calvet",
+        "zone": "right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

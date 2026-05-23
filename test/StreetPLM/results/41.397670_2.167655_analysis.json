@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "timestamp": "20260523_212853",
+    "latitude": 41.39766959999999,
+    "longitude": 2.1676555,
+    "heading": 226.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243247_10182303354_0",
+    "dist_along_edge_m": 17.1,
+    "source_image": "sv_41.397670_2.167655_h226.jpg",
+    "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26054.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "dappled shade from plane-tree canopy",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead sunlight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "direct overhead sunlight",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature plane trees with mottled grey-green bark",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "terracotta potted geraniums on windowsills",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron double-arm street lamp",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "grey cylindrical municipal waste bin",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Carrer de Provenca",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "Bar Calvet",
+        "zone": "right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

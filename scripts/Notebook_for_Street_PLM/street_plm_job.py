@@ -45,7 +45,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
-# Bootstrap: ensure accelerate is installed (required for device_map="auto")
+# Bootstrap: ensure accelerate and osmnx are installed
 # ---------------------------------------------------------------------------
 try:
     import accelerate  # noqa: F401
@@ -55,25 +55,11 @@ except ImportError:
     )
 
 try:
-    from lmformatenforcer import JsonSchemaParser as _LmfeSchemaParser
-    from lmformatenforcer.integrations.transformers import (
-        build_transformers_prefix_allowed_tokens_fn as _lmfe_build_prefix_fn,
-    )
-    _LMFE_AVAILABLE = True
+    import osmnx as _osmnx_check  # noqa: F401
 except ImportError:
     subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "-q", "lm-format-enforcer"]
+        [sys.executable, "-m", "pip", "install", "-q", "osmnx"]
     )
-    try:
-        from lmformatenforcer import JsonSchemaParser as _LmfeSchemaParser
-        from lmformatenforcer.integrations.transformers import (
-            build_transformers_prefix_allowed_tokens_fn as _lmfe_build_prefix_fn,
-        )
-        _LMFE_AVAILABLE = True
-    except ImportError:
-        _LMFE_AVAILABLE = False
-        _LmfeSchemaParser = None        # type: ignore[assignment]
-        _lmfe_build_prefix_fn = None    # type: ignore[assignment]
 
 import numpy as np
 import pyproj
@@ -126,7 +112,7 @@ BBOX = {
 BIGQUERY_PROJECT  = "bigquery-public-data"
 OVERTURE_DATASET  = "overture_maps"
 
-SAMPLE_DISTANCE_M = 250
+SAMPLE_DISTANCE_M = 200
 SV_SIZE           = "640x640"
 SV_FOV            = 90
 SV_PITCH          = 0
@@ -138,9 +124,12 @@ MAX_PIXELS        = 1280 * 28 * 28   # ~1 M pixels — good for L4/A100 (24 GB+)
 MAX_NEW_TOKENS    = 640               # hybrid: free-text element + key enums — 10 cats × 1.5 obs × ~35 tok ≈ 525
 
 UTM31N = "EPSG:32631"
+_SCRIPT_DIR = Path(__file__).parent
+
 # Optional: path to a DuckDB containing an OSM/Overture 'places' table.
 # Set as a Lightning AI Secret or pass --landmark-db on the command line.
 LANDMARK_DB_PATH = os.environ.get("LANDMARK_DB_PATH", "")
+
 
 _SV_BASE   = "https://maps.googleapis.com/maps/api/streetview"
 _META_BASE = "https://maps.googleapis.com/maps/api/streetview/metadata"
@@ -150,14 +139,12 @@ _META_BASE = "https://maps.googleapis.com/maps/api/streetview/metadata"
 # ---------------------------------------------------------------------------
 
 _ZONE_ATTRS = (
-    "lighting", "spatial_character", "crowdedness", "greenery",
-    "street_amenities", "architecture", "material", "color", "clarity",
-    "cleanliness",
+    "lighting", "spatial_character", "crowdedness", "greenery", "street_amenities",
 )
 
 
 class StreetSceneAnalysis(BaseModel):
-    """Compact zone-aware schema: scene overview + 10 zone-attribute lists + OCR list."""
+    """Compact zone-aware schema: scene overview + 5 zone-attribute lists + OCR list."""
 
     scene            : str  = "unknown"
     lighting         : list = Field(default_factory=list)
@@ -165,11 +152,6 @@ class StreetSceneAnalysis(BaseModel):
     crowdedness      : list = Field(default_factory=list)
     greenery         : list = Field(default_factory=list)
     street_amenities : list = Field(default_factory=list)
-    architecture     : list = Field(default_factory=list)
-    material         : list = Field(default_factory=list)
-    color            : list = Field(default_factory=list)
-    clarity          : list = Field(default_factory=list)
-    cleanliness      : list = Field(default_factory=list)
     visible_text     : list = Field(default_factory=list)
 
     @field_validator("scene", mode="before")
@@ -180,8 +162,7 @@ class StreetSceneAnalysis(BaseModel):
 
     @field_validator(
         "lighting", "spatial_character", "crowdedness", "greenery",
-        "street_amenities", "architecture", "material", "color", "clarity",
-        "cleanliness", "visible_text",
+        "street_amenities", "visible_text",
         mode="before",
     )
     @classmethod
@@ -229,23 +210,6 @@ _KEY_ALIASES = {
     "waste_bins"          : "street_amenities",
     "signage"             : "street_amenities",
     "street_signs"        : "street_amenities",
-    "architecture"        : "architecture",
-    "architectural_design": "architecture",
-    "architectural_style" : "architecture",
-    "material"            : "material",
-    "materials"           : "material",
-    "facade_materials"    : "material",
-    "color"               : "color",
-    "colour"              : "color",
-    "colors"              : "color",
-    "clarity"             : "clarity",
-    "visual_clarity"      : "clarity",
-    "visibility"          : "clarity",
-    "cleanliness"         : "cleanliness",
-    "clean"               : "cleanliness",
-    "litter"              : "cleanliness",
-    "littering"           : "cleanliness",
-    "tidiness"            : "cleanliness",
     "visible_text"        : "visible_text",
     "ocr"                 : "visible_text",
     "text"                : "visible_text",
@@ -262,9 +226,8 @@ _KEY_ALIASES = {
 _GENERATION_SCHEMA: dict = {
     "type": "object",
     "required": [
-        "scene", "lighting", "spatial_character", "crowdedness", "greenery",
-        "street_amenities", "architecture", "material", "color", "clarity",
-        "cleanliness", "visible_text",
+        "lighting", "spatial_character", "crowdedness", "greenery",
+        "street_amenities", "visible_text", "scene",
     ],
     "properties": {
         "scene": {"type": "string"},
@@ -276,9 +239,8 @@ _GENERATION_SCHEMA: dict = {
                 "items": {"type": "object"},
             }
             for attr in (
-                "lighting", "spatial_character", "crowdedness", "greenery",
-                "street_amenities", "architecture", "material", "color",
-                "clarity", "cleanliness",
+                "lighting", "spatial_character", "crowdedness",
+                "greenery", "street_amenities",
             )
         },
         "visible_text": {
@@ -350,30 +312,30 @@ def _normalise_result(raw: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 # Few-shot prompted: a compact filled example shows the model exactly what output
-# is expected. Without this, Qwen-3B defaults to empty arrays when the schema is complex.
-# spatial_character has NO element field — geometry-only, prevents greenery bleed.
+# is expected. WITHOUT an example, Qwen-3B defaults to empty arrays.
+# IMPORTANT: the example must use values from a clearly different scene type so the
+# model treats it as a FORMAT guide only — if example values look like Barcelona streets
+# the 3B model will copy them verbatim for every image (pattern completion, not vision).
 _SCENE_PROMPT = (
-    "You are an urban perception analyst. Analyse this Barcelona street-view image.\n"
+    "You are an urban perception analyst. Carefully study THIS specific image.\n"
+    "Describe ONLY what you actually observe in THIS image. "
+    "DO NOT copy the example values — they come from a completely different scene.\n"
     "Zones left-to-right: far_left | left | center | right | far_right\n"
-    "Fill EVERY list field with 1-2 real observations — arrays MUST start with [{ not [].\n"
+    "Fill EVERY list field with 1-2 observations from THIS image — arrays MUST start with [{ not [].\n"
     "For labelled options (e.g. dark|dim|adequate|bright) pick the closest value.\n"
+    "element: describe precisely what you see — material, colour, size, style.\n"
     "street_amenities: any fixed street object — seating, lamps, bins, bollards, "
     "fountains, hydrants, bike racks, info boards, bus shelters, kiosks, ad panels.\n"
-    "scene: 1 sentence max 20 words summarising the street at the end.\n"
-    "Example output for a different image (scene comes last):\n"
-    '{"lighting":[{"zone":"left","element":"dappled tree shade","condition":"dim"},{"zone":"center","element":"natural daylight","condition":"adequate"}],'
-    '"spatial_character":[{"zone":"center","width":"moderate","enclosure":"semi","passability":"clear","lane_type":"sidewalk","crossing":"none"},{"zone":"right","width":"narrow","enclosure":"enclosed","passability":"clear","lane_type":"road","crossing":"none"}],'
-    '"crowdedness":[{"zone":"left","density_level":"sparse"},{"zone":"center","density_level":"sparse"}],'
-    '"greenery":[{"zone":"left","element":"tall plane trees","coverage":"moderate"},{"zone":"right","element":"potted plants","coverage":"sparse"}],'
-    '"street_amenities":[{"zone":"left","element":"street lamp","presence":"few"},{"zone":"right","element":"waste bin","presence":"few"}],'
-    '"architecture":[{"zone":"left","element":"residential apartment blocks","style":"historic"},{"zone":"right","element":"stone facade","style":"historic"}],'
-    '"material":[{"zone":"center","surface":"stone"},{"zone":"left","surface":"concrete"}],'
-    '"color":[{"zone":"left","tone":"warm"},{"zone":"center","tone":"neutral"}],'
-    '"clarity":[{"zone":"left","level":"fair"},{"zone":"center","level":"good"}],'
-    '"cleanliness":[{"zone":"center","level":"clean","litter":"none"},{"zone":"right","level":"moderate","litter":"some"}],'
-    '"visible_text":[{"text":"Carrer de Provenca","zone":"far_left","type":"sign"},{"text":"Bar Calvet","zone":"right","type":"label"}],'
-    '"scene":"Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians."}\n'
-    "Now analyse the given image. visible_text: upper 90% of frame only.\n"
+    "scene: 1 sentence max 20 words describing THIS specific view.\n"
+    "Example format (DIFFERENT scene — use only as a structure guide):\n"
+    '{"lighting":[{"zone":"center","element":"flat overcast sky","condition":"adequate"},{"zone":"left","element":"deep shadow under building overhang","condition":"dim"}],'
+    '"spatial_character":[{"zone":"center","width":"wide","enclosure":"open","passability":"clear","lane_type":"plaza","crossing":"none"},{"zone":"right","width":"moderate","enclosure":"semi","passability":"clear","lane_type":"road","crossing":"zebra"}],'
+    '"crowdedness":[{"zone":"center","density_level":"empty"},{"zone":"right","density_level":"sparse"}],'
+    '"greenery":[{"zone":"far_left","element":"low clipped box hedge","coverage":"sparse"},{"zone":"right","element":"ornamental cherry tree in bloom","coverage":"sparse"}],'
+    '"street_amenities":[{"zone":"center","element":"red metal litter bin","presence":"few"},{"zone":"left","element":"row of short concrete bollards","presence":"several"}],'
+    '"visible_text":[{"text":"EXIT","zone":"far_right","type":"sign"}],'
+    '"scene":"Wide paved plaza beside a glass office tower with sparse foot traffic."}\n'
+    "Now describe THIS image using the same JSON structure. visible_text: upper 90% of frame only.\n"
     "Output only JSON (scene last):"
 )
 
@@ -395,26 +357,42 @@ _ECHO_SENTINELS = frozenset({
     "sparse|moderate|dense",
     "none|sparse|moderate|dense",
     "none|few|several",
-    "modernist|historic|mixed|industrial",
-    "stone|brick|concrete|glass|tile|mixed",
-    "warm|cool|neutral|vibrant|muted",
-    "poor|fair|good",
-    "clean|moderate|dirty",
-    "none|some|heavy",
     "sign|label|number|other",
+    # Verbatim copies of old few-shot example — model was copying these for every image
+    "mature plane trees with mottled grey-green bark",
+    "terracotta potted geraniums on windowsills",
+    "cast-iron double-arm street lamp",
+    "grey cylindrical municipal waste bin",
+    "dappled shade from plane-tree canopy",
+    "carrer de provenca",
+    "bar calvet",
+    # New example sentinel values (should never appear in real output)
+    "low clipped box hedge",
+    "ornamental cherry tree in bloom",
+    "red metal litter bin",
+    "row of short concrete bollards",
+    "flat overcast sky",
+    "deep shadow under building overhang",
 })
 
 
 def _model_echoed_template(parsed: dict) -> bool:
-    """Return True if the parsed JSON is just the prompt placeholder values."""
-    for v in parsed.values():
-        if isinstance(v, str) and v.lower() in _ECHO_SENTINELS:
-            return True
-        if isinstance(v, dict):
-            for sv in v.values():
-                if isinstance(sv, str) and sv.lower() in _ECHO_SENTINELS:
-                    return True
-    return False
+    """Return True if any nested value in parsed matches a sentinel string.
+
+    Recurses into lists so it catches echoed values inside array fields like
+    result["greenery"][0]["element"] = "mature plane trees..." — the old flat
+    check only looked one level deep and missed all list-of-dict fields.
+    """
+    def _has_sentinel(obj) -> bool:
+        if isinstance(obj, str):
+            return obj.lower() in _ECHO_SENTINELS
+        if isinstance(obj, dict):
+            return any(_has_sentinel(sv) for sv in obj.values())
+        if isinstance(obj, list):
+            return any(_has_sentinel(item) for item in obj)
+        return False
+
+    return any(_has_sentinel(v) for v in parsed.values())
 
 
 def _extract_first_json_obj(text: str) -> str | None:
@@ -639,14 +617,20 @@ def analyze_image(image_path):
         result["_latency_ms"] = 0.0
         result["_blank"]      = True
         return result
-    t0  = time.perf_counter()
-    result, raw = _infer_scene(img)
-    latency_ms  = (time.perf_counter() - t0) * 1000
+    _MAX_ATTEMPTS = 4
+    t0 = time.perf_counter()
+    result, raw = None, ""
+    for attempt in range(1, _MAX_ATTEMPTS + 1):
+        result, raw = _infer_scene(img)
+        populated = sum(
+            1 for k, v in result.items()
+            if v not in ("unknown", "", None, {}, []) and not k.startswith("_")
+        )
+        if populated >= 3 or attempt == _MAX_ATTEMPTS:
+            break
+        log.warning("  Attempt %d/%d: only %d fields populated — retrying", attempt, _MAX_ATTEMPTS, populated)
+    latency_ms = (time.perf_counter() - t0) * 1000
 
-    populated = sum(
-        1 for k, v in result.items()
-        if v not in ("unknown", "", None, {}, []) and not k.startswith("_")
-    )
     total = sum(1 for k in result if not k.startswith("_"))
     log.info("  Scene analysis: %d ms  %d/%d fields populated", int(latency_ms), populated, total)
     if populated == 0:
@@ -664,6 +648,7 @@ def sv_available(lat: float, lon: float) -> bool:
     r = requests.get(_META_BASE, params={
         "location": f"{lat},{lon}",
         "radius"  : SV_RADIUS,
+        "source"  : "outdoor",
         "key"     : STREETVIEW_API_KEY,
     }, timeout=10)
     return r.status_code == 200 and r.json().get("status") == "OK"
@@ -686,6 +671,7 @@ def fetch_sv(lat: float, lon: float, heading: float, images_dir: Path):
             "heading" : heading,
             "pitch"   : SV_PITCH,
             "fov"     : SV_FOV,
+            "source"  : "outdoor",
             "key"     : STREETVIEW_API_KEY,
         }, timeout=30)
         r.raise_for_status()
@@ -838,58 +824,19 @@ def _grid_sample_bbox(output_root: Path) -> list:
     return points
 
 
-def query_and_sample_points(output_root: Path) -> list:
-    """Query BigQuery for walk edges and sample points. Caches to disk.
-    Falls back to a uniform BBOX grid if BigQuery credentials are unavailable.
+def _sample_edges(edges, output_root: Path) -> list:
+    """Interpolate sample points along a list of Shapely LineString edges.
+
+    Each edge dict must have keys: geometry (LineString, projected metric CRS),
+    name (str), highway_type (str), edge_id (str).
+    Returns the point list and writes sample_points.json.
     """
-    points_file = output_root / "sample_points.json"
-
-    if points_file.exists():
-        with open(points_file, encoding="utf-8") as f:
-            pts = json.load(f)
-        log.info("Re-using %d saved sample points from %s", len(pts), points_file)
-        return pts
-
-    log.info("Querying Overture Maps walk edges from BigQuery ...")
-    try:
-        bq_client = bigquery.Client(project=GCP_PROJECT_ID)
-    except Exception as exc:
-        log.warning("BigQuery unavailable (%s) — falling back to BBOX grid sampler.", exc)
-        return _grid_sample_bbox(output_root)
-
-    bq_query = f"""
-    SELECT
-        id,
-        ST_AsText(geometry) AS wkt,
-        names.primary       AS name,
-        subtype             AS road_type,
-        class               AS road_class
-    FROM `{BIGQUERY_PROJECT}.{OVERTURE_DATASET}.segment`
-    WHERE (subtype = 'pedestrian'
-           OR class IN ('pedestrian', 'footway', 'path', 'steps'))
-      AND bbox.xmin >= {BBOX["min_lon"]}
-      AND bbox.ymin >= {BBOX["min_lat"]}
-      AND bbox.xmax <= {BBOX["max_lon"]}
-      AND bbox.ymax <= {BBOX["max_lat"]}
-    """
-
-    try:
-        df = bq_client.query(bq_query).to_dataframe()
-    except Exception as exc:
-        log.warning("BigQuery query failed (%s) — falling back to BBOX grid sampler.", exc)
-        return _grid_sample_bbox(output_root)
-    log.info("%d walk edges returned from BigQuery", len(df))
-
-    df["geometry"] = df["wkt"].apply(shapely_wkt.loads)
-    gdf_edges  = gpd.GeoDataFrame(df, geometry="geometry", crs="EPSG:4326")
-    gdf_proj   = gdf_edges.to_crs(UTM31N)
     transformer = pyproj.Transformer.from_crs(UTM31N, "EPSG:4326", always_xy=True)
-
     sample_points = []
     seen_cells    = set()
 
-    for _, row in gdf_proj.iterrows():
-        geom    = row.geometry
+    for edge in edges:
+        geom    = edge["geometry"]
         length  = geom.length
         n_steps = max(1, int(length / SAMPLE_DISTANCE_M))
 
@@ -909,25 +856,103 @@ def query_and_sample_points(output_root: Path) -> list:
                 continue
             seen_cells.add(cell_key)
 
-            name = row["name"] if isinstance(row["name"], str) else ""
-            rt   = row["road_type"] if isinstance(row["road_type"], str) else ""
-
             sample_points.append({
                 "id"               : f"{lat:.6f}_{lon:.6f}",
-                "lat"              : lat,
-                "lon"              : lon,
-                "heading"          : heading,
-                "street_name"      : name,
-                "highway_type"     : rt,
-                "edge_id"          : row["id"],
-                "dist_along_edge_m": round(dist, 1),
+                "lat"              : float(lat),
+                "lon"              : float(lon),
+                "heading"          : round(float(heading), 1),
+                "street_name"      : edge["name"],
+                "highway_type"     : edge["highway_type"],
+                "edge_id"          : edge["edge_id"],
+                "dist_along_edge_m": round(float(dist), 1),
             })
 
+    points_file = output_root / "sample_points.json"
     points_file.write_text(
         json.dumps(sample_points, indent=2, ensure_ascii=False), encoding="utf-8"
     )
     log.info("Sampled %d points -> %s", len(sample_points), points_file)
     return sample_points
+
+
+def _load_walk_edges_from_osmnx() -> list | None:
+    """Download the pedestrian walk network for BBOX from OpenStreetMap via OSMnx.
+
+    Returns a list of edge dicts ready for _sample_edges(), or None on failure.
+    Uses graph_from_polygon (stable across osmnx 1.x and 2.x) instead of
+    graph_from_bbox whose positional-arg signature changed between versions.
+    """
+    try:
+        import osmnx as ox
+        from shapely.geometry import box as shapely_box
+
+        log.info("Downloading walk network from OSM via OSMnx (v%s) ...", ox.__version__)
+
+        bbox_poly = shapely_box(
+            BBOX["min_lon"], BBOX["min_lat"],
+            BBOX["max_lon"], BBOX["max_lat"],
+        )
+        G = ox.graph_from_polygon(
+            bbox_poly,
+            network_type="walk",
+            retain_all=False,
+        )
+
+        gdf_edges = ox.graph_to_gdfs(G, nodes=False, edges=True).to_crs(UTM31N)
+        log.info("OSMnx returned %d walk edges", len(gdf_edges))
+
+        edges = []
+        for (u, v, k), row in gdf_edges.iterrows():
+            geom = row.geometry
+            if geom is None or geom.is_empty or geom.length < 1:
+                continue
+
+            hw = row.get("highway", "unknown")
+            if isinstance(hw, list):
+                hw = hw[0]
+
+            name = row.get("name", "")
+            if isinstance(name, list):
+                name = name[0]
+
+            edges.append({
+                "geometry"    : geom,
+                "name"        : name if isinstance(name, str) else "",
+                "highway_type": str(hw),
+                "edge_id"     : f"{u}_{v}_{k}",
+            })
+
+        log.info("Built %d usable edges from OSMnx walk network", len(edges))
+        return edges
+
+    except Exception:
+        log.warning("_load_walk_edges_from_osmnx failed — will fall back to grid",
+                    exc_info=True)
+        return None
+
+
+def query_and_sample_points(output_root: Path) -> list:
+    """Download walk-network edges via OSMnx and sample points along them.
+
+    Priority order:
+      1. Cached sample_points.json (resume / re-run)
+      2. OSMnx  — live OSM walk network for BBOX
+      3. Uniform BBOX grid fallback
+    """
+    points_file = output_root / "sample_points.json"
+
+    if points_file.exists():
+        with open(points_file, encoding="utf-8") as f:
+            pts = json.load(f)
+        log.info("Re-using %d saved sample points from %s", len(pts), points_file)
+        return pts
+
+    edges = _load_walk_edges_from_osmnx()
+    if edges:
+        return _sample_edges(edges, output_root)
+
+    log.warning("OSMnx walk network unavailable — falling back to BBOX grid sampler.")
+    return _grid_sample_bbox(output_root)
 
 
 # ---------------------------------------------------------------------------

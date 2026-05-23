@@ -1,5 +1,6 @@
 google-cloud-bigquery
 db-dtypes
+osmnx
 transformers>=4.40
 huggingface_hub
 pydantic
@@ -15,4 +16,3 @@ torch
 torchvision
 torchaudio
 accelerate>=0.30
-lm-format-enforcer>=0.10

@@ -1,0 +1,102 @@
+{
+  "image": "/teamspace/studios/this_studio/StreetPLM/images/sv_41.396468_2.166667_h90.jpg",
+  "latency_ms": 26126.2,
+  "approx_tokens": 164,
+  "scene_analysis": {
+    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "dappled tree shade",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "natural daylight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "natural daylight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "tall plane trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "potted plants",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "street lamp",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "waste bin",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Carrer de Provenca",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "Bar Calvet",
+        "zone": "right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

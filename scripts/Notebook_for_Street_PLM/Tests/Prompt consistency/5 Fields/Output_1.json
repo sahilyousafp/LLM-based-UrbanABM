@@ -1,0 +1,101 @@
+{
+  "image": "/teamspace/studios/this_studio/StreetPLM/images/sv_41.396468_2.166667_h90.jpg",
+  "latency_ms": 25968.0,
+  "approx_tokens": 162,
+  "scene_analysis": {
+    "scene": "Narrow street with historic buildings, potted plants, and several waste bins lining the sidewalk.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "natural daylight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "natural daylight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "yes"
+      },
+      {
+        "zone": "center",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "yes"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "yes"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "plane trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "potted plants",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "street lamp",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "waste bin",
+        "presence": "many"
+      },
+      {
+        "zone": "right",
+        "element": "waste bin",
+        "presence": "many"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "santafé",
+        "zone": "left",
+        "type": "store sign"
+      },
+      {
+        "text": "Bar Calvet",
+        "zone": "right",
+        "type": "store sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
