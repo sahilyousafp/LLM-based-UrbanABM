@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "timestamp": "20260523_225812",
+    "latitude": 41.39892209999999,
+    "longitude": 2.1698198000000004,
+    "heading": 250.5,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary_link",
+    "edge_id": "442540267_7575298559_0",
+    "dist_along_edge_m": 65.4,
+    "source_image": "sv_41.398922_2.169820_h250.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22829.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban boulevard with wide sidewalks, moderate pedestrian traffic, and a mix of historic architecture and modern amenities.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead streetlights",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "large leafy trees lining the road",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black metal security gate",
+        "material": "metal",
+        "colour": "black",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "white painted crosswalk markings",
+        "material": "paint",
+        "colour": "white",
+        "presence": "multiple"
+      },
+      {
+        "zone": "right",
+        "element": "red tactile paving near crosswalks",
+        "material": "tactile paving",
+        "colour": "red",
+        "presence": "along entire right side"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

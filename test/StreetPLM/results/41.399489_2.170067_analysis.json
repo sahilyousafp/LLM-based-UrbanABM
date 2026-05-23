@@ -1,0 +1,180 @@
+{
+  "metadata": {
+    "timestamp": "20260523_225436",
+    "latitude": 41.39948909999998,
+    "longitude": 2.1700671000000002,
+    "heading": 229.4,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "126797988_7575264740_0",
+    "dist_along_edge_m": 16.7,
+    "source_image": "sv_41.399489_2.170067_h229.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 39744.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Bustling city intersection with wide roads, moderate traffic flow, and surrounding historic architecture.",
+    "lighting": [
+      {
+        "zone": "far_left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "far_right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "far_left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      },
+      {
+        "zone": "far_right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "tall evergreen coniferous trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "left",
+        "element": "tall evergreen coniferous trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "leafy deciduous trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "leafy deciduous trees",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "far_left",
+        "element": "stone monument with sculptural elements",
+        "material": "stone",
+        "colour": "brown",
+        "style": "monumental",
+        "scale": "large"
+      },
+      {
+        "zone": "left",
+        "element": "stone monument with sculptural elements",
+        "material": "stone",
+        "colour": "brown",
+        "style": "monumental",
+        "scale": "large"
+      },
+      {
+        "zone": "center",
+        "element": "metal bollards",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "functional",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "metal bollards",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "functional",
+        "scale": "small"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "far_left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "far_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,87 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231936",
+    "latitude": 41.3978198,
+    "longitude": 2.1720369999999996,
+    "heading": 315.6,
+    "street_name": "Passeig de Sant Joan",
+    "highway_type": "footway",
+    "edge_id": "5791471304_8207484551_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.397820_2.172037_h315.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 16910.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Wide pedestrian area lined by mature trees and historic architecture.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "soft diffused light through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "leafy deciduous trees with autumnal foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small ornamental plants along building facade",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,132 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230611",
+    "latitude": 41.3988669,
+    "longitude": 2.1698973,
+    "heading": 77.2,
+    "street_name": "Plaça de Mossèn Jacint Verdaguer",
+    "highway_type": "footway",
+    "edge_id": "1864143481_11322679832_0",
+    "dist_along_edge_m": 20.7,
+    "source_image": "sv_41.398867_2.169897_h77.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26746.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with wide roads, moderate greenery, and no pedestrians or vehicles present.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature deciduous trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "smaller deciduous trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "large deciduous trees",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black traffic signal pole",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signal pole",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "traffic signal pole",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "red circular sign with white symbol",
+        "material": "metallic",
+        "colour": "red/white",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

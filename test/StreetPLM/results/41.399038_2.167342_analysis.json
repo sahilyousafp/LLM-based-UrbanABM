@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231209",
+    "latitude": 41.399037699999994,
+    "longitude": 2.1673421000000004,
+    "heading": 324.4,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "3207273339_7045171422_0",
+    "dist_along_edge_m": 9.2,
+    "source_image": "sv_41.399038_2.167342_h324.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22795.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street scene with moderate pedestrian activity near a snack bar and parked motorcycles.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "natural sunlight through bare branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead structure shadow",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter tree branches",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small leafless tree",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "red car",
+        "material_and_colour": "metallic red",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles",
+        "material_and_colour": "blue and red",
+        "presence": "two"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Snack 345",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "laiet",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "Excel",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

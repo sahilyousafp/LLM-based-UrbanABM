@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230253",
+    "latitude": 41.39812109999999,
+    "longitude": 2.1667573000000004,
+    "heading": 317.6,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "1126848499_8109780142_0",
+    "dist_along_edge_m": 4.6,
+    "source_image": "sv_41.398121_2.166757_h317.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23165.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with wide roads, traffic signals, and moderate greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky with scattered clouds",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky with scattered clouds",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky with scattered clouds",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature leafy trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole with red light",
+        "material_and_colour": "metallic, yellow",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signal pole with red light",
+        "material_and_colour": "metallic, yellow",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "traffic signal pole with red light",
+        "material_and_colour": "metallic, yellow",
+        "presence": "one"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

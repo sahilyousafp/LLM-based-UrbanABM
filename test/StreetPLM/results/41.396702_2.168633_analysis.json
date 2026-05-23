@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "20260523_213006",
+    "timestamp": "20260523_224954",
     "latitude": 41.3967019,
     "longitude": 2.1686325999999996,
     "heading": 47.1,
@@ -9,46 +9,51 @@
     "edge_id": "30243248_10182303358_0",
     "dist_along_edge_m": 0.0,
     "source_image": "sv_41.396702_2.168633_h47.jpg",
-    "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 24759.1,
+    "latency_ms": 28596.2,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "scene": "Wide urban street lined with traditional buildings and lush greenery, featuring moderate pedestrian traffic and parked vehicles.",
     "lighting": [
       {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
         "zone": "center",
-        "element": "direct overhead sunlight",
-        "condition": "adequate"
+        "element": "overcast sky",
+        "condition": "dim"
       },
       {
         "zone": "right",
-        "element": "shade from plane tree canopy",
+        "element": "overcast sky",
         "condition": "dim"
       }
     ],
     "spatial_character": [
       {
         "zone": "left",
-        "width": "moderate",
-        "enclosure": "semi",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
-        "lane_type": "sidewalk",
+        "lane_type": "road",
         "crossing": "none"
       },
       {
         "zone": "center",
-        "width": "moderate",
-        "enclosure": "semi",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
         "lane_type": "road",
         "crossing": "none"
       },
       {
         "zone": "right",
-        "width": "narrow",
-        "enclosure": "enclosed",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
         "lane_type": "road",
         "crossing": "none"
@@ -57,51 +62,70 @@
     "crowdedness": [
       {
         "zone": "left",
-        "density_level": "sparse"
+        "density_level": "empty"
       },
       {
         "zone": "center",
-        "density_level": "sparse"
+        "density_level": "moderate"
       },
       {
         "zone": "right",
-        "density_level": "sparse"
+        "density_level": "moderate"
       }
     ],
     "greenery": [
       {
         "zone": "left",
-        "element": "plane trees with mottled grey-green bark",
-        "coverage": "moderate"
+        "element": "large mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "smaller trees with green foliage",
+        "coverage": "dense"
       },
       {
         "zone": "right",
-        "element": "terracotta potted geraniums on windowsills",
-        "coverage": "sparse"
+        "element": "trees with green foliage",
+        "coverage": "dense"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron double-arm street lamp",
-        "presence": "few"
+        "element": "brown building facade with balconies",
+        "material": "brick",
+        "colour": "brown",
+        "style": "traditional European architecture",
+        "scale": "large"
+      },
+      {
+        "zone": "center",
+        "element": "pedestrian crosswalk markings",
+        "material": "painted white lines",
+        "colour": "white",
+        "style": "standard road marking",
+        "scale": "medium"
       },
       {
         "zone": "right",
-        "element": "grey cylindrical municipal waste bin",
-        "presence": "few"
+        "element": "building facade with windows and balconies",
+        "material": "stone",
+        "colour": "beige",
+        "style": "traditional European architecture",
+        "scale": "large"
       }
     ],
     "visible_text": [
       {
-        "text": "Carrer de Provenca",
+        "text": "sueños",
         "zone": "far_left",
         "type": "sign"
       },
       {
-        "text": "Bar Calvet",
-        "zone": "right",
-        "type": "label"
+        "text": "Sant Antoni",
+        "zone": "far_right",
+        "type": "sign"
       }
     ]
   },

@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231918",
+    "latitude": 41.397273,
+    "longitude": 2.1720222000000002,
+    "heading": 312.6,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791471277_5791471313_0",
+    "dist_along_edge_m": 10.0,
+    "source_image": "sv_41.397273_2.172022_h312.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23132.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban plaza area with mixed pedestrian and bicycle traffic, featuring wide sidewalks and a mix of open spaces and roadways.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through bare branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight on pavement",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "shade under large tree trunks",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare deciduous trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "large tree trunks with rough bark",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "trash bins made of plastic with metallic lids",
+        "material_and_colour": "black with silver lids",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "bicycles parked along curb",
+        "material_and_colour": "various colors",
+        "presence": "many"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "P",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

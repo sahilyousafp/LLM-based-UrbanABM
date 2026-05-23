@@ -1054,7 +1054,7 @@
     "lat": 41.39943009999998,
     "lon": 2.1695144000000006,
     "heading": 230.3,
-    "street_name": "Passeig de Sant Joan",
+    "street_name": "Plaça de Mossèn Jacint Verdaguer",
     "highway_type": "footway",
     "edge_id": "6855299009_11371054556_0",
     "dist_along_edge_m": 18.4
@@ -1084,7 +1084,7 @@
     "lat": 41.39855159999999,
     "lon": 2.1686287000000006,
     "heading": 137.0,
-    "street_name": "Carrer de Bailèn",
+    "street_name": "Carrer de Mallorca",
     "highway_type": "footway",
     "edge_id": "6855299018_7412690164_0",
     "dist_along_edge_m": 11.9
@@ -1474,7 +1474,7 @@
     "lat": 41.39899929999999,
     "lon": 2.1704698,
     "heading": 137.1,
-    "street_name": "Passeig de Sant Joan",
+    "street_name": "Plaça de Mossèn Jacint Verdaguer",
     "highway_type": "footway",
     "edge_id": "8207484549_11829063598_0",
     "dist_along_edge_m": 56.7
@@ -1565,7 +1565,7 @@
     "lon": 2.1673719,
     "heading": 82.0,
     "street_name": "",
-    "highway_type": "corridor",
+    "highway_type": "footway",
     "edge_id": "8254596724_13421392911_0",
     "dist_along_edge_m": 48.2
   }

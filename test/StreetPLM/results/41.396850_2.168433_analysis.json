@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230818",
+    "latitude": 41.396849599999996,
+    "longitude": 2.1684333,
+    "heading": 316.1,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "3184416467_10182303352_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.396850_2.168433_h316.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20472.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Quiet residential street lined with mature trees and paved walkways.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature plane trees",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small leafy bushes",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "gray plastic trash bins",
+        "material": "plastic",
+        "colour": "gray",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "metal bench",
+        "material": "metal",
+        "colour": "brown",
+        "presence": "one"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

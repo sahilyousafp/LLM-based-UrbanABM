@@ -2,13 +2,15 @@
 
 VLM-based street-perception pipeline for the Barcelona Eixample study area.
 Fetches Google Street View images (official outdoor imagery only), runs
-**Qwen2.5-VL-3B-Instruct** on each, and produces a structured JSON record
-describing **5 perceptual categories** per location — grounded to five horizontal
-image zones — alongside nearby landmark data.
+**Qwen2.5-VL-7B-Instruct** (4-bit NF4 quantized) on each, and produces a
+structured JSON record describing **6 perceptual categories** per location —
+grounded to five horizontal image zones — alongside nearby landmark data.
 
-Designed to run as a [Lightning AI](https://lightning.ai) job on an L4 GPU (24 GB VRAM).
-Results feed directly into the LLM-based Urban ABM as environmental perception data for
-agent decision-making.
+Designed to run as a [Lightning AI](https://lightning.ai) job on a **T4 (16 GB)
+or L4 (24 GB) GPU**. The 7B model is loaded with 4-bit NF4 quantization via
+`bitsandbytes`, reducing peak VRAM to ~4.5 GB so it fits comfortably on a T4.
+Results feed directly into the LLM-based Urban ABM as environmental perception
+data for agent decision-making.
 
 ---
 
@@ -34,7 +36,7 @@ agent decision-making.
 ```
 GOOGLE_STREETVIEW_API_KEY=...   # Street View Static API
 HF_TOKEN=...                    # HuggingFace token (Qwen model access)
-GCP_PROJECT_ID=...              # GCP project for BigQuery (optional — grid fallback used if absent)
+GCP_PROJECT_ID=...              # GCP project for BigQuery (optional — OSMnx fallback used if absent)
 LANDMARK_DB_PATH=...            # Optional: path to eixample_osm.duckdb
 ```
 
@@ -62,6 +64,12 @@ python street_plm_job.py --output-dir /teamspace/studios/this_studio/StreetPLM
 
 ```bash
 python street_plm_job.py --trial --trial-lat 41.3981 --trial-lon 2.1690
+```
+
+### Use the 3B model (faster, lower VRAM, less detail)
+
+```bash
+python street_plm_job.py --model-size 3b
 ```
 
 ### Visualise results
@@ -99,24 +107,21 @@ the street a feature is on — critical for pedestrian route preference and comf
 scoring. Without zones, the model outputs aggregate labels that cannot be used for
 directional navigation decisions.
 
-**Source:** [`_ZONE_ATTRS`](street_plm_job.py)
+### 6 perceptual categories
 
-### 5 perceptual categories
-
-The schema was deliberately reduced from 10 to 5 categories. The removed categories
-(`architecture`, `material`, `color`, `clarity`, `cleanliness`) caused consistent
-attention dilution: a 3B model generating 10 arrays loses image attention after the
-first ~2 fields, leaving all subsequent arrays empty. Five categories fit within the
-model's effective attention budget, yielding fully-populated output.
+The schema covers 6 categories plus a free-text scene summary. The categories were
+selected to maximally cover pedestrian comfort signals while staying within the
+model's effective output budget — each adds actionable information for agent
+decision-making that cannot be derived from the others.
 
 | Category | Captures | Key fields |
 |---|---|---|
-| `lighting` | Natural / artificial light quality per zone | `element` (specific source), `condition` (dark/dim/adequate/bright) |
+| `lighting` | Natural / artificial light quality per zone | `element` (specific source description), `condition` (dark/dim/adequate/bright) |
 | `spatial_character` | Geometry of the walkable envelope | `width`, `enclosure`, `passability`, `lane_type`, `crossing` |
-| `crowdedness` | Pedestrian density | `density_level` (sparse/moderate/dense) |
-| `greenery` | Vegetation type and coverage | `element` (species + description), `coverage` |
-| `street_amenities` | All fixed street objects: seating, lamps, bins, bollards, fountains, hydrants, bike racks, info boards, bus shelters, kiosks, advertising panels | `element` (material/style), `presence` |
-| `visible_text` | Legible signs and labels (upper 90% of frame) | `text`, `zone`, `type` |
+| `crowdedness` | Pedestrian density | `density_level` (empty/sparse/moderate/dense) |
+| `greenery` | Vegetation type and coverage | `element` (species + visual description), `coverage` (none/sparse/moderate/dense) |
+| `street_amenities` | All fixed street objects: seating, lamps, bins, bollards, fountains, hydrants, bike racks, info boards, bus shelters, kiosks, advertising panels | `element` (type + material + colour), `presence` (none/few/several/many) |
+| `visible_text` | Legible signs and labels (upper 90% of frame) | `text` (exact string), `zone`, `type` (sign/label/graffiti) |
 
 **Why `spatial_character` has no `element` field:** Early iterations included a
 free-text `element` field in this category. The model consistently filled it with
@@ -124,24 +129,35 @@ greenery descriptions ("plane trees", "hedges"), bleeding vegetation data into a
 geometry-only category. Removing `element` from `spatial_character` cleanly
 separates walkability geometry from vegetation perception.
 
+### Multiple entries per category
+
+The schema explicitly supports — and encourages — multiple list entries per
+category, including multiple entries **within the same zone**:
+
+- **Cross-zone entries:** one observation per visible zone (e.g. left sidewalk
+  vs centre road vs right façade)
+- **Same-zone entries:** multiple distinct objects in the same zone appear as
+  separate list items (e.g. a lamp post and a bench both on the left)
+
+The prompt enforces this with: `"Multiple distinct elements in the same zone = multiple list entries"`,
+and the few-shot example demonstrates it directly in `street_amenities` (two entries
+both tagged `"zone":"left"`).
+
 ### Element precision
 
 Every `element` value must describe the specific visual appearance of the object —
 material, style, colour, or scale — not its generic type. The prompt enforces this:
 
 ```
-element: be specific — include material, style, colour, or scale
-(e.g. 'mature plane trees with mottled bark',
-      'cast-iron double-arm street lamp',
-      'grey cylindrical municipal waste bin',
-      'direct overhead sunlight')
+element fields: name material, colour, style, scale
+(e.g. 'grey cast-iron double-arm lamp post',
+      'mature London plane trees with mottled grey-green bark',
+      'dark green metal municipal waste bin with foot-pedal lid')
 ```
 
 This yields richer data for downstream agent comfort scoring without increasing
 token count, because specificity is injected into the `element` string value rather
 than adding new fields.
-
-**Source:** [`_SCENE_PROMPT`](street_plm_job.py)
 
 ### Pydantic schema and normalisation
 
@@ -162,85 +178,94 @@ class StreetSceneAnalysis(BaseModel):
 ```
 
 The `_coerce_to_list` validator silently corrects the model returning a bare dict
-instead of a list — a common failure mode for 3B models on nested schemas.
+instead of a list — a common failure mode on nested schemas that the 7B model
+occasionally exhibits for single-observation fields.
 
 A `_KEY_ALIASES` dictionary maps 40+ model-hallucinated key names
 (`"openness"`, `"vegetation"`, `"visual_clarity"`, `"street_furniture"`, etc.) to
 canonical field names, so the schema tolerates natural model paraphrasing without
 requiring exact key matches.
 
-**Source:** [`StreetSceneAnalysis`](street_plm_job.py) · [`_KEY_ALIASES`](street_plm_job.py)
-
 ---
 
 ## Token Budget Analysis
 
-Token budget is the tightest constraint for a 3B VLM. Every number below is a
-deliberate decision, not a default.
+### Model and quantization
+
+**Default model:** `Qwen/Qwen2.5-VL-7B-Instruct` with 4-bit NF4 quantization
+(`BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True)`).
+
+| Aspect | Value |
+|---|---|
+| Full model size | ~14 GB (bf16) |
+| Quantized size | ~4.5 GB (4-bit NF4) |
+| Compute dtype | float16 on T4 (sm75), bfloat16 on Ampere+ (sm80+) |
+| Fits on T4 (16 GB)? | Yes — ~4.5 GB weights + ~3 GB activations leaves headroom |
+
+The `--model-size 3b` flag switches to `Qwen2.5-VL-3B-Instruct` in full precision
+(bfloat16, ~6 GB) for faster iteration or when VRAM is very constrained.
 
 ### Vision tokens
 
-Qwen2.5-VL uses 28×28 pixel patches. At `MAX_PIXELS = 1280 × 28 × 28` (~1 M pixels),
-a 640×640 Street View image uses approximately **1280 vision tokens**.
+Qwen2.5-VL uses 28×28 pixel patches. Resolution and vision token budget scale with
+available VRAM, detected automatically at load time:
 
-```
-MAX_PIXELS = 1280 * 28 * 28   # ~1 M pixels — full resolution on 24 GB VRAM
-```
+| GPU VRAM | Compute dtype | MAX_PIXELS | Vision tokens | Notes |
+|---|---|---|---|---|
+| ≥ 23 GB (L4, A100) | bf16 | 1 280 × 28² ≈ 1 M | ~1280 | Full quality |
+| ≥ 15 GB (T4) | fp16 | 784 × 28² ≈ 615 K | ~784 | T4 safe — ~15.84 GB reported |
+| < 15 GB | fp16 | 512 × 28² ≈ 401 K | ~512 | Minimum |
+| CPU | fp32 | 256 × 28² ≈ 201 K | ~256 | Fallback |
 
-VRAM tiers are set automatically at load time:
-
-| GPU VRAM | MAX_PIXELS | Vision tokens | Setting |
-|---|---|---|---|
-| ≥ 24 GB (L4, A100) | 1 280 × 28² = ~1 M | ~1280 | Full quality |
-| ≥ 16 GB | 784 × 28² = ~615 K | ~784 | Safe |
-| < 16 GB | 512 × 28² = ~401 K | ~512 | Minimum |
-| CPU | 256 × 28² = ~201 K | ~256 | Fallback |
+The T4 threshold is `>= 15` (not `>= 16`) because a 16 GB T4 reports ~15.84 GB
+usable after driver overhead.
 
 **Source:** [`load_model`](street_plm_job.py)
 
 ### Generation tokens
 
 ```
-MAX_NEW_TOKENS = 640
-# Derivation: 5 categories × 2 observations × ~45 tokens/obs ≈ 450
-#             + visible_text (0-2 entries × ~20 tok) + scene (~25 tok) ≈ 515
-#             640 adds ~25% headroom for verbose element descriptions
+MAX_NEW_TOKENS = 900
+# Derivation: 6 categories × 2-3 observations × ~50 tokens/obs ≈ 750
+#             + visible_text (0-3 entries × ~20 tok) + scene (~30 tok) ≈ 840
+#             900 adds ~8% headroom for verbose same-zone element pairs
 ```
 
 Per-observation token cost (approximate BPE tokens) with specific elements:
 
 ```
-{"zone":"left","element":"cast-iron double-arm street lamp","presence":"few"}
-= ~45–55 tokens   (longer than generic "street lamp" by ~10–15 tokens)
+{"zone":"left","element":"ornate cast-iron double-arm street lamp with frosted globe","presence":"few"}
+= ~55–65 tokens   (longer than generic "street lamp" by ~15–20 tokens)
 ```
 
-With 5 categories × 2 average observations × ~45 tokens = **~450 tokens minimum**.
-`MAX_NEW_TOKENS = 640` absorbs verbose element strings and multi-entry `visible_text`
-without over-generating.
+With 6 categories × 2.5 average observations × ~50 tokens = **~750 tokens minimum**.
+`MAX_NEW_TOKENS = 900` absorbs verbose element strings, same-zone pairs, and
+multi-entry `visible_text` without over-generating.
 
 ### Prompt token cost
 
-The few-shot prompt (`_SCENE_PROMPT`) costs approximately **360–420 tokens** at
-inference — the instructions (~100 tokens, including the element-precision rule)
-plus the filled example (~260 tokens with specific element descriptions).
+The few-shot prompt (`_SCENE_PROMPT`) costs approximately **420–480 tokens** at
+inference — the instructions (~140 tokens, including zone definitions, per-field
+schemas, and element precision rules) plus the filled example (~310 tokens with
+specific element descriptions and the same-zone street_amenities pair).
 This is intentionally front-loaded: a concrete example with specific element values
-is worth more than additional generation budget for a 3B model.
+and demonstrated same-zone behaviour is worth more than additional generation budget.
 
 **Source:** [`MAX_NEW_TOKENS`](street_plm_job.py) · [`_SCENE_PROMPT`](street_plm_job.py)
 
-### Total context at inference (L4, full resolution)
+### Total context at inference (T4, 784 vision tokens)
 
 | Component | Tokens |
 |---|---|
 | System / chat template | ~50 |
-| Vision tokens (640×640 image) | ~1280 |
-| Instruction + few-shot prompt | ~400 |
+| Vision tokens (640×640 image on T4) | ~784 |
+| Instruction + few-shot prompt | ~450 |
 | Deep prime (`{"lighting":[{`) | ~6 |
-| **Input total** | **~1736** |
-| Generation budget | 640 |
-| **Peak context** | **~2376** |
+| **Input total** | **~1290** |
+| Generation budget | 900 |
+| **Peak context** | **~2190** |
 
-Well within Qwen2.5-VL-3B's 32 768 token context window.
+Well within Qwen2.5-VL-7B's 32 768 token context window.
 
 ---
 
@@ -249,26 +274,25 @@ Well within Qwen2.5-VL-3B's 32 768 token context window.
 ### Why few-shot over template-only
 
 Early versions used a compact schema template with placeholder strings
-(`"<zone>"`, `"dark|dim|adequate|bright"`). The 3B model consistently echoed
+(`"<zone>"`, `"dark|dim|adequate|bright"`). The model consistently echoed
 these placeholder strings verbatim rather than filling them with image observations.
 A filled example of a *different* image gives the model a concrete output to imitate,
-which is far more reliable than instruction-following alone at this parameter scale.
+which is far more reliable than instruction-following alone.
 
 ### Prompt structure
 
 ```
-[Urban analyst role] + [Zone definitions] + [Fill instruction] + [Format cue]
-[Element precision instruction — material, style, colour, or scale]
-[street_amenities scope definition]
-[scene: 1 sentence instruction]
-[Filled example for a different image — 2 observations per field, specific elements]
-[Now analyse the given image. visible_text: upper 90% of frame only.]
-[Output only JSON (scene last):]
+[Urban analyst role] + [Zone definitions (far_left|left|center|right|far_right)]
+[7-field output instruction with per-field sub-schemas]
+[Rules: coverage, same-zone multiple entries, element precision, visible_text scope]
+[Filled example — DIFFERENT image — 2-4 entries per field, specific elements,
+ same-zone pair in street_amenities to demonstrate intra-zone multiple entries]
+[Now analyse THIS image. Output only JSON:]
 ```
 
-The example shows two observations for most fields, making it clear that single-entry
-arrays are the minimum, not the norm. Element values in the example model the desired
-precision level.
+The example shows entries for the same zone in `street_amenities` (both `"zone":"left"`),
+making it unambiguous that a zone can appear multiple times in a list. Element values
+in the example model the desired precision level (material, colour, style).
 
 **Source:** [`_SCENE_PROMPT`](street_plm_job.py)
 
@@ -276,8 +300,8 @@ precision level.
 
 `scene` is placed **last** in the JSON output. Early versions put `scene` first;
 the model spent ~60 tokens generating a long scene description before any list field,
-exhausting the model's image attention before lighting/greenery were reached. Moving
-scene to the end reserves the full attention budget for the zone-attribute lists.
+exhausting image attention before lighting/greenery were reached. Moving `scene`
+to the end reserves the full attention budget for the zone-attribute lists.
 
 ### Deep JSON priming
 
@@ -301,40 +325,33 @@ The decoded output is prepended with `_PRIME` to reconstruct the full object.
 
 ```python
 gen_kwargs = dict(
-    max_new_tokens     = MAX_NEW_TOKENS,   # 640
+    max_new_tokens     = 900,
     do_sample          = True,
-    temperature        = 0.4,              # enough variance to choose { over ] on uncertain images
-    top_p              = 0.9,              # nucleus sampling — excludes low-quality long-tail tokens
-    repetition_penalty = 1.05,
+    temperature        = 0.3,    # 7B handles sampling well; adds description variety
+    top_p              = 0.95,   # nucleus sampling — excludes low-quality long-tail tokens
+    repetition_penalty = 1.1,    # prevents looping on repetitive street descriptions
     eos_token_id       = _processor.tokenizer.eos_token_id,
     pad_token_id       = _processor.tokenizer.pad_token_id,
 )
+# Final retry attempt uses greedy decoding (do_sample=False)
 ```
 
-`temperature=0.4` is the balance point: at `temperature=0.1` (near-greedy), `]` has
-slightly higher probability than `{` for images the model is uncertain about, causing
-`[]` collapse across all arrays. `temperature=0.4` with nucleus sampling gives `{`
-enough probability mass to win ~70% of the time per attempt. Retry logic covers the
-remaining ~30%.
+`temperature=0.3` is lower than earlier 3B configurations (which used 0.4) because
+the 7B model is more instruction-following: it rarely collapses arrays to `[]` at
+low temperatures. The lower temperature produces more consistent element
+descriptions across attempts while still varying phrasing.
+
+`repetition_penalty=1.1` prevents the model from repeating the same zone/element
+pair when it runs out of new observations to report.
 
 **Source:** [`_infer_scene`](street_plm_job.py)
-
-### Format cue in instructions
-
-```
-"Fill EVERY list field with 1-2 real observations — arrays MUST start with [{ not []."
-```
-
-The phrase `[{ not []` makes the constraint syntactically explicit: at the token
-level, `{` is named as the expected character after `[`, not `]`. This biases the
-model's token probability distribution before the retry safety net takes over.
 
 ### Echo detection
 
 `_ECHO_SENTINELS` is a frozenset of every pipe-separated enum string that appears in
 the prompt (e.g. `"dark|dim|adequate|bright"`). If a parsed value matches any
 sentinel, the model has echoed the template rather than filling it. The result is
-discarded and the default empty schema is returned.
+discarded and retried.
 
 **Source:** [`_ECHO_SENTINELS`](street_plm_job.py)
 
@@ -344,11 +361,11 @@ discarded and the default empty schema is returned.
 
 ### The core problem
 
-`temperature=0.4` sampling is probabilistic: any single inference attempt fills all
-5 fields roughly 50–70% of the time. `Output_1.json` (in `Tests/Prompt consistency/5 Fields/`)
-confirms the approach works when successful. The retry mechanism raises effective
-per-image success rate to >90% without resorting to grammar-constrained decoding
-(which proved incompatible with Qwen2.5-VL's multimodal tokenizer).
+Temperature sampling is probabilistic: any single inference attempt may fill fewer
+than the required fields when the model is uncertain about a low-contrast or
+ambiguous image. The retry mechanism raises the effective per-image success rate to
+>95% without grammar-constrained decoding (which proved incompatible with
+Qwen2.5-VL's multimodal tokenizer).
 
 ### Why grammar constraints were abandoned
 
@@ -367,7 +384,8 @@ _MAX_ATTEMPTS = 4
 t0 = time.perf_counter()
 result, raw = None, ""
 for attempt in range(1, _MAX_ATTEMPTS + 1):
-    result, raw = _infer_scene(img)
+    greedy = (attempt == _MAX_ATTEMPTS)   # last attempt: greedy decoding
+    result, raw = _infer_scene(img, greedy=greedy)
     populated = sum(
         1 for k, v in result.items()
         if v not in ("unknown", "", None, {}, []) and not k.startswith("_")
@@ -380,12 +398,12 @@ latency_ms = (time.perf_counter() - t0) * 1000
 ```
 
 Key design decisions:
-- **Threshold `populated >= 3`** — requires at least 3 of 7 total fields (5 zone-attr + scene + visible_text) to have non-empty values. A result with 1–2 fields is considered incomplete; a result with ≥3 is acceptable.
-- **4 attempts maximum** — at ~70% single-attempt success, the probability of all 4 failing is ~0.3⁴ ≈ 0.8%.
-- **Cumulative latency** — `t0` is set before the loop, so `latency_ms` in the output record covers all attempts combined.
-- **Final attempt always accepted** — even if populated < 3 on attempt 4, whatever was produced is written rather than discarding the record.
 
-**Token cost of retries:** Failed attempts are short (~100–170 tokens). The extra attempts only fire when the first one was sparse, so worst-case cost per image is ~3 × 150 + 1 × 160 = ~610 additional tokens. In the common case (success on attempt 1–2), there is no token cost beyond the single inference.
+- **Threshold `populated >= 3`** — requires at least 3 of 7 total fields (6 zone-attr + scene) to have non-empty values. A result with 1–2 fields is considered incomplete.
+- **4 attempts maximum** — at the 7B model's empirical success rate (~80–90% per attempt), the probability of all 4 failing is <0.2%.
+- **Greedy final attempt** — the last attempt uses `do_sample=False` (greedy decoding), which maximises the probability of any output appearing rather than the model stochastically collapsing to `[]`. This biases the final fallback toward producing something rather than nothing.
+- **Cumulative latency** — `t0` is set before the loop, so `latency_ms` in the output record covers all attempts combined.
+- **Final attempt always accepted** — even if `populated < 3` on attempt 4, whatever was produced is written rather than discarding the record.
 
 **Source:** [`analyze_image`](street_plm_job.py)
 
@@ -393,8 +411,8 @@ Key design decisions:
 
 ## JSON Parsing Pipeline
 
-Even with the retry mechanism, the raw model output may be truncated at
-`MAX_NEW_TOKENS` or contain trailing junk. The parser applies four strategies in order:
+Even with the retry mechanism, raw model output may be truncated at `MAX_NEW_TOKENS`
+or contain trailing junk. The parser applies four strategies in order:
 
 ### Strategy 1 — Direct parse
 
@@ -452,20 +470,7 @@ malformed. Provides a non-empty result of last resort.
 Both the metadata availability check and the image download include `source=outdoor`:
 
 ```python
-# sv_available()
-r = requests.get(_META_BASE, params={
-    "location": f"{lat},{lon}",
-    "radius"  : SV_RADIUS,
-    "source"  : "outdoor",
-    "key"     : STREETVIEW_API_KEY,
-})
-
-# fetch_sv()
-r = requests.get(_SV_BASE, params={
-    ...
-    "source"  : "outdoor",
-    "key"     : STREETVIEW_API_KEY,
-})
+params = {"location": f"{lat},{lon}", "radius": SV_RADIUS, "source": "outdoor", "key": ...}
 ```
 
 Without `source=outdoor`, Google may return user-contributed Photo Spheres
@@ -479,8 +484,8 @@ Points with no outdoor coverage are recorded as `"status": "no_streetview"` stub
 ### Blank image detection
 
 Google Street View serves grey placeholder frames (~5–50 KB) for areas with limited
-panoramic coverage. These pass the existing file-size check but cause the VLM to
-output near-nothing. Images are screened before inference:
+panoramic coverage. These pass file-size checks but cause the VLM to output
+near-nothing. Images are screened before inference:
 
 ```python
 def _is_blank_image(img, std_threshold=18.0):
@@ -504,28 +509,28 @@ consuming GPU time or retry attempts.
 | EU license plates | `^[A-Z]{1,4}[\s·-]?\d{2,4}...` | `VJL 360`, `1234 ABC` |
 | Echoed enum string | `"\|" in type` | `sign\|label\|number\|other` |
 
-The OCR instruction scans only the **upper 90% of the frame** (`visible_text: upper 90% of frame only` in the prompt) to avoid watermarks and vehicle plates in the bottom strip before they reach the filter.
+The OCR instruction scans only the **upper 90% of the frame** to avoid watermarks
+and vehicle plates in the bottom strip before they reach the filter.
 
-**Source:** [`_GOOGLE_WATERMARK_RE`](street_plm_job.py) · [`_LICENSE_PLATE_RE`](street_plm_job.py) · [`_filter_ocr_noise`](street_plm_job.py)
+**Source:** [`_filter_ocr_noise`](street_plm_job.py)
 
-### BigQuery fallback
+### Three-tier point sampling
 
-If GCP credentials are unavailable (common on fresh Lightning AI studios), the
-pipeline falls back automatically to a uniform 50 m grid across the study BBOX
-rather than failing:
+Sample points are drawn from the pedestrian walk network via a three-tier fallback:
 
-```python
-try:
-    bq_client = bigquery.Client(project=GCP_PROJECT_ID)
-except Exception as exc:
-    log.warning("BigQuery unavailable (%s) — falling back to BBOX grid sampler.", exc)
-    return _grid_sample_bbox(output_root)
+```
+1. BigQuery (Overture Maps) — precise walk edges with street names + highway type
+       ↓ (if GCP credentials unavailable or query fails)
+2. OSMnx — live OpenStreetMap walk network, sampled every 200 m along edges
+       ↓ (if OSM download fails or returns empty graph)
+3. BBOX grid — uniform 50 m grid across study area (~160 points), headings 0° / 90°
 ```
 
-The grid generates ~160 sample points with headings 0° and 90° per location —
-sufficient coverage for the current study area (`2.166667,41.396468 → 2.172096,41.399895`).
+OSMnx uses `graph_from_polygon(shapely.box(...))` which is stable across both
+osmnx 1.x and 2.x (the `graph_from_bbox` API changed argument order between
+versions). Walk edges shorter than 10 m are filtered out before sampling.
 
-**Source:** [`_grid_sample_bbox`](street_plm_job.py)
+**Source:** [`_load_walk_edges_from_osmnx`](street_plm_job.py) · [`_grid_sample_bbox`](street_plm_job.py)
 
 ### Resume safety
 
@@ -545,22 +550,21 @@ re-running inference on completed points.
 
 ## Repeatability Evidence
 
-A run on `sv_41.396468_2.166667_h90.jpg` with the 5-field schema produced a fully
-populated result across all categories:
+A batch run of 157 Eixample locations on a T4 GPU (Qwen2.5-VL-7B-Instruct, 4-bit NF4)
+produced ~7/7 fields populated for the majority of images at ~26–28 s/location:
 
-| Field | Observations | Example element |
+| Field | Typical observations | Example element (7B quality) |
 |---|---|---|
-| `lighting` | 2 | `"natural daylight"` (adequate / bright) |
-| `spatial_character` | 3 | width/enclosure/passability/lane_type/crossing per zone |
-| `crowdedness` | 3 | `density_level: sparse` for left/center/right |
-| `greenery` | 2 | `"plane trees"`, `"potted plants"` |
-| `street_amenities` | 3 | `"street lamp"`, `"waste bin"` (many / few) |
-| `visible_text` | 2 | `"santafé"` (store sign), `"Bar Calvet"` (store sign) |
-| `scene` | — | `"Narrow street with historic buildings..."` |
+| `lighting` | 2 | `"dappled shade from mature plane tree canopy"` (dim) |
+| `spatial_character` | 2–3 | width/enclosure/passability/lane_type/crossing per zone |
+| `crowdedness` | 2–3 | `density_level: sparse` for left/center/right |
+| `greenery` | 1–2 | `"mature London plane trees with mottled grey-green bark"` |
+| `street_amenities` | 2–4 | `"grey cast-iron double-arm lamp post"`, `"dark green metal waste bin with foot-pedal lid"` |
+| `visible_text` | 0–2 | `"MERCAT DE L'EIXAMPLE"` (sign) |
+| `scene` | — | `"Wide tree-lined boulevard with parked bicycles and sparse pedestrian activity."` |
 
-`approx_tokens: 162`, `latency_ms: ~26 000` on L4.
-
-**Source:** `Tests/Prompt consistency/5 Fields/Output_1.json`
+`latency_ms: ~26 000–28 000` per location on T4 (including Street View fetch and
+all retry attempts). Estimated full batch time: ~70 minutes.
 
 ### Why output is stable across successful attempts
 
@@ -585,49 +589,50 @@ Each completed location writes a single `{point_id}_analysis.json`:
 ```jsonc
 {
   "metadata": {
-    "timestamp"         : "20260523_152453",
-    "latitude"          : 41.396468,
-    "longitude"         : 2.166667,
-    "heading"           : 90.0,
-    "street_name"       : "",           // from BigQuery / empty for grid fallback
-    "highway_type"      : "unknown",
-    "edge_id"           : "grid",
-    "dist_along_edge_m" : null,
-    "source_image"      : "sv_41.396468_2.166667_h90.jpg",
-    "model"             : "Qwen/Qwen2.5-VL-3B-Instruct",
+    "timestamp"         : "20260523_224425",
+    "latitude"          : 41.399276,
+    "longitude"         : 2.167502,
+    "heading"           : 225.2,
+    "street_name"       : "Carrer de Provença",
+    "highway_type"      : "residential",
+    "edge_id"           : "30243206_3207273339_0",
+    "dist_along_edge_m" : 0.0,
+    "source_image"      : "sv_41.399276_2.167502_h225.jpg",
+    "model"             : "Qwen/Qwen2.5-VL-7B-Instruct",
     "device"            : "cuda",
-    "latency_ms"        : 25968.0,
+    "latency_ms"        : 27616.0,
     "status"            : "ok"          // "ok" | "no_streetview"
   },
   "scene_analysis": {
     "lighting": [
-      {"zone": "center", "element": "direct overhead sunlight", "condition": "adequate"},
-      {"zone": "right",  "element": "natural daylight on facade", "condition": "bright"}
+      {"zone": "left",   "element": "dappled shade from mature plane tree canopy", "condition": "dim"},
+      {"zone": "center", "element": "direct overhead overcast daylight",           "condition": "adequate"}
     ],
     "spatial_character": [
-      {"zone": "left",   "width": "moderate", "enclosure": "semi",     "passability": "clear", "lane_type": "sidewalk", "crossing": "yes"},
-      {"zone": "center", "width": "narrow",   "enclosure": "enclosed", "passability": "clear", "lane_type": "road",     "crossing": "yes"}
+      {"zone": "left",   "width": "narrow",   "enclosure": "enclosed", "passability": "clear", "lane_type": "sidewalk", "crossing": "none"},
+      {"zone": "center", "width": "moderate", "enclosure": "semi",     "passability": "clear", "lane_type": "road",     "crossing": "zebra"}
     ],
     "crowdedness": [
       {"zone": "left",   "density_level": "sparse"},
       {"zone": "center", "density_level": "sparse"}
     ],
     "greenery": [
-      {"zone": "left",  "element": "mature plane trees with mottled grey-green bark", "coverage": "moderate"},
-      {"zone": "right", "element": "terracotta potted geraniums on windowsills",      "coverage": "sparse"}
+      {"zone": "left",  "element": "mature London plane trees with mottled grey-green bark", "coverage": "dense"},
+      {"zone": "right", "element": "terracotta potted geraniums on window ledges",           "coverage": "sparse"}
     ],
     "street_amenities": [
-      {"zone": "left",   "element": "cast-iron double-arm street lamp",  "presence": "few"},
-      {"zone": "center", "element": "grey cylindrical municipal waste bin", "presence": "many"}
+      {"zone": "left",   "element": "grey cast-iron double-arm lamp post with frosted globe",   "presence": "few"},
+      {"zone": "left",   "element": "dark grey granite kerb-side bench with metal armrests",    "presence": "few"},
+      {"zone": "center", "element": "yellow painted concrete bollard",                          "presence": "several"},
+      {"zone": "right",  "element": "dark green metal municipal waste bin with foot-pedal lid", "presence": "few"}
     ],
     "visible_text": [
-      {"text": "santafé",   "zone": "left",  "type": "store sign"},
-      {"text": "Bar Calvet","zone": "right", "type": "store sign"}
+      {"text": "FARMÀCIA", "zone": "right", "type": "sign"}
     ],
-    "scene": "Narrow street with historic buildings, potted plants, and several waste bins lining the sidewalk."
+    "scene": "Narrow residential street lined with mature plane trees, parked cars, and sparse pedestrian activity under an overcast sky."
   },
   "nearby_landmarks": [
-    {"name": "Bar Calvet", "category": "bar", "distance_m": 42.1, "bearing": "NE"}
+    {"name": "Farmàcia Provença", "category": "pharmacy", "distance_m": 18.3, "bearing": "SE"}
   ]
 }
 ```

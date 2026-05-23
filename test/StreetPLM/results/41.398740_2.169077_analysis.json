@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "timestamp": "20260523_225749",
+    "latitude": 41.3987397,
+    "longitude": 2.1690765999999995,
+    "heading": 75.5,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary_link",
+    "edge_id": "442540267_7575298559_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.398740_2.169077_h75.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20894.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Wide urban street with palm trees lining the road and traditional architecture on the right side.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead clouds casting shadows",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "midday sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "palm trees along the road",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants on balconies",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic street lamps",
+        "material": "cast iron",
+        "colour": "brown",
+        "style": "traditional",
+        "scale": "tall"
+      },
+      {
+        "zone": "right",
+        "element": "metallic trash bins",
+        "material": "metal",
+        "colour": "black",
+        "style": "standard",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

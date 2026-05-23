@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230700",
+    "latitude": 41.3985953,
+    "longitude": 2.1682254,
+    "heading": 70.6,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "1864143493_8173291432_0",
+    "dist_along_edge_m": 10.9,
+    "source_image": "sv_41.398595_2.168225_h70.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22689.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showing a mix of traffic, pedestrians, and typical city infrastructure under a partly cloudy sky.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead clouds casting shadows",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight through gaps in trees",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "trees with sparse foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black truck",
+        "material_and_colour": "metallic black",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "bus",
+        "material_and_colour": "black",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles",
+        "material_and_colour": "silver",
+        "presence": "two"
+      },
+      {
+        "zone": "right",
+        "element": "traffic lights",
+        "material_and_colour": "yellow",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "SABADELL",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

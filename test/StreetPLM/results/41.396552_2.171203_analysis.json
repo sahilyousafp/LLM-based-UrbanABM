@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231706",
+    "latitude": 41.39655239999999,
+    "longitude": 2.1712033,
+    "heading": 346.5,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791423733_5791432266_0",
+    "dist_along_edge_m": 28.2,
+    "source_image": "sv_41.396552_2.171203_h346.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25678.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide roads, sparse greenery, and parked cars alongside sidewalks.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse daylight through scattered clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "diffuse daylight through scattered clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "diffuse daylight through scattered clouds",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white marked crosswalk lines",
+        "material": "painted asphalt",
+        "color": "white",
+        "scale": "large"
+      },
+      {
+        "zone": "center",
+        "element": "parked cars",
+        "material": "metallic",
+        "color": "various",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "black trash bin",
+        "material": "metallic",
+        "color": "black",
+        "scale": "small"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "G.TABACS",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

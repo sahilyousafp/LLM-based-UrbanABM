@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230033",
+    "latitude": 41.39905410000001,
+    "longitude": 2.1702358000000004,
+    "heading": 247.8,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "residential",
+    "edge_id": "442540272_11289437704_0",
+    "dist_along_edge_m": 21.9,
+    "source_image": "sv_41.399054_2.170236_h247.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22016.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Wide city street lined with historic buildings and minimal traffic, featuring open spaces and sparse greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead cloud cover",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overhead cloud cover",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small evergreen bushes",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic lampposts",
+        "material_and_colour": "silver-grey",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "metallic lampposts",
+        "material_and_colour": "silver-grey",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "far_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "far_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

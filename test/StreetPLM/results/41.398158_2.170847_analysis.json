@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231830",
+    "latitude": 41.3981579,
+    "longitude": 2.1708474000000004,
+    "heading": 135.7,
+    "street_name": "Passeig de Sant Joan",
+    "highway_type": "footway",
+    "edge_id": "5791471272_8207484552_0",
+    "dist_along_edge_m": 97.8,
+    "source_image": "sv_41.398158_2.170847_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20976.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Wide pedestrian area lined with shops and bare trees, suggesting late autumn or winter.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare deciduous trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bushes along the sidewalk",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black pole with signage holder",
+        "material": "metallic",
+        "colour": "black",
+        "style": "modern",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "storefront with glass windows",
+        "material": "glass",
+        "colour": "transparent",
+        "style": "architectural",
+        "scale": "large"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Sagrista's",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

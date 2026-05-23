@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230117",
+    "latitude": 41.3989023,
+    "longitude": 2.1679885999999997,
+    "heading": 137.5,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "tertiary",
+    "edge_id": "442540293_6855299010_0",
+    "dist_along_edge_m": 8.2,
+    "source_image": "sv_41.398902_2.167989_h137.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19663.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Wide urban intersection with minimal vehicle and pedestrian activity under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "large mature trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal traffic barriers",
+        "material": "metal",
+        "colour": "silver",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "traffic cones",
+        "material": "plastic",
+        "colour": "red",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "metal traffic barriers",
+        "material": "metal",
+        "colour": "silver",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

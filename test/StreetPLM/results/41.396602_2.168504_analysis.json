@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "20260523_213052",
+    "timestamp": "20260523_225041",
     "latitude": 41.3966017,
     "longitude": 2.1685044,
     "heading": 44.6,
@@ -9,38 +9,51 @@
     "edge_id": "30243248_10182303357_0",
     "dist_along_edge_m": 15.4,
     "source_image": "sv_41.396602_2.168504_h44.jpg",
-    "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 22351.9,
+    "latency_ms": 27093.5,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "scene": "Urban street lined with buildings featuring balconies and mature trees, with moderate vehicular and pedestrian traffic.",
     "lighting": [
       {
         "zone": "left",
-        "element": "dappled shade from plane-tree canopy",
+        "element": "overcast sky",
         "condition": "dim"
       },
       {
         "zone": "center",
-        "element": "direct overhead sunlight",
-        "condition": "adequate"
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
       }
     ],
     "spatial_character": [
       {
-        "zone": "center",
-        "width": "moderate",
-        "enclosure": "semi",
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
-        "lane_type": "sidewalk",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
         "crossing": "none"
       },
       {
         "zone": "right",
-        "width": "narrow",
-        "enclosure": "enclosed",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
         "lane_type": "road",
         "crossing": "none"
@@ -49,47 +62,67 @@
     "crowdedness": [
       {
         "zone": "left",
-        "density_level": "sparse"
+        "density_level": "empty"
       },
       {
         "zone": "center",
-        "density_level": "sparse"
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
       }
     ],
     "greenery": [
       {
         "zone": "left",
-        "element": "mature plane trees with mottled grey-green bark",
+        "element": "various species of mature trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "various species of mature trees",
         "coverage": "moderate"
       },
       {
         "zone": "right",
-        "element": "terracotta potted geraniums on windowsills",
-        "coverage": "sparse"
+        "element": "various species of mature trees",
+        "coverage": "moderate"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron double-arm street lamp",
-        "presence": "few"
+        "element": "metallic lampposts",
+        "material_and_colour": "dark grey",
+        "style": "modern",
+        "scale": "small"
+      },
+      {
+        "zone": "center",
+        "element": "metallic lampposts",
+        "material_and_colour": "dark grey",
+        "style": "modern",
+        "scale": "small"
       },
       {
         "zone": "right",
-        "element": "grey cylindrical municipal waste bin",
-        "presence": "few"
+        "element": "metallic lampposts",
+        "material_and_colour": "dark grey",
+        "style": "modern",
+        "scale": "small"
       }
     ],
     "visible_text": [
       {
-        "text": "Carrer de Provenca",
+        "text": "SABADELL",
         "zone": "far_left",
         "type": "sign"
       },
       {
-        "text": "Bar Calvet",
-        "zone": "right",
-        "type": "label"
+        "text": "SABADELL",
+        "zone": "far_right",
+        "type": "sign"
       }
     ]
   },

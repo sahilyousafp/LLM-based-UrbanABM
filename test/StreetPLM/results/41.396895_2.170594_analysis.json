@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231414",
+    "latitude": 41.3968955,
+    "longitude": 2.1705944000000006,
+    "heading": 51.7,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "5791423728_5791432271_0",
+    "dist_along_edge_m": 9.4,
+    "source_image": "sv_41.396895_2.170594_h51.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23831.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Quiet urban street corner with minimal pedestrian traffic and parked vehicles.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead shadow from surrounding buildings",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature deciduous trees with sparse foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black plastic trash can",
+        "material_and_colour": "black plastic",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signal pole with red hand symbol",
+        "material_and_colour": "metallic",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "white van with logo",
+        "material_and_colour": "white",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Antoj... clau",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "OAA",
+        "zone": "left",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

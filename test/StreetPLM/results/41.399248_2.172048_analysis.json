@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "20260523_212451",
+    "timestamp": "20260523_224425",
     "latitude": 41.39924849999999,
     "longitude": 2.1720481000000005,
     "heading": 226.3,
@@ -9,38 +9,51 @@
     "edge_id": "30243120_6762255485_0",
     "dist_along_edge_m": 0.0,
     "source_image": "sv_41.399248_2.172048_h226.jpg",
-    "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 23510.4,
+    "latency_ms": 27616.3,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "scene": "Urban street with moderate traffic flow and mixed commercial and residential buildings.",
     "lighting": [
       {
         "zone": "left",
-        "element": "dappled shade from plane-tree canopy",
+        "element": "overcast sky",
         "condition": "dim"
       },
       {
         "zone": "center",
-        "element": "direct overhead sunlight",
-        "condition": "adequate"
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
       }
     ],
     "spatial_character": [
       {
-        "zone": "center",
-        "width": "moderate",
-        "enclosure": "semi",
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
-        "lane_type": "sidewalk",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
         "crossing": "none"
       },
       {
         "zone": "right",
-        "width": "narrow",
-        "enclosure": "enclosed",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
         "lane_type": "road",
         "crossing": "none"
@@ -49,47 +62,64 @@
     "crowdedness": [
       {
         "zone": "left",
-        "density_level": "sparse"
+        "density_level": "empty"
       },
       {
         "zone": "center",
-        "density_level": "sparse"
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
       }
     ],
     "greenery": [
       {
         "zone": "left",
-        "element": "mature plane trees with mottled grey-green bark",
+        "element": "small deciduous trees along sidewalk",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "large deciduous trees lining street",
         "coverage": "moderate"
       },
       {
         "zone": "right",
-        "element": "terracotta potted geraniums on windowsills",
+        "element": "small deciduous trees along sidewalk",
         "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron double-arm street lamp",
-        "presence": "few"
+        "element": "metal lampposts",
+        "material_and_colour": "silver",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "concrete bollards",
+        "material_and_colour": "gray",
+        "presence": "several"
       },
       {
         "zone": "right",
-        "element": "grey cylindrical municipal waste bin",
-        "presence": "few"
+        "element": "metal lampposts",
+        "material_and_colour": "silver",
+        "presence": "several"
       }
     ],
     "visible_text": [
       {
-        "text": "Carrer de Provenca",
+        "text": "Immaculada",
         "zone": "far_left",
         "type": "sign"
       },
       {
-        "text": "Bar Calvet",
-        "zone": "right",
-        "type": "label"
+        "text": "Dental",
+        "zone": "far_right",
+        "type": "sign"
       }
     ]
   },

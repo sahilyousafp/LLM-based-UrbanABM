@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "timestamp": "20260523_232041",
+    "latitude": 41.3996512,
+    "longitude": 2.1715027,
+    "heading": 253.0,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary_link",
+    "edge_id": "6762254076_8173291403_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.399651_2.171503_h253.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19726.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with traffic signals and bicycle parking areas, featuring bare winter trees and a mix of residential buildings.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalized"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalized"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare deciduous trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "urban landscaping including small plants and bushes along sidewalks",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal lights",
+        "material": "metallic",
+        "colour": "red",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "bicycle racks",
+        "material": "metallic",
+        "colour": "black",
+        "scale": "large"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "16",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

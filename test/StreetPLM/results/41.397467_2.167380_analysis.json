@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "20260523_212826",
+    "timestamp": "20260523_224807",
     "latitude": 41.3974669,
     "longitude": 2.1673801,
     "heading": 45.5,
@@ -9,46 +9,51 @@
     "edge_id": "30243247_10182303351_0",
     "dist_along_edge_m": 15.1,
     "source_image": "sv_41.397467_2.167380_h45.jpg",
-    "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 24731.2,
+    "latency_ms": 23579.2,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "scene": "Boulevard-style street lined with historic buildings and minimal pedestrian traffic.",
     "lighting": [
       {
+        "zone": "left",
+        "element": "overhead clouds casting diffused light",
+        "condition": "adequate"
+      },
+      {
         "zone": "center",
-        "element": "direct overhead sunlight",
+        "element": "overhead clouds casting diffused light",
         "condition": "adequate"
       },
       {
         "zone": "right",
-        "element": "direct overhead sunlight",
+        "element": "overhead clouds casting diffused light",
         "condition": "adequate"
       }
     ],
     "spatial_character": [
       {
         "zone": "left",
-        "width": "moderate",
-        "enclosure": "semi",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
-        "lane_type": "sidewalk",
+        "lane_type": "road",
         "crossing": "none"
       },
       {
         "zone": "center",
-        "width": "moderate",
-        "enclosure": "semi",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
         "lane_type": "road",
         "crossing": "none"
       },
       {
         "zone": "right",
-        "width": "narrow",
-        "enclosure": "enclosed",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
         "lane_type": "road",
         "crossing": "none"
@@ -57,53 +62,55 @@
     "crowdedness": [
       {
         "zone": "left",
-        "density_level": "sparse"
+        "density_level": "empty"
       },
       {
         "zone": "center",
-        "density_level": "sparse"
+        "density_level": "empty"
       },
       {
         "zone": "right",
-        "density_level": "sparse"
+        "density_level": "empty"
       }
     ],
     "greenery": [
       {
         "zone": "left",
-        "element": "mature plane trees with mottled grey-green bark",
+        "element": "small leafy trees along curbside",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "trees with green foliage",
         "coverage": "moderate"
       },
       {
         "zone": "right",
-        "element": "terracotta potted geraniums on windowsills",
+        "element": "small leafy trees along curbside",
         "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron double-arm street lamp",
-        "presence": "few"
+        "element": "metallic bicycle rack",
+        "material_and_colour": "black",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "bicycle",
+        "material_and_colour": "black",
+        "presence": "one"
       },
       {
         "zone": "right",
-        "element": "grey cylindrical municipal waste bin",
-        "presence": "few"
+        "element": "dark green metal trash can",
+        "material_and_colour": "dark green",
+        "presence": "one"
       }
     ],
-    "visible_text": [
-      {
-        "text": "Carrer de Provenca",
-        "zone": "far_left",
-        "type": "sign"
-      },
-      {
-        "text": "Bar Calvet",
-        "zone": "right",
-        "type": "label"
-      }
-    ]
+    "visible_text": []
   },
   "nearby_landmarks": []
 }

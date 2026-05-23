@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "timestamp": "20260523_225707",
+    "latitude": 41.3987715,
+    "longitude": 2.1679833,
+    "heading": 75.5,
+    "street_name": "Avinguda de la Diagonal",
+    "highway_type": "footway",
+    "edge_id": "430535710_8173291431_0",
+    "dist_along_edge_m": 11.8,
+    "source_image": "sv_41.398772_2.167983_h75.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25545.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with modernist architecture buildings, moderate greenery, and wide roads under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature oak trees with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small leafy deciduous trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "leafy deciduous trees",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "brown brick building facade",
+        "material": "brick",
+        "colour": "brown",
+        "style": "modernist architecture",
+        "scale": "large"
+      },
+      {
+        "zone": "center",
+        "element": "metal lampposts",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "standard city design",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "concrete road markings",
+        "material": "concrete",
+        "colour": "white",
+        "style": "geometric patterns",
+        "scale": "large"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,120 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231126",
+    "latitude": 41.39915259999999,
+    "longitude": 2.1677712000000002,
+    "heading": 226.2,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "3207273336_7045171426_0",
+    "dist_along_edge_m": 6.8,
+    "source_image": "sv_41.399153_2.167771_h226.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23875.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showcasing a mix of residential architecture and parked vehicles under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small leafy trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "large mature trees alongside buildings",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole with directional signs",
+        "material": "metallic",
+        "colour": "silver",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "trash bin",
+        "material": "plastic",
+        "colour": "grey",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "parked cars",
+        "material": "metallic",
+        "colour": "black and white",
+        "presence": "two"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

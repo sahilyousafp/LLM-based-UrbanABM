@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "timestamp": "20260523_225129",
+    "latitude": 41.3966517,
+    "longitude": 2.1686998,
+    "heading": 316.0,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "30243248_11012432318_0",
+    "dist_along_edge_m": 7.9,
+    "source_image": "sv_41.396652_2.168700_h316.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22046.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with moderate traffic flow and surrounding greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "soft diffused daylight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead clouds casting soft shadows",
+        "condition": "moderate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature oak-like trees with broad canopies",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black road markings indicating bus lanes",
+        "material": "paint",
+        "colour": "white",
+        "scale": "road marking"
+      },
+      {
+        "zone": "center",
+        "element": "parked cars",
+        "material": "metallic",
+        "colour": "silver",
+        "scale": "vehicle"
+      },
+      {
+        "zone": "right",
+        "element": "trash bins",
+        "material": "plastic",
+        "colour": "brown",
+        "scale": "utility"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,120 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230843",
+    "latitude": 41.39743279999999,
+    "longitude": 2.1676748,
+    "heading": 136.1,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "3184416467_10182303352_0",
+    "dist_along_edge_m": 90.6,
+    "source_image": "sv_41.397433_2.167675_h136.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24102.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Quiet urban street with moderate pedestrian and vehicle activity under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young London plane trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "mature London plane trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "young London plane trees",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "blue circular no parking sign",
+        "material": "metallic",
+        "colour": "red and white",
+        "style": "standard traffic sign",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "silver minivan",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "compact car",
+        "scale": "large"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "2016 Google",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "Google",
+        "zone": "right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

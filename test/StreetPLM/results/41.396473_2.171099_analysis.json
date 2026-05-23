@@ -1,0 +1,101 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231748",
+    "latitude": 41.3964732,
+    "longitude": 2.1710987000000004,
+    "heading": 310.4,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791423749_5791432276_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.396473_2.171099_h310.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 21956.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view featuring wide roads lined with trees and parked vehicles, with moderate greenery and clear passability.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through scattered clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead diffused sunlight",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "various leafy trees and bushes along sidewalks",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "trees lining the streets",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "trees behind apartment buildings",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "parked cars",
+        "material": "metallic",
+        "colour": "varied",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "parked cars",
+        "material": "metallic",
+        "colour": "varied",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles and scooters",
+        "material": "metallic",
+        "colour": "silver/white",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

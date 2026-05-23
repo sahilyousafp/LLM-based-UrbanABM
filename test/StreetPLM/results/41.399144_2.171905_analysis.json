@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "20260523_212514",
+    "timestamp": "20260523_224451",
     "latitude": 41.399143899999984,
     "longitude": 2.1719053999999995,
     "heading": 46.3,
@@ -9,38 +9,51 @@
     "edge_id": "30243120_6762255485_0",
     "dist_along_edge_m": 16.6,
     "source_image": "sv_41.399144_2.171905_h46.jpg",
-    "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 22149.7,
+    "latency_ms": 25504.2,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "scene": "Urban street with wide roads, open enclosures, and minimal vehicle or pedestrian activity under overcast skies.",
     "lighting": [
       {
         "zone": "left",
-        "element": "dappled shade from plane-tree canopy",
+        "element": "overcast sky",
         "condition": "dim"
       },
       {
         "zone": "center",
-        "element": "direct overhead sunlight",
-        "condition": "adequate"
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
       }
     ],
     "spatial_character": [
       {
-        "zone": "center",
-        "width": "moderate",
-        "enclosure": "semi",
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
-        "lane_type": "sidewalk",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
         "crossing": "none"
       },
       {
         "zone": "right",
-        "width": "narrow",
-        "enclosure": "enclosed",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
         "lane_type": "road",
         "crossing": "none"
@@ -49,46 +62,66 @@
     "crowdedness": [
       {
         "zone": "left",
-        "density_level": "sparse"
+        "density_level": "empty"
       },
       {
         "zone": "center",
-        "density_level": "sparse"
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
       }
     ],
     "greenery": [
       {
         "zone": "left",
-        "element": "mature plane trees with mottled grey-green bark",
-        "coverage": "moderate"
+        "element": "young green trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "young green trees",
+        "coverage": "sparse"
       },
       {
         "zone": "right",
-        "element": "terracotta potted geraniums on windowsills",
+        "element": "young green trees",
         "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron double-arm street lamp",
-        "presence": "few"
+        "element": "metal traffic signal pole",
+        "material_and_colour": "silver",
+        "scale": "medium",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signal pole",
+        "material_and_colour": "silver",
+        "scale": "medium",
+        "presence": "one"
       },
       {
         "zone": "right",
-        "element": "grey cylindrical municipal waste bin",
-        "presence": "few"
+        "element": "traffic signal pole",
+        "material_and_colour": "silver",
+        "scale": "medium",
+        "presence": "one"
       }
     ],
     "visible_text": [
       {
-        "text": "Carrer de Provenca",
-        "zone": "far_left",
-        "type": "sign"
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
       },
       {
-        "text": "Bar Calvet",
-        "zone": "right",
+        "text": "Google",
+        "zone": "bottom_right",
         "type": "label"
       }
     ]

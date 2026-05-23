@@ -110,7 +110,7 @@
 
     /* ── Side panel ──────────────────────────────────────────── */
     #panel {
-      width: 390px;
+      width: 460px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
@@ -138,12 +138,12 @@
       overflow: hidden;
     }
 
-    /* image strip */
+    /* ── Image strip ─────────────────────────────────────────── */
     #img-strip {
       flex-shrink: 0;
       background: var(--bg0);
       position: relative;
-      height: 220px;
+      height: 400px;
       overflow: hidden;
     }
     #img-strip img {
@@ -171,6 +171,133 @@
       font-size: 11px;
       padding: 2px 8px;
       border-radius: 10px;
+      z-index: 10;
+    }
+
+    /* ── Zone overlay ────────────────────────────────────────── */
+    #zone-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .zone-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid rgba(255,255,255,.09);
+      transition: background .12s;
+      pointer-events: auto;
+      position: relative;
+    }
+    .zone-col:last-child { border-right: none; }
+    .zone-col.zone-has-feats:hover { background: rgba(255,255,255,.06); }
+
+    .zc-top {
+      padding: 5px 4px 0;
+    }
+    .zc-label {
+      font-size: 8px;
+      color: rgba(255,255,255,.22);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      font-weight: 600;
+      display: block;
+      text-align: center;
+    }
+    .zone-col.zone-has-feats .zc-label {
+      color: rgba(255,255,255,.38);
+    }
+
+    .zc-bottom {
+      padding: 0 3px 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .zf-pill {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(0,0,0,.58);
+      backdrop-filter: blur(3px);
+      border-radius: 3px;
+      padding: 2px 4px;
+      cursor: default;
+      border-left: 2px solid var(--pill-color, #555);
+    }
+    .zf-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--pill-color, #555);
+    }
+    .zf-txt {
+      font-size: 8px;
+      color: rgba(255,255,255,.8);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 50px;
+      line-height: 1.2;
+    }
+
+    /* Floating tooltip */
+    #zf-tip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      background: rgba(13,15,24,.97);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 10px;
+      max-width: 230px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.6);
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text0);
+    }
+    #zf-tip .tip-cat {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    #zf-tip .tip-elem { color: var(--text0); margin-bottom: 3px; }
+    #zf-tip .tip-attrs { color: var(--text1); font-size: 10px; }
+    #zf-tip .tip-attr-row { display: flex; gap: 6px; }
+    #zf-tip .tip-key { color: var(--text2); }
+    #zf-tip .tip-val { color: var(--text1); }
+
+    /* Zone legend strip */
+    #zone-legend {
+      display: none;
+      flex-shrink: 0;
+      background: var(--bg0);
+      border-bottom: 1px solid var(--border);
+      padding: 5px 8px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      color: var(--text1);
+    }
+    .leg-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
 
     /* panel scroll body */
@@ -238,6 +365,15 @@
       color: var(--accent2);
       margin-bottom: 4px;
       text-transform: capitalize;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .attr-cat-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
     .attr-block { margin-bottom: 10px; }
 
@@ -270,9 +406,8 @@
       border-radius: 4px;
       padding: 1px 6px;
       margin-top: 2px;
+      border: 1px solid transparent;
     }
-    .badge-density { background: #1c2e2a; color: #6ee7b7; border: 1px solid #064e3b; }
-    .badge-width   { background: #1c2333; color: #93c5fd; border: 1px solid #1e3a5f; }
 
     /* visible text */
     .ocr-row {
@@ -368,6 +503,9 @@
 </head>
 <body>
 
+<!-- Floating zone feature tooltip -->
+<div id="zf-tip"></div>
+
 <div id="toolbar">
   <h1>StreetPLM Viewer</h1>
   <div class="tb-sep"></div>
@@ -398,9 +536,15 @@
     </div>
 
     <div id="panel-loaded">
+      <!-- Image with zone overlay -->
       <div id="img-strip">
         <div class="no-img">No image</div>
       </div>
+
+      <!-- Category legend -->
+      <div id="zone-legend"></div>
+
+      <!-- Scrollable detail body -->
       <div id="panel-body"></div>
     </div>
 
@@ -410,6 +554,73 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+// ──────────────────────────────────────────────────────────────
+// Category config — colour + short key for zone pills
+// ──────────────────────────────────────────────────────────────
+const CAT_CFG = {
+  lighting: {
+    color:   '#fcd34d',
+    label:   'Lighting',
+    abbrev:  'LT',
+    keyFn:   o => o.condition || '',
+    badgeColors: ['#2a241c','#fcd34d','#78350f'],
+  },
+  spatial_character: {
+    color:   '#93c5fd',
+    label:   'Spatial',
+    abbrev:  'SP',
+    keyFn:   o => o.lane_type || o.width || '',
+    badgeColors: ['#1c2333','#93c5fd','#1e3a5f'],
+  },
+  crowdedness: {
+    color:   '#6ee7b7',
+    label:   'Crowd',
+    abbrev:  'CR',
+    keyFn:   o => o.density_level || '',
+    badgeColors: ['#1c2e2a','#6ee7b7','#064e3b'],
+  },
+  greenery: {
+    color:   '#86efac',
+    label:   'Greenery',
+    abbrev:  'GR',
+    keyFn:   o => o.coverage || '',
+    badgeColors: ['#1c2e2a','#86efac','#14532d'],
+  },
+  street_amenities: {
+    color:   '#d8b4fe',
+    label:   'Amenities',
+    abbrev:  'AM',
+    keyFn:   o => o.presence || '',
+    badgeColors: ['#231c2e','#d8b4fe','#4a1d96'],
+  },
+  visible_text: {
+    color:   '#94a3b8',
+    label:   'Text',
+    abbrev:  'TX',
+    keyFn:   o => (o.text || '').slice(0, 9),
+    badgeColors: ['#1f2128','#94a3b8','#334155'],
+  },
+};
+
+const LIST_FIELDS   = ['lighting','spatial_character','crowdedness','greenery','street_amenities'];
+const ZONE_ORDER    = ['far_left','left','center','right','far_right'];
+const ZONE_LABELS   = { far_left:'far L', left:'left', center:'ctr', right:'right', far_right:'far R' };
+
+// Per-field badge colour overrides for panel attributes
+const BADGE_COLORS = {
+  width:         ['#1c2333','#93c5fd','#1e3a5f'],
+  enclosure:     ['#1c2333','#93c5fd','#1e3a5f'],
+  passability:   ['#1c1f2e','#c4b5fd','#2e1065'],
+  density_level: ['#1c2e2a','#6ee7b7','#064e3b'],
+  condition:     ['#2a241c','#fcd34d','#78350f'],
+  coverage:      ['#1c2e2a','#86efac','#14532d'],
+  presence:      ['#231c2e','#d8b4fe','#4a1d96'],
+  lane_type:     ['#1c2a1c','#4ade80','#14532d'],
+  crossing:      ['#2a2a1c','#fde68a','#78350f'],
+  source:        ['#2a241c','#fcd34d','#78350f'],
+  surface:       ['#1f2128','#94a3b8','#334155'],
+};
+
 // ──────────────────────────────────────────────────────────────
 // Map init
 // ──────────────────────────────────────────────────────────────
@@ -423,7 +634,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 // ──────────────────────────────────────────────────────────────
 // State
 // ──────────────────────────────────────────────────────────────
-let imageFiles   = {};   // basename → File
+let imageFiles   = {};
 let allMarkers   = [];
 let activeMarker = null;
 let currentFilter = 'all';
@@ -450,6 +661,46 @@ const ICONS = {
 };
 
 // ──────────────────────────────────────────────────────────────
+// Floating tooltip for zone pills
+// ──────────────────────────────────────────────────────────────
+const tip = document.getElementById('zf-tip');
+let tipTarget = null;
+
+document.addEventListener('mousemove', e => {
+  if (!tip._vis) return;
+  const x = e.clientX + 14, y = e.clientY - 8;
+  // Keep within viewport
+  tip.style.left = Math.min(x, window.innerWidth  - tip.offsetWidth  - 8) + 'px';
+  tip.style.top  = Math.max(8, Math.min(y, window.innerHeight - tip.offsetHeight - 8)) + 'px';
+});
+
+document.addEventListener('mouseover', e => {
+  const pill = e.target.closest('.zf-pill[data-cat]');
+  if (!pill) return;
+  const { cat, elem, attrs } = pill._tipData || {};
+  if (!cat) return;
+  const cfg = CAT_CFG[cat] || {};
+
+  let html = `<div class="tip-cat" style="color:${cfg.color}">${cfg.label || cat}</div>`;
+  if (elem) html += `<div class="tip-elem">${esc(elem)}</div>`;
+  if (attrs && attrs.length) {
+    html += '<div class="tip-attrs">'
+      + attrs.map(([k, v]) => `<div class="tip-attr-row"><span class="tip-key">${esc(k)}</span><span class="tip-val">${esc(v)}</span></div>`).join('')
+      + '</div>';
+  }
+
+  tip.innerHTML = html;
+  tip.style.display = 'block';
+  tip._vis = true;
+  tipTarget = pill;
+});
+
+document.addEventListener('mouseout', e => {
+  const pill = e.target.closest('.zf-pill[data-cat]');
+  if (pill) { tip.style.display = 'none'; tip._vis = false; tipTarget = null; }
+});
+
+// ──────────────────────────────────────────────────────────────
 // File picker
 // ──────────────────────────────────────────────────────────────
 document.getElementById('load-btn').addEventListener('click', () =>
@@ -459,7 +710,6 @@ document.getElementById('load-btn').addEventListener('click', () =>
 document.getElementById('file-input').addEventListener('change', async function () {
   const files = Array.from(this.files);
 
-  // Clear previous
   allMarkers.forEach(({ marker }) => map.removeLayer(marker));
   allMarkers = [];
   imageFiles = {};
@@ -467,14 +717,13 @@ document.getElementById('file-input').addEventListener('change', async function 
   if (activeObjectUrl) { URL.revokeObjectURL(activeObjectUrl); activeObjectUrl = null; }
   resetPanel();
 
-  // Index images by basename
   files
     .filter(f => /\.(jpg|jpeg|png)$/i.test(f.name))
     .forEach(f => { imageFiles[f.name] = f; });
 
   const jsonFiles = files.filter(f => f.name.endsWith('_analysis.json'));
   if (!jsonFiles.length) {
-    document.getElementById('stats').textContent = 'No _analysis.json files found — try selecting the StreetPLM output folder.';
+    document.getElementById('stats').textContent = 'No _analysis.json files found — select the StreetPLM output folder.';
     return;
   }
 
@@ -501,9 +750,8 @@ document.getElementById('file-input').addEventListener('change', async function 
       { className: 'plm-tooltip', direction: 'top', offset: [0, -6] }
     );
 
-    marker.on('click', () => selectMarker(entry));
-
     const entry = { marker, rec, status };
+    marker.on('click', () => selectMarker(entry));
     allMarkers.push(entry);
     latlngs.push([meta.latitude, meta.longitude]);
   }
@@ -536,8 +784,7 @@ function applyFilter(f) {
     const show = f === 'all'
       || (f === 'ok'    && status === 'ok')
       || (f === 'no_sv' && status !== 'ok');
-    if (show) map.addLayer(marker);
-    else map.removeLayer(marker);
+    if (show) map.addLayer(marker); else map.removeLayer(marker);
   });
 }
 
@@ -545,9 +792,8 @@ function applyFilter(f) {
 // Marker selection
 // ──────────────────────────────────────────────────────────────
 function selectMarker(entry) {
-  if (activeMarker && activeMarker !== entry) {
+  if (activeMarker && activeMarker !== entry)
     activeMarker.marker.setIcon(ICONS[activeMarker.status] || ICONS.ok);
-  }
   activeMarker = entry;
   entry.marker.setIcon(ICONS.active);
   renderPanel(entry.rec);
@@ -560,12 +806,86 @@ document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-
     const which = tab.dataset.tab;
     document.getElementById('panel-loaded').style.display = which === 'analysis' ? 'flex' : 'none';
     document.getElementById('raw-json').style.display     = which === 'json'     ? 'block' : 'none';
   });
 });
+
+// ──────────────────────────────────────────────────────────────
+// Zone overlay builder
+// ──────────────────────────────────────────────────────────────
+function normalizeZone(z) {
+  return (z || '').toLowerCase().trim().replace(/\s+/g, '_');
+}
+
+function buildZoneOverlay(scene) {
+  // Collect all observations grouped by zone
+  const byZone = {};
+  ZONE_ORDER.forEach(z => { byZone[z] = []; });
+
+  for (const [cat, cfg] of Object.entries(CAT_CFG)) {
+    let items = scene[cat] || [];
+    if (!Array.isArray(items)) items = items ? [items] : [];
+    for (const item of items) {
+      if (!item || typeof item !== 'object') continue;
+      const z = normalizeZone(item.zone);
+      if (!byZone[z]) byZone[z] = [];
+      byZone[z].push({ cat, cfg, item });
+    }
+  }
+
+  const cols = ZONE_ORDER.map(zone => {
+    const feats = byZone[zone] || [];
+    const hasFeats = feats.length > 0;
+
+    const pills = feats.map(({ cat, cfg, item }) => {
+      const keyVal = cfg.keyFn(item);
+      const pillText = keyVal || cfg.abbrev;
+      const attrs = Object.entries(item)
+        .filter(([k]) => k !== 'zone' && k !== 'element');
+      // pill element — _tipData attached via JS after insert
+      const pillId = `pill_${Math.random().toString(36).slice(2)}`;
+      return { cat, cfg, item, keyVal, pillText, attrs, pillId };
+    });
+
+    const pillsHTML = pills.map(p =>
+      `<div class="zf-pill" id="${p.pillId}" data-cat="${esc(p.cat)}"
+            style="--pill-color:${p.cfg.color}">
+         <span class="zf-dot"></span>
+         <span class="zf-txt">${esc(p.pillText)}</span>
+       </div>`
+    ).join('');
+
+    return {
+      html: `<div class="zone-col${hasFeats ? ' zone-has-feats' : ''}" data-zone="${zone}">
+               <div class="zc-top"><span class="zc-label">${ZONE_LABELS[zone] || zone}</span></div>
+               <div class="zc-bottom">${pillsHTML}</div>
+             </div>`,
+      pills,
+    };
+  });
+
+  return { html: cols.map(c => c.html).join(''), allPills: cols.flatMap(c => c.pills) };
+}
+
+// ──────────────────────────────────────────────────────────────
+// Category legend
+// ──────────────────────────────────────────────────────────────
+function buildLegend(scene) {
+  const present = Object.keys(CAT_CFG).filter(cat => {
+    const items = scene[cat] || [];
+    return Array.isArray(items) ? items.length > 0 : !!items;
+  });
+  if (!present.length) return '';
+  return present.map(cat => {
+    const cfg = CAT_CFG[cat];
+    return `<div class="leg-item">
+      <div class="leg-dot" style="background:${cfg.color}"></div>
+      <span>${cfg.label}</span>
+    </div>`;
+  }).join('');
+}
 
 // ──────────────────────────────────────────────────────────────
 // Panel: render
@@ -575,14 +895,14 @@ function resetPanel() {
   document.getElementById('tab-bar').style.display      = 'none';
   document.getElementById('panel-loaded').style.display = 'none';
   document.getElementById('raw-json').style.display     = 'none';
-  // Reset tabs
+  document.getElementById('zone-legend').style.display  = 'none';
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===0));
 }
 
 async function renderPanel(rec) {
-  const meta   = rec.metadata      || {};
-  const scene  = rec.scene_analysis || {};
-  const lms    = rec.nearby_landmarks || [];
+  const meta  = rec.metadata       || {};
+  const scene = rec.scene_analysis || {};
+  const lms   = rec.nearby_landmarks || [];
 
   // Show chrome
   document.getElementById('panel-empty').style.display  = 'none';
@@ -591,35 +911,50 @@ async function renderPanel(rec) {
   document.getElementById('raw-json').style.display     = 'none';
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===0));
 
-  // Raw JSON tab
-  document.getElementById('raw-json').textContent =
-    JSON.stringify(rec, null, 2);
+  // Raw JSON
+  document.getElementById('raw-json').textContent = JSON.stringify(rec, null, 2);
 
-  // ── Image strip ──
+  // ── Image strip + zone overlay ──
   const strip = document.getElementById('img-strip');
   if (activeObjectUrl) { URL.revokeObjectURL(activeObjectUrl); activeObjectUrl = null; }
 
   const imgName = meta.source_image || '';
+  const headingBadge = meta.heading != null
+    ? `<div class="heading-badge">${meta.heading.toFixed(0)}°</div>` : '';
+
   if (imgName && imageFiles[imgName]) {
     activeObjectUrl = URL.createObjectURL(imageFiles[imgName]);
-    strip.innerHTML = `
-      <img src="${activeObjectUrl}" alt="Street View">
-      ${meta.heading != null ? `<div class="heading-badge">${meta.heading.toFixed(0)}°</div>` : ''}
-    `;
+    strip.innerHTML = `<img src="${activeObjectUrl}" alt="Street View">${headingBadge}`;
   } else {
-    strip.innerHTML = `<div class="no-img">Image not available${imgName ? ': '+esc(imgName) : ''}</div>`;
+    strip.innerHTML = `<div class="no-img">Image not available${imgName ? ': '+esc(imgName) : ''}</div>${headingBadge}`;
   }
 
-  // ── Panel body ──
-  const ZONE_ATTRS = [
-    'lighting','spatial_character','crowdedness','greenery',
-    'street_furniture','architecture','material','color','clarity',
-  ];
+  // Build and inject zone overlay
+  const { html: overlayHTML, allPills } = buildZoneOverlay(scene);
+  const overlay = document.createElement('div');
+  overlay.id = 'zone-overlay';
+  overlay.innerHTML = overlayHTML;
+  strip.appendChild(overlay);
 
-  // Metadata
+  // Attach tooltip data to pills (can't serialise to data-* cleanly)
+  allPills.forEach(p => {
+    const el = document.getElementById(p.pillId);
+    if (el) el._tipData = { cat: p.cat, elem: p.item.element || '', attrs: p.attrs };
+  });
+
+  // ── Category legend ──
+  const legend = document.getElementById('zone-legend');
+  const legendHTML = buildLegend(scene);
+  if (legendHTML) {
+    legend.innerHTML = legendHTML;
+    legend.style.display = 'flex';
+  } else {
+    legend.style.display = 'none';
+  }
+
+  // ── Metadata ──
   const ts = (meta.timestamp || '').replace(
-    /(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})/,
-    '$1-$2-$3 $4:$5'
+    /(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})/, '$1-$2-$3 $4:$5'
   );
   const street = meta.street_name && meta.street_name !== 'manual'
     ? `<b>${esc(meta.street_name)}</b>` : '';
@@ -630,42 +965,23 @@ async function renderPanel(rec) {
     ts,
   ].filter(Boolean);
 
-  // Scene
+  // ── Scene card ──
   const sceneText = esc(scene.scene || 'No description available');
 
-  // Zone attributes
+  // ── Zone attributes (panel body) ──
   let attrsHTML = '';
-  for (const attr of ZONE_ATTRS) {
-    let items = scene[attr] || [];
+  for (const field of LIST_FIELDS) {
+    let items = scene[field] || [];
     if (!Array.isArray(items)) items = items ? [items] : [];
     if (!items.length) continue;
+
+    const cfg = CAT_CFG[field];
 
     let obsHTML = '';
     for (const obs of items) {
       if (!obs || typeof obs !== 'object') continue;
-      const zone = obs.zone    || '?';
+      const zone = obs.zone || '?';
       const elem = obs.element || '';
-
-      // All non-zone/element keys are enum tags — render each as a badge.
-      // Badge colour varies by semantic role.
-      const BADGE_COLORS = {
-        width:        ['#1c2333','#93c5fd','#1e3a5f'],   // blue
-        enclosure:    ['#1c2333','#93c5fd','#1e3a5f'],
-        passability:  ['#1c1f2e','#c4b5fd','#2e1065'],   // purple
-        density_level:['#1c2e2a','#6ee7b7','#064e3b'],   // green
-        condition:    ['#2a1f1c','#fca5a5','#7f1d1d'],   // red-ish
-        coverage:     ['#1c2e2a','#86efac','#14532d'],
-        presence:     ['#231c2e','#d8b4fe','#4a1d96'],
-        source:       ['#2a241c','#fcd34d','#78350f'],   // gold
-        style:        ['#1c2333','#a5b4fc','#1e1b4b'],
-        surface:      ['#1f2128','#94a3b8','#334155'],   // slate
-        tone:         ['#291c2e','#f9a8d4','#831843'],   // pink
-        level:        ['#1c2e2a','#6ee7b7','#064e3b'],
-        cause:        ['#2a1f1c','#fca5a5','#7f1d1d'],
-        lane_type:    ['#1c2a1c','#4ade80','#14532d'],   // green — walkability signal
-        crossing:     ['#2a2a1c','#fde68a','#78350f'],   // amber — crossing present
-        litter:       ['#2a1c1c','#f87171','#7f1d1d'],   // red — litter level
-      };
 
       const tagEntries = Object.entries(obs).filter(([k]) => k !== 'zone' && k !== 'element');
       const badges = tagEntries.map(([k, v]) => {
@@ -681,17 +997,21 @@ async function renderPanel(rec) {
         </div>`;
     }
     if (!obsHTML) continue;
+
     attrsHTML += `
       <div class="attr-block">
-        <div class="attr-name">${esc(attr.replace(/_/g,' '))}</div>
+        <div class="attr-name">
+          <span class="attr-cat-dot" style="background:${cfg.color}"></span>
+          ${esc(field.replace(/_/g,' '))}
+        </div>
         ${obsHTML}
       </div>`;
   }
 
-  // Visible text
+  // ── Visible text ──
   let ocrHTML = '';
   const vt = scene.visible_text || [];
-  if (vt.length) {
+  if (Array.isArray(vt) && vt.length) {
     const rows = vt.map(e => `
       <div class="ocr-row">
         <span class="zone-tag">${esc(e.zone||'?')}</span>
@@ -701,7 +1021,7 @@ async function renderPanel(rec) {
     ocrHTML = `<div class="sec-title">Visible Text</div>${rows}`;
   }
 
-  // Landmarks
+  // ── Landmarks ──
   let lmHTML = '';
   if (lms.length) {
     const rows = lms.map(lm => `
@@ -731,7 +1051,7 @@ async function renderPanel(rec) {
 }
 
 function esc(s) {
-  return String(s)
+  return String(s ?? '')
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;')

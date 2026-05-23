@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "timestamp": "20260523_225255",
+    "latitude": 41.399385099999996,
+    "longitude": 2.1699229,
+    "heading": 313.5,
+    "street_name": "Passeig de Sant Joan",
+    "highway_type": "tertiary",
+    "edge_id": "126797988_8173291411_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.399385_2.169923_h313.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19924.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide roads lined by trees and buildings, featuring minimal pedestrian or vehicle traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous trees with full foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small ornamental plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal bollards",
+        "material_and_colour": "yellow",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "motor scooters",
+        "material_and_colour": "white",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

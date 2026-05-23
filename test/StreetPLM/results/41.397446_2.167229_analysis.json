@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "timestamp": "20260523_231025",
+    "latitude": 41.39744579999999,
+    "longitude": 2.1672287000000003,
+    "heading": 139.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "3184416473_8235926375_0",
+    "dist_along_edge_m": 7.5,
+    "source_image": "sv_41.397446_2.167229_h139.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26022.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Narrow urban street lined with historic buildings featuring ornate balconies and storefronts, with minimal pedestrian or vehicular traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead streetlights casting shadows",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "natural daylight through trees",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young olive trees with smooth green leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small mature oak trees with rough brown bark",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "brown wooden closed shutters on shop fronts",
+        "material": "wood",
+        "colour": "brown",
+        "scale": "large",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signal pole with red light illuminated",
+        "material": "metallic",
+        "colour": "silver",
+        "scale": "medium",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "black motorcycle parked along curb",
+        "material": "metallic",
+        "colour": "black",
+        "scale": "small",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "SPECIALIST",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "AL",
+        "zone": "right",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

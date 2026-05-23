@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "20260523_212538",
+    "timestamp": "20260523_224518",
     "latitude": 41.39940430000001,
     "longitude": 2.1718395,
     "heading": 138.1,
@@ -9,87 +9,113 @@
     "edge_id": "30243120_6762254083_0",
     "dist_along_edge_m": 24.6,
     "source_image": "sv_41.399404_2.171839_h138.jpg",
-    "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 23529.7,
+    "latency_ms": 26537.1,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Narrow residential street with historic stone apartment blocks, plane trees, and a few pedestrians.",
+    "scene": "Urban street intersection with wide lanes, open enclosures, and moderate vehicle and pedestrian activity.",
     "lighting": [
       {
         "zone": "left",
-        "element": "dappled shade from plane-tree canopy",
-        "condition": "dim"
+        "element": "overhead diffused sunlight",
+        "condition": "adequate"
       },
       {
         "zone": "center",
-        "element": "direct overhead sunlight",
+        "element": "overhead diffused sunlight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "overhead diffused sunlight",
         "condition": "adequate"
       }
     ],
     "spatial_character": [
       {
-        "zone": "center",
-        "width": "moderate",
-        "enclosure": "semi",
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
-        "lane_type": "sidewalk",
-        "crossing": "none"
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
       },
       {
         "zone": "right",
-        "width": "narrow",
-        "enclosure": "enclosed",
+        "width": "wide",
+        "enclosure": "open",
         "passability": "clear",
         "lane_type": "road",
-        "crossing": "none"
+        "crossing": "zebra"
       }
     ],
-    "crowdedness": [
-      {
-        "zone": "left",
-        "density_level": "sparse"
-      },
-      {
-        "zone": "center",
-        "density_level": "sparse"
-      }
-    ],
+    "crowdedness": [],
     "greenery": [
       {
         "zone": "left",
-        "element": "mature plane trees with mottled grey-green bark",
-        "coverage": "moderate"
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
       },
       {
         "zone": "right",
-        "element": "terracotta potted geraniums on windowsills",
+        "element": "bare winter trees without leaves",
         "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron double-arm street lamp",
+        "element": "traffic signal lights",
+        "material": "yellow",
+        "colour": "yellow",
+        "style": "standard traffic signal",
+        "scale": "small",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "trash bins",
+        "material": "metallic",
+        "colour": "black",
+        "style": "standard trash bin",
+        "scale": "medium",
         "presence": "few"
       },
       {
         "zone": "right",
-        "element": "grey cylindrical municipal waste bin",
-        "presence": "few"
+        "element": "motorcycle parking spaces",
+        "material": "concrete",
+        "colour": "gray",
+        "style": "paved",
+        "scale": "large",
+        "presence": "several"
       }
     ],
     "visible_text": [
       {
-        "text": "Carrer de Provenca",
-        "zone": "far_left",
-        "type": "sign"
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "watermark"
       },
       {
-        "text": "Bar Calvet",
-        "zone": "right",
-        "type": "label"
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "watermark"
       }
     ]
   },

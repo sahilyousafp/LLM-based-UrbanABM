@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230229",
+    "latitude": 41.3981805,
+    "longitude": 2.1668409,
+    "heading": 252.9,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary",
+    "edge_id": "1126848499_3207273476_0",
+    "dist_along_edge_m": 10.6,
+    "source_image": "sv_41.398181_2.166841_h252.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24855.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with moderate pedestrian activity and temporary roadwork barriers.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal construction barriers yellow",
+        "material": "metal",
+        "colour": "yellow",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "yellow traffic cones",
+        "material": "plastic",
+        "colour": "yellow",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "yellow traffic cones",
+        "material": "plastic",
+        "colour": "yellow",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "JOEAMA",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

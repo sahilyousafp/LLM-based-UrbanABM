@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "timestamp": "20260523_230142",
+    "latitude": 41.398817599999994,
+    "longitude": 2.1679301000000004,
+    "heading": 72.3,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary",
+    "edge_id": "442540293_6855299011_0",
+    "dist_along_edge_m": 11.0,
+    "source_image": "sv_41.398818_2.167930_h72.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25085.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with wide roads, moderate greenery, and a large brick building to the left.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous tree with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous tree with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "brick building exterior",
+        "material": "brick",
+        "colour": "red-brown",
+        "scale": "large",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "street lamps",
+        "material": "metallic",
+        "colour": "silver",
+        "scale": "medium",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "trees along the road",
+        "material": "wood",
+        "colour": "green",
+        "scale": "medium",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "J. Llúcia",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom-left",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

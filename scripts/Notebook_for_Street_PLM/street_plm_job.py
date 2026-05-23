@@ -61,6 +61,13 @@ except ImportError:
         [sys.executable, "-m", "pip", "install", "-q", "osmnx"]
     )
 
+try:
+    import bitsandbytes as _bnb_check  # noqa: F401
+except ImportError:
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "-q", "bitsandbytes>=0.41"]
+    )
+
 import numpy as np
 import pyproj
 import requests
@@ -75,7 +82,7 @@ from shapely.geometry import LineString  # noqa: F401
 import geopandas as gpd
 from tqdm.auto import tqdm
 from dotenv import load_dotenv
-from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
+from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor, BitsAndBytesConfig
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -117,11 +124,15 @@ SV_SIZE           = "640x640"
 SV_FOV            = 90
 SV_PITCH          = 0
 SV_RADIUS         = 50
-MODEL_ID          = "Qwen/Qwen2.5-VL-3B-Instruct"
+_MODEL_IDS = {
+    "3b": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "7b": "Qwen/Qwen2.5-VL-7B-Instruct",
+}
+MODEL_ID          = _MODEL_IDS["7b"]   # overridden by --model-size arg
 # Qwen2.5-VL uses dynamic-resolution patches (min/max pixels) instead of tiles.
 # Scaled in load_model() based on available VRAM.
 MAX_PIXELS        = 1280 * 28 * 28   # ~1 M pixels — good for L4/A100 (24 GB+)
-MAX_NEW_TOKENS    = 640               # hybrid: free-text element + key enums — 10 cats × 1.5 obs × ~35 tok ≈ 525
+MAX_NEW_TOKENS    = 900               # 7B richer output: 6 fields × 2-3 obs × ~50 tok ≈ 750 + headroom
 
 UTM31N = "EPSG:32631"
 _SCRIPT_DIR = Path(__file__).parent
@@ -135,16 +146,14 @@ _SV_BASE   = "https://maps.googleapis.com/maps/api/streetview"
 _META_BASE = "https://maps.googleapis.com/maps/api/streetview/metadata"
 
 # ---------------------------------------------------------------------------
-# Pydantic schema
+# Pydantic schema — zone-aware lists, one list per perceptual category.
+# The model outputs zone-prefixed strings ("left: ... | center: ...") which
+# are parsed into structured list entries by _normalise_result before
+# reaching this schema.
 # ---------------------------------------------------------------------------
 
-_ZONE_ATTRS = (
-    "lighting", "spatial_character", "crowdedness", "greenery", "street_amenities",
-)
-
-
 class StreetSceneAnalysis(BaseModel):
-    """Compact zone-aware schema: scene overview + 5 zone-attribute lists + OCR list."""
+    """Zone-aware schema: scene string + 5 zone-attribute lists + OCR list."""
 
     scene            : str  = "unknown"
     lighting         : list = Field(default_factory=list)
@@ -170,50 +179,41 @@ class StreetSceneAnalysis(BaseModel):
         if isinstance(v, list):
             return v
         if isinstance(v, dict):
-            return [v]  # bare dict → single-item list
+            return [v]
         return []
 
 
 _KEY_ALIASES = {
-    "scene"               : "scene",
-    "scene_description"   : "scene",
-    "overview"            : "scene",
-    "general"             : "scene",
-    "lighting"            : "lighting",
-    "light"               : "lighting",
-    "lighting_quality"    : "lighting",
-    "spatial_character"   : "spatial_character",
-    "openness"            : "spatial_character",
-    "open"                : "spatial_character",
-    "spatial_openness"    : "spatial_character",
-    "enclosure_exposure"  : "spatial_character",
-    "enclosure"           : "spatial_character",
-    "width"               : "spatial_character",
-    "navigability"        : "spatial_character",
-    "passability"         : "spatial_character",
-    "crowdedness"         : "crowdedness",
-    "crowding"            : "crowdedness",
-    "crowd"               : "crowdedness",
-    "greenery"            : "greenery",
-    "vegetation"          : "greenery",
-    "green"               : "greenery",
-    "street_amenities"    : "street_amenities",
-    "street_furniture"    : "street_amenities",
-    "furniture"           : "street_amenities",
-    "urban_furniture"     : "street_amenities",
-    "amenities"           : "street_amenities",
-    "installations"       : "street_amenities",
-    "street_installations": "street_amenities",
-    "fixtures"            : "street_amenities",
-    "seating"             : "street_amenities",
-    "bins"                : "street_amenities",
-    "waste_bins"          : "street_amenities",
-    "signage"             : "street_amenities",
-    "street_signs"        : "street_amenities",
-    "visible_text"        : "visible_text",
-    "ocr"                 : "visible_text",
-    "text"                : "visible_text",
-    "signs"               : "visible_text",
+    "scene"            : "scene",
+    "scene_description": "scene",
+    "overview"         : "scene",
+    "summary"          : "scene",
+    "lighting"         : "lighting",
+    "light"            : "lighting",
+    "light_quality"    : "lighting",
+    "spatial"          : "spatial_character",
+    "spatial_character": "spatial_character",
+    "space"            : "spatial_character",
+    "street_space"     : "spatial_character",
+    "crowding"         : "crowdedness",
+    "crowdedness"      : "crowdedness",
+    "crowd"            : "crowdedness",
+    "pedestrians"      : "crowdedness",
+    "people"           : "crowdedness",
+    "greenery"         : "greenery",
+    "vegetation"       : "greenery",
+    "plants"           : "greenery",
+    "trees"            : "greenery",
+    "amenities"        : "street_amenities",
+    "street_amenities" : "street_amenities",
+    "furniture"        : "street_amenities",
+    "street_furniture" : "street_amenities",
+    "fixtures"         : "street_amenities",
+    "visible_text"     : "visible_text",
+    "text"             : "visible_text",
+    "signs"            : "visible_text",
+    "ocr"              : "visible_text",
+    "signage"          : "visible_text",
 }
 
 # ---------------------------------------------------------------------------
@@ -268,29 +268,146 @@ _LICENSE_PLATE_RE = re.compile(
 )
 
 
-def _filter_ocr_noise(entries: list) -> list:
-    """Remove noisy visible_text entries:
-    - Google watermarks
-    - License plates (lower-frame vehicle text)
-    - Entries where the model echoed the raw enum string (type contains '|')
-    """
+# ---------------------------------------------------------------------------
+# Zone-string parsers
+# The model outputs strings like "left: tree shade, dim | center: direct sun, bright"
+# These parsers convert them into the zone-aware list-of-dicts schema.
+# ---------------------------------------------------------------------------
+
+_ZONE_NAMES       = frozenset({"far_left", "left", "center", "right", "far_right"})
+_LIGHTING_CONDS   = frozenset({"dark", "dim", "adequate", "bright"})
+_COVERAGE_LEVELS  = frozenset({"none", "sparse", "moderate", "dense"})
+_PRESENCE_LEVELS  = frozenset({"none", "few", "several", "many"})
+_DENSITY_LEVELS   = frozenset({"empty", "sparse", "moderate", "dense"})
+_WIDTH_LEVELS     = frozenset({"narrow", "moderate", "wide"})
+_ENCLOSURE_LEVELS = frozenset({"open", "semi", "enclosed"})
+_LANE_TYPES       = frozenset({"sidewalk", "road", "shared", "plaza"})
+_CROSSING_TYPES   = frozenset({"none", "zebra", "signalised", "signalized", "crosswalk", "crossing"})
+
+
+def _split_zone_segments(s: str) -> list[dict]:
+    """Split 'left: desc | center: desc' into [{"zone":..., "desc":...}, ...]."""
+    if not s or s.lower().strip() in ("none", "unknown", ""):
+        return []
+    out = []
+    for seg in re.split(r"\s*[|;]\s*", s.strip()):
+        seg = seg.strip()
+        if not seg:
+            continue
+        if ":" in seg:
+            zone_part, desc_part = seg.split(":", 1)
+            zone = zone_part.strip().lower().replace(" ", "_")
+            if zone in _ZONE_NAMES:
+                out.append({"zone": zone, "desc": desc_part.strip()})
+                continue
+        # No zone prefix — assign to center
+        out.append({"zone": "center", "desc": seg})
+    return out
+
+
+def _extract_enum(desc: str, options: frozenset, default: str) -> tuple[str, str]:
+    """Return (matched_enum, desc_with_enum_removed). Case-insensitive."""
+    for opt in options:
+        if re.search(r"\b" + re.escape(opt) + r"\b", desc, re.IGNORECASE):
+            cleaned = re.sub(r"\b" + re.escape(opt) + r"\b", "", desc, flags=re.IGNORECASE)
+            return opt, re.sub(r"[,\s]+$", "", cleaned.strip()).strip(",").strip()
+    return default, desc
+
+
+def _parse_lighting(s: str) -> list:
+    out = []
+    for seg in _split_zone_segments(s):
+        cond, element = _extract_enum(seg["desc"], _LIGHTING_CONDS, "adequate")
+        # If stripping the condition keyword left nothing, use the raw desc as element
+        element = element.strip() or seg["desc"].strip() or "natural light"
+        out.append({"zone": seg["zone"], "element": element, "condition": cond})
+    return out
+
+
+def _parse_spatial(s: str) -> list:
+    out = []
+    for seg in _split_zone_segments(s):
+        d = seg["desc"].lower()
+        width     = next((w for w in _WIDTH_LEVELS     if w in d), "moderate")
+        enclosure = next((e for e in _ENCLOSURE_LEVELS if e in d), "semi")
+        lane_type = next((lt for lt in _LANE_TYPES     if lt in d), "road")
+        _raw_crossing = next((ct for ct in _CROSSING_TYPES if ct in d), "none")
+        crossing  = "zebra" if _raw_crossing in ("crosswalk", "crossing") else _raw_crossing
+        passable  = "obstructed" if re.search(r"obstruct|block", d) else "clear"
+        out.append({
+            "zone": seg["zone"], "width": width, "enclosure": enclosure,
+            "passability": passable, "lane_type": lane_type, "crossing": crossing,
+        })
+    return out
+
+
+def _parse_crowdedness(s: str) -> list:
+    out = []
+    for seg in _split_zone_segments(s):
+        density = next((lv for lv in _DENSITY_LEVELS if lv in seg["desc"].lower()), "sparse")
+        out.append({"zone": seg["zone"], "density_level": density})
+    return out
+
+
+def _split_elements(desc: str) -> list[str]:
+    """Split 'plane trees, potted plants and bollards' into individual element strings."""
+    parts = re.split(r"\s*(?:,|and|&)\s*", desc, flags=re.IGNORECASE)
+    return [p.strip() for p in parts if p.strip()]
+
+
+def _parse_greenery(s: str) -> list:
+    out = []
+    for seg in _split_zone_segments(s):
+        coverage, elements_str = _extract_enum(seg["desc"], _COVERAGE_LEVELS, "moderate")
+        elements_str = elements_str.strip()
+        # Guard: if stripping coverage left nothing (desc WAS just "moderate" etc.) use raw desc
+        if not elements_str or elements_str.lower() in _COVERAGE_LEVELS:
+            elements_str = seg["desc"]
+        for element in _split_elements(elements_str):
+            # Skip if element is itself just a coverage keyword
+            if element and element.lower() not in _COVERAGE_LEVELS:
+                out.append({"zone": seg["zone"], "element": element, "coverage": coverage})
+    return out
+
+
+def _parse_amenities(s: str) -> list:
+    out = []
+    for seg in _split_zone_segments(s):
+        presence, elements_str = _extract_enum(seg["desc"], _PRESENCE_LEVELS, "few")
+        for element in _split_elements(elements_str or seg["desc"]):
+            if element:
+                out.append({"zone": seg["zone"], "element": element, "presence": presence})
+    return out
+
+
+def _parse_visible_text(s: str) -> list:
+    if not s or s.lower().strip() in ("none", "unknown", ""):
+        return []
+    segs = _split_zone_segments(s)
+    if segs:
+        entries = [{"text": seg["desc"], "zone": seg["zone"], "type": "sign"}
+                   for seg in segs if seg["desc"]]
+    else:
+        entries = [{"text": t.strip(), "zone": "center", "type": "sign"}
+                   for t in s.split(",") if t.strip()]
+    # Filter Google watermarks and licence plates
     kept = []
     for e in entries:
-        if not isinstance(e, dict):
+        txt = e.get("text", "")
+        if not txt or _GOOGLE_WATERMARK_RE.match(txt) or _LICENSE_PLATE_RE.match(txt):
             continue
-        text = str(e.get("text", "")).strip()
-        typ  = str(e.get("type", ""))
-        if not text:
-            continue
-        if _GOOGLE_WATERMARK_RE.match(text):
-            continue
-        if _LICENSE_PLATE_RE.match(text):
-            continue
-        if "|" in typ:
-            # Model echoed the enum options — fix by defaulting to "other"
-            e = {**e, "type": "other"}
         kept.append(e)
     return kept
+
+
+_STR_PARSERS = {
+    "lighting"         : _parse_lighting,
+    "spatial_character": _parse_spatial,
+    "crowdedness"      : _parse_crowdedness,
+    "greenery"         : _parse_greenery,
+    "street_amenities" : _parse_amenities,
+    "visible_text"     : _parse_visible_text,
+}
 
 
 def _normalise_result(raw: dict) -> dict:
@@ -299,44 +416,63 @@ def _normalise_result(raw: dict) -> dict:
         canonical = _KEY_ALIASES.get(k.strip().lower())
         if canonical:
             normalised[canonical] = v
+
+    # Convert zone-prefixed strings → structured lists
+    parsed: dict = {}
+    for field, value in normalised.items():
+        parser = _STR_PARSERS.get(field)
+        if parser and isinstance(value, str):
+            parsed[field] = parser(value)
+        else:
+            parsed[field] = value
+
     try:
-        result = StreetSceneAnalysis(**normalised).model_dump()
+        return StreetSceneAnalysis(**parsed).model_dump()
     except Exception:
-        result = StreetSceneAnalysis().model_dump()
-    result["visible_text"] = _filter_ocr_noise(result["visible_text"])
-    return result
+        return StreetSceneAnalysis().model_dump()
 
 
 # ---------------------------------------------------------------------------
 # PLM prompt
 # ---------------------------------------------------------------------------
 
-# Few-shot prompted: a compact filled example shows the model exactly what output
-# is expected. WITHOUT an example, Qwen-3B defaults to empty arrays.
-# IMPORTANT: the example must use values from a clearly different scene type so the
-# model treats it as a FORMAT guide only — if example values look like Barcelona streets
-# the 3B model will copy them verbatim for every image (pattern completion, not vision).
+# Full nested-JSON prompt for Qwen2.5-VL-7B.
+# The 7B model follows complex schemas and filled examples without copying values.
+# Each list field produces one entry per zone per distinct element.
 _SCENE_PROMPT = (
-    "You are an urban perception analyst. Carefully study THIS specific image.\n"
-    "Describe ONLY what you actually observe in THIS image. "
-    "DO NOT copy the example values — they come from a completely different scene.\n"
-    "Zones left-to-right: far_left | left | center | right | far_right\n"
-    "Fill EVERY list field with 1-2 observations from THIS image — arrays MUST start with [{ not [].\n"
-    "For labelled options (e.g. dark|dim|adequate|bright) pick the closest value.\n"
-    "element: describe precisely what you see — material, colour, size, style.\n"
-    "street_amenities: any fixed street object — seating, lamps, bins, bollards, "
-    "fountains, hydrants, bike racks, info boards, bus shelters, kiosks, ad panels.\n"
-    "scene: 1 sentence max 20 words describing THIS specific view.\n"
-    "Example format (DIFFERENT scene — use only as a structure guide):\n"
-    '{"lighting":[{"zone":"center","element":"flat overcast sky","condition":"adequate"},{"zone":"left","element":"deep shadow under building overhang","condition":"dim"}],'
-    '"spatial_character":[{"zone":"center","width":"wide","enclosure":"open","passability":"clear","lane_type":"plaza","crossing":"none"},{"zone":"right","width":"moderate","enclosure":"semi","passability":"clear","lane_type":"road","crossing":"zebra"}],'
-    '"crowdedness":[{"zone":"center","density_level":"empty"},{"zone":"right","density_level":"sparse"}],'
-    '"greenery":[{"zone":"far_left","element":"low clipped box hedge","coverage":"sparse"},{"zone":"right","element":"ornamental cherry tree in bloom","coverage":"sparse"}],'
-    '"street_amenities":[{"zone":"center","element":"red metal litter bin","presence":"few"},{"zone":"left","element":"row of short concrete bollards","presence":"several"}],'
-    '"visible_text":[{"text":"EXIT","zone":"far_right","type":"sign"}],'
-    '"scene":"Wide paved plaza beside a glass office tower with sparse foot traffic."}\n'
-    "Now describe THIS image using the same JSON structure. visible_text: upper 90% of frame only.\n"
-    "Output only JSON (scene last):"
+    "You are an expert urban perception analyst. Study this Barcelona street-view image carefully.\n"
+    "Zones left-to-right: far_left | left | center | right | far_right\n\n"
+    "Output a JSON object with these 7 fields (scene last):\n"
+    "  lighting          - [{zone, element: describe the specific light source, condition: dark|dim|adequate|bright}]\n"
+    "  spatial_character - [{zone, width: narrow|moderate|wide, enclosure: open|semi|enclosed,\n"
+    "                         passability: clear|obstructed, lane_type: sidewalk|road|shared|plaza,\n"
+    "                         crossing: none|zebra|signalised}]\n"
+    "  crowdedness       - [{zone, density_level: empty|sparse|moderate|dense}]\n"
+    "  greenery          - [{zone, element: specific plant/tree type and description, coverage: none|sparse|moderate|dense}]\n"
+    "  street_amenities  - [{zone, element: specific object type, material and colour, presence: none|few|several|many}]\n"
+    "  visible_text      - [{text: exact readable string, zone, type: sign|label|graffiti}]\n"
+    "  scene             - one-sentence overview of this specific street\n\n"
+    "Rules:\n"
+    "  * Cover all clearly visible zones - 1-3 entries per field\n"
+    "  * Multiple distinct elements in the same zone = multiple list entries\n"
+    "  * element fields: name material, colour, style, scale (e.g. 'grey cast-iron double-arm lamp post')\n"
+    "  * visible_text: upper 90% of frame only\n"
+    "  * Output only the JSON object - no prose, no markdown\n\n"
+    "Example (DIFFERENT image - for schema format only, do not copy values):\n"
+    '{"lighting":[{"zone":"left","element":"dappled shade from dense tree canopy","condition":"dim"},'
+    '{"zone":"center","element":"direct overhead midday sun","condition":"bright"}],'
+    '"spatial_character":[{"zone":"left","width":"narrow","enclosure":"enclosed","passability":"clear","lane_type":"sidewalk","crossing":"none"},'
+    '{"zone":"center","width":"moderate","enclosure":"semi","passability":"clear","lane_type":"road","crossing":"zebra"}],'
+    '"crowdedness":[{"zone":"left","density_level":"sparse"},{"zone":"center","density_level":"moderate"}],'
+    '"greenery":[{"zone":"left","element":"mature London plane trees with mottled grey-green bark","coverage":"dense"},'
+    '{"zone":"right","element":"terracotta-potted rosemary shrubs on window ledges","coverage":"sparse"}],'
+    '"street_amenities":[{"zone":"left","element":"ornate cast-iron double-arm street lamp with frosted globe","presence":"few"},'
+    '{"zone":"left","element":"dark grey granite kerb-side bench with metal armrests","presence":"few"},'
+    '{"zone":"center","element":"yellow painted concrete bollard","presence":"several"},'
+    '{"zone":"right","element":"dark green metal municipal waste bin with foot-pedal lid","presence":"few"}],'
+    '"visible_text":[{"text":"MERCAT","zone":"far_left","type":"sign"}],'
+    '"scene":"Tree-lined residential street with moderate pedestrian activity and parked vehicles."}\n\n'
+    "Now analyse THIS image. Output only JSON:"
 )
 
 
@@ -345,34 +481,20 @@ _SCENE_PROMPT = (
 # ---------------------------------------------------------------------------
 
 _ECHO_SENTINELS = frozenset({
-    # Pipe-separated enum strings from the prompt — any of these as a literal value
-    # means the model echoed the template rather than filling it in.
-    "<zone>", "<element>", "<text>",
-    "dark|dim|adequate|bright",
-    "narrow|moderate|wide",
-    "open|semi|enclosed",
-    "clear|obstructed",
-    "pedestrian_only|sidewalk|shared|road",
-    "zebra|signalized|none",
-    "sparse|moderate|dense",
-    "none|sparse|moderate|dense",
-    "none|few|several",
-    "sign|label|number|other",
-    # Verbatim copies of old few-shot example — model was copying these for every image
-    "mature plane trees with mottled grey-green bark",
-    "terracotta potted geraniums on windowsills",
-    "cast-iron double-arm street lamp",
-    "grey cylindrical municipal waste bin",
-    "dappled shade from plane-tree canopy",
-    "carrer de provenca",
-    "bar calvet",
-    # New example sentinel values (should never appear in real output)
-    "low clipped box hedge",
-    "ornamental cherry tree in bloom",
-    "red metal litter bin",
-    "row of short concrete bollards",
-    "flat overcast sky",
-    "deep shadow under building overhang",
+    # Echoed the top-level format instruction literally
+    "left: ... | center: ... | right: ...",
+    # Echoed the bullet-point descriptions as values
+    "light source and brightness (dark/dim/adequate/bright) per zone",
+    "width (narrow/moderate/wide), enclosure (open/semi/enclosed), surface (sidewalk/road/plaza), any crossings per zone",
+    "pedestrian density (empty/sparse/moderate/dense) per zone",
+    "specific plant types and coverage (sparse/moderate/dense) per zone. write 'none' if absent.",
+    "specific street objects — type, material, colour per zone. write 'none' if absent.",
+    "readable text in the upper half of the image. write 'none' if absent.",
+    "one sentence describing this specific street.",
+    # Echoed enum option strings
+    "empty/sparse/moderate/dense",
+    "dark/dim/adequate/bright",
+    "narrow/moderate/wide",
 })
 
 
@@ -489,21 +611,26 @@ def load_model():
     login(token=HF_TOKEN, add_to_git_credential=False)
 
     _device = "cuda" if torch.cuda.is_available() else "cpu"
-    _dtype  = torch.bfloat16 if _device == "cuda" else torch.float32
 
     if _device == "cuda":
-        vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
-        log.info("GPU: %s  (%.1f GB)", torch.cuda.get_device_name(0), vram_gb)
-        # Qwen2.5-VL-3B weights occupy ~15 GB in bfloat16.
-        # Scale max_pixels to leave enough headroom for the KV cache.
-        if vram_gb >= 24:
-            MAX_PIXELS = 1280 * 28 * 28   # ~1 M — full resolution
-        elif vram_gb >= 16:
-            MAX_PIXELS = 784 * 28 * 28    # ~615 K — safe on 16 GB
+        props   = torch.cuda.get_device_properties(0)
+        vram_gb = props.total_memory / 1e9
+        cc      = (props.major, props.minor)   # compute capability
+        # BF16 tensor cores require Ampere (sm80+). Turing (T4, sm75) must use FP16.
+        _dtype  = torch.bfloat16 if cc >= (8, 0) else torch.float16
+        log.info("GPU: %s  (%.1f GB)  sm%d%d  dtype=%s",
+                 props.name, vram_gb, cc[0], cc[1], _dtype)
+        # T4 reports ~15.84 GB — use 15.0 as threshold to catch it correctly.
+        # With 7B in 4-bit (~4.5 GB weights) the remaining budget is generous.
+        if vram_gb >= 23:
+            MAX_PIXELS = 1280 * 28 * 28   # ~1 M  — A100 / L4
+        elif vram_gb >= 15:
+            MAX_PIXELS = 784 * 28 * 28    # ~615 K — T4 (16 GB)
         else:
-            MAX_PIXELS = 512 * 28 * 28    # ~401 K — minimum quality
+            MAX_PIXELS = 512 * 28 * 28    # ~401 K — smaller cards
         os.environ.setdefault("PYTORCH_ALLOC_CONF", "expandable_segments:True")
     else:
+        _dtype = torch.float32
         log.warning("No GPU detected -- inference will be very slow on CPU")
         MAX_PIXELS = 256 * 28 * 28        # CPU: use minimum resolution
 
@@ -518,12 +645,28 @@ def load_model():
         max_pixels = MAX_PIXELS,
     )
 
+    # 7B in full precision ≈ 14 GB — too tight even on 16 GB T4.
+    # 4-bit NF4 brings weights to ~4.5 GB; compute dtype matches the GPU's
+    # native half-precision (float16 on T4/Turing, bfloat16 on Ampere+).
+    is_7b = "7b" in MODEL_ID.lower() or "7B" in MODEL_ID
+    if is_7b and _device == "cuda":
+        bnb_cfg = BitsAndBytesConfig(
+            load_in_4bit              = True,
+            bnb_4bit_compute_dtype    = _dtype,   # fp16 on T4, bf16 on Ampere+
+            bnb_4bit_quant_type       = "nf4",
+            bnb_4bit_use_double_quant = True,
+        )
+        log.info("Using 4-bit NF4 quantization (compute dtype: %s)", _dtype)
+    else:
+        bnb_cfg = None
+
     _model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         MODEL_ID,
-        token             = HF_TOKEN,
-        torch_dtype       = _dtype,
-        device_map        = "auto",
-        low_cpu_mem_usage = True,
+        token                = HF_TOKEN,
+        torch_dtype          = _dtype,
+        device_map           = "auto",
+        low_cpu_mem_usage    = True,
+        quantization_config  = bnb_cfg,
     )
     _model.eval()
 
@@ -531,14 +674,14 @@ def load_model():
         torch.cuda.empty_cache()
         gc.collect()
 
-    log.info("Qwen2.5-VL-3B-Instruct loaded and ready")
+    log.info("%s loaded and ready", MODEL_ID)
 
 
 # ---------------------------------------------------------------------------
 # Inference
 # ---------------------------------------------------------------------------
 
-def _infer_scene(image):
+def _infer_scene(image, greedy: bool = False):
     if _processor is None or _model is None:
         raise RuntimeError("Model not loaded — call load_model() first.")
 
@@ -554,9 +697,9 @@ def _infer_scene(image):
     text = str(_processor.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     ))
-    # Deep prime: skip past the opening brace and the first array name so the
-    # model is forced to generate the first observation object directly.
-    # This prevents the model from outputting [] before any content is written.
+    # Deep prime: force the model to start the first array entry directly.
+    # The 7B model outputs nested JSON; priming past the opening brace prevents
+    # it emitting an empty [] before any content.
     _PRIME = '{"lighting":[{'
     text += _PRIME
 
@@ -576,13 +719,16 @@ def _infer_scene(image):
 
     gen_kwargs: dict = dict(
         max_new_tokens     = MAX_NEW_TOKENS,
-        do_sample          = True,
-        temperature        = 0.4,
-        top_p              = 0.9,
-        repetition_penalty = 1.05,
+        do_sample          = not greedy,
+        temperature        = 0.3,    # 7B handles sampling well; adds description variety
+        top_p              = 0.95,
+        repetition_penalty = 1.1,
         eos_token_id       = _processor.tokenizer.eos_token_id,
         pad_token_id       = _processor.tokenizer.pad_token_id,
     )
+    if greedy:
+        gen_kwargs.pop("temperature", None)
+        gen_kwargs.pop("top_p", None)
 
     with torch.no_grad():
         gen_ids = _model.generate(**inputs, **gen_kwargs)
@@ -621,10 +767,11 @@ def analyze_image(image_path):
     t0 = time.perf_counter()
     result, raw = None, ""
     for attempt in range(1, _MAX_ATTEMPTS + 1):
-        result, raw = _infer_scene(img)
+        greedy = (attempt == _MAX_ATTEMPTS)   # last attempt: greedy decoding
+        result, raw = _infer_scene(img, greedy=greedy)
         populated = sum(
             1 for k, v in result.items()
-            if v not in ("unknown", "", None, {}, []) and not k.startswith("_")
+            if not k.startswith("_") and v not in ("unknown", "none", "", None, [], {})
         )
         if populated >= 3 or attempt == _MAX_ATTEMPTS:
             break
@@ -994,35 +1141,33 @@ def run_trial(args, images_dir: Path):
     res = analyze_image(img_path)
     log.info("PLM latency: %d ms", round((time.time() - t0) * 1000))
 
+    _LIST_FIELDS = (
+        "lighting", "spatial_character", "crowdedness",
+        "greenery", "street_amenities",
+    )
     print(f"\n--- Scene ---\n  {res.get('scene', 'unknown')}")
-
-    print("\n--- Zone Attributes ---")
-    for attr in _ZONE_ATTRS:
-        items = res.get(attr, [])
-        if not isinstance(items, list):
-            items = [items] if items else []
+    for field in _LIST_FIELDS:
+        items = res.get(field, [])
         if not items:
-            print(f"  {attr:18s}: (no data)")
+            print(f"\n  {field}: (no data)")
             continue
+        print(f"\n  {field}:")
         for obs in items:
-            if not isinstance(obs, dict) or not obs:
+            if not isinstance(obs, dict):
                 continue
-            zone = obs.get("zone", "?")
-            elem = obs.get("element", "")
-            # all non-zone/element keys are enum tags — display them generically
-            tags = {k: v for k, v in obs.items() if k not in ("zone", "element")}
+            zone    = obs.get("zone", "?")
+            element = obs.get("element", "")
+            tags    = {k: v for k, v in obs.items() if k not in ("zone", "element")}
             tag_str = "  " + "  ".join(f"{k}={v}" for k, v in tags.items()) if tags else ""
-            elem_str = f"[{str(elem)[:18]}] " if elem else ""
-            print(f"  {attr:18s} [{zone:10s}] {elem_str}{tag_str}")
-
+            elem_str = f" [{element[:30]}]" if element else ""
+            print(f"    [{zone:10s}]{elem_str}{tag_str}")
     vt = res.get("visible_text", [])
     if vt:
-        print("\n--- Visible Text (OCR) ---")
+        print("\n  visible_text:")
         for entry in vt:
             if isinstance(entry, dict):
-                print(f"  [{entry.get('zone', '?'):10s}] "
-                      f"{entry.get('text', '?')}  "
-                      f"({entry.get('type', '?')})")
+                print(f"    [{entry.get('zone','?'):10s}] {entry.get('text','?')}"
+                      f"  ({entry.get('type','?')})")
 
     landmarks = fetch_nearby_landmarks(pt["lat"], pt["lon"])
     if landmarks:
@@ -1185,15 +1330,20 @@ def _parse_args():
                    help="Manual heading override (0-360)")
     p.add_argument("--landmark-db",   type=str,   default="",
                    help="Path to DuckDB with OSM/Overture 'places' table for nearby landmark lookup")
+    p.add_argument(
+        "--model-size", choices=["3b", "7b"], default="7b",
+        help="VLM size: '7b' (default, 4-bit NF4, ~4.5 GB VRAM) or '3b' (bfloat16, ~6 GB VRAM)",
+    )
     return p.parse_args()
 
 
 def main():
     args = _parse_args()
 
-    global LANDMARK_DB_PATH
+    global LANDMARK_DB_PATH, MODEL_ID
     if args.landmark_db:
         LANDMARK_DB_PATH = args.landmark_db
+    MODEL_ID = _MODEL_IDS[args.model_size]
 
     assert STREETVIEW_API_KEY, "Set GOOGLE_STREETVIEW_API_KEY env var (Lightning AI Secret)"
     assert HF_TOKEN,           "Set HF_TOKEN env var (Lightning AI Secret)"

@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "timestamp": "20260523_225106",
+    "latitude": 41.396753899999986,
+    "longitude": 2.1685608000000003,
+    "heading": 133.7,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "30243248_12229016276_0",
+    "dist_along_edge_m": 8.3,
+    "source_image": "sv_41.396754_2.168561_h133.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23904.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban plaza area with wide roads, sparse greenery, and minimal pedestrian traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young deciduous trees with bright green leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "young deciduous trees with bright green leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "young deciduous trees with bright green leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black trash bin with metallic base",
+        "material_and_colour": "black",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "white van",
+        "material_and_colour": "white",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "man riding electric scooter",
+        "material_and_colour": "black",
+        "presence": "one"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}
