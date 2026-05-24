@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "timestamp": "20260523_233422",
+    "latitude": 41.39830629999998,
+    "longitude": 2.1706399,
+    "heading": 317.2,
+    "street_name": "Passeig de Sant Joan",
+    "highway_type": "footway",
+    "edge_id": "7403617127_8205986285_0",
+    "dist_along_edge_m": 8.8,
+    "source_image": "sv_41.398306_2.170640_h317.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 27296.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban plaza area with parked motor scooters, pedestrians, and a mix of open green spaces and paved areas.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "trees providing dappled shade",
+        "condition": "moderate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young deciduous trees with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "older deciduous trees with full canopies",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motor scooters parked along curb",
+        "material": "metallic",
+        "colour": "various shades of silver/black",
+        "style": "modern",
+        "scale": "small to medium"
+      },
+      {
+        "zone": "center",
+        "element": "trash bins",
+        "material": "metallic",
+        "colour": "black",
+        "style": "standard",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "trash bins",
+        "material": "metallic",
+        "colour": "black",
+        "style": "standard",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "tutu.net",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "SOTO",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

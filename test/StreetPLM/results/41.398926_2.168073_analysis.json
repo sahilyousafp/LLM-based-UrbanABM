@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "timestamp": "20260523_232623",
+    "latitude": 41.3989261,
+    "longitude": 2.1680734,
+    "heading": 250.1,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "6855299010_7412690167_0",
+    "dist_along_edge_m": 7.6,
+    "source_image": "sv_41.398926_2.168073_h250.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25959.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban boulevard with wide roads, moderate greenery, and minimal traffic, under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "small ornamental bushes along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small ornamental bushes along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "pedestrian crossing signals",
+        "material": "metallic",
+        "colour": "red",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycle parking area",
+        "material": "concrete",
+        "colour": "paved grey",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "KALI",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

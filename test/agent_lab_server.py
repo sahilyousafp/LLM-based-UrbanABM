@@ -79,9 +79,8 @@ logger = logging.getLogger(__name__)
 
 # ── 5. Paths ───────────────────────────────────────────────────────────────
 DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
-SV_OUTPUT_DIR = PROJECT_ROOT / "Backend" / "Environment" / "output"
-SV_IMAGES_DIR = SV_OUTPUT_DIR / "images"
-SV_RESULTS_DIR = SV_OUTPUT_DIR / "results"
+SV_RESULTS_DIR = TEST_DIR / "StreetPLM" / "results"
+SV_IMAGES_DIR  = TEST_DIR / "StreetPLM" / "images"
 
 TEST_TRACKER_DB = TEST_DIR / "tracking_data" / "agent_lab.duckdb"
 TEST_RECORDING_DIR = TEST_DIR / "tracking_data"
@@ -274,7 +273,7 @@ async def get_streetview_grid():
 @app.get("/api/streetview_grid/image/{filename}")
 async def get_streetview_image(filename: str):
     import mimetypes
-    file_path = SV_RESULTS_DIR / filename
+    file_path = SV_IMAGES_DIR / filename
     if not file_path.exists():
         return {"error": "Image not found"}
     content_type, _ = mimetypes.guess_type(str(file_path))
@@ -630,24 +629,137 @@ async def get_agent_cognition(agent_id: int):
     }
 
 
+def _resolve_streetplm_perception(agent) -> dict | None:
+    """Callback for the recorder: resolve StreetPLM JSON perception for a given agent."""
+    import re as _re, json as _json2
+    if getattr(city_model, "perception_mode", "both") == "amenities":
+        return None
+    if not SV_RESULTS_DIR.is_dir():
+        return None
+    lon, lat = agent.geometry.x, agent.geometry.y
+    closest_dist = float("inf")
+    closest_file = None
+    for jf in SV_RESULTS_DIR.glob("*_analysis.json"):
+        m = _re.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", jf.name)
+        if not m:
+            continue
+        d = ((float(m.group(2)) - lon) ** 2 + (float(m.group(1)) - lat) ** 2) ** 0.5
+        if d < closest_dist:
+            closest_dist = d
+            closest_file = jf.name.replace("_analysis.json", "")
+    if not closest_file:
+        return None
+    try:
+        data = _json2.loads((SV_RESULTS_DIR / f"{closest_file}_analysis.json").read_text(encoding="utf-8"))
+        return data.get("scene_analysis", {})
+    except Exception:
+        return None
+
+
+def _flatten_streetplm(scene_analysis: dict) -> dict:
+    """Translate StreetPLM nested-array scene_analysis into flat perception strings."""
+    def join_zones(items, *keys):
+        parts = []
+        for item in items:
+            vals = [str(item.get(k, "")) for k in keys if item.get(k)]
+            if vals:
+                parts.append(", ".join(vals))
+        return "; ".join(parts)
+
+    return {
+        "scene_overview":     scene_analysis.get("scene", ""),
+        "vegetation":         join_zones(scene_analysis.get("greenery", []), "element", "coverage"),
+        "lighting_atmosphere":join_zones(scene_analysis.get("lighting", []), "element", "condition"),
+        "pedestrian_activity":join_zones(scene_analysis.get("crowdedness", []), "zone", "density_level"),
+        "spatial_enclosure":  join_zones(scene_analysis.get("spatial_character", []), "enclosure", "width"),
+        "street_furniture":   join_zones(scene_analysis.get("street_amenities", []), "element"),
+        "signage":            ", ".join(v.get("text", "") for v in scene_analysis.get("visible_text", [])),
+    }
+
+
+def _load_test_streetplm_cache():
+    """
+    Override city_model._sv_cache with test StreetPLM JSON files.
+    Data is pre-flattened so get_nearby_perception() returns LLM-compatible strings.
+    Also monkey-patches get_nearby_perception to bypass DuckDB entirely in the test.
+    """
+    import json as _j, re as _r
+
+    city_model._sv_cache = []
+    if not SV_RESULTS_DIR.is_dir():
+        print("[WARN] test/StreetPLM/results not found — street perception disabled")
+        return
+
+    for jf in sorted(SV_RESULTS_DIR.glob("*_analysis.json")):
+        m = _r.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", jf.name)
+        if not m:
+            continue
+        try:
+            data = _j.loads(jf.read_text(encoding="utf-8"))
+            sa = data.get("scene_analysis", {})
+            city_model._sv_cache.append({
+                "lat": float(m.group(1)),
+                "lon": float(m.group(2)),
+                "heading": data.get("metadata", {}).get("heading"),
+                "scene_analysis": _flatten_streetplm(sa),
+            })
+        except Exception:
+            continue
+
+    _THRESHOLD_DEG = 0.0015
+
+    def _test_get_nearby_perception(point_geom):
+        """Use pre-flattened test StreetPLM cache; skip DuckDB."""
+        best = None
+        best_dist = _THRESHOLD_DEG
+        for entry in city_model._sv_cache:
+            dx = entry["lon"] - point_geom.x
+            dy = entry["lat"] - point_geom.y
+            dist = (dx * dx + dy * dy) ** 0.5
+            if dist < best_dist:
+                best_dist = dist
+                best = entry
+        if best is None:
+            return None
+        result = dict(best["scene_analysis"])
+        if best.get("heading") is not None:
+            result["heading"] = best["heading"]
+        return result
+
+    # Replace instance method — callers do model.get_nearby_perception(geom),
+    # so a plain function (no self) is correct for an instance attribute override.
+    city_model.get_nearby_perception = _test_get_nearby_perception
+
+    print(f"[TEST] StreetPLM cache: {len(city_model._sv_cache)} points loaded from {SV_RESULTS_DIR}")
+
+
+_load_test_streetplm_cache()
+
+
 @app.get("/api/agent/{agent_id}/perception-text")
 async def get_agent_perception_text(agent_id: int):
-    """Return perception fields and nearby streetview image."""
-    import re
+    """Return perception fields (from StreetPLM JSON) and nearest streetview image."""
+    import re, json as _json
 
     agent = _find_agent(agent_id)
     if not agent:
         return {"error": "Agent not found"}
 
-    if not agent.street_perception:
+    perception_mode = getattr(city_model, "perception_mode", "both")
+    if perception_mode == "amenities":
         return {
             "agent_id": agent_id,
             "perception": {},
             "image_url": None,
+            "nearby_amenities": [
+                {"type": a.get("type", "?"), "name": a.get("name", "?"), "distance_m": a.get("dist", a.get("distance_m", 0))}
+                for a in (agent.nearby_amenities or [])[:10]
+            ],
         }
 
-    perception = agent.street_perception
     image_url = None
+    perception = {}
+    heading = None
     agent_lon, agent_lat = agent.geometry.x, agent.geometry.y
 
     if SV_RESULTS_DIR.is_dir():
@@ -663,27 +775,44 @@ async def get_agent_perception_text(agent_id: int):
                 closest_distance = dist
                 closest_file = json_file.name.replace("_analysis.json", "")
 
-        if closest_file and closest_distance < 0.01:
-            for ext in ['.jpg', '.jpeg', '.png']:
-                img_path = SV_RESULTS_DIR / f"{closest_file}{ext}"
-                if img_path.exists():
-                    image_url = f"/api/streetview_grid/image/{closest_file}{ext}"
-                    break
+        if closest_file:
+            try:
+                data = _json.loads((SV_RESULTS_DIR / f"{closest_file}_analysis.json").read_text(encoding="utf-8"))
+                perception = _flatten_streetplm(data.get("scene_analysis", {}))
+                heading = data.get("metadata", {}).get("heading")
+            except Exception:
+                pass
+
+            matches = list(SV_IMAGES_DIR.glob(f"sv_{closest_file}_h*"))
+            if matches:
+                image_url = f"/api/streetview_grid/image/{matches[0].name}"
+                # Extract heading from filename as fallback if JSON metadata missing
+                if heading is None:
+                    hm = re.search(r"_h([\d.]+)\.", matches[0].name)
+                    if hm:
+                        heading = float(hm.group(1))
+
+    # Fall back to DuckDB-sourced perception if no StreetPLM JSON found
+    if not perception and agent.street_perception:
+        perception = {k: agent.street_perception.get(k, "") for k in (
+            "scene_overview", "vegetation", "lighting_atmosphere",
+            "pedestrian_activity", "spatial_enclosure", "street_furniture", "signage",
+        )}
+
+    # Compute compass label for heading
+    heading_compass = None
+    if heading is not None:
+        _compass_labels = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+        heading_compass = _compass_labels[int((heading + 22.5) / 45) % 8]
 
     return {
         "agent_id": agent_id,
-        "perception": {
-            "scene_overview": perception.get("scene_overview", ""),
-            "buildings": perception.get("buildings", ""),
-            "vegetation": perception.get("vegetation", ""),
-            "pedestrian_activity": perception.get("pedestrian_activity", ""),
-            "lighting_atmosphere": perception.get("lighting_atmosphere", ""),
-            "visual_barriers": perception.get("visual_barriers", ""),
-            "sightlines": perception.get("sightlines", ""),
-        },
+        "perception": perception,
         "image_url": image_url,
+        "heading": heading,
+        "heading_compass": heading_compass,
         "nearby_amenities": [
-            {"type": a.get("type", "?"), "name": a.get("name", "?"), "distance_m": a.get("distance_m", 0)}
+            {"type": a.get("type", "?"), "name": a.get("name", "?"), "distance_m": a.get("dist", a.get("distance_m", 0))}
             for a in agent.nearby_amenities[:10]
         ]
     }
@@ -916,11 +1045,12 @@ async def get_agent_narrative(agent_id: int, include_history: bool = True):
             visited_amenities = perception_diary.get_visited_amenities()
             visited_str = ", ".join(f"{a.get('name')} ({a.get('type')})" for a in visited_amenities[:5]) or "none yet"
 
+            current_scene = (agent.street_perception or {}).get('scene_overview', 'none')
             user_msg = (
                 f"Agent {agent_id} is a {profile.get('archetype', 'pedestrian')}. "
                 f"\n\nJOURNEY SO FAR:\n{history_text}\n\n"
                 f"AMENITIES ENCOUNTERED: {visited_str}\n\n"
-                f"CURRENT SCENE: {agent.street_perception.get('scene_overview', 'unknown')}\n"
+                f"CURRENT SCENE: {current_scene}\n"
                 f"CURRENT NEEDS: energy={needs.get('energy', 1.0):.2f}, comfort={needs.get('comfort', 0.5):.2f}\n"
                 f"MOOD: {cognition.get('mood', 'neutral')}\n\n"
                 f"Narrate what this agent is experiencing, referencing specific places from their journey. Be specific, not generic. (2-3 sentences)"
@@ -1046,6 +1176,11 @@ async def get_agent_plan_adherence(agent_id: int):
 async def update_perception_mode(mode: str = Body(..., embed=True)):
     if mode not in ("amenities", "perception", "both", "rule_based"):
         return {"error": "Invalid mode"}
+    if getattr(city_model, "perception_mode", "both") != mode:
+        perception_diary.entries.clear()
+        perception_diary.adherence_log.clear()
+        perception_diary._visited_amenities_set.clear()
+        perception_diary._visited_amenities_list.clear()
     city_model.perception_mode = mode
     return {"status": "updated", "mode": mode}
 
@@ -1053,6 +1188,19 @@ async def update_perception_mode(mode: str = Body(..., embed=True)):
 @app.get("/api/config/perception-mode")
 async def get_perception_mode():
     return {"mode": getattr(city_model, "perception_mode", "both")}
+
+
+@app.post("/api/config/nav-mode")
+async def set_nav_mode(mode: str = Body(..., embed=True)):
+    if mode not in ("gps", "direction_sense", "both", "none"):
+        return {"error": "Invalid mode", "allowed": ["gps", "direction_sense", "both", "none"]}
+    city_model.nav_mode = mode
+    return {"status": "updated", "mode": mode}
+
+
+@app.get("/api/config/nav-mode")
+async def get_nav_mode():
+    return {"mode": getattr(city_model, "nav_mode", "both")}
 
 
 @app.get("/api/llm/stats")
@@ -1119,6 +1267,7 @@ async def start_recording(
         include_perception=include_perception,
         perception_mode=current_mode,
         mode_callback=lambda: getattr(city_model, "perception_mode", "both"),
+        perception_callback=_resolve_streetplm_perception,
     )
     session_id = recorder.start_recording(session_name)
     city_model.set_recorder(recorder)

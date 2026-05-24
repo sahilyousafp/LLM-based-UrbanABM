@@ -1,0 +1,118 @@
+{
+  "metadata": {
+    "timestamp": "20260523_232853",
+    "latitude": 41.3990623,
+    "longitude": 2.1673779,
+    "heading": 228.2,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "7045171422_8254596724_0",
+    "dist_along_edge_m": 4.1,
+    "source_image": "sv_41.399062_2.167378_h228.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25373.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with parked motorcycles and pedestrians, featuring wide roads and minimal greenery under bright daylight conditions.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through bare branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight reflecting off road surface",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small leafless trees along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curb",
+        "material": "metallic",
+        "colour": "various",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "pedestrian benches",
+        "material": "wooden",
+        "colour": "brown",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "LA BLUES MOVIE NIGHT WOODSYMPHONY ORCHESTRA",
+        "zone": "far_right",
+        "type": "sign"
+      },
+      {
+        "text": "LICEU PAU CASALS",
+        "zone": "far_right",
+        "type": "sign"
+      },
+      {
+        "text": "Socle 325",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

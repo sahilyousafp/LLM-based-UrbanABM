@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "timestamp": "20260523_234320",
+    "latitude": 41.39762659999999,
+    "longitude": 2.1676895000000003,
+    "heading": 42.7,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "8235449323_11371360365_0",
+    "dist_along_edge_m": 10.1,
+    "source_image": "sv_41.397627_2.167690_h42.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26811.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Wide, tree-lined avenue with no pedestrians or vehicles, under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young deciduous trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "young deciduous trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "young deciduous trees",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic street lamp pole",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "simple",
+        "scale": "tall"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signal pole",
+        "material": "metallic",
+        "colour": "brown",
+        "style": "standard",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "building facade",
+        "material": "brick",
+        "colour": "tan",
+        "style": "modernist",
+        "scale": "large"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "La Riera del Poble",
+        "zone": "far_right",
+        "type": "sign"
+      },
+      {
+        "text": "ORX",
+        "zone": "far_right",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,5 +1,5 @@
 {
-  "_comment": "Test plans — edit freely to experiment with single-agent scenarios. Each archetype has phases executed in order. perception_preferences/avoid map to streetview_perception fields.",
+  "_comment": "Test plans. perception_preferences: list of field names to prefer. perception_avoid: list of plain strings (global match) OR {field, value} objects (field-scoped match against StreetPLM values).",
   "tourist": {
     "phases": [
       {
@@ -8,8 +8,12 @@
         "target_types": ["attraction", "museum"],
         "max_visits": 3,
         "priority": "high",
-        "perception_preferences": ["vegetation", "lighting_atmosphere", "buildings", "Architecture"],
-        "perception_avoid": ["Unclean", "messy", "Uninteresting"]
+        "perception_preferences": ["vegetation", "lighting_atmosphere", "spatial_enclosure"],
+        "perception_avoid": [
+          {"field": "lighting_atmosphere", "value": "dim"},
+          {"field": "pedestrian_activity", "value": "empty"},
+          {"field": "vegetation", "value": "absent"}
+        ]
       },
       {
         "id": "rest_1",
@@ -17,8 +21,11 @@
         "target_types": ["cafe", "restaurant"],
         "max_visits": 1,
         "priority": "medium",
-        "perception_preferences": ["vegetation", "pedestrian_activity", "outdoor_seating"],
-        "perception_avoid": ["Dirty", "Dark", "Narrow"]
+        "perception_preferences": ["vegetation", "pedestrian_activity", "street_furniture"],
+        "perception_avoid": [
+          {"field": "lighting_atmosphere", "value": "dim"},
+          {"field": "spatial_enclosure", "value": "narrow"}
+        ]
       },
       {
         "id": "explore_2",
@@ -27,7 +34,10 @@
         "max_visits": 2,
         "priority": "low",
         "perception_preferences": ["vegetation", "lighting_atmosphere", "spatial_enclosure"],
-        "perception_avoid": ["sleeping_on_streets", "Dirty_floor"]
+        "perception_avoid": [
+          {"field": "vegetation", "value": "absent"},
+          {"field": "street_furniture", "value": "absent"}
+        ]
       }
     ]
   },
@@ -39,7 +49,7 @@
         "target_types": ["supermarket", "bakery"],
         "max_visits": 1,
         "priority": "high",
-        "perception_preferences": ["ground_surfaces", "building_condition"],
+        "perception_preferences": ["street_furniture", "spatial_enclosure"],
         "perception_avoid": []
       },
       {
@@ -61,7 +71,7 @@
         "target_types": [],
         "max_visits": 0,
         "priority": "critical",
-        "perception_preferences": ["ground_surfaces", "lighting_atmosphere"],
+        "perception_preferences": ["street_furniture", "lighting_atmosphere"],
         "perception_avoid": []
       }
     ]

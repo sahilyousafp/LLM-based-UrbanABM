@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "timestamp": "20260523_234030",
+    "latitude": 41.39933589999999,
+    "longitude": 2.1702747000000002,
+    "heading": 69.6,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary_link",
+    "edge_id": "8173291403_11829063601_0",
+    "dist_along_edge_m": 95.9,
+    "source_image": "sv_41.399336_2.170275_h69.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23746.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined boulevard with moderate vehicular and pedestrian activity under bright daylight conditions.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead diffused sunlight through tree canopies",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "smaller deciduous trees with sparse green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic traffic signal poles",
+        "material_and_colour": "silver-grey",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "traffic lights",
+        "material_and_colour": "yellow",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "metallic traffic signal poles",
+        "material_and_colour": "silver-grey",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "",
+        "zone": "far_left",
+        "type": "label"
+      },
+      {
+        "text": "",
+        "zone": "far_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "timestamp": "20260523_233245",
+    "latitude": 41.39922620000001,
+    "longitude": 2.169299,
+    "heading": 26.0,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "7403617113_8173291418_0",
+    "dist_along_edge_m": 8.5,
+    "source_image": "sv_41.399226_2.169299_h26.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 17251.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with wide sidewalks lined by mature trees and moderate pedestrian traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with sparse foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "smaller trees with full foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole with yellow lights",
+        "material_and_colour": "metallic/yellow",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "parking meters",
+        "material_and_colour": "black",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

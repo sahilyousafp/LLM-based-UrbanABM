@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "timestamp": "20260523_234253",
+    "latitude": 41.39899929999999,
+    "longitude": 2.1704698,
+    "heading": 137.1,
+    "street_name": "Plaça de Mossèn Jacint Verdaguer",
+    "highway_type": "footway",
+    "edge_id": "8207484549_11829063598_0",
+    "dist_along_edge_m": 56.7,
+    "source_image": "sv_41.398999_2.170470_h137.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22824.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide roadways, zebra crossings, and moderate pedestrian activity under bright daylight conditions.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead midday sunlight through sparse clouds",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "overhead midday sunlight through sparse clouds",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "right",
+        "element": "large leafy deciduous trees along curbside",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "red circular traffic sign indicating no entry",
+        "material_and_colour": "red",
+        "presence": "one"
+      },
+      {
+        "zone": "left",
+        "element": "blue parking sign",
+        "material_and_colour": "blue",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycle rider",
+        "material_and_colour": "yellow",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -134,6 +134,8 @@ class PlanBlock(Block):
                     )
                     if active_target:
                         plan["current_phase"]["active_target"] = active_target
+                        # Sync plan target into destination memory so Dijkstra routes toward it
+                        await self._sync_plan_target_to_destination(active_target)
                 await self.memory.stream.add(
                     topic="plan",
                     step=step,
@@ -152,6 +154,7 @@ class PlanBlock(Block):
                 )
                 if active_target:
                     current_phase["active_target"] = active_target
+                    await self._sync_plan_target_to_destination(active_target)
 
         # Apply perception_avoid hard filter only for rule_based mode
         # LLM modes: perception_avoid is passed as soft guidance via plan_context
@@ -238,14 +241,20 @@ class PlanBlock(Block):
     def _resolve_target(
         self, model, position: dict, target_types: list
     ) -> Optional[dict]:
-        """Find nearest amenity matching target_types."""
+        """Find nearest amenity matching target_types.
+        First searches nearby radius; if none found, queries the full DB.
+        """
         try:
             lon = position.get("lon", 0.0)
             lat = position.get("lat", 0.0)
-            point_geom = __import__("shapely.geometry", fromlist=["Point"]).Point(lon, lat)
+            from shapely.geometry import Point
+            point_geom = Point(lon, lat)
+            types_lower = [t.lower() for t in target_types]
+
+            # 1. Check nearby amenities first (fast, in-memory)
             nearby = model.get_nearby_amenities(point_geom)
             for amenity in nearby:
-                if amenity.get("type", "").lower() in [t.lower() for t in target_types]:
+                if amenity.get("type", "").lower() in types_lower:
                     return {
                         "name": amenity.get("name", "Unknown"),
                         "type": amenity.get("type", ""),
@@ -253,9 +262,62 @@ class PlanBlock(Block):
                         "lat": amenity.get("lat", lat),
                         "dist": amenity.get("dist", 0),
                     }
+
+            # 2. Fall back to full DB query if model has a DuckDB connection
+            if hasattr(model, "con"):
+                types_sql = ", ".join(f"'{t}'" for t in types_lower)
+                query = f"""
+                    SELECT name, category, lon, lat,
+                        ST_Distance(geometry, ST_GeomFromText('POINT ({lon} {lat})')) AS dist
+                    FROM amenities
+                    WHERE LOWER(category) IN ({types_sql})
+                    ORDER BY dist
+                    LIMIT 1
+                """
+                row = model.con.execute(query).fetchone()
+                if row:
+                    return {
+                        "name": row[0] or "Unknown",
+                        "type": row[1] or target_types[0],
+                        "lon": row[2],
+                        "lat": row[3],
+                        "dist": row[4],
+                    }
         except Exception as e:
             logger.warning(f"Failed to resolve target for types {target_types}: {e}")
         return None
+
+    async def _sync_plan_target_to_destination(self, active_target: dict) -> None:
+        """Write the plan's active_target into destination memory so Dijkstra routes to it."""
+        try:
+            from shapely.geometry import Point
+            import math
+            lon, lat = active_target.get("lon", 0.0), active_target.get("lat", 0.0)
+            model = self.context.get("model")
+            # Find the network node closest to the target coordinates
+            target_node = None
+            if model and hasattr(model, "node_to_edges"):
+                best_dist = float("inf")
+                for node in model.node_to_edges:
+                    dx = (node[0] - lon) * 111320 * math.cos(math.radians(lat))
+                    dy = (node[1] - lat) * 110540
+                    d = math.sqrt(dx * dx + dy * dy)
+                    if d < best_dist:
+                        best_dist = d
+                        target_node = node
+
+            existing = await self.memory.status.get("destination", {}) or {}
+            await self.memory.status.update("destination", {
+                **existing,
+                "name": active_target.get("name", "Plan target"),
+                "amenity_type": active_target.get("type", ""),
+                "lon": lon,
+                "lat": lat,
+                "target_node": target_node,
+                "source": "plan",
+            })
+        except Exception as e:
+            logger.warning(f"Failed to sync plan target to destination: {e}")
 
     def _extract_qualities(self, perception: dict) -> list:
         """Extract non-empty perception field names as quality labels."""
@@ -270,7 +332,11 @@ class PlanBlock(Block):
     ) -> list:
         """
         Filter candidate edges based on perception_avoid.
-        Hard filter: remove edges that contain avoided qualities.
+        Each avoid entry is either:
+          - a plain string  → substring match against edge["perception"] text
+          - {"field": str, "value": str} → field-scoped match; uses
+            edge["perception_dict"] when available, else falls back to text
+        Hard filter: remove edges that match any avoid entry.
         If all edges are filtered out, return empty list (forced deviation).
         """
         if not avoid_list:
@@ -278,12 +344,24 @@ class PlanBlock(Block):
 
         filtered = []
         for edge in edges:
-            perception = edge.get("perception", "")
+            perception_str = edge.get("perception", "")
+            perception_dict = edge.get("perception_dict", {})
             has_avoided = False
-            for avoid_key in avoid_list:
-                if avoid_key.lower() in perception.lower():
-                    has_avoided = True
-                    break
+            for item in avoid_list:
+                if isinstance(item, dict):
+                    field = item.get("field", "")
+                    value = item.get("value", "")
+                    if perception_dict and field in perception_dict:
+                        if value.lower() in str(perception_dict[field]).lower():
+                            has_avoided = True
+                            break
+                    elif value.lower() in perception_str.lower():
+                        has_avoided = True
+                        break
+                else:
+                    if str(item).lower() in perception_str.lower():
+                        has_avoided = True
+                        break
             if not has_avoided:
                 filtered.append(edge)
 

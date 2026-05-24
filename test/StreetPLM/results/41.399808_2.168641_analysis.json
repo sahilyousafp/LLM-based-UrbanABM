@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "timestamp": "20260523_233227",
+    "latitude": 41.3998079,
+    "longitude": 2.1686413,
+    "heading": 135.9,
+    "street_name": "Passeig de Sant Joan",
+    "highway_type": "footway",
+    "edge_id": "7403617113_8207484547_0",
+    "dist_along_edge_m": 79.8,
+    "source_image": "sv_41.399808_2.168641_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19300.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide lanes, bus and taxi signs, and dense greenery along the left side.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead streetlights",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead streetlights",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "building facade",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "bushes with green foliage",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "bus lane markings",
+        "material": "painted white lines",
+        "scale": "large"
+      },
+      {
+        "zone": "right",
+        "element": "blue taxi sign",
+        "material": "metallic blue panel",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "storefronts with signage",
+        "material": "various colors",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "SUP",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "taxi",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "BUS",
+        "zone": "center",
+        "type": "marking"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

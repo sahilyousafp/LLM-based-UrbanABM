@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "timestamp": "20260523_233759",
+    "latitude": 41.39682580000001,
+    "longitude": 2.1689082000000006,
+    "heading": 226.9,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "7508581932_8241632219_0",
+    "dist_along_edge_m": 13.4,
+    "source_image": "sv_41.396826_2.168908_h226.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22980.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with motorcyclists, cars, and traditional buildings under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature leafy trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "smaller green shrubs",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "large mature trees",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white car",
+        "material": "metallic silver",
+        "colour": "white",
+        "style": "modern compact",
+        "scale": "compact"
+      },
+      {
+        "zone": "center",
+        "element": "motorcycles",
+        "material": "metallic black",
+        "colour": "black",
+        "style": "modern sportbike",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "building facade",
+        "material": "concrete",
+        "colour": "beige",
+        "style": "traditional European apartment block",
+        "scale": "large"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

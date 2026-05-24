@@ -135,6 +135,14 @@
                 <option value="rule_based">Rule-based</option>
             </select>
 
+            <div class="section-title">Navigation Aid</div>
+            <select id="nav-mode" class="input-field">
+                <option value="gps">GPS — exact path hint (commuter)</option>
+                <option value="direction_sense">Direction Sense — compass only (resident)</option>
+                <option value="both" selected>Both (student default)</option>
+                <option value="none">None — free exploration only</option>
+            </select>
+
             <div class="section-title">Control</div>
             <button class="button" onclick="stepOnce()">⏭️ Step</button>
             <button class="button" onclick="startRun()" id="run-btn">▶️ Run</button>
@@ -313,6 +321,17 @@
                 modeSelect.value = cfg.perception_mode;
             }
 
+            // Set initial nav mode based on currently selected archetype
+            const initArchetype = document.getElementById("archetype").value;
+            const initNavDefaults = { commuter: "gps", resident: "direction_sense", student: "both", tourist: "both" };
+            const initNavMode = initNavDefaults[initArchetype] || "both";
+            document.getElementById("nav-mode").value = initNavMode;
+            fetch(`${state.apiUrl}/api/config/nav-mode`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ mode: initNavMode }),
+            });
+
             state.map = new mapboxgl.Map({
                 container: "map",
                 style: "mapbox://styles/mapbox/dark-v11",
@@ -331,6 +350,30 @@
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(e.target.value),
+                });
+            });
+
+            // Auto-set nav mode default when archetype changes
+            const ARCHETYPE_NAV_DEFAULTS = {
+                commuter: "gps",
+                resident: "direction_sense",
+                student: "both",
+                tourist: "both",
+            };
+            document.getElementById("archetype").addEventListener("change", async e => {
+                const defaultMode = ARCHETYPE_NAV_DEFAULTS[e.target.value] || "both";
+                document.getElementById("nav-mode").value = defaultMode;
+                await fetch(`${state.apiUrl}/api/config/nav-mode`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ mode: defaultMode }),
+                });
+            });
+            document.getElementById("nav-mode").addEventListener("change", async e => {
+                await fetch(`${state.apiUrl}/api/config/nav-mode`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ mode: e.target.value }),
                 });
             });
             document.getElementById("speed-slider").addEventListener("input", e => {
@@ -548,8 +591,17 @@
             
             // Show image first if available
             if (res.image_url) {
-                html += `<div style="margin-bottom: 12px; position: relative;">
+                const compassLabels = ["N","NE","E","SE","S","SW","W","NW"];
+                const headingBadge = res.heading != null
+                    ? `<div style="margin-top:5px; font-size:11px; color:#94a3b8; display:flex; align-items:center; gap:6px;">
+                        <span style="background:rgba(148,163,184,0.15); border:1px solid rgba(148,163,184,0.3); border-radius:4px; padding:2px 7px; font-family:monospace;">
+                          📷 Facing ${compassLabels[Math.round(res.heading / 45) % 8]} (${Math.round(res.heading)}°)
+                        </span>
+                       </div>`
+                    : "";
+                html += `<div style="margin-bottom: 12px;">
                     <img src="${state.apiUrl}${res.image_url}" style="width: 100%; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);" />
+                    ${headingBadge}
                 </div>`;
             }
             
@@ -633,13 +685,14 @@
 
             let html = "";
             res.entries.slice(-15).forEach(entry => {
-                const scene = entry.perception?.scene_overview || "unknown";
+                const scene = entry.perception?.scene_overview;
+                const sceneHtml = scene ? `<div class="timeline-scene">${scene}</div>` : "";
                 const amenities = entry.nearby_amenities?.map(a => a.name).join(", ") || "none";
                 const comfort = (entry.needs?.comfort || 0).toFixed(2);
                 html += `
                     <div class="timeline-entry">
                         <div class="timeline-step">Step ${entry.step}</div>
-                        <div class="timeline-scene">${scene}</div>
+                        ${sceneHtml}
                         <div class="timeline-meta">Nearby: ${amenities} | Comfort: ${comfort}</div>
                     </div>
                 `;
@@ -686,10 +739,19 @@
                     let html = "";
                     stream.events.reverse().forEach(ev => {
                         const topicColor = ev.topic === "mobility" ? "#4cd6ff" : ev.topic === "cognition" ? "#a78bfa" : "#10b981";
+                        let badges = "";
+                        if (ev.topic === "mobility" && ev.metadata) {
+                            const m = ev.metadata;
+                            if (m.on_path === true)  badges += `<span style="color:#10b981;font-size:10px;margin-left:4px;">✓ on-path</span>`;
+                            if (m.on_path === false) badges += `<span style="color:#f59e0b;font-size:10px;margin-left:4px;">↗ off-path</span>`;
+                            if (m.fallback === true) badges += `<span style="color:#f87171;font-size:10px;margin-left:4px;">⚠ fallback</span>`;
+                            if (m.data_sources)      badges += `<span style="color:#888;font-size:10px;margin-left:4px;">${m.data_sources}</span>`;
+                            if (m.perception_available === true)  badges += `<span style="color:#a78bfa;font-size:10px;margin-left:4px;">👁 perc</span>`;
+                        }
                         html += `<div style="padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 11px;">
                             <span style="color: ${topicColor}; font-weight: 600;">[${ev.topic}]</span>
-                            <span style="color: #888;"> step ${ev.step}</span>
-                            <span style="color: #c6c6c6;"> — ${ev.description}</span>
+                            <span style="color: #888;"> step ${ev.step}</span>${badges}
+                            <span style="color: #c6c6c6; display:block; margin-top:2px;"> ${ev.description}</span>
                         </div>`;
                     });
                     document.getElementById("thought-stream").innerHTML = html;

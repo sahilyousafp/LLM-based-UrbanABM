@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "timestamp": "20260523_234048",
+    "latitude": 41.3991602,
+    "longitude": 2.1705046000000006,
+    "heading": 249.2,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "residential",
+    "edge_id": "8173291407_11289437704_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.399160_2.170505_h249.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 17490.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with wide roads, zebra crossings, and sparse greenery under overcast sky.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead diffused sunlight through clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead diffused sunlight through clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "overhead diffused sunlight through clouds",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature olive trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small coniferous trees",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole with red pedestrian light",
+        "material": "metal",
+        "colour": "black and yellow",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "pedestrian crosswalk markings",
+        "material": "painted asphalt",
+        "colour": "white",
+        "presence": "multiple"
+      },
+      {
+        "zone": "right",
+        "element": "concrete road surface",
+        "material": "asphalt",
+        "colour": "gray",
+        "presence": "full"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

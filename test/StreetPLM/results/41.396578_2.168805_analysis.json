@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "timestamp": "20260523_233735",
+    "latitude": 41.396578399999996,
+    "longitude": 2.1688051000000006,
+    "heading": 1.1,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "7508581932_10182303359_0",
+    "dist_along_edge_m": 17.1,
+    "source_image": "sv_41.396578_2.168805_h1.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26468.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban plaza with benches, taxis, and trees, under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young deciduous trees with green leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "mature deciduous trees with green leaves",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along the sidewalk",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "wooden park benches",
+        "material": "wood",
+        "colour": "brown",
+        "style": "simple",
+        "scale": "medium",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "yellow taxis",
+        "material": "metallic",
+        "colour": "yellow",
+        "style": "standard",
+        "scale": "large",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "black trash bins",
+        "material": "plastic",
+        "colour": "black",
+        "style": "standard",
+        "scale": "medium",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

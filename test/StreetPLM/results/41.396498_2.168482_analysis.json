@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "timestamp": "20260523_233852",
+    "latitude": 41.3964984,
+    "longitude": 2.1684819,
+    "heading": 45.6,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "7508581933_8241632224_0",
+    "dist_along_edge_m": 10.2,
+    "source_image": "sv_41.396498_2.168482_h45.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25922.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with large trees and marked lanes for buses and taxis.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large leafy trees",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "smaller leafy trees",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "large leafy trees",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "concrete road markings",
+        "material": "concrete",
+        "colour": "white",
+        "scale": "road marking",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "concrete road markings",
+        "material": "concrete",
+        "colour": "white",
+        "scale": "road marking",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "concrete road markings",
+        "material": "concrete",
+        "colour": "white",
+        "scale": "road marking",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "BUS TAXI",
+        "zone": "center",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,118 @@
+{
+  "metadata": {
+    "timestamp": "20260523_234113",
+    "latitude": 41.39776239999999,
+    "longitude": 2.169616,
+    "heading": 320.0,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "8173291425_8238778161_0",
+    "dist_along_edge_m": 83.8,
+    "source_image": "sv_41.397762_2.169616_h320.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23854.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined urban street with minimal vehicle traffic and some parked motorcycles.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead cloud cover diffusing sunlight",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overhead cloud cover diffusing sunlight",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overhead cloud cover diffusing sunlight",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with broad canopies",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white awnings over outdoor seating areas",
+        "material": "fabric",
+        "colour": "white",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles parked along curb",
+        "material": "metal",
+        "colour": "various",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "BILLY",
+        "zone": "left",
+        "type": "graffiti"
+      },
+      {
+        "text": "LECCO",
+        "zone": "right",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

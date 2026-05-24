@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "timestamp": "20260523_232712",
+    "latitude": 41.39855159999999,
+    "longitude": 2.1686287000000006,
+    "heading": 137.0,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "6855299018_7412690164_0",
+    "dist_along_edge_m": 11.9,
+    "source_image": "sv_41.398552_2.168629_h137.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23455.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Open plaza area with bicycles, a trailer, and a stone fountain surrounded by trees under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "various leafy trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "leafy trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "trees behind stone fountain",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white trailer with yellow warning stripes",
+        "material": "metal",
+        "colour": "white/yellow",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "bicycle racks",
+        "material": "metal",
+        "colour": "silver",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "stone fountain",
+        "material": "granite",
+        "colour": "gray",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "P",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

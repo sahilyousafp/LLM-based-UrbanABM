@@ -873,6 +873,31 @@ class CityModel(mesa.Model):
                 return None
         return node
 
+    def dijkstra_hops(self, from_node: tuple, to_node: tuple) -> int | None:
+        """Return the minimum number of edges (hops) between two nodes using BFS."""
+        from collections import deque
+        if from_node == to_node:
+            return 0
+        if from_node not in self.node_to_edges:
+            return None
+        visited = {from_node}
+        queue = deque([(from_node, 0)])
+        while queue:
+            node, hops = queue.popleft()
+            for entry in self.node_to_edges.get(node, []):
+                _eid, geom, direction = entry[0], entry[1], entry[2]
+                nxt = (
+                    (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
+                    if direction == "forward"
+                    else (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
+                )
+                if nxt == to_node:
+                    return hops + 1
+                if nxt not in visited:
+                    visited.add(nxt)
+                    queue.append((nxt, hops + 1))
+        return None
+
     def _compute_proposed_path(self, current_node, destination: dict) -> dict:
         """Compute the full Dijkstra path from current node to target destination.
 
@@ -959,9 +984,9 @@ class CityModel(mesa.Model):
                         recent = await agent.memory.stream.get_recent("mobility", n=1)
                         if recent:
                             event = recent[0]
-                            if hasattr(event, 'step') and event.step == self.steps:
-                                decision_reason = event.description
-                                is_fallback = getattr(event, 'fallback', False) if hasattr(event, 'fallback') else False
+                            decision_reason = event.description
+                            meta = getattr(event, 'metadata', None) or {}
+                            is_fallback = meta.get('fallback', False)
                     except Exception:
                         pass
                 

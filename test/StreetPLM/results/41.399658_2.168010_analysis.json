@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "timestamp": "20260523_233107",
+    "latitude": 41.39965789999999,
+    "longitude": 2.1680102,
+    "heading": 225.4,
+    "street_name": "Carrer de Provença",
+    "highway_type": "residential",
+    "edge_id": "7045171429_13811285390_0",
+    "dist_along_edge_m": 38.5,
+    "source_image": "sv_41.399658_2.168010_h225.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25326.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with parked motorcycles and cars, featuring wide sidewalks and moderate vehicular traffic under diffused daylight.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through bare winter branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "diffuse sunlight through bare winter branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "diffuse sunlight through bare winter branches",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along the curb",
+        "material": "metal",
+        "colour": "various",
+        "presence": "many"
+      },
+      {
+        "zone": "center",
+        "element": "parked cars",
+        "material": "steel",
+        "colour": "silver",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles parked along the curb",
+        "material": "metal",
+        "colour": "various",
+        "presence": "many"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

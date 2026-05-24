@@ -53,6 +53,7 @@ class MobilityBlock(Block):
         # --- Dijkstra path computation ---
         dijkstra_edge_id = None
         dijkstra_edge_data = None
+        steps_to_destination = None
 
         if target_node and model and current_node:
             # Check arrival
@@ -66,17 +67,38 @@ class MobilityBlock(Block):
                 )
                 return BlockResult(action="stay", params={}, reasoning="Reached destination")
 
+            steps_to_destination = model.dijkstra_hops(current_node, target_node)
             next_node = model.dijkstra_next_node(current_node, target_node)
             if next_node:
-                for c in candidate_edges:
-                    geom = c.get("geom")
-                    if geom:
-                        direction = c.get("direction", "forward")
-                        end = geom.coords[-1] if direction == "forward" else geom.coords[0]
-                        if (round(end[0], 6), round(end[1], 6)) == next_node:
-                            dijkstra_edge_id = c["edge_id"]
-                            dijkstra_edge_data = c
-                            break
+                # Search ALL edges from the current node — not just candidate_edges.
+                # candidate_edges has the previous edge removed (anti-backtrack filter),
+                # but the Dijkstra-optimal step may require backtracking (network topology,
+                # dead-end stubs, one-way connectors). If we only search candidate_edges,
+                # dijkstra_edge_data stays None → force_dijkstra becomes False →
+                # commuters (budget=0) and budget-exhausted steps silently free-explore.
+                all_node_edges = model.node_to_edges.get(current_node, [])
+                for entry in all_node_edges:
+                    eid, geom, direction = entry[0], entry[1], entry[2]
+                    end = geom.coords[-1] if direction == "forward" else geom.coords[0]
+                    if (round(end[0], 6), round(end[1], 6)) == next_node:
+                        dijkstra_edge_id = eid
+                        # Prefer the richer candidate dict (has amenities/perception)
+                        for c in candidate_edges:
+                            if c["edge_id"] == eid:
+                                dijkstra_edge_data = c
+                                break
+                        else:
+                            # Edge exists in network but was filtered from candidates.
+                            # Build a minimal dict so forced Dijkstra steps can use it.
+                            dijkstra_edge_data = {
+                                "edge_id": eid,
+                                "geom": geom,
+                                "direction": direction,
+                                "amenities": [],
+                                "perception": None,
+                                "description": f"{direction} edge",
+                            }
+                        break
 
         # --- Exploration budget enforcement ---
         # Force Dijkstra when budget is exhausted; otherwise let LLM choose freely.
@@ -105,7 +127,13 @@ class MobilityBlock(Block):
                 description=f"Moved to edge {chosen_edge_id} ({chosen.get('direction','fwd')}). "
                             f"Nearby: {', '.join(amenity_names) if amenity_names else 'none'}. "
                             f"Reason: {reasoning}",
-                metadata={"edge_id": chosen_edge_id, "fallback": False, "on_path": True},
+                metadata={
+                    "edge_id": chosen_edge_id,
+                    "fallback": False,
+                    "on_path": True,
+                    "perception_available": street_perception is not None,
+                    "data_sources": "[forced-dijkstra]",
+                },
             )
 
             return BlockResult(
@@ -130,13 +158,27 @@ class MobilityBlock(Block):
         # Read plan state for context
         plan = await self.memory.status.get("plan", {})
         current_phase = plan.get("current_phase")
+        perc_mode = getattr(
+            self.context.get("model") if self.context else None,
+            "perception_mode", "both"
+        )
+        nav_mode = getattr(
+            self.context.get("model") if self.context else None,
+            "nav_mode", "both"
+        )
         plan_context = None
         if current_phase:
             plan_context = {
                 "goal": current_phase.get("goal", ""),
-                "perception_preferences": current_phase.get("perception_preferences", []),
-                "perception_avoid": current_phase.get("perception_avoid", []),
                 "active_target": current_phase.get("active_target"),
+                "perception_preferences": (
+                    current_phase.get("perception_preferences", [])
+                    if perc_mode in ("perception", "both") else []
+                ),
+                "perception_avoid": (
+                    current_phase.get("perception_avoid", [])
+                    if perc_mode in ("perception", "both") else []
+                ),
             }
 
         prompt_candidates = candidate_edges[:8]
@@ -150,6 +192,8 @@ class MobilityBlock(Block):
             }
             for c in prompt_candidates
         ]
+
+        visit_counts = await self.memory.status.get("visited_edges", {})
 
         messages = mobility_decision_prompt(
             archetype=archetype,
@@ -165,6 +209,9 @@ class MobilityBlock(Block):
             explore_budget=explore_budget,
             free_steps_remaining=free_steps_remaining,
             plan_context=plan_context,
+            visited_counts=visit_counts,
+            steps_to_destination=steps_to_destination,
+            nav_mode=nav_mode,
         )
 
         response = await self.llm.chat_json(messages)
@@ -177,7 +224,6 @@ class MobilityBlock(Block):
                 chosen = dijkstra_edge_data
                 reasoning = "LLM fallback: following Dijkstra toward destination"
             else:
-                visit_counts = await self.memory.status.get("visited_edges", {})
                 candidate_edges_sorted = sorted(
                     candidate_edges,
                     key=lambda e: visit_counts.get(str(e["edge_id"]), 0)
@@ -202,12 +248,21 @@ class MobilityBlock(Block):
         })
 
         amenity_names = [a.get("type", "?") for a in chosen.get("amenities", [])[:3]]
+        perception_tag = "[perception+amenity]" if street_perception and amenity_names else (
+            "[perception]" if street_perception else "[amenity]" if amenity_names else "[no-data]"
+        )
         await self.memory.stream.add(
             topic="mobility", step=step,
             description=f"Moved to edge {chosen_edge_id} ({chosen.get('direction','fwd')}). "
                         f"Nearby: {', '.join(amenity_names) if amenity_names else 'none'}. "
                         f"Reason: {reasoning}",
-            metadata={"edge_id": chosen_edge_id, "fallback": fallback, "on_path": is_on_path},
+            metadata={
+                "edge_id": chosen_edge_id,
+                "fallback": fallback,
+                "on_path": is_on_path,
+                "perception_available": street_perception is not None,
+                "data_sources": perception_tag,
+            },
         )
 
         return BlockResult(

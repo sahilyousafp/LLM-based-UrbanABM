@@ -79,6 +79,7 @@ graphify-out/
 # Street View imagery (large binary data, regenerated from scripts)
 Backend/Environment/output/images/
 scripts/streetview_analysis/output/images/
+test/StreetPLM.zip
 
 # Tool caches
 .aider.tags.cache.v4/

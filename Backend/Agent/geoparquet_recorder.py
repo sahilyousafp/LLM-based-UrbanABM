@@ -44,6 +44,7 @@ class AgentRecord:
     visited_amenities: List[Dict] = field(default_factory=list)
     nearby_amenities: List[Dict] = field(default_factory=list)
     street_perception: Optional[Dict] = None
+    perception_available: bool = False
     thought_stream: List[Dict] = field(default_factory=list)
     decision_reason: Optional[str] = None
     is_fallback: bool = False
@@ -77,6 +78,7 @@ class AgentRecord:
             'visited_amenities_json': json.dumps(self.visited_amenities),
             'nearby_amenities_json': json.dumps(self.nearby_amenities),
             'street_perception_json': json.dumps(self.street_perception) if self.street_perception else None,
+            'perception_available': self.perception_available,
             'thought_stream_json': json.dumps(self.thought_stream),
             'decision_reason': self.decision_reason,
             'is_fallback': self.is_fallback,
@@ -118,6 +120,7 @@ class GeoParquetRecorder:
         auto_flush_interval: float = 2.0,
         keep_temp_files: bool = True,
         mode_callback=None,
+        perception_callback=None,
     ):
         """
         Initialize the recorder.
@@ -145,6 +148,7 @@ class GeoParquetRecorder:
         self.auto_flush_interval = auto_flush_interval
         self.keep_temp_files = keep_temp_files
         self.mode_callback = mode_callback
+        self.perception_callback = perception_callback
 
         # Recording state
         self.is_recording = False
@@ -319,9 +323,19 @@ class GeoParquetRecorder:
         nearby_amenities = getattr(agent, 'nearby_amenities', [])
         
         # Get street perception (if enabled)
+        # perception_callback (e.g. StreetPLM resolver) provides the rich stored record.
+        # agent.street_perception is what the LLM actually received — use it for the
+        # perception_available flag so it truthfully reflects decision-time data.
         street_perception = None
+        agent_street_perception = getattr(agent, 'street_perception', None)
         if self.include_perception:
-            street_perception = getattr(agent, 'street_perception', None)
+            if self.perception_callback:
+                try:
+                    street_perception = self.perception_callback(agent)
+                except Exception:
+                    street_perception = agent_street_perception
+            else:
+                street_perception = agent_street_perception
         
         # Get thought stream (if enabled)
         thought_stream = []
@@ -339,6 +353,7 @@ class GeoParquetRecorder:
                                 'topic': topic,
                                 'step': event.step,
                                 'description': event.description,
+                                'metadata': getattr(event, 'metadata', None) or {},
                             })
             except Exception as e:
                 logger.warning(f"Could not extract thought stream: {e}")
@@ -360,6 +375,7 @@ class GeoParquetRecorder:
             visited_amenities=visited_amenities[-20:] if visited_amenities else [],
             nearby_amenities=nearby_amenities[:10] if nearby_amenities else [],
             street_perception=street_perception,
+            perception_available=agent_street_perception is not None,
             thought_stream=thought_stream,
             decision_reason=decision_reason,
             is_fallback=is_fallback,
@@ -399,7 +415,7 @@ class GeoParquetRecorder:
                 mode_clean = mode.lower().replace(' ', '_')
                 base_dir = self.output_dir / self._recording_date / archetype_clean / mode_clean
                 base_dir.mkdir(parents=True, exist_ok=True)
-                filename = f"{self.session_name}.parquet"
+                filename = f"{self.session_name}_{mode_clean}.parquet"
                 file_path = base_dir / filename
 
                 if file_path.exists():
@@ -465,7 +481,7 @@ class GeoParquetRecorder:
                 base_dir = self.output_dir / self._recording_date / archetype_clean / mode_clean
                 base_dir.mkdir(parents=True, exist_ok=True)
                 
-                filename = f"agent_recording_{self.session_name}.parquet"
+                filename = f"agent_recording_{self.session_name}_{mode_clean}.parquet"
                 final_path = base_dir / filename
                 
                 group_gdf.to_parquet(str(final_path))
@@ -538,6 +554,7 @@ def create_recorder(
     include_perception: bool = True,
     perception_mode: str = "both",
     mode_callback=None,
+    perception_callback=None,
 ) -> GeoParquetRecorder:
     """Create and set the global recorder instance."""
     global _recorder
@@ -549,6 +566,7 @@ def create_recorder(
             include_perception=include_perception,
             perception_mode=perception_mode,
             mode_callback=mode_callback,
+            perception_callback=perception_callback,
         )
         return _recorder
 

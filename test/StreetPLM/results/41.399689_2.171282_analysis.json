@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "timestamp": "20260523_232234",
+    "latitude": 41.39968869999999,
+    "longitude": 2.1712818,
+    "heading": 72.7,
+    "street_name": "Carrer de Roger de Flor",
+    "highway_type": "footway",
+    "edge_id": "6762254079_7403617134_0",
+    "dist_along_edge_m": 11.5,
+    "source_image": "sv_41.399689_2.171282_h72.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 18260.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with wide roads, moderate pedestrian traffic, and a mix of modern and traditional architecture.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "natural sunlight through tree canopies",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "artificial streetlights",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic street lamps",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "modern",
+        "scale": "tall"
+      },
+      {
+        "zone": "right",
+        "element": "traffic signal pole",
+        "material": "metallic",
+        "colour": "black",
+        "style": "standard",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

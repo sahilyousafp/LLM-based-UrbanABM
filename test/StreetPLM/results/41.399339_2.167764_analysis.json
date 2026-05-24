@@ -1,0 +1,150 @@
+{
+  "metadata": {
+    "timestamp": "20260523_232949",
+    "latitude": 41.399339499999996,
+    "longitude": 2.1677644000000003,
+    "heading": 179.0,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "7045171426_7045171427_0",
+    "dist_along_edge_m": 20.8,
+    "source_image": "sv_41.399339_2.167764_h179.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 32090.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Bustling city street with pedestrians cycling, featuring wide roads and classic European architecture under bright daylight.",
+    "lighting": [
+      {
+        "zone": "far_left",
+        "element": "diffuse sunlight through clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "far_left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "left",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "far_left",
+        "element": "black trash bins",
+        "material_and_colour": "black plastic",
+        "presence": "several"
+      },
+      {
+        "zone": "left",
+        "element": "white trash bins",
+        "material_and_colour": "white plastic",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "bicycle racks",
+        "material_and_colour": "metallic silver",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "pedestrian crossings markings",
+        "material_and_colour": "white paint",
+        "presence": "multiple"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "far_left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

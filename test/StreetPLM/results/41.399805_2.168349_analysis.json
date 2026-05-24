@@ -1,0 +1,132 @@
+{
+  "metadata": {
+    "timestamp": "20260523_233016",
+    "latitude": 41.39980460000001,
+    "longitude": 2.1683492,
+    "heading": 227.0,
+    "street_name": "Passeig de Sant Joan",
+    "highway_type": "footway",
+    "edge_id": "7045171427_8205986287_0",
+    "dist_along_edge_m": 72.3,
+    "source_image": "sv_41.399805_2.168349_h227.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26884.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with buildings and parked vehicles under bright daylight conditions.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "direct sunlight through bare tree branches",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight through bare tree branches",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "direct sunlight through bare tree branches",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare tree branches without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "bare tree branches without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare tree branches without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "recycling bins made of plastic",
+        "material_and_colour": "gray",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "parked cars",
+        "material_and_colour": "various colors",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "van covered in graffiti",
+        "material_and_colour": "black and white",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "P 5",
+        "zone": "far_right",
+        "type": "sign"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

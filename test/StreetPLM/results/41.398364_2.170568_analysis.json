@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "timestamp": "20260523_232450",
+    "latitude": 41.398363899999985,
+    "longitude": 2.1705677000000003,
+    "heading": 45.3,
+    "street_name": "Passeig de Sant Joan",
+    "highway_type": "footway",
+    "edge_id": "6762255491_7403617127_0",
+    "dist_along_edge_m": 18.1,
+    "source_image": "sv_41.398364_2.170568_h45.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 18928.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with moderate vehicle traffic and surrounding greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small ornamental trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic lights",
+        "material_and_colour": "red/yellow/green",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "parking meters",
+        "material_and_colour": "black",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "metal bike racks",
+        "material_and_colour": "silver/black",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

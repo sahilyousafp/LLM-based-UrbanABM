@@ -35,6 +35,9 @@ def mobility_decision_prompt(
     explore_budget: int = 1,
     free_steps_remaining: int = 0,
     plan_context: dict | None = None,
+    visited_counts: dict | None = None,
+    steps_to_destination: int | None = None,
+    nav_mode: str = "both",
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
@@ -45,13 +48,27 @@ def mobility_decision_prompt(
     explore_budget: total free steps per forced-Dijkstra cycle (0=commuter, 1=resident, 2=student, 3=tourist)
     free_steps_remaining: free steps left in the current exploration window after this one
     plan_context: optional dict with {"goal", "perception_preferences", "perception_avoid", "active_target"}
+    visited_counts: dict mapping edge_id (str) to visit count — shown to LLM to discourage revisits
+    steps_to_destination: BFS hop count from current node to target node (None if unknown/unreachable)
+    nav_mode: "gps" (exact path label) | "direction_sense" (compass bearing) | "both" | "none"
     """
+    vc = visited_counts or {}
+
+    def _visit_tag(edge_id):
+        n = vc.get(str(edge_id), 0)
+        if n == 0:
+            return " [NEW]"
+        if n >= 2:
+            return f" [visited {n}x — strongly avoid revisiting]"
+        return f" [visited {n}x]"
+
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
         f"amenities=[{', '.join(c.get('amenities', [])[:3])}] "
         f"{'env=[' + c['perception'][:100] + '] ' if c.get('perception') else ''}"
         f"desc={c.get('description', '')}"
-        f"{' [SHORTEST PATH TO DESTINATION]' if c['edge_id'] == path_hint_edge_id else ''}"
+        f"{_visit_tag(c['edge_id'])}"
+        f"{' [SHORTEST PATH TO DESTINATION]' if c['edge_id'] == path_hint_edge_id and nav_mode in ('gps', 'both') else ''}"
         for i, c in enumerate(candidates)
     )
 
@@ -74,32 +91,103 @@ def mobility_decision_prompt(
             val = street_perception.get(key, "")
             if val and val.strip().lower() != "unknown":
                 lines.append(f"  {label}: {val}")
+        # Add camera facing direction if available (from StreetPLM metadata)
+        heading = street_perception.get("heading")
+        if heading is not None:
+            _compass_labels = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+            hcompass = _compass_labels[int((heading + 22.5) / 45) % 8]
+            lines.append(f"  Camera facing: {hcompass} ({heading:.0f}°) — direction shown in the street view image")
         if lines:
             perception_text = "\n\nScene description at current location (from visual analysis):\n" + "\n".join(lines)
 
+    # Always compute bearing/compass when destination exists — used by both nav modes and urgency tiers
     destination_text = ""
+    compass = None
+    dist_m = None
     if destination and destination.get("name"):
-        destination_text = (
-            f"\n\nTarget Destination: {destination['name']} "
-            f"(type: {destination.get('amenity_type', 'unknown')}) "
-            f"at lon={destination.get('lon', 0):.6f}, lat={destination.get('lat', 0):.6f}. "
-            f"This is your primary goal — navigate toward it."
+        import math as _math
+        dlon = destination.get('lon', 0) - current_position.get('lon', 0)
+        dlat = destination.get('lat', 0) - current_position.get('lat', 0)
+        dist_m = _math.sqrt(
+            (dlon * 111320 * _math.cos(_math.radians(current_position.get('lat', 0)))) ** 2
+            + (dlat * 110540) ** 2
         )
+        bearing_deg = (_math.degrees(_math.atan2(dlon, dlat)) + 360) % 360
+        compass = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][
+            int((bearing_deg + 22.5) / 45) % 8
+        ]
+        if nav_mode in ("direction_sense", "both"):
+            destination_text = (
+                f"\n\nTarget Destination: {destination['name']} "
+                f"(type: {destination.get('amenity_type', 'unknown')}) "
+                f"— approximately {dist_m:.0f}m to the {compass}. "
+                f"This is your primary goal. During free steps, prefer edges heading {compass} "
+                f"unless a pressing need or genuinely interesting feature draws you elsewhere."
+            )
+        else:
+            destination_text = (
+                f"\n\nTarget Destination: {destination['name']} "
+                f"(type: {destination.get('amenity_type', 'unknown')}) "
+                f"— approximately {dist_m:.0f}m away. "
+                f"This is your primary goal."
+            )
 
-    # Exploration context: how many free steps remain before a forced destination step
+    # Urgency label based on distance to destination
+    dist_label = ""
+    if steps_to_destination is not None:
+        dist_label = f" ({steps_to_destination} steps to destination)"
+
+    # Nav-mode-aware convergence hint used in urgency text
+    if nav_mode in ("gps", "both"):
+        convergence_hint = "[SHORTEST PATH TO DESTINATION]"
+    elif nav_mode == "direction_sense" and compass:
+        convergence_hint = f"edges heading {compass}"
+    else:
+        convergence_hint = "your destination"
+
+    # Archetype-specific urgency thresholds:
+    # Tourist uses GPS and checks the map often — convergence pressure fires earlier.
+    # Commuter always force-Dijkstra (budget=0) so thresholds are moot for them.
+    if archetype == "tourist":
+        _almost_there = 6    # hops (vs. 4 for others)
+        _getting_close = 20  # hops (vs. 10 for others)
+    else:
+        _almost_there = 4
+        _getting_close = 10
+
+    # Exploration context: free-step language scaled by distance urgency
     if explore_budget > 0:
-        if free_steps_remaining > 0:
+        n = steps_to_destination  # shorthand
+
+        if n is not None and n <= _almost_there:
             deviation_context = (
-                f"\n\n** FREE EXPLORATION STEP — {free_steps_remaining} free step(s) left before a forced move toward your destination. "
+                f"\n\n** ALMOST THERE{dist_label} — you are very close to your destination. "
+                f"Take {convergence_hint} now. Do not detour. **"
+            )
+        elif n is not None and n <= _getting_close:
+            if free_steps_remaining > 0:
+                deviation_context = (
+                    f"\n\n** GETTING CLOSE{dist_label} — {free_steps_remaining} free step(s) left. "
+                    f"Lean strongly toward {convergence_hint}. "
+                    f"Only detour if a need is urgent (hunger > 0.7 or energy < 0.3). **"
+                )
+            else:
+                deviation_context = (
+                    f"\n\n** LAST FREE STEP — destination is close{dist_label}. "
+                    f"Take {convergence_hint} unless a critical need demands otherwise. **"
+                )
+        elif free_steps_remaining > 0:
+            deviation_context = (
+                f"\n\n** FREE EXPLORATION STEP{dist_label} — {free_steps_remaining} free step(s) left. "
                 f"Follow your curiosity, satisfy a need, or enjoy an interesting environment. "
                 f"Your destination is still your goal — don't stray so far that reaching it becomes very hard. "
-                f"The [SHORTEST PATH TO DESTINATION] is available if nothing compelling draws you elsewhere. **"
+                f"{convergence_hint.capitalize() if nav_mode != 'none' else 'Your destination'} is available if nothing compelling draws you elsewhere. **"
             )
         else:
             deviation_context = (
-                f"\n\n** LAST FREE STEP before a forced destination move next turn. "
+                f"\n\n** LAST FREE STEP{dist_label} before a forced destination move next turn. "
                 f"Make it count — satisfy a need or see something interesting nearby. "
-                f"Strongly consider the [SHORTEST PATH TO DESTINATION] to stay on track. **"
+                f"Strongly consider {convergence_hint} to stay on track. **"
             )
     else:
         deviation_context = ""
@@ -116,7 +204,11 @@ def mobility_decision_prompt(
         if prefs:
             lines.append(f"  Prefer streets with: {', '.join(prefs)}")
         if avoid:
-            lines.append(f"  Avoid streets with: {', '.join(avoid)}")
+            avoid_strs = [
+                f"{a.get('field', '?')} is {a.get('value', '?')}" if isinstance(a, dict) else str(a)
+                for a in avoid
+            ]
+            lines.append(f"  Avoid streets with: {', '.join(avoid_strs)}")
         if active_target:
             target_name = active_target.get("name", "unknown")
             target_type = active_target.get("type", "")
@@ -138,8 +230,9 @@ Candidate Edges/Destinations:
 
 Choose the index of the best candidate for this agent to move to next.
 Your preferences: {', '.join(preferences) if preferences else 'none'}.
-On free steps: explore streets and amenities that match your archetype and needs. On forced steps (handled automatically): the system routes you toward your destination.
+On free steps: explore streets and amenities that match your archetype and needs. Strongly prefer [NEW] edges over revisited ones — edges marked [visited 2x+] should almost never be chosen again.
 If comfort < 0.4, prefer edges toward parks, plazas, or streets with greenery. If hunger > 0.7 or energy < 0.3, prioritise edges near relevant amenities.
+{"When in doubt between an amenity edge and [SHORTEST PATH TO DESTINATION], prefer the path — you can always visit amenities along the way." if nav_mode in ('gps', 'both') else f"When in doubt, prefer {convergence_hint} — you can always explore on the next free step." if nav_mode == 'direction_sense' else "Keep your destination in mind even while exploring freely."}
 
 Respond with JSON:
 {{"choice": <index 0-{len(candidates)-1}>, "reasoning": "<one sentence why>"}}"""
