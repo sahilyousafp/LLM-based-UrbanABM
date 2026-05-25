@@ -583,6 +583,117 @@ This is safe because at any given node, each edge_id appears at most once in the
 
 ---
 
+## Stage 13 — Destination-Source Navigation, Needs Realism & Recording Quality
+
+**Date:** 25 May 2026
+
+### Issue A — `_GETTING_CLOSE` was a band, not a funnel
+
+**Problem observed:** The 350m `_GETTING_CLOSE` threshold introduced in Stage 10 was insufficient. In a 358-step tourist recording, 68% of steps occurred outside the 350m zone — the agent drifted to 630m and the cap never fired. Root cause: with `explore_budget=3`, the agent performs a diverging random walk at *any* distance. A geographic band does not correct a walk that has already left the band.
+
+**Analysis:** The correct discriminant is not *how far away the destination is* but *what kind of destination it is*. A tourist who has entered a specific address (user_configured) has declared navigational intent — their cognitive mode is "navigate to X", not "explore until I find something". A plan-assigned destination is a softer goal — the agent is fulfilling an activity schedule and exploration is appropriate. These two cases demand different budgets throughout the walk, not just in the final 350m.
+
+**Fix — `Backend/LLM/Thinking/blocks/mobility_block.py`:**
+- Removed the `_GETTING_CLOSE` tier entirely.
+- Added a destination-source cap before the distance block: if `destination.source == "user_configured"` and not yet visited, cap `explore_budget = min(explore_budget, 1)` regardless of distance.
+- Retained `_ALMOST_THERE` (60m tourist) for final pure-Dijkstra approach — this covers the last-hop case where even 1 free step can cause a miss.
+
+```python
+# User-configured: cap budget throughout the journey
+if destination and destination.get("source") == "user_configured" and not destination.get("visited"):
+    explore_budget = min(explore_budget, 1)
+
+# Final approach: pure Dijkstra regardless of source
+if dist_to_dest <= _ALMOST_THERE:
+    explore_budget = 0
+```
+
+**Behavioral semantics:**
+| Destination source | Budget | F→D pattern | Analogy |
+|---|---|---|---|
+| `user_configured` | min(archetype, 1) | F→D→F→D | Person who typed the address into Maps |
+| `plan` | full archetype budget | FFF→D (tourist) | Person following a loose daily itinerary |
+
+**Result:** Tourist agents with a user-configured destination now make net forward progress from step 1. The F→D cycle guarantees one Dijkstra step per two moves. The open item from Stage 10 is closed.
+
+---
+
+### Issue B — Needs decay rate 5× too fast
+
+**Problem observed:** In multi-step recordings, `hunger` decayed from initial 0.52 to 0.00 within ~35 steps. At ~30 seconds per step, this means the agent became maximally hungry in under 18 minutes of simulated walking. Plan phases triggered early (hunger threshold crossing `en_route_stop` triggers almost immediately) and `current_phase` became `None` before the agent reached its destination.
+
+**Root cause — `Backend/LLM/Thinking/blocks/needs_block.py`:**
+```python
+DECAY_RATES = {
+    "hunger": 0.015,   # was: full in 67 steps ≈ 33 minutes
+    "energy": 0.010,   # was: empty in 100 steps ≈ 50 minutes
+    "social": 0.010,
+    "comfort": 0.015,
+}
+```
+
+**Fix:**
+```python
+DECAY_RATES = {
+    "hunger": 0.003,   # full in 333 steps ≈ 2.8 hours walking
+    "energy": 0.003,   # empty in 333 steps ≈ 2.8 hours walking
+    "social": 0.003,
+    "comfort": 0.003,
+}
+```
+
+Calibration basis: at ~30 seconds per edge traversal (1.4 m/s walking speed, average 42m edge length), 333 steps ≈ 167 minutes ≈ 2.8 hours. A pedestrian walking for 2–3 hours without eating will feel significantly hungry — consistent with real physiology. Plan-phase hunger triggers (~0.55 threshold) now fire after ~183 steps (≈1.5h), appropriate for a lunch-break detour on a morning walk.
+
+---
+
+### Issue C — Amenity satisfaction fired from 150m proximity
+
+**Problem observed:** `NeedsBlock` called `_evaluate_amenity_satisfaction()` whenever `nearby_amenities` was non-empty. Since `get_nearby_amenities()` returns all amenities within ~150m, the closest restaurant on a passing street block triggered a hunger reset every step the agent walked by it. Needs dropped to near-zero within 30–50 steps without the agent ever stopping at an amenity.
+
+**Root cause — `needs_block.py` lines 76–95:**
+```python
+if nearby_amenities:
+    closest = nearby_amenities[0]
+    amenity_result = await self._evaluate_amenity_satisfaction(...)   # fired always
+```
+
+**Fix:** Added a distance guard using the `dist` field already present in the `nearby_amenities` dicts:
+```python
+AMENITY_SATISFACTION_RADIUS_M = 30   # must be physically at the amenity
+
+if nearby_amenities:
+    closest = nearby_amenities[0]
+    if closest.get("dist", 9999) <= AMENITY_SATISFACTION_RADIUS_M:
+        # evaluate satisfaction only if truly at the amenity
+        amenity_result = await self._evaluate_amenity_satisfaction(...)
+```
+
+**Behavioral effect:** The agent now only receives need satisfaction from an amenity it is standing next to (within 30m). Walking past a café has no effect on hunger. This aligns with the simulation's physical premise — proximity observation ≠ consumption.
+
+**30m threshold rationale:** The Eixample block is ~113m wide. An agent on a street edge is typically ≤30m from the nearest building entrance. If an amenity is within 30m, the agent is effectively on the same block face and could plausibly be entering.
+
+---
+
+### Issue D — Duplicate step rows in parquet recordings
+
+**Problem observed:** Parquet files contained 79–100 duplicate `(agent_id, step)` rows per recording session. Analysis showed the recorder correctly calls `record_agent_state` once per step in `model.async_step()`, but `_flush_to_parquet` reads and appends the existing file on every flush without deduplication. If a flush fails mid-write (exception before `self.buffer = []`), the retained buffer records get written again on the next flush, producing exact duplicates.
+
+**Fix — `Backend/Agent/geoparquet_recorder.py`, `_flush_to_parquet()`:**
+```python
+# After concat with existing file, before writing:
+group_gdf = group_gdf.drop_duplicates(subset=['agent_id', 'step'], keep='last')
+group_gdf.to_parquet(str(file_path))
+```
+
+Using `keep='last'` preserves the most recently recorded state for a given step (which is the post-LLM state with all memory updates applied), discarding any earlier partial captures of the same step.
+
+**Files changed:**
+- `Backend/LLM/Thinking/blocks/mobility_block.py` — user_configured explore_budget cap, removed `_GETTING_CLOSE` tier
+- `Backend/LLM/Thinking/blocks/needs_block.py` — `DECAY_RATES` reduced 5×, `AMENITY_SATISFACTION_RADIUS_M = 30` guard
+- `Backend/Agent/geoparquet_recorder.py` — `drop_duplicates` in `_flush_to_parquet()`
+
+---
+
 ## Empirical Observations
 
 ### Commuter vs. Resident paradox
@@ -650,9 +761,11 @@ model.py (AgentGeo.step())
     │
     └── MobilityBlock.run()
             Reads memory.status["destination"] (user_configured | plan | none)
+            Source-based budget cap (Stage 13):
+                source == "user_configured" → explore_budget = min(archetype_budget, 1)
             Distance-based budget reduction:
                 dist_to_dest < _ALMOST_THERE → explore_budget = 0
-                dist_to_dest < _GETTING_CLOSE → explore_budget = min(budget, 1)
+                (_GETTING_CLOSE tier removed — superseded by source cap)
             dijkstra_hops() → BFS hop count for urgency tier
             dijkstra_next_node() → metric-weighted shortest path (length_m × weight_mult)
             Searches model.node_to_edges[current_node] (full, not filtered) for dijkstra_edge_data
@@ -668,9 +781,16 @@ model.py (AgentGeo.step())
                     → update visited_edges, log on_path/fallback/data_sources
     │
     ▼
+NeedsBlock.run()
+    Decay: hunger/energy/social/comfort at 0.003/step (~2.8h to full/empty)
+    Visual satisfaction: every 5 steps if street_perception available
+    Amenity satisfaction: only if closest amenity dist ≤ 30m (AMENITY_SATISFACTION_RADIUS_M)
+    │
+    ▼
 GeoParquetRecorder.record()
     AgentRecord: position, archetype, perception_mode, perception_available,
                  thought_stream (with metadata), on_proposed_path, decision_reason
+    _flush_to_parquet: drop_duplicates(agent_id, step) before write
     Flushes to: tracking_data/<date>/<archetype>/<mode>/<session>_<mode>.parquet
 ```
 
@@ -680,10 +800,14 @@ GeoParquetRecorder.record()
 
 | Item | Description | Status |
 |---|---|---|
-| explore_budget vs. destination source | Tourist budget=3 causes diverging walk for user-configured destinations. Should differ between "phone GPS" (budget=1) and "vague goal" (budget=3). | Known, not yet implemented |
+| explore_budget vs. destination source | Tourist budget=3 causes diverging walk for user-configured destinations. Fixed in Stage 13: user_configured destinations cap budget=min(archetype,1) throughout the journey. | **Closed — Stage 13** |
+| Amenity satisfaction proximity | NeedsBlock fired for any amenity within 150m — hunger reset from passing restaurants. Fixed in Stage 13: 30m hard threshold (AMENITY_SATISFACTION_RADIUS_M). | **Closed — Stage 13** |
+| Duplicate step rows in parquet | 79–100 duplicate rows per recording. Fixed in Stage 13: drop_duplicates(agent_id, step) in _flush_to_parquet before write. | **Closed — Stage 13** |
+| Decay rate calibration | DECAY_RATES 5× too fast (hunger full in 33min). Fixed in Stage 13: 0.003/step → full in ~2.8h. | **Closed — Stage 13** |
 | time_of_day as clock | Phase `time_of_day` field is descriptive only — phases advance by `max_visits`, not simulation time. A step→time mapping would anchor agent behaviour to a realistic daily schedule. | Future work |
-| Euclidean vs. hop-count urgency | `_ALMOST_THERE`/`_GETTING_CLOSE` thresholds are Euclidean; hop count for urgency tier can diverge in one-way network segments. Both signals together cover the gap. | Acceptable |
+| Euclidean vs. hop-count urgency | `_ALMOST_THERE` threshold is Euclidean; hop count for urgency tier can diverge in one-way network segments. Both signals together cover the gap. `_GETTING_CLOSE` removed (Stage 13). | Acceptable |
 | Dead-end topology oscillation | 2-degree nodes trap agents when anti-backtrack filter removes all candidates. Dijkstra correctly routes back through them but the reversal step consumes free-exploration budget. | Known |
+| GPS RULE defection rate | ~36% of free steps ignore [SHORTEST PATH TO DESTINATION] even with hardened rule. Suspected cause: stale GPS labels from previous steps appearing in recent_moves history in the prompt. | Known |
 
 ---
 
@@ -693,10 +817,10 @@ GeoParquetRecorder.record()
 |---|---|
 | `Backend/LLM/Thinking/blocks/mobility_block.py` | Explore budget, distance reduction, Dijkstra edge lookup, LLM prompt call |
 | `Backend/LLM/Thinking/blocks/plan_block.py` | Plan phase state machine, en_route_stops, target resolution, destination sync |
-| `Backend/LLM/Thinking/blocks/needs_block.py` | Hunger/energy/social updates, visited_amenities tracking |
+| `Backend/LLM/Thinking/blocks/needs_block.py` | Hunger/energy/social decay (0.003/step), amenity satisfaction ≤30m guard, visited_amenities tracking |
 | `Backend/LLM/Thinking/prompts.py` | `mobility_decision_prompt()` — visit tags, GPS RULE, urgency tiers, bearing hint, plan context |
 | `Backend/Agent/model.py` | Network graph (bidirectional, metric weights), `dijkstra_next_node()`, `dijkstra_hops()`, `_get_candidate_edges()` |
-| `Backend/Agent/geoparquet_recorder.py` | `AgentRecord` dataclass, `from_agent()` factory, parquet flush |
+| `Backend/Agent/geoparquet_recorder.py` | `AgentRecord` dataclass, `from_agent()` factory, parquet flush with dedup guard |
 | `test/agent_lab_server.py` | Test server, destination source tagging, single-pass `/planned-path`, StreetPLM cache |
 | `test/Frontend/agent_lab.html` | Live map, thought stream panel with decision badges |
 | `test/plans.json` | Agent profiles (personality + daily_plan + en_route_stops per archetype) |
