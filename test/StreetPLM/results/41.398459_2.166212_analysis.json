@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093724",
+    "latitude": 41.398458999999995,
+    "longitude": 2.166212,
+    "heading": 19.6,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "3207273472_7412690136_0",
+    "dist_along_edge_m": 8.0,
+    "source_image": "sv_41.398459_2.166212_h19.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25859.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with modern buildings, wide roads, and minimal pedestrian activity under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous tree with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small coniferous tree with needle-like leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal bollard with reflective surface",
+        "material": "metallic",
+        "colour": "silver",
+        "scale": "small",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "pedestrian traffic signal pole",
+        "material": "metallic",
+        "colour": "silver",
+        "scale": "medium",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "trash bin with pedal lid",
+        "material": "plastic",
+        "colour": "black",
+        "scale": "medium",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom-left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom-right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

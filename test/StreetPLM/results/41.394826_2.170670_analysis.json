@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093236",
+    "latitude": 41.394826,
+    "longitude": 2.1706703,
+    "heading": 225.2,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "3184416495_10182235271_0",
+    "dist_along_edge_m": 82.0,
+    "source_image": "sv_41.394826_2.170670_h225.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25768.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide road flanked by sidewalks lined with trees and some pedestrians.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal chairs with fabric seats",
+        "material": "metal",
+        "colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "trash bins with lids",
+        "material": "plastic",
+        "colour": "green",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "wooden planter boxes with small plants",
+        "material": "wood",
+        "colour": "brown",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

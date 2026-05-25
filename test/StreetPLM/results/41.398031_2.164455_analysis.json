@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100321",
+    "latitude": 41.3980313,
+    "longitude": 2.1644546000000005,
+    "heading": 72.6,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "8109780137_8173291439_0",
+    "dist_along_edge_m": 8.2,
+    "source_image": "sv_41.398031_2.164455_h72.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19419.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide roadways, minimal traffic, and scattered greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "large deciduous trees lining streets",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal lamppost with curved arms",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "modern",
+        "scale": "medium"
+      },
+      {
+        "zone": "center",
+        "element": "concrete bollards",
+        "material": "concrete",
+        "colour": "gray",
+        "style": "plain",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "metal lamppost with curved arms",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "modern",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

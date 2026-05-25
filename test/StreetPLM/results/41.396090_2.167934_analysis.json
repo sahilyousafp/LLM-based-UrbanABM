@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092645",
+    "latitude": 41.3960904,
+    "longitude": 2.1679342,
+    "heading": 135.4,
+    "street_name": "Passatge de les Escoles",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640917_7508581935_0",
+    "dist_along_edge_m": 58.2,
+    "source_image": "sv_41.396090_2.167934_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 13950.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Quiet urban street with minimal traffic and sparse greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "building facade",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "center",
+        "element": "small tree planted in planter box",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [],
+    "visible_text": [
+      {
+        "text": "",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

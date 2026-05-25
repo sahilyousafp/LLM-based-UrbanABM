@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094313",
+    "latitude": 41.394798699999996,
+    "longitude": 2.1665648,
+    "heading": 134.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "5761303632_8205146845_0",
+    "dist_along_edge_m": 80.8,
+    "source_image": "sv_41.394799_2.166565_h134.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20780.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Bustling city street lined with historic buildings, parked vehicles, and lush greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead clouds casting shadows",
+        "condition": "moderate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature oak trees with broad canopies",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white delivery truck with open cargo bed",
+        "material": "metallic",
+        "colour": "white",
+        "style": "utility",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "black motor scooters parked along curb",
+        "material": "metallic",
+        "colour": "black",
+        "style": "modern",
+        "scale": "small"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "THE GROUN",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

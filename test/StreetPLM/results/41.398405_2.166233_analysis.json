@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092021",
+    "latitude": 41.39840469999999,
+    "longitude": 2.1662329,
+    "heading": 75.9,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary",
+    "edge_id": "1124790711_3207273475_0",
+    "dist_along_edge_m": 13.3,
+    "source_image": "sv_41.398405_2.166233_h75.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25346.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with wide roads, modern lampposts, and moderate greenery under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "medium-sized deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "smaller deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "leafy deciduous trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "modern lampposts with integrated lighting fixtures",
+        "material": "metallic",
+        "colour": "silver-grey",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signal poles",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "traffic signal poles",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

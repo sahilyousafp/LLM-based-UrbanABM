@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094104",
+    "latitude": 41.394625399999995,
+    "longitude": 2.167953,
+    "heading": 224.8,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "4682083407_5761303635_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.394625_2.167953_h224.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 21864.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban avenue with moderate traffic flow, surrounded by buildings and small green spaces.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky with scattered clouds",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky with scattered clouds",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky with scattered clouds",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small leafy trees along the road",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small leafy trees along the road",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small flowering trees alongside the road",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal lampposts with white covers",
+        "material": "metal",
+        "colour": "silver",
+        "style": "standard",
+        "scale": "tall"
+      },
+      {
+        "zone": "center",
+        "element": "metal lampposts with white covers",
+        "material": "metal",
+        "colour": "silver",
+        "style": "standard",
+        "scale": "tall"
+      },
+      {
+        "zone": "right",
+        "element": "metal lampposts with white covers",
+        "material": "metal",
+        "colour": "silver",
+        "style": "standard",
+        "scale": "tall"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

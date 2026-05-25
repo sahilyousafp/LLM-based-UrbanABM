@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092044",
+    "latitude": 41.39848299999999,
+    "longitude": 2.1665766,
+    "heading": 252.6,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary",
+    "edge_id": "1124790711_8173291433_0",
+    "dist_along_edge_m": 16.8,
+    "source_image": "sv_41.398483_2.166577_h252.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22087.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with wide roads, moderate greenery, and no pedestrians or vehicles present.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature oak tree with dark green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous tree with sparse leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole with red light illuminated",
+        "material_and_colour": "metallic, red",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "white traffic lines marking crosswalk",
+        "material_and_colour": "painted white",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "black metal bicycle rack",
+        "material_and_colour": "metallic black",
+        "presence": "few"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

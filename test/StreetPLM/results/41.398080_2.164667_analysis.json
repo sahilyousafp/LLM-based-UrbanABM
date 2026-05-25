@@ -1,0 +1,89 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100038",
+    "latitude": 41.3980805,
+    "longitude": 2.1646665,
+    "heading": 254.4,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "7412690128_8109780137_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.398080_2.164667_h254.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19270.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Sunlit urban street lined with mature trees, featuring wide roads with zebra crossings and historic architecture.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight from above",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "leafy deciduous trees with broad canopies",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic lights with red illuminated signal",
+        "material": "metallic",
+        "colour": "red",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "pedestrian crossing signals with red illuminated signal",
+        "material": "metallic",
+        "colour": "red",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

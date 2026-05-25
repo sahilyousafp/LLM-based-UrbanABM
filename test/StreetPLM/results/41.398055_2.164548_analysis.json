@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091630",
+    "latitude": 41.398054699999996,
+    "longitude": 2.1645479,
+    "heading": 135.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "442540255_8109780137_0",
+    "dist_along_edge_m": 7.9,
+    "source_image": "sv_41.398055_2.164548_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23964.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with bus, pedestrians, and greenery, featuring a mix of modern amenities and traditional architecture.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through tree branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight reflecting off road surface",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal lamppost with red reflective coverings",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "modern",
+        "scale": "tall"
+      },
+      {
+        "zone": "left",
+        "element": "white tactile paving strips marking crosswalk",
+        "material": "concrete",
+        "colour": "white",
+        "style": "functional",
+        "scale": "short"
+      },
+      {
+        "zone": "right",
+        "element": "bus stop signage",
+        "material": "metallic",
+        "colour": "white",
+        "style": "standard",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "ICUA DE DIFERENTS",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "2837 / OR CULI",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

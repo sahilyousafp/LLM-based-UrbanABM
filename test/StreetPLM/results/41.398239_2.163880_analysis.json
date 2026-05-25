@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091113",
+    "latitude": 41.3982392,
+    "longitude": 2.1638800999999996,
+    "heading": 44.5,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "secondary",
+    "edge_id": "30243260_3207273498_0",
+    "dist_along_edge_m": 26.9,
+    "source_image": "sv_41.398239_2.163880_h44.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 16743.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined urban street with moderate vehicular traffic and open spaces.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through tree branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "shade from large leafy trees",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees with green leaves",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic trash bins with lids",
+        "material": "metal",
+        "colour": "silver",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "metallic trash bins with lids",
+        "material": "metal",
+        "colour": "silver",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

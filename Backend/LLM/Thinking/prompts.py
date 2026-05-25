@@ -39,6 +39,7 @@ def mobility_decision_prompt(
     visited_counts: dict | None = None,
     steps_to_destination: int | None = None,
     nav_mode: str = "both",
+    next_waypoint: dict | None = None,
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
@@ -163,11 +164,25 @@ def mobility_decision_prompt(
                 f"This is your primary goal."
             )
 
+    # Bearing to the next Dijkstra waypoint node — reflects actual walkable direction on
+    # the street grid rather than the straight-line bearing to the final destination,
+    # which can conflict with network topology (e.g. must go east to later reach north).
+    waypoint_compass = None
+    if next_waypoint and not (destination and destination.get("visited")):
+        import math as _math2
+        wp_dlon = next_waypoint.get('lon', 0) - current_position.get('lon', 0)
+        wp_dlat = next_waypoint.get('lat', 0) - current_position.get('lat', 0)
+        if wp_dlon != 0 or wp_dlat != 0:
+            wp_bearing = (_math2.degrees(_math2.atan2(wp_dlon, wp_dlat)) + 360) % 360
+            waypoint_compass = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][
+                int((wp_bearing + 22.5) / 45) % 8
+            ]
+
     # candidates_text built here so _visit_tag can use dist_m (computed above)
     candidates_text = "\n".join(
         f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
         f"amenities=[{', '.join(c.get('amenities', [])[:3])}] "
-        f"{'env=[' + c['perception'][:100] + '] ' if c.get('perception') else ''}"
+        f"{'env=[' + c['perception'][:220] + '] ' if c.get('perception') else ''}"
         f"desc={c.get('description', '')}"
         f"{_visit_tag(c['edge_id'], c.get('direction', 'forward'))}"
         f"{' [SHORTEST PATH TO DESTINATION]' if c['edge_id'] == path_hint_edge_id and nav_mode in ('gps', 'both') else ''}"
@@ -179,10 +194,12 @@ def mobility_decision_prompt(
     if dist_m is not None:
         dist_label = f" ({dist_m:.0f}m to destination)"
 
-    # Nav-mode-aware convergence hint used in urgency text
-    if nav_mode in ("gps", "both"):
+    # Nav-mode-aware convergence hint used in urgency text.
+    # When path_hint_edge_id is None (free steps), fall back to compass direction so the
+    # GPS label reference in deviation_context doesn't point to a non-existent label.
+    if path_hint_edge_id is not None and nav_mode in ("gps", "both"):
         convergence_hint = "[SHORTEST PATH TO DESTINATION]"
-    elif nav_mode == "direction_sense" and compass:
+    elif compass:
         convergence_hint = f"edges heading {compass}"
     else:
         convergence_hint = "your destination"
@@ -209,11 +226,16 @@ def mobility_decision_prompt(
                     f"Take {convergence_hint} unless a critical need demands otherwise. **"
                 )
         elif free_steps_remaining > 0:
+            _hint_dir = waypoint_compass or compass   # waypoint preferred: grid-aware; compass: straight-line fallback
+            _dir_hint = (
+                f" Keep broadly heading toward {_hint_dir} — "
+                f"side streets and perpendicular turns are fine, "
+                f"but avoid edges taking you clearly away from your destination."
+            ) if _hint_dir else ""
             deviation_context = (
                 f"\n\n** FREE EXPLORATION STEP{dist_label} — {free_steps_remaining} free step(s) left. "
-                f"Follow your curiosity, satisfy a need, or enjoy an interesting environment. "
-                f"Your destination is still your goal — don't stray so far that reaching it becomes very hard. "
-                f"{convergence_hint.capitalize() if nav_mode != 'none' else 'Your destination'} is available if nothing compelling draws you elsewhere. **"
+                f"Follow your curiosity, satisfy a need, or enjoy an interesting environment.{_dir_hint} "
+                f"Your destination is still your goal — don't stray so far that reaching it becomes very hard. **"
             )
         else:
             deviation_context = (
@@ -250,6 +272,19 @@ def mobility_decision_prompt(
             lines.append(f"  Active target: {target_name} ({target_type}) — {target_dist:.0f}m away")
         plan_text = "\n".join(lines)
 
+    # Perception-guided free-step instruction: fires only on genuine free exploration,
+    # never overrides GPS or critical-need rules.
+    perc_rule = ""
+    if explore_budget > 0 and free_steps_remaining > 0 and street_perception:
+        _arch_guidance = {
+            "tourist":  "Prefer edges whose env=[...] mentions interesting architecture, street art, outdoor cafes, or lively pedestrian activity — these energise tourists. Avoid featureless corridors.",
+            "resident": "Prefer edges whose env=[...] describes quiet, well-maintained residential streets with greenery or good lighting. Avoid busy, noisy, or run-down stretches.",
+            "student":  "Prefer edges whose env=[...] mentions shade trees, outdoor seating, or busy social areas. Lively but comfortable environments suit students.",
+            "commuter": "Prefer edges whose env=[...] appears efficient and pleasant — well-lit, direct, not congested. Avoid detours into narrow or unclear streets.",
+        }
+        guidance = _arch_guidance.get(archetype, "Prefer edges whose env=[...] suggests pleasant, well-maintained surroundings.")
+        perc_rule = f"\nPerception-guided free step: {guidance}"
+
     user_content = f"""Agent Profile:
   Archetype: {archetype}
   Needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
@@ -265,7 +300,7 @@ Candidate Edges/Destinations:
 Choose the index of the best candidate for this agent to move to next.
 Your preferences: {', '.join(preferences) if preferences else 'none'}.
 On free steps: explore streets and amenities that match your archetype and needs. Strongly prefer [NEW] edges over revisited ones — edges marked [visited 2x+] should almost never be chosen again.
-If comfort < 0.4, prefer edges toward parks, plazas, or streets with greenery. If hunger > 0.7 or energy < 0.3, prioritise edges near relevant amenities.
+If comfort < 0.4, prefer edges toward parks, plazas, or streets with greenery. If hunger > 0.7 or energy < 0.3, prioritise edges near relevant amenities.{perc_rule}
 {"GPS RULE: If any candidate shows [SHORTEST PATH TO DESTINATION], you MUST choose it. Visit counts, amenity preferences, and archetype interests are NOT valid reasons to skip it. The only permitted exception is a critical survival need: hunger > 0.9 or energy < 0.1. Restaurants, shops, or curiosity do not qualify." if nav_mode in ('gps', 'both') else f"Prefer edges heading {compass or 'toward destination'} to stay on track — you can always explore on the next free step." if nav_mode == 'direction_sense' else "Keep your destination in mind even while exploring freely."}
 {"IMPORTANT: A nearby amenity whose type matches your destination (e.g. a pharmacy near an edge when your target is a pharmacy) is NOT your destination. The amenity list shows what is close to each edge — it does not mean the edge leads to your specific named target. Only [SHORTEST PATH TO DESTINATION] points to the actual place you are trying to reach." if destination and destination.get("name") and not destination.get("visited") and nav_mode in ('gps', 'both') else ""}
 

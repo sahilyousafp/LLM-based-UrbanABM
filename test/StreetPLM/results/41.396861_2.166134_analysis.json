@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "timestamp": "20260525_095315",
+    "latitude": 41.396861399999985,
+    "longitude": 2.1661343000000004,
+    "heading": 50.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "6855299023_8235449335_0",
+    "dist_along_edge_m": 3.2,
+    "source_image": "sv_41.396861_2.166134_h50.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26518.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with a pharmacy and bakery, featuring parked vehicles and pedestrians near a tree-lined sidewalk.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through tree leaves",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous tree with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along building facade",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "red plastic bike parking barriers",
+        "material": "plastic",
+        "colour": "red",
+        "style": "rectangular",
+        "scale": "small"
+      },
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curb",
+        "material": "metal",
+        "colour": "black",
+        "style": "various models",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "taxi cab with yellow and black livery",
+        "material": "plastic and metal",
+        "colour": "yellow/black",
+        "style": "compact car",
+        "scale": "small"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "FARMACIA",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "PÀNADERIA",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

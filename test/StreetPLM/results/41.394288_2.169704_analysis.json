@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093258",
+    "latitude": 41.39428819999999,
+    "longitude": 2.1697042999999994,
+    "heading": 75.6,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "3184416495_8319980481_0",
+    "dist_along_edge_m": 23.2,
+    "source_image": "sv_41.394288_2.169704_h75.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 21407.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with pedestrians walking along wide sidewalks lined by buildings under bright daylight.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through bare branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight casting shadows",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "right",
+        "element": "bare deciduous trees without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal security gate with graffiti",
+        "material": "metallic",
+        "colour": "black",
+        "scale": "large",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "utility box covered in graffiti",
+        "material": "metallic",
+        "colour": "beige",
+        "scale": "small",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "BERTOCA",
+        "zone": "left",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

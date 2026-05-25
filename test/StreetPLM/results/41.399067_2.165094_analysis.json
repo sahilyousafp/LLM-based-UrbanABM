@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "timestamp": "20260525_095556",
+    "latitude": 41.39906710000001,
+    "longitude": 2.1650945,
+    "heading": 318.6,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "footway",
+    "edge_id": "6874436557_6874436674_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.399067_2.165094_h318.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20591.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A quiet urban street lined with shops, pedestrians, and mature trees offering partial shade.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "filtered sunlight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "filtered sunlight through leafy branches",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "leafy deciduous trees providing dappled shade",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along the sidewalk",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic trash bins with lids",
+        "material_and_colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "trash bin with foot pedal lid",
+        "material_and_colour": "silver",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Street Delights",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "DELIGHTS",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

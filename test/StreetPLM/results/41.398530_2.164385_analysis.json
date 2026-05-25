@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093917",
+    "latitude": 41.3985301,
+    "longitude": 2.1643850999999996,
+    "heading": 315.9,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "footway",
+    "edge_id": "3207273497_8224714475_0",
+    "dist_along_edge_m": 7.7,
+    "source_image": "sv_41.398530_2.164385_h315.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19971.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Sunlit urban street lined with shops, pedestrians, and parked vehicles under large leafy trees.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "filtered sunlight through leafy trees",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "filtered sunlight through leafy trees",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "filtered sunlight through leafy trees",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature plane trees",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "smaller deciduous trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "various small ornamental plants",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles and scooters",
+        "material_and_colour": "black and silver",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "tables and chairs",
+        "material_and_colour": "white and yellow",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles and scooters",
+        "material_and_colour": "black and silver",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "SANT MIGUEL",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

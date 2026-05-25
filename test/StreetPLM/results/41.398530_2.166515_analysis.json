@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091955",
+    "latitude": 41.3985301,
+    "longitude": 2.1665148,
+    "heading": 225.6,
+    "street_name": "Carrer de Provença",
+    "highway_type": "residential",
+    "edge_id": "1124790711_7045171435_0",
+    "dist_along_edge_m": 15.0,
+    "source_image": "sv_41.398530_2.166515_h225.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22850.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with wide roads, moderate greenery, and pedestrians navigating the area under bright daylight conditions.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "direct overhead sunlight",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "deciduous trees with autumn foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "deciduous trees with autumn foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "deciduous trees with autumn foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic streetlamp pole with traffic signal",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "modern",
+        "scale": "tall"
+      },
+      {
+        "zone": "right",
+        "element": "pedestrian crossing signs",
+        "material": "metallic",
+        "colour": "white and red",
+        "style": "triangular",
+        "scale": "small"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "ilv",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom-left",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "timestamp": "20260525_095227",
+    "latitude": 41.39691619999999,
+    "longitude": 2.1665322000000002,
+    "heading": 137.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "6855299022_8235449330_0",
+    "dist_along_edge_m": 7.5,
+    "source_image": "sv_41.396916_2.166532_h137.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22068.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showing a mix of pedestrian walkways, road traffic, and commercial establishments in Barcelona.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overhead cloud cover diffusing sunlight",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "medium-sized deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along the building facade",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black cylindrical trash can with foot pedal",
+        "material_and_colour": "black",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "traffic signal with green illuminated",
+        "material_and_colour": "green",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "ITACA",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "Cafeteria Bar",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

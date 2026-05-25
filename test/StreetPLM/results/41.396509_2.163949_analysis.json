@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093609",
+    "latitude": 41.39650940000001,
+    "longitude": 2.1639492,
+    "heading": 315.1,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "3184416547_7045171461_0",
+    "dist_along_edge_m": 9.4,
+    "source_image": "sv_41.396509_2.163949_h315.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24184.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A sunny day in a European city with pedestrians walking along a wide road and sidewalks lined with buildings featuring ornate architecture.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "direct sunlight through bare branches",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight through bare branches",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along the sidewalk",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "blue parking sign with white lettering",
+        "material": "metallic",
+        "colour": "blue/white",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "red car partially visible at the edge",
+        "material": "plastic/metallic",
+        "colour": "red",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "P",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "93 348 44 47",
+        "zone": "far_left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

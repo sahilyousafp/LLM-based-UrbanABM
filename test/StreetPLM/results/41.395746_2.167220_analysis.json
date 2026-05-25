@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101056",
+    "latitude": 41.395746200000005,
+    "longitude": 2.1672201,
+    "heading": 223.3,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8205146894_8238740382_0",
+    "dist_along_edge_m": 83.5,
+    "source_image": "sv_41.395746_2.167220_h223.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22841.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with trees and parked motorcycles, under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curb",
+        "material": "metallic",
+        "colour": "red and black",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles parked along curb",
+        "material": "metallic",
+        "colour": "silver",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Parking NN Bru",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

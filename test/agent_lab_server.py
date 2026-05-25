@@ -709,16 +709,31 @@ def _load_test_streetplm_cache():
 
     _THRESHOLD_DEG = 0.0015
 
-    def _test_get_nearby_perception(point_geom):
-        """Use pre-flattened test StreetPLM cache; skip DuckDB."""
+    def _angle_diff(a, b):
+        d = abs(a - b) % 360
+        return d if d <= 180 else 360 - d
+
+    def _test_get_nearby_perception(point_geom, heading=None):
+        """Use pre-flattened test StreetPLM cache; skip DuckDB.
+        When heading is provided, prefer SV entries whose camera faces the same
+        direction as the candidate edge (score = dist * (1 + 0.4 * angular_penalty)).
+        Falls back to nearest-by-distance when heading is absent or unrecorded.
+        """
         best = None
-        best_dist = _THRESHOLD_DEG
+        best_score = _THRESHOLD_DEG * 2  # sentinel > any real score
         for entry in city_model._sv_cache:
             dx = entry["lon"] - point_geom.x
             dy = entry["lat"] - point_geom.y
             dist = (dx * dx + dy * dy) ** 0.5
-            if dist < best_dist:
-                best_dist = dist
+            if dist > _THRESHOLD_DEG:
+                continue
+            if heading is not None and entry.get("heading") is not None:
+                ang_penalty = _angle_diff(heading, entry["heading"]) / 180.0
+                score = dist * (1.0 + 0.4 * ang_penalty)
+            else:
+                score = dist
+            if score < best_score:
+                best_score = score
                 best = entry
         if best is None:
             return None

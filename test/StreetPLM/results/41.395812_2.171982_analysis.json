@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101827",
+    "latitude": 41.395812199999995,
+    "longitude": 2.1719822000000004,
+    "heading": 226.1,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "footway",
+    "edge_id": "10893766825_12230315701_0",
+    "dist_along_edge_m": 18.8,
+    "source_image": "sv_41.395812_2.171982_h226.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20094.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Open plaza area with modern buildings and sparse pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through scattered clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead diffused sunlight",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "plaza",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "plaza",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "plaza",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small leafy trees along walkway",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small leafy trees along walkway",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small leafy trees along walkway",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [],
+    "visible_text": [
+      {
+        "text": "Condé",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "SOCIALS",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093839",
+    "latitude": 41.399357099999996,
+    "longitude": 2.164969,
+    "heading": 42.4,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "3207273483_8224714469_0",
+    "dist_along_edge_m": 10.2,
+    "source_image": "sv_41.399357_2.164969_h42.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22778.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Bustling outdoor café area with pedestrians, parked cars, and a mix of open and semi-open spaces.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "natural sunlight through bare tree branches",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "natural sunlight through bare tree branches",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare tree branches without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare tree branches without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black trash can with foot pedal lid",
+        "material_and_colour": "black",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "black trash can with foot pedal lid",
+        "material_and_colour": "black",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "black trash can with foot pedal lid",
+        "material_and_colour": "black",
+        "presence": "few"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

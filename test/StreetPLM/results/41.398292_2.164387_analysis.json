@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093857",
+    "latitude": 41.39829160000001,
+    "longitude": 2.164387000000001,
+    "heading": 228.2,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "3207273496_8224714477_0",
+    "dist_along_edge_m": 7.0,
+    "source_image": "sv_41.398292_2.164387_h228.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 16622.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view featuring a large public transportation bus parked along a wide road lined by mature trees.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead building shadows",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous tree with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous tree with green foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white bus with 'BUS PLUS' logo",
+        "material": "metallic white",
+        "colour": "white",
+        "style": "public transport vehicle",
+        "scale": "large"
+      },
+      {
+        "zone": "right",
+        "element": "white bus with 'BUS PLUS' logo",
+        "material": "metallic white",
+        "colour": "white",
+        "style": "public transport vehicle",
+        "scale": "large"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "BUS PLUS",
+        "zone": "left",
+        "type": "label"
+      },
+      {
+        "text": "WWW.BUSPLUS.CAT",
+        "zone": "right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

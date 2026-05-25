@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092434",
+    "latitude": 41.39462519999999,
+    "longitude": 2.1713931000000004,
+    "heading": 135.6,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "2764476452_9556243972_0",
+    "dist_along_edge_m": 13.6,
+    "source_image": "sv_41.394625_2.171393_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23608.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined pedestrian area with wide sidewalks and minimal traffic, featuring wooden benches and metallic trash bins.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "soft diffused light through tree canopy",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead clouds casting soft shadows",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature oak trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "smaller deciduous trees with sparse leaves",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "young coniferous trees with bright green needles",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "wooden park benches with metal frames",
+        "material_and_colour": "brown/bronze",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "metallic trash bins with lids",
+        "material_and_colour": "black",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "EQUILIBRIO",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

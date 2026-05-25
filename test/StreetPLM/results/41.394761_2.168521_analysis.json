@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094424",
+    "latitude": 41.3947606,
+    "longitude": 2.1685211,
+    "heading": 228.4,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5761303642_5791432272_0",
+    "dist_along_edge_m": 82.3,
+    "source_image": "sv_41.394761_2.168521_h228.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24662.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Wide urban street lined with buildings and sparse greenery under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small deciduous trees with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees with green foliage",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "gray trash bins",
+        "material": "metallic",
+        "colour": "gray",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "trash bins",
+        "material": "metallic",
+        "colour": "gray",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

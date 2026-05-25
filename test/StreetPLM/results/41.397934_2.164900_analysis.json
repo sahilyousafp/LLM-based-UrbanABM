@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092202",
+    "latitude": 41.3979341,
+    "longitude": 2.1649004,
+    "heading": 252.4,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "residential",
+    "edge_id": "1311619392_8109780139_0",
+    "dist_along_edge_m": 12.2,
+    "source_image": "sv_41.397934_2.164900_h252.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25294.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide roads, bare winter trees, and no pedestrians or vehicles present.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "blue sky without clouds",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "blue sky without clouds",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "blue sky without clouds",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "bare winter trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare winter trees",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic lights",
+        "material_and_colour": "red and yellow",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "white road markings",
+        "material_and_colour": "white",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "pedestrian crossing lines",
+        "material_and_colour": "white",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

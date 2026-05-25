@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101009",
+    "latitude": 41.3952055,
+    "longitude": 2.1662241,
+    "heading": 315.9,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146886_8205146892_0",
+    "dist_along_edge_m": 85.5,
+    "source_image": "sv_41.395206_2.166224_h315.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20007.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined residential street with wide lanes and moderate vehicle activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "leafy deciduous trees",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "leafy deciduous trees",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "leafy deciduous trees",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black lamppost with red circular sign",
+        "material": "metallic",
+        "colour": "black",
+        "style": "modern",
+        "scale": "small"
+      },
+      {
+        "zone": "left",
+        "element": "white bicycle symbol painted on road",
+        "material": "painted",
+        "colour": "white",
+        "style": "symbolic",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles parked along curb",
+        "material": "metallic",
+        "colour": "various",
+        "style": "modern",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycle parking meters",
+        "material": "metallic",
+        "colour": "silver",
+        "style": "functional",
+        "scale": "small"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Bella Italia",
+        "zone": "far_left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

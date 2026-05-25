@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "timestamp": "20260525_095621",
+    "latitude": 41.3985352,
+    "longitude": 2.1638227,
+    "heading": 51.8,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "6874436558_8224714472_0",
+    "dist_along_edge_m": 6.9,
+    "source_image": "sv_41.398535_2.163823_h51.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24285.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street scene with parked scooters, bare winter trees, and a mix of residential and commercial buildings.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "filtered sunlight through bare winter branches",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic scooter parking fixtures",
+        "material_and_colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "metallic scooter parking fixtures",
+        "material_and_colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "metallic scooter parking fixtures",
+        "material_and_colour": "black",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "far_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

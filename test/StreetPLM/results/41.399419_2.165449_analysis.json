@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "timestamp": "20260525_090910",
+    "latitude": 41.399418999999995,
+    "longitude": 2.1654485000000006,
+    "heading": 225.9,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "secondary",
+    "edge_id": "30243245_6874436675_0",
+    "dist_along_edge_m": 23.0,
+    "source_image": "sv_41.399419_2.165449_h225.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25829.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Empty urban street lined with multi-story buildings and mature trees, under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "various mature trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "various mature trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "various mature trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white van parked along curb",
+        "material": "metallic silver",
+        "colour": "silver",
+        "style": "van",
+        "scale": "large"
+      },
+      {
+        "zone": "center",
+        "element": "cars parked along curbs",
+        "material": "metallic",
+        "colour": "varied",
+        "style": "sedan",
+        "scale": "small to medium"
+      },
+      {
+        "zone": "right",
+        "element": "white van parked along curb",
+        "material": "metallic silver",
+        "colour": "silver",
+        "style": "van",
+        "scale": "large"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

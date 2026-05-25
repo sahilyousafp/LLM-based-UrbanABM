@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100631",
+    "latitude": 41.39488009999999,
+    "longitude": 2.1643784,
+    "heading": 228.1,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064247_8205064281_0",
+    "dist_along_edge_m": 11.7,
+    "source_image": "sv_41.394880_2.164378_h228.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 21675.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showing a Santander bank branch with parked motorcycles and a mix of pedestrians and vehicles.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "shaded area under tree canopy",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "leafy deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along building facade",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curb",
+        "material": "black plastic",
+        "colour": "black",
+        "style": "modern scooters",
+        "scale": "small"
+      },
+      {
+        "zone": "center",
+        "element": "red ATM machine",
+        "material": "metallic",
+        "colour": "red",
+        "style": "bank ATM",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Santander",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom-left",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

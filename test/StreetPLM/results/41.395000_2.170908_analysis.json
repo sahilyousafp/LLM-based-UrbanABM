@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101715",
+    "latitude": 41.39499959999999,
+    "longitude": 2.1709084000000005,
+    "heading": 44.7,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "footway",
+    "edge_id": "10182235268_11142084213_0",
+    "dist_along_edge_m": 22.9,
+    "source_image": "sv_41.395000_2.170908_h44.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 18807.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showing a mix of pedestrians and buildings with a focus on a shop front featuring a gray awning with a white logo.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "building facade with natural daylight reflection",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "trees with green foliage",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "red trash can with white logo",
+        "material": "plastic",
+        "colour": "red",
+        "style": "standard",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "awning with white logo",
+        "material": "fabric",
+        "colour": "gray",
+        "style": "custom",
+        "scale": "large"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "SALVADOR",
+        "zone": "right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

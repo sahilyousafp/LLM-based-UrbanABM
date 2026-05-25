@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "timestamp": "20260525_095401",
+    "latitude": 41.3951197,
+    "longitude": 2.1643708000000004,
+    "heading": 321.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "6855299026_8205064279_0",
+    "dist_along_edge_m": 6.8,
+    "source_image": "sv_41.395120_2.164371_h321.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26232.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with wide roads, sparse pedestrian activity, and typical city amenities like trash bins and traffic signals.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "leafy deciduous trees with thin branches",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "bare winter trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "trunk of large leafy deciduous tree",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "large grey plastic trash bins",
+        "material": "plastic",
+        "colour": "grey",
+        "presence": "several"
+      },
+      {
+        "zone": "left",
+        "element": "white lamppost with red traffic signal",
+        "material": "metallic",
+        "colour": "silver",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "black awning over storefront",
+        "material": "fabric",
+        "colour": "black",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "El Celbo",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "Mustache",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

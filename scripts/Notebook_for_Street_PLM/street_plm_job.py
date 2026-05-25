@@ -110,10 +110,10 @@ GCP_PROJECT_ID     = os.environ.get("GCP_PROJECT_ID", "")
 # Previous (2 km x 2 km centred on Passeig de Gracia):
 # BBOX = {"min_lon": 2.1500, "min_lat": 41.3862, "max_lon": 2.1740, "max_lat": 41.4042}
 BBOX = {
-    "min_lon": 2.163671,     # shifted ~250 m west
-    "min_lat": 41.394222,    # shifted ~250 m south
+    "min_lon": 2.160677,     # shifted ~500 m west
+    "min_lat": 41.391976,    # shifted ~500 m south
     "max_lon": 2.172096,
-    "max_lat": 41.399895,
+    "max_lat": 41.402141,    # shifted ~250 m north
 }
 
 BIGQUERY_PROJECT  = "bigquery-public-data"

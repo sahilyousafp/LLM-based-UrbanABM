@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094510",
+    "latitude": 41.39519309999999,
+    "longitude": 2.1683185,
+    "heading": 40.1,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791423724_5791423726_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.395193_2.168318_h40.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20366.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street scene with pedestrians near a large building facade, featuring a mix of natural and architectural elements under soft afternoon light.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "soft afternoon sunlight filtering through trees",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight casting shadows",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along windowsills",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "blue parking sign indicating parking area",
+        "material_and_colour": "metallic blue",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "black fire hydrant with silver cap",
+        "material_and_colour": "cast iron black",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "dark green metal trash can with foot pedal lid",
+        "material_and_colour": "metallic dark green",
+        "presence": "one"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

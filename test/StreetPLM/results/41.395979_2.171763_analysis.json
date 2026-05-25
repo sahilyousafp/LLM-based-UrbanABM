@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094852",
+    "latitude": 41.3959786,
+    "longitude": 2.1717628000000007,
+    "heading": 315.7,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "5791423749_8254596735_0",
+    "dist_along_edge_m": 78.1,
+    "source_image": "sv_41.395979_2.171763_h315.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23427.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with buildings featuring balconies and shops, with moderate vehicle traffic and some greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse natural light through sparse tree cover",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead cloud cover diffusing sunlight",
+        "condition": "moderately bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young deciduous trees with thin trunks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small evergreen bushes along building facades",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic trash bins with lids",
+        "material_and_colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "trash bins with lids",
+        "material_and_colour": "black",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "univ",
+        "zone": "far_right",
+        "type": "sign"
+      },
+      {
+        "text": "SAS",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

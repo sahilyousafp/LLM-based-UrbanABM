@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100525",
+    "latitude": 41.3948087,
+    "longitude": 2.1642750000000004,
+    "heading": 138.2,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064244_8205064247_0",
+    "dist_along_edge_m": 82.6,
+    "source_image": "sv_41.394809_2.164275_h138.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 11370.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with shops and parked scooters, with ample daylight and clear visibility.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through leafy trees",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight on road surface",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "shade from surrounding buildings",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [],
+    "street_amenities": [],
+    "visible_text": [
+      {
+        "text": "Santander",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "36",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

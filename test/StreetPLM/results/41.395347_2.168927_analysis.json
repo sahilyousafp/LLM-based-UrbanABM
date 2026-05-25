@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092730",
+    "latitude": 41.395347499999986,
+    "longitude": 2.1689269999999996,
+    "heading": 314.2,
+    "street_name": "Passatge de les escoles",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640917_4682076528_0",
+    "dist_along_edge_m": 58.9,
+    "source_image": "sv_41.395347_2.168927_h314.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22663.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showing Mercat de la Boqueria market area with wide roads and minimal pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small leafy trees along the sidewalk",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "large leafy trees near the market structure",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic streetlamp poles",
+        "material_and_colour": "silver",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "black metal bicycle rack",
+        "material_and_colour": "black",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Mercat de la Boqueria",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

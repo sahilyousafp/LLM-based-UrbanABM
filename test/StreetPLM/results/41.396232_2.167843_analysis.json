@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101547",
+    "latitude": 41.396231500000006,
+    "longitude": 2.1678426,
+    "heading": 129.6,
+    "street_name": "",
+    "highway_type": "service",
+    "edge_id": "9700799471_12259551372_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.396232_2.167843_h129.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20414.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showing a market entrance and adjacent building with clear pathways and minimal traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "leafy deciduous tree",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "concrete pavement",
+        "coverage": "none"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "blue newspaper box with yellow railings",
+        "material": "metallic",
+        "colour": "blue/yellow",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "red stop sign",
+        "material": "metallic",
+        "colour": "red",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "REN JOVES",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "REN JOVES",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

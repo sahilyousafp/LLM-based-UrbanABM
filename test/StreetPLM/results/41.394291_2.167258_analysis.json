@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094251",
+    "latitude": 41.39429109999998,
+    "longitude": 2.1672578000000002,
+    "heading": 314.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "5761303632_8205146845_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.394291_2.167258_h314.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25782.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with trees and buildings, featuring a mix of traffic and parked vehicles under bright daylight conditions.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through tree canopies",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "smaller trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curb",
+        "material": "metallic",
+        "colour": "silver/black",
+        "presence": "several"
+      },
+      {
+        "zone": "left",
+        "element": "taxi cab",
+        "material": "plastic",
+        "colour": "yellow",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "building wall",
+        "material": "stone",
+        "colour": "brown",
+        "presence": "full"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "TAXI",
+        "zone": "left",
+        "type": "label"
+      },
+      {
+        "text": "BUS",
+        "zone": "right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

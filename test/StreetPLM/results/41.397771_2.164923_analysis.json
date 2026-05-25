@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091824",
+    "latitude": 41.39777109999999,
+    "longitude": 2.1649231,
+    "heading": 134.1,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "442540256_1864143448_0",
+    "dist_along_edge_m": 7.6,
+    "source_image": "sv_41.397771_2.164923_h134.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24478.7,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with wide roads, moderate greenery, and no pedestrians or vehicles present.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "large mature trees lining streets",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "red traffic lights",
+        "material": "metallic",
+        "colour": "red",
+        "presence": "several"
+      },
+      {
+        "zone": "left",
+        "element": "white road markings",
+        "material": "painted",
+        "colour": "white",
+        "presence": "many"
+      },
+      {
+        "zone": "right",
+        "element": "black trash bins with white lids",
+        "material": "plastic",
+        "colour": "black",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

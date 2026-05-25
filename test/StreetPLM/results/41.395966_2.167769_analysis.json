@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100153",
+    "latitude": 41.3959658,
+    "longitude": 2.1677694000000005,
+    "heading": 45.4,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "7508581935_7508581937_0",
+    "dist_along_edge_m": 19.5,
+    "source_image": "sv_41.395966_2.167769_h45.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 29136.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with buildings, featuring wide roads, zebra crossings, and moderate pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees along sidewalks",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal bike rack",
+        "material_and_colour": "silver",
+        "presence": "few"
+      },
+      {
+        "zone": "left",
+        "element": "traffic signal pole",
+        "material_and_colour": "gray",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "pedestrian crossing lines",
+        "material_and_colour": "white",
+        "presence": "many"
+      },
+      {
+        "zone": "right",
+        "element": "blue taxi sign",
+        "material_and_colour": "blue",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "woman walking",
+        "material_and_colour": "black and white clothing",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "taxi",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

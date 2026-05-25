@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101806",
+    "latitude": 41.395675700000005,
+    "longitude": 2.1699849999999996,
+    "heading": 135.3,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "10182235270_11012442316_0",
+    "dist_along_edge_m": 80.6,
+    "source_image": "sv_41.395676_2.169985_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25816.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with a mix of sidewalks, roads, and parked cars, featuring sparse greenery and minimal pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead streetlights",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "diffuse natural light through trees",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "center",
+        "element": "young deciduous trees with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic streetlamp pole",
+        "material_and_colour": "black",
+        "presence": "few"
+      },
+      {
+        "zone": "left",
+        "element": "white signage board",
+        "material_and_colour": "blue",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "white van",
+        "material_and_colour": "white",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "parked white car",
+        "material_and_colour": "white",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "LA WASH",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "LAVAND AUTOSEISS",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101526",
+    "latitude": 41.3948516,
+    "longitude": 2.1710929,
+    "heading": 135.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "9556243972_10182235269_0",
+    "dist_along_edge_m": 35.5,
+    "source_image": "sv_41.394852_2.171093_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25896.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A quiet, tree-lined street with wide sidewalks and minimal pedestrian or vehicular traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "filtered sunlight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead clouds casting soft shadows",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature plane trees with textured bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "small potted plants along the road",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "leafy deciduous trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black metal lampposts with decorative details",
+        "material": "metallic",
+        "colour": "black",
+        "style": "modern",
+        "scale": "tall"
+      },
+      {
+        "zone": "left",
+        "element": "dark grey stone benches with metal frames",
+        "material": "stone",
+        "colour": "dark grey",
+        "style": "traditional",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "dark green metal trash bins with lids",
+        "material": "metallic",
+        "colour": "dark green",
+        "style": "utility",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

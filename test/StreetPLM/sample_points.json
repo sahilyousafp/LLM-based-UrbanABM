@@ -1,5 +1,95 @@
 [
   {
+    "id": "41.396744_2.164093",
+    "lat": 41.396743699999995,
+    "lon": 2.1640934000000005,
+    "heading": 316.0,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "secondary",
+    "edge_id": "30238031_3184416545_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.396889_2.163903",
+    "lat": 41.3968889,
+    "lon": 2.1639033,
+    "heading": 136.0,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "secondary",
+    "edge_id": "30238031_3184416545_0",
+    "dist_along_edge_m": 22.6
+  },
+  {
+    "id": "41.396896_2.164298",
+    "lat": 41.3968957,
+    "lon": 2.1642982,
+    "heading": 226.0,
+    "street_name": "Carrer de Provença",
+    "highway_type": "residential",
+    "edge_id": "30238031_7045171454_0",
+    "dist_along_edge_m": 24.0
+  },
+  {
+    "id": "41.396569_2.163869",
+    "lat": 41.396568699999996,
+    "lon": 2.1638692,
+    "heading": 44.5,
+    "street_name": "Carrer de Provença",
+    "highway_type": "residential",
+    "edge_id": "30238031_3184416547_0",
+    "dist_along_edge_m": 27.0
+  },
+  {
+    "id": "41.396563_2.164327",
+    "lat": 41.39656300000001,
+    "lon": 2.1643274000000003,
+    "heading": 315.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "secondary",
+    "edge_id": "30238031_7045171457_0",
+    "dist_along_edge_m": 28.0
+  },
+  {
+    "id": "41.397560_2.165205",
+    "lat": 41.3975605,
+    "lon": 2.1652053000000007,
+    "heading": 315.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30238032_7045171447_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.397635_2.165106",
+    "lat": 41.397635,
+    "lon": 2.1651062000000003,
+    "heading": 135.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30238032_7045171447_0",
+    "dist_along_edge_m": 11.7
+  },
+  {
+    "id": "41.397502_2.165138",
+    "lat": 41.3975019,
+    "lon": 2.1651379000000004,
+    "heading": 41.4,
+    "street_name": "Carrer de Provença",
+    "highway_type": "residential",
+    "edge_id": "30238032_3184416475_0",
+    "dist_along_edge_m": 8.6
+  },
+  {
+    "id": "41.397462_2.165343",
+    "lat": 41.397462000000004,
+    "lon": 2.1653426,
+    "heading": 312.8,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30238032_7045171444_0",
+    "dist_along_edge_m": 15.9
+  },
+  {
     "id": "41.399248_2.172048",
     "lat": 41.39924849999999,
     "lon": 2.1720481000000005,
@@ -78,6 +168,56 @@
     "highway_type": "tertiary",
     "edge_id": "30243206_3207273336_0",
     "dist_along_edge_m": 25.5
+  },
+  {
+    "id": "41.399274_2.165251",
+    "lat": 41.399274199999994,
+    "lon": 2.1652510000000005,
+    "heading": 315.6,
+    "street_name": "Carrer de Girona",
+    "highway_type": "residential",
+    "edge_id": "30243245_3207273483_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.399423_2.165053",
+    "lat": 41.399423399999996,
+    "lon": 2.1650530000000003,
+    "heading": 135.6,
+    "street_name": "Carrer de Girona",
+    "highway_type": "residential",
+    "edge_id": "30243245_3207273483_0",
+    "dist_along_edge_m": 23.4
+  },
+  {
+    "id": "41.399089_2.165494",
+    "lat": 41.399088799999994,
+    "lon": 2.1654936999999994,
+    "heading": 316.0,
+    "street_name": "Carrer de Girona",
+    "highway_type": "residential",
+    "edge_id": "30243245_6874436555_0",
+    "dist_along_edge_m": 28.9
+  },
+  {
+    "id": "41.399419_2.165449",
+    "lat": 41.399418999999995,
+    "lon": 2.1654485000000006,
+    "heading": 225.9,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "secondary",
+    "edge_id": "30243245_6874436675_0",
+    "dist_along_edge_m": 23.0
+  },
+  {
+    "id": "41.399112_2.165041",
+    "lat": 41.399112200000005,
+    "lon": 2.1650407000000005,
+    "heading": 44.7,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "secondary",
+    "edge_id": "30243245_6874436674_0",
+    "dist_along_edge_m": 25.2
   },
   {
     "id": "41.397563_2.167508",
@@ -180,6 +320,96 @@
     "dist_along_edge_m": 7.9
   },
   {
+    "id": "41.398414_2.164103",
+    "lat": 41.3984136,
+    "lon": 2.1641032,
+    "heading": 315.2,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30243260_6874436558_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.398574_2.163887",
+    "lat": 41.39857419999999,
+    "lon": 2.1638873,
+    "heading": 135.2,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30243260_6874436558_0",
+    "dist_along_edge_m": 25.4
+  },
+  {
+    "id": "41.398579_2.164321",
+    "lat": 41.398579299999994,
+    "lon": 2.1643206,
+    "heading": 225.2,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "secondary",
+    "edge_id": "30243260_3207273497_0",
+    "dist_along_edge_m": 25.9
+  },
+  {
+    "id": "41.398249_2.164325",
+    "lat": 41.398249,
+    "lon": 2.1643249000000004,
+    "heading": 315.1,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30243260_3207273496_0",
+    "dist_along_edge_m": 26.0
+  },
+  {
+    "id": "41.398239_2.163880",
+    "lat": 41.3982392,
+    "lon": 2.1638800999999996,
+    "heading": 44.5,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "secondary",
+    "edge_id": "30243260_3207273498_0",
+    "dist_along_edge_m": 26.9
+  },
+  {
+    "id": "41.396716_2.166387",
+    "lat": 41.39671600000001,
+    "lon": 2.1663872999999993,
+    "heading": 225.6,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243261_3184416480_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.396557_2.166176",
+    "lat": 41.396556999999994,
+    "lon": 2.1661756000000003,
+    "heading": 45.6,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243261_3184416480_0",
+    "dist_along_edge_m": 25.0
+  },
+  {
+    "id": "41.396880_2.166163",
+    "lat": 41.39687970000001,
+    "lon": 2.1661632000000006,
+    "heading": 134.7,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30243261_6855299023_0",
+    "dist_along_edge_m": 26.1
+  },
+  {
+    "id": "41.396867_2.166593",
+    "lat": 41.3968668,
+    "lon": 2.1665929,
+    "heading": 226.4,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243261_6855299022_0",
+    "dist_along_edge_m": 24.0
+  },
+  {
     "id": "41.398370_2.170866",
     "lat": 41.39837,
     "lon": 2.1708663000000006,
@@ -208,6 +438,86 @@
     "highway_type": "tertiary",
     "edge_id": "30243329_6762255491_0",
     "dist_along_edge_m": 17.2
+  },
+  {
+    "id": "41.395014_2.164115",
+    "lat": 41.3950144,
+    "lon": 2.1641149000000004,
+    "heading": 225.1,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243373_3184416783_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394850_2.163900",
+    "lat": 41.39485019999999,
+    "lon": 2.1639002,
+    "heading": 45.1,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243373_3184416783_0",
+    "dist_along_edge_m": 25.6
+  },
+  {
+    "id": "41.395177_2.163899",
+    "lat": 41.39517680000001,
+    "lon": 2.1638989999999994,
+    "heading": 135.5,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "secondary",
+    "edge_id": "30243373_6855299027_0",
+    "dist_along_edge_m": 25.5
+  },
+  {
+    "id": "41.395168_2.164320",
+    "lat": 41.39516759999999,
+    "lon": 2.1643195000000004,
+    "heading": 225.7,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243373_6855299026_0",
+    "dist_along_edge_m": 24.1
+  },
+  {
+    "id": "41.395864_2.165249",
+    "lat": 41.3958637,
+    "lon": 2.1652492000000003,
+    "heading": 315.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "secondary",
+    "edge_id": "30243375_3184416540_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.396033_2.165026",
+    "lat": 41.396033200000005,
+    "lon": 2.1650258,
+    "heading": 135.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "secondary",
+    "edge_id": "30243375_3184416540_0",
+    "dist_along_edge_m": 26.5
+  },
+  {
+    "id": "41.396020_2.165458",
+    "lat": 41.3960195,
+    "lon": 2.1654582,
+    "heading": 225.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243375_6855299025_0",
+    "dist_along_edge_m": 24.6
+  },
+  {
+    "id": "41.395702_2.165034",
+    "lat": 41.395702199999995,
+    "lon": 2.1650335000000003,
+    "heading": 45.7,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243375_3184416541_0",
+    "dist_along_edge_m": 25.4
   },
   {
     "id": "41.399385_2.169923",
@@ -330,6 +640,86 @@
     "dist_along_edge_m": 10.0
   },
   {
+    "id": "41.398004_2.164615",
+    "lat": 41.3980044,
+    "lon": 2.1646148000000003,
+    "heading": 315.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "442540255_8109780137_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.398055_2.164548",
+    "lat": 41.398054699999996,
+    "lon": 2.1645479,
+    "heading": 135.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "442540255_8109780137_0",
+    "dist_along_edge_m": 7.9
+  },
+  {
+    "id": "41.397948_2.164689",
+    "lat": 41.39794849999999,
+    "lon": 2.1646893000000005,
+    "heading": 315.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "442540255_9833663315_0",
+    "dist_along_edge_m": 8.8
+  },
+  {
+    "id": "41.398035_2.164739",
+    "lat": 41.3980348,
+    "lon": 2.1647387,
+    "heading": 250.6,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary",
+    "edge_id": "442540255_8109780138_0",
+    "dist_along_edge_m": 10.9
+  },
+  {
+    "id": "41.397724_2.164988",
+    "lat": 41.3977236,
+    "lon": 2.1649883000000005,
+    "heading": 251.1,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary",
+    "edge_id": "442540256_8109780136_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.397676_2.164810",
+    "lat": 41.3976761,
+    "lon": 2.1648098,
+    "heading": 71.1,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary",
+    "edge_id": "442540256_8109780136_0",
+    "dist_along_edge_m": 15.8
+  },
+  {
+    "id": "41.397771_2.164923",
+    "lat": 41.39777109999999,
+    "lon": 2.1649231,
+    "heading": 134.1,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "442540256_1864143448_0",
+    "dist_along_edge_m": 7.6
+  },
+  {
+    "id": "41.397760_2.165145",
+    "lat": 41.3977605,
+    "lon": 2.1651450000000008,
+    "heading": 255.3,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary",
+    "edge_id": "442540256_3207273500_0",
+    "dist_along_edge_m": 13.7
+  },
+  {
     "id": "41.398740_2.169077",
     "lat": 41.3987397,
     "lon": 2.1690765999999995,
@@ -440,6 +830,56 @@
     "dist_along_edge_m": 11.0
   },
   {
+    "id": "41.398436_2.166386",
+    "lat": 41.398435500000005,
+    "lon": 2.1663861,
+    "heading": 312.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "residential",
+    "edge_id": "1124790711_3207273472_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.398515_2.166270",
+    "lat": 41.398515,
+    "lon": 2.1662701999999996,
+    "heading": 132.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "residential",
+    "edge_id": "1124790711_3207273472_0",
+    "dist_along_edge_m": 13.1
+  },
+  {
+    "id": "41.398530_2.166515",
+    "lat": 41.3985301,
+    "lon": 2.1665148,
+    "heading": 225.6,
+    "street_name": "Carrer de Provença",
+    "highway_type": "residential",
+    "edge_id": "1124790711_7045171435_0",
+    "dist_along_edge_m": 15.0
+  },
+  {
+    "id": "41.398405_2.166233",
+    "lat": 41.39840469999999,
+    "lon": 2.1662329,
+    "heading": 75.9,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary",
+    "edge_id": "1124790711_3207273475_0",
+    "dist_along_edge_m": 13.3
+  },
+  {
+    "id": "41.398483_2.166577",
+    "lat": 41.39848299999999,
+    "lon": 2.1665766,
+    "heading": 252.6,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary",
+    "edge_id": "1124790711_8173291433_0",
+    "dist_along_edge_m": 16.8
+  },
+  {
     "id": "41.398151_2.166720",
     "lat": 41.398151399999996,
     "lon": 2.1667198,
@@ -468,6 +908,16 @@
     "highway_type": "living_street",
     "edge_id": "1126848499_8109780142_0",
     "dist_along_edge_m": 4.6
+  },
+  {
+    "id": "41.398122_2.166599",
+    "lat": 41.3981218,
+    "lon": 2.1665994,
+    "heading": 72.5,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary",
+    "edge_id": "1126848499_8109780145_0",
+    "dist_along_edge_m": 10.6
   },
   {
     "id": "41.398576_2.168417",
@@ -530,6 +980,66 @@
     "dist_along_edge_m": 12.3
   },
   {
+    "id": "41.397891_2.164766",
+    "lat": 41.3978905,
+    "lon": 2.1647664000000004,
+    "heading": 315.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "1311619392_9833663315_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.397934_2.164900",
+    "lat": 41.3979341,
+    "lon": 2.1649004,
+    "heading": 252.4,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "residential",
+    "edge_id": "1311619392_8109780139_0",
+    "dist_along_edge_m": 12.2
+  },
+  {
+    "id": "41.398334_2.166515",
+    "lat": 41.398333799999996,
+    "lon": 2.166515,
+    "heading": 73.5,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "residential",
+    "edge_id": "1311619424_12186361796_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.398359_2.166623",
+    "lat": 41.39835870000001,
+    "lon": 2.1666227000000005,
+    "heading": 253.5,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "residential",
+    "edge_id": "1311619424_12186361796_0",
+    "dist_along_edge_m": 9.4
+  },
+  {
+    "id": "41.398299_2.166363",
+    "lat": 41.398299099999996,
+    "lon": 2.1663632,
+    "heading": 73.4,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "residential",
+    "edge_id": "1311619424_8109780140_0",
+    "dist_along_edge_m": 13.3
+  },
+  {
+    "id": "41.398168_2.166532",
+    "lat": 41.39816849999999,
+    "lon": 2.1665315000000005,
+    "heading": 69.8,
+    "street_name": "Avinguda de la Diagonal",
+    "highway_type": "footway",
+    "edge_id": "1864143454_8109780144_0",
+    "dist_along_edge_m": 11.7
+  },
+  {
     "id": "41.398951_2.170301",
     "lat": 41.3989514,
     "lon": 2.1703009,
@@ -568,6 +1078,206 @@
     "highway_type": "footway",
     "edge_id": "1864143493_8173291432_0",
     "dist_along_edge_m": 10.9
+  },
+  {
+    "id": "41.394538_2.171508",
+    "lat": 41.3945383,
+    "lon": 2.1715082,
+    "heading": 315.6,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "2764476452_9556243972_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394625_2.171393",
+    "lat": 41.39462519999999,
+    "lon": 2.1713931000000004,
+    "heading": 135.6,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "2764476452_9556243972_0",
+    "dist_along_edge_m": 13.6
+  },
+  {
+    "id": "41.395211_2.171904",
+    "lat": 41.395211,
+    "lon": 2.1719040000000005,
+    "heading": 136.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "2764476452_11379729186_0",
+    "dist_along_edge_m": 101.7
+  },
+  {
+    "id": "41.394263_2.171870",
+    "lat": 41.3942631,
+    "lon": 2.1718701000000005,
+    "heading": 316.0,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "2764476452_11012409285_0",
+    "dist_along_edge_m": 43.0
+  },
+  {
+    "id": "41.395733_2.169604",
+    "lat": 41.3957331,
+    "lon": 2.1696043000000005,
+    "heading": 125.0,
+    "street_name": "",
+    "highway_type": "living_street",
+    "edge_id": "2819073400_13507818462_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395682_2.169756",
+    "lat": 41.3956821,
+    "lon": 2.1697555000000004,
+    "heading": 272.8,
+    "street_name": "",
+    "highway_type": "living_street",
+    "edge_id": "2819073400_13507818462_0",
+    "dist_along_edge_m": 14.3
+  },
+  {
+    "id": "41.395721_2.168428",
+    "lat": 41.39572110000001,
+    "lon": 2.1684275000000004,
+    "heading": 47.8,
+    "street_name": "Passatge de Pla",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640917_10021380965_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395763_2.168488",
+    "lat": 41.3957632,
+    "lon": 2.1684880000000004,
+    "heading": 227.8,
+    "street_name": "Passatge de Pla",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640917_10021380965_0",
+    "dist_along_edge_m": 6.9
+  },
+  {
+    "id": "41.396090_2.167934",
+    "lat": 41.3960904,
+    "lon": 2.1679342,
+    "heading": 135.4,
+    "street_name": "Passatge de les Escoles",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640917_7508581935_0",
+    "dist_along_edge_m": 58.2
+  },
+  {
+    "id": "41.395481_2.168108",
+    "lat": 41.395481499999995,
+    "lon": 2.1681077,
+    "heading": 51.2,
+    "street_name": "Passatge de Pla",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640917_7508581939_0",
+    "dist_along_edge_m": 37.7
+  },
+  {
+    "id": "41.395347_2.168927",
+    "lat": 41.395347499999986,
+    "lon": 2.1689269999999996,
+    "heading": 314.2,
+    "street_name": "Passatge de les escoles",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640917_4682076528_0",
+    "dist_along_edge_m": 58.9
+  },
+  {
+    "id": "41.396015_2.168788",
+    "lat": 41.396014799999996,
+    "lon": 2.1687876,
+    "heading": 224.3,
+    "street_name": "Passatge de Pla",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640918_10021380964_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395636_2.169297",
+    "lat": 41.39563559999999,
+    "lon": 2.1692973,
+    "heading": 315.2,
+    "street_name": "Passatge del Mercat",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640918_5791432277_0",
+    "dist_along_edge_m": 59.9
+  },
+  {
+    "id": "41.396296_2.169170",
+    "lat": 41.3962955,
+    "lon": 2.1691702000000004,
+    "heading": 224.7,
+    "street_name": "Passatge de Pla",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640918_3047640919_0",
+    "dist_along_edge_m": 44.7
+  },
+  {
+    "id": "41.396368_2.168308",
+    "lat": 41.396367899999994,
+    "lon": 2.1683084,
+    "heading": 135.0,
+    "street_name": "Passatge del Mercat",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640918_7508581934_0",
+    "dist_along_edge_m": 56.1
+  },
+  {
+    "id": "41.396578_2.168805",
+    "lat": 41.396578399999996,
+    "lon": 2.1688051000000006,
+    "heading": 136.4,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "3047640919_10182303359_0",
+    "dist_along_edge_m": 43.8
+  },
+  {
+    "id": "41.396012_2.169555",
+    "lat": 41.3960124,
+    "lon": 2.1695549999999995,
+    "heading": 314.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "3047640919_13507818460_0",
+    "dist_along_edge_m": 45.0
+  },
+  {
+    "id": "41.395569_2.169385",
+    "lat": 41.39556910000001,
+    "lon": 2.1693847,
+    "heading": 315.8,
+    "street_name": "Passatge del Mercat",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640921_5791432277_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395297_2.169023",
+    "lat": 41.39529739999999,
+    "lon": 2.1690226,
+    "heading": 315.2,
+    "street_name": "Passatge de les Escoles",
+    "highway_type": "service",
+    "edge_id": "3047640923_5791432261_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395357_2.168942",
+    "lat": 41.3953572,
+    "lon": 2.1689422,
+    "heading": 135.2,
+    "street_name": "Passatge de les Escoles",
+    "highway_type": "service",
+    "edge_id": "3047640923_5791432261_0",
+    "dist_along_edge_m": 9.4
   },
   {
     "id": "41.398262_2.168432",
@@ -614,7 +1324,7 @@
     "lat": 41.3966695,
     "lon": 2.1684535,
     "heading": 348.1,
-    "street_name": "Carrer de Girona",
+    "street_name": "Carrer de València",
     "highway_type": "living_street",
     "edge_id": "3184416467_12229016275_0",
     "dist_along_edge_m": 20.1
@@ -660,6 +1370,156 @@
     "dist_along_edge_m": 7.1
   },
   {
+    "id": "41.397430_2.165224",
+    "lat": 41.39743,
+    "lon": 2.1652238,
+    "heading": 320.5,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "3184416475_7045171440_0",
+    "dist_along_edge_m": 10.7
+  },
+  {
+    "id": "41.396598_2.166126",
+    "lat": 41.396597699999994,
+    "lon": 2.1661256,
+    "heading": 137.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "3184416480_8235449344_0",
+    "dist_along_edge_m": 6.2
+  },
+  {
+    "id": "41.396523_2.166218",
+    "lat": 41.3965229,
+    "lon": 2.1662175,
+    "heading": 317.7,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "3184416480_8235449336_0",
+    "dist_along_edge_m": 5.2
+  },
+  {
+    "id": "41.394300_2.169981",
+    "lat": 41.394300199999996,
+    "lon": 2.1699812000000005,
+    "heading": 45.2,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "3184416495_10182235271_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394826_2.170670",
+    "lat": 41.394826,
+    "lon": 2.1706703,
+    "heading": 225.2,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "3184416495_10182235271_0",
+    "dist_along_edge_m": 82.0
+  },
+  {
+    "id": "41.394288_2.169704",
+    "lat": 41.39428819999999,
+    "lon": 2.1697042999999994,
+    "heading": 75.6,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "3184416495_8319980481_0",
+    "dist_along_edge_m": 23.2
+  },
+  {
+    "id": "41.396068_2.165080",
+    "lat": 41.39606779999999,
+    "lon": 2.1650801000000004,
+    "heading": 230.3,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "3184416540_8205146853_0",
+    "dist_along_edge_m": 5.9
+  },
+  {
+    "id": "41.395752_2.164967",
+    "lat": 41.3957524,
+    "lon": 2.1649668000000006,
+    "heading": 135.5,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "3184416541_8205146879_0",
+    "dist_along_edge_m": 7.9
+  },
+  {
+    "id": "41.395654_2.165098",
+    "lat": 41.3956535,
+    "lon": 2.165098,
+    "heading": 315.6,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "3184416541_8205146881_0",
+    "dist_along_edge_m": 7.6
+  },
+  {
+    "id": "41.396920_2.163957",
+    "lat": 41.39692049999999,
+    "lon": 2.1639567,
+    "heading": 232.4,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "3184416545_7045171451_0",
+    "dist_along_edge_m": 5.7
+  },
+  {
+    "id": "41.396848_2.163833",
+    "lat": 41.39684759999999,
+    "lon": 2.1638334000000006,
+    "heading": 61.3,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "3184416545_7045171450_0",
+    "dist_along_edge_m": 7.5
+  },
+  {
+    "id": "41.396594_2.163835",
+    "lat": 41.3965944,
+    "lon": 2.1638346000000004,
+    "heading": 135.2,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "3184416547_7045171459_0",
+    "dist_along_edge_m": 4.1
+  },
+  {
+    "id": "41.396509_2.163949",
+    "lat": 41.39650940000001,
+    "lon": 2.1639492,
+    "heading": 315.1,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "3184416547_7045171461_0",
+    "dist_along_edge_m": 9.4
+  },
+  {
+    "id": "41.394903_2.163838",
+    "lat": 41.3949033,
+    "lon": 2.1638380000000006,
+    "heading": 139.1,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "3184416783_8205064275_0",
+    "dist_along_edge_m": 7.9
+  },
+  {
+    "id": "41.394791_2.163969",
+    "lat": 41.39479140000001,
+    "lon": 2.1639692000000004,
+    "heading": 319.1,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "3184416783_8205064282_0",
+    "dist_along_edge_m": 8.7
+  },
+  {
     "id": "41.399092_2.169527",
     "lat": 41.39909229999999,
     "lon": 2.1695265000000004,
@@ -700,6 +1560,26 @@
     "dist_along_edge_m": 9.2
   },
   {
+    "id": "41.398459_2.166212",
+    "lat": 41.398458999999995,
+    "lon": 2.166212,
+    "heading": 19.6,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "3207273472_7412690136_0",
+    "dist_along_edge_m": 8.0
+  },
+  {
+    "id": "41.398352_2.166298",
+    "lat": 41.39835169999999,
+    "lon": 2.1662980000000003,
+    "heading": 315.6,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "3207273475_9833715818_0",
+    "dist_along_edge_m": 8.0
+  },
+  {
     "id": "41.398149_2.166882",
     "lat": 41.39814870000001,
     "lon": 2.1668818,
@@ -708,6 +1588,126 @@
     "highway_type": "footway",
     "edge_id": "3207273476_7412690145_0",
     "dist_along_edge_m": 4.9
+  },
+  {
+    "id": "41.399452_2.165095",
+    "lat": 41.399452399999994,
+    "lon": 2.1650946,
+    "heading": 227.8,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "3207273483_8224714471_0",
+    "dist_along_edge_m": 4.7
+  },
+  {
+    "id": "41.399357_2.164969",
+    "lat": 41.399357099999996,
+    "lon": 2.164969,
+    "heading": 42.4,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "3207273483_8224714469_0",
+    "dist_along_edge_m": 10.2
+  },
+  {
+    "id": "41.398292_2.164387",
+    "lat": 41.39829160000001,
+    "lon": 2.164387000000001,
+    "heading": 228.2,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "3207273496_8224714477_0",
+    "dist_along_edge_m": 7.0
+  },
+  {
+    "id": "41.398530_2.164385",
+    "lat": 41.3985301,
+    "lon": 2.1643850999999996,
+    "heading": 315.9,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "footway",
+    "edge_id": "3207273497_8224714475_0",
+    "dist_along_edge_m": 7.7
+  },
+  {
+    "id": "41.398291_2.163819",
+    "lat": 41.39829089999999,
+    "lon": 2.1638188,
+    "heading": 138.8,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "footway",
+    "edge_id": "3207273498_6874436667_0",
+    "dist_along_edge_m": 7.7
+  },
+  {
+    "id": "41.397729_2.165170",
+    "lat": 41.39772889999999,
+    "lon": 2.1651697000000003,
+    "heading": 331.5,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "3207273500_7412690132_0",
+    "dist_along_edge_m": 4.1
+  },
+  {
+    "id": "41.394876_2.170930",
+    "lat": 41.394876100000005,
+    "lon": 2.1709297999999997,
+    "heading": 270.5,
+    "street_name": "",
+    "highway_type": "corridor",
+    "edge_id": "4375439885_13073262126_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395236_2.168772",
+    "lat": 41.3952356,
+    "lon": 2.168772,
+    "heading": 46.8,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "4682076528_5791432273_0",
+    "dist_along_edge_m": 18.0
+  },
+  {
+    "id": "41.394625_2.167953",
+    "lat": 41.394625399999995,
+    "lon": 2.167953,
+    "heading": 224.8,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "4682083407_5761303635_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394372_2.167625",
+    "lat": 41.394371799999995,
+    "lon": 2.1676245,
+    "heading": 44.8,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "4682083407_5761303635_0",
+    "dist_along_edge_m": 39.3
+  },
+  {
+    "id": "41.394915_2.168330",
+    "lat": 41.39491520000001,
+    "lon": 2.1683297,
+    "heading": 224.9,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "4682083407_5791432259_0",
+    "dist_along_edge_m": 45.0
+  },
+  {
+    "id": "41.395027_2.167414",
+    "lat": 41.3950267,
+    "lon": 2.1674135999999997,
+    "heading": 135.2,
+    "street_name": "Passatge del Rector Oliveras",
+    "highway_type": "pedestrian",
+    "edge_id": "4682083407_4682083408_0",
+    "dist_along_edge_m": 63.4
   },
   {
     "id": "41.397714_2.171899",
@@ -728,6 +1728,106 @@
     "highway_type": "footway",
     "edge_id": "4829396034_8207484551_0",
     "dist_along_edge_m": 16.8
+  },
+  {
+    "id": "41.395024_2.170960",
+    "lat": 41.3950237,
+    "lon": 2.1709596,
+    "heading": 135.6,
+    "street_name": "",
+    "highway_type": "corridor",
+    "edge_id": "5264057221_9556243972_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394291_2.167258",
+    "lat": 41.39429109999998,
+    "lon": 2.1672578000000002,
+    "heading": 314.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "5761303632_8205146845_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394799_2.166565",
+    "lat": 41.394798699999996,
+    "lon": 2.1665648,
+    "heading": 134.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "5761303632_8205146845_0",
+    "dist_along_edge_m": 80.8
+  },
+  {
+    "id": "41.394369_2.167339",
+    "lat": 41.394369100000006,
+    "lon": 2.1673385,
+    "heading": 222.1,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "5761303632_5761303644_0",
+    "dist_along_edge_m": 11.2
+  },
+  {
+    "id": "41.394255_2.167802",
+    "lat": 41.39425479999999,
+    "lon": 2.1678017,
+    "heading": 311.3,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5761303635_5761303642_0",
+    "dist_along_edge_m": 19.7
+  },
+  {
+    "id": "41.394761_2.168521",
+    "lat": 41.3947606,
+    "lon": 2.1685211,
+    "heading": 228.4,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5761303642_5791432272_0",
+    "dist_along_edge_m": 82.3
+  },
+  {
+    "id": "41.394499_2.167170",
+    "lat": 41.3944994,
+    "lon": 2.1671696000000003,
+    "heading": 136.2,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "5761303644_8205146900_0",
+    "dist_along_edge_m": 20.2
+  },
+  {
+    "id": "41.395193_2.168318",
+    "lat": 41.39519309999999,
+    "lon": 2.1683185,
+    "heading": 40.1,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791423724_5791423726_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395260_2.168399",
+    "lat": 41.39526049999999,
+    "lon": 2.1683991000000002,
+    "heading": 224.3,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791423724_5791423726_0",
+    "dist_along_edge_m": 10.1
+  },
+  {
+    "id": "41.395641_2.167664",
+    "lat": 41.3956413,
+    "lon": 2.1676638999999995,
+    "heading": 129.9,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791423724_8238778146_0",
+    "dist_along_edge_m": 74.0
   },
   {
     "id": "41.396951_2.170680",
@@ -790,6 +1890,16 @@
     "dist_along_edge_m": 20.0
   },
   {
+    "id": "41.396092_2.169899",
+    "lat": 41.396092100000004,
+    "lon": 2.169899,
+    "heading": 45.1,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791423731_5791423752_0",
+    "dist_along_edge_m": 81.8
+  },
+  {
     "id": "41.396800_2.171222",
     "lat": 41.3968004,
     "lon": 2.1712221999999994,
@@ -820,6 +1930,36 @@
     "dist_along_edge_m": 28.2
   },
   {
+    "id": "41.394732_2.168897",
+    "lat": 41.394732000000005,
+    "lon": 2.1688972,
+    "heading": 136.8,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791423738_8319980477_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394254_2.169505",
+    "lat": 41.3942541,
+    "lon": 2.1695048,
+    "heading": 316.8,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791423738_8319980477_0",
+    "dist_along_edge_m": 73.5
+  },
+  {
+    "id": "41.394815_2.168992",
+    "lat": 41.3948148,
+    "lon": 2.168992,
+    "heading": 222.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791423738_5791432265_0",
+    "dist_along_edge_m": 12.1
+  },
+  {
     "id": "41.397485_2.171734",
     "lat": 41.3974853,
     "lon": 2.1717345,
@@ -828,6 +1968,26 @@
     "highway_type": "footway",
     "edge_id": "5791423740_5791477122_0",
     "dist_along_edge_m": 84.0
+  },
+  {
+    "id": "41.395102_2.168959",
+    "lat": 41.39510249999999,
+    "lon": 2.1689585,
+    "heading": 46.8,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791423744_5791444594_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395609_2.169661",
+    "lat": 41.3956089,
+    "lon": 2.1696608,
+    "heading": 227.7,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791423744_5791444594_0",
+    "dist_along_edge_m": 81.3
   },
   {
     "id": "41.396473_2.171099",
@@ -840,6 +2000,66 @@
     "dist_along_edge_m": 0.0
   },
   {
+    "id": "41.395979_2.171763",
+    "lat": 41.3959786,
+    "lon": 2.1717628000000007,
+    "heading": 315.7,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "5791423749_8254596735_0",
+    "dist_along_edge_m": 78.1
+  },
+  {
+    "id": "41.396011_2.169792",
+    "lat": 41.3960105,
+    "lon": 2.1697924,
+    "heading": 45.1,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791423752_13284262436_0",
+    "dist_along_edge_m": 12.7
+  },
+  {
+    "id": "41.395951_2.170092",
+    "lat": 41.395951399999994,
+    "lon": 2.170092,
+    "heading": 311.7,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791423752_5791454373_0",
+    "dist_along_edge_m": 22.5
+  },
+  {
+    "id": "41.395488_2.169112",
+    "lat": 41.3954885,
+    "lon": 2.1691119,
+    "heading": 224.8,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791432261_10021380967_0",
+    "dist_along_edge_m": 20.3
+  },
+  {
+    "id": "41.394339_2.169631",
+    "lat": 41.3943392,
+    "lon": 2.1696314999999995,
+    "heading": 315.2,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791432265_8319980478_0",
+    "dist_along_edge_m": 75.1
+  },
+  {
+    "id": "41.396067_2.171876",
+    "lat": 41.39606690000001,
+    "lon": 2.1718761000000004,
+    "heading": 314.7,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "5791432266_8254596727_0",
+    "dist_along_edge_m": 77.9
+  },
+  {
     "id": "41.397390_2.169946",
     "lat": 41.3973901,
     "lon": 2.169946,
@@ -848,6 +2068,36 @@
     "highway_type": "footway",
     "edge_id": "5791432271_8238778169_0",
     "dist_along_edge_m": 77.2
+  },
+  {
+    "id": "41.395758_2.169456",
+    "lat": 41.39575789999999,
+    "lon": 2.1694555,
+    "heading": 224.8,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791432277_5791436942_0",
+    "dist_along_edge_m": 19.0
+  },
+  {
+    "id": "41.395919_2.169672",
+    "lat": 41.3959188,
+    "lon": 2.1696724999999994,
+    "heading": 225.4,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791436942_11012442311_0",
+    "dist_along_edge_m": 25.5
+  },
+  {
+    "id": "41.395772_2.169867",
+    "lat": 41.3957716,
+    "lon": 2.1698667,
+    "heading": 42.5,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791454373_13507818459_0",
+    "dist_along_edge_m": 27.5
   },
   {
     "id": "41.398158_2.170847",
@@ -1054,7 +2304,7 @@
     "lat": 41.39943009999998,
     "lon": 2.1695144000000006,
     "heading": 230.3,
-    "street_name": "Plaça de Mossèn Jacint Verdaguer",
+    "street_name": "Passeig de Sant Joan",
     "highway_type": "footway",
     "edge_id": "6855299009_11371054556_0",
     "dist_along_edge_m": 18.4
@@ -1084,7 +2334,7 @@
     "lat": 41.39855159999999,
     "lon": 2.1686287000000006,
     "heading": 137.0,
-    "street_name": "Carrer de Mallorca",
+    "street_name": "Carrer de Bailèn",
     "highway_type": "footway",
     "edge_id": "6855299018_7412690164_0",
     "dist_along_edge_m": 11.9
@@ -1120,6 +2370,136 @@
     "dist_along_edge_m": 4.9
   },
   {
+    "id": "41.396916_2.166532",
+    "lat": 41.39691619999999,
+    "lon": 2.1665322000000002,
+    "heading": 137.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "6855299022_8235449330_0",
+    "dist_along_edge_m": 7.5
+  },
+  {
+    "id": "41.396833_2.166634",
+    "lat": 41.396832899999986,
+    "lon": 2.1666345,
+    "heading": 317.9,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "6855299022_8235926374_0",
+    "dist_along_edge_m": 5.1
+  },
+  {
+    "id": "41.396861_2.166134",
+    "lat": 41.396861399999985,
+    "lon": 2.1661343000000004,
+    "heading": 50.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "6855299023_8235449335_0",
+    "dist_along_edge_m": 3.2
+  },
+  {
+    "id": "41.396064_2.165400",
+    "lat": 41.39606359999999,
+    "lon": 2.1654002,
+    "heading": 135.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "6855299025_8205146873_0",
+    "dist_along_edge_m": 6.9
+  },
+  {
+    "id": "41.395120_2.164371",
+    "lat": 41.3951197,
+    "lon": 2.1643708000000004,
+    "heading": 321.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "6855299026_8205064279_0",
+    "dist_along_edge_m": 6.8
+  },
+  {
+    "id": "41.395129_2.163833",
+    "lat": 41.39512899999999,
+    "lon": 2.1638331000000006,
+    "heading": 46.6,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "6855299027_8205064249_0",
+    "dist_along_edge_m": 7.6
+  },
+  {
+    "id": "41.395219_2.163956",
+    "lat": 41.395218500000006,
+    "lon": 2.1639565,
+    "heading": 224.0,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "6855299027_8205064251_0",
+    "dist_along_edge_m": 6.7
+  },
+  {
+    "id": "41.399033_2.165418",
+    "lat": 41.3990328,
+    "lon": 2.1654184000000005,
+    "heading": 44.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "6874436555_8224714464_0",
+    "dist_along_edge_m": 8.8
+  },
+  {
+    "id": "41.399163_2.164969",
+    "lat": 41.39916289999999,
+    "lon": 2.1649689999999997,
+    "heading": 133.8,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "footway",
+    "edge_id": "6874436556_6874436674_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.399067_2.165094",
+    "lat": 41.39906710000001,
+    "lon": 2.1650945,
+    "heading": 318.6,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "footway",
+    "edge_id": "6874436557_6874436674_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.398535_2.163823",
+    "lat": 41.3985352,
+    "lon": 2.1638227,
+    "heading": 51.8,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "6874436558_8224714472_0",
+    "dist_along_edge_m": 6.9
+  },
+  {
+    "id": "41.399475_2.165380",
+    "lat": 41.39947519999999,
+    "lon": 2.1653804000000005,
+    "heading": 138.2,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "footway",
+    "edge_id": "6874436675_8224714467_0",
+    "dist_along_edge_m": 8.4
+  },
+  {
+    "id": "41.399367_2.165511",
+    "lat": 41.3993673,
+    "lon": 2.1655111,
+    "heading": 318.2,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "footway",
+    "edge_id": "6874436675_8224714468_0",
+    "dist_along_edge_m": 7.8
+  },
+  {
     "id": "41.399062_2.167378",
     "lat": 41.3990623,
     "lon": 2.1673779,
@@ -1130,6 +2510,16 @@
     "dist_along_edge_m": 4.1
   },
   {
+    "id": "41.398536_2.166651",
+    "lat": 41.39853589999999,
+    "lon": 2.1666506000000005,
+    "heading": 55.3,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "7045171422_8340165865_0",
+    "dist_along_edge_m": 80.3
+  },
+  {
     "id": "41.399385_2.167233",
     "lat": 41.3993853,
     "lon": 2.1672325000000003,
@@ -1138,6 +2528,16 @@
     "highway_type": "footway",
     "edge_id": "7045171424_7045171431_0",
     "dist_along_edge_m": 26.8
+  },
+  {
+    "id": "41.398567_2.166458",
+    "lat": 41.39856730000001,
+    "lon": 2.1664579,
+    "heading": 45.9,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "7045171424_7045171436_0",
+    "dist_along_edge_m": 91.2
   },
   {
     "id": "41.399339_2.167764",
@@ -1154,7 +2554,7 @@
     "lat": 41.39980460000001,
     "lon": 2.1683492,
     "heading": 227.0,
-    "street_name": "Passeig de Sant Joan",
+    "street_name": "Carrer de Provença",
     "highway_type": "footway",
     "edge_id": "7045171427_8205986287_0",
     "dist_along_edge_m": 72.3
@@ -1188,6 +2588,76 @@
     "highway_type": "footway",
     "edge_id": "7045171430_7045171433_0",
     "dist_along_edge_m": 24.1
+  },
+  {
+    "id": "41.398708_2.166106",
+    "lat": 41.3987077,
+    "lon": 2.166106,
+    "heading": 103.8,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "7045171439_13404170211_0",
+    "dist_along_edge_m": 25.9
+  },
+  {
+    "id": "41.397426_2.165298",
+    "lat": 41.397425999999996,
+    "lon": 2.1652982000000005,
+    "heading": 274.6,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "7045171440_7045171443_0",
+    "dist_along_edge_m": 6.2
+  },
+  {
+    "id": "41.396830_2.164379",
+    "lat": 41.3968304,
+    "lon": 2.1643792000000004,
+    "heading": 51.9,
+    "street_name": "Carrer de Provença",
+    "highway_type": "footway",
+    "edge_id": "7045171440_7045171452_0",
+    "dist_along_edge_m": 97.2
+  },
+  {
+    "id": "41.397527_2.165430",
+    "lat": 41.3975266,
+    "lon": 2.1654298,
+    "heading": 226.1,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "7045171444_7045171445_0",
+    "dist_along_edge_m": 10.2
+  },
+  {
+    "id": "41.397585_2.165355",
+    "lat": 41.3975846,
+    "lon": 2.1653549,
+    "heading": 136.4,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "7045171445_8340165868_0",
+    "dist_along_edge_m": 9.0
+  },
+  {
+    "id": "41.396601_2.164376",
+    "lat": 41.396600899999996,
+    "lon": 2.1643765,
+    "heading": 357.1,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "7045171452_7045171458_0",
+    "dist_along_edge_m": 26.2
+  },
+  {
+    "id": "41.396510_2.164259",
+    "lat": 41.396510299999996,
+    "lon": 2.1642594,
+    "heading": 270.3,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "7045171456_7045171461_0",
+    "dist_along_edge_m": 0.0
   },
   {
     "id": "41.399816_2.169347",
@@ -1300,6 +2770,26 @@
     "dist_along_edge_m": 98.9
   },
   {
+    "id": "41.398080_2.164667",
+    "lat": 41.3980805,
+    "lon": 2.1646665,
+    "heading": 254.4,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "7412690128_8109780137_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.397886_2.165795",
+    "lat": 41.397886,
+    "lon": 2.1657954,
+    "heading": 252.1,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "7412690132_8340165869_0",
+    "dist_along_edge_m": 55.1
+  },
+  {
     "id": "41.398441_2.168478",
     "lat": 41.39844070000001,
     "lon": 2.1684782000000005,
@@ -1340,16 +2830,6 @@
     "dist_along_edge_m": 0.0
   },
   {
-    "id": "41.396578_2.168805",
-    "lat": 41.396578399999996,
-    "lon": 2.1688051000000006,
-    "heading": 1.1,
-    "street_name": "Carrer de Girona",
-    "highway_type": "living_street",
-    "edge_id": "7508581932_10182303359_0",
-    "dist_along_edge_m": 17.1
-  },
-  {
     "id": "41.396826_2.168908",
     "lat": 41.39682580000001,
     "lon": 2.1689082000000006,
@@ -1380,6 +2860,56 @@
     "dist_along_edge_m": 10.2
   },
   {
+    "id": "41.396238_2.168127",
+    "lat": 41.39623759999999,
+    "lon": 2.1681265,
+    "heading": 47.0,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "7508581934_10021380963_0",
+    "dist_along_edge_m": 21.0
+  },
+  {
+    "id": "41.395966_2.167769",
+    "lat": 41.3959658,
+    "lon": 2.1677694000000005,
+    "heading": 45.4,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "7508581935_7508581937_0",
+    "dist_along_edge_m": 19.5
+  },
+  {
+    "id": "41.395734_2.167784",
+    "lat": 41.3957343,
+    "lon": 2.1677835,
+    "heading": 316.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "7508581937_8238740384_0",
+    "dist_along_edge_m": 26.7
+  },
+  {
+    "id": "41.396062_2.167648",
+    "lat": 41.39606229999999,
+    "lon": 2.167648300000001,
+    "heading": 136.0,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "7508581937_8238740380_0",
+    "dist_along_edge_m": 14.8
+  },
+  {
+    "id": "41.394555_2.167254",
+    "lat": 41.3945553,
+    "lon": 2.1672545,
+    "heading": 229.4,
+    "street_name": "",
+    "highway_type": "footway",
+    "edge_id": "7551893144_8205146900_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
     "id": "41.399137_2.169428",
     "lat": 41.3991368,
     "lon": 2.1694285,
@@ -1398,6 +2928,46 @@
     "highway_type": "footway",
     "edge_id": "8109649158_9556243970_0",
     "dist_along_edge_m": 9.4
+  },
+  {
+    "id": "41.398031_2.164455",
+    "lat": 41.3980313,
+    "lon": 2.1644546000000005,
+    "heading": 72.6,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "8109780137_8173291439_0",
+    "dist_along_edge_m": 8.2
+  },
+  {
+    "id": "41.397985_2.164819",
+    "lat": 41.397984699999995,
+    "lon": 2.1648186000000003,
+    "heading": 303.5,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "8109780138_9833715817_0",
+    "dist_along_edge_m": 8.7
+  },
+  {
+    "id": "41.397872_2.164990",
+    "lat": 41.397872,
+    "lon": 2.1649897,
+    "heading": 308.2,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "8109780139_11947495070_0",
+    "dist_along_edge_m": 10.2
+  },
+  {
+    "id": "41.398239_2.166438",
+    "lat": 41.3982392,
+    "lon": 2.1664381,
+    "heading": 323.8,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "8109780140_11947482568_0",
+    "dist_along_edge_m": 9.1
   },
   {
     "id": "41.397702_2.167313",
@@ -1450,6 +3020,186 @@
     "dist_along_edge_m": 84.5
   },
   {
+    "id": "41.394275_2.164962",
+    "lat": 41.3942747,
+    "lon": 2.1649617,
+    "heading": 51.8,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064244_8205064245_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394357_2.165092",
+    "lat": 41.39435689999999,
+    "lon": 2.1650917,
+    "heading": 221.1,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064244_8205064245_0",
+    "dist_along_edge_m": 14.3
+  },
+  {
+    "id": "41.394809_2.164275",
+    "lat": 41.3948087,
+    "lon": 2.1642750000000004,
+    "heading": 138.2,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064244_8205064247_0",
+    "dist_along_edge_m": 82.6
+  },
+  {
+    "id": "41.394521_2.164878",
+    "lat": 41.394520699999994,
+    "lon": 2.1648778,
+    "heading": 136.0,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064245_12026709467_0",
+    "dist_along_edge_m": 25.5
+  },
+  {
+    "id": "41.394366_2.165396",
+    "lat": 41.39436629999999,
+    "lon": 2.165396,
+    "heading": 231.2,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064245_8205064285_0",
+    "dist_along_edge_m": 27.3
+  },
+  {
+    "id": "41.394880_2.164378",
+    "lat": 41.39488009999999,
+    "lon": 2.1643784,
+    "heading": 228.1,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064247_8205064281_0",
+    "dist_along_edge_m": 11.7
+  },
+  {
+    "id": "41.394288_2.165506",
+    "lat": 41.3942884,
+    "lon": 2.1655055,
+    "heading": 319.0,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8205064285_8205064297_0",
+    "dist_along_edge_m": 12.6
+  },
+  {
+    "id": "41.394895_2.166110",
+    "lat": 41.3948949,
+    "lon": 2.1661105,
+    "heading": 225.2,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8205064285_8205146887_0",
+    "dist_along_edge_m": 83.9
+  },
+  {
+    "id": "41.394815_2.166224",
+    "lat": 41.3948147,
+    "lon": 2.1662237000000006,
+    "heading": 226.5,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8205064297_8205146896_0",
+    "dist_along_edge_m": 83.8
+  },
+  {
+    "id": "41.394889_2.166665",
+    "lat": 41.3948887,
+    "lon": 2.1666651,
+    "heading": 212.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146845_8205146847_0",
+    "dist_along_edge_m": 13.3
+  },
+  {
+    "id": "41.395126_2.166627",
+    "lat": 41.395126499999996,
+    "lon": 2.166627,
+    "heading": 176.8,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146847_8205146898_0",
+    "dist_along_edge_m": 27.1
+  },
+  {
+    "id": "41.395667_2.165374",
+    "lat": 41.3956667,
+    "lon": 2.1653736,
+    "heading": 266.9,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146881_8205146883_0",
+    "dist_along_edge_m": 23.1
+  },
+  {
+    "id": "41.395741_2.165492",
+    "lat": 41.3957414,
+    "lon": 2.1654915000000003,
+    "heading": 229.1,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146883_8205146886_0",
+    "dist_along_edge_m": 12.9
+  },
+  {
+    "id": "41.395137_2.166099",
+    "lat": 41.39513699999999,
+    "lon": 2.1660992,
+    "heading": 315.7,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146883_8205146889_0",
+    "dist_along_edge_m": 84.5
+  },
+  {
+    "id": "41.395206_2.166224",
+    "lat": 41.3952055,
+    "lon": 2.1662241,
+    "heading": 315.9,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146886_8205146892_0",
+    "dist_along_edge_m": 85.5
+  },
+  {
+    "id": "41.395209_2.166522",
+    "lat": 41.3952086,
+    "lon": 2.1665216999999997,
+    "heading": 265.0,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146892_8205146894_0",
+    "dist_along_edge_m": 25.4
+  },
+  {
+    "id": "41.395746_2.167220",
+    "lat": 41.395746200000005,
+    "lon": 2.1672201,
+    "heading": 223.3,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8205146894_8238740382_0",
+    "dist_along_edge_m": 83.5
+  },
+  {
+    "id": "41.395661_2.167348",
+    "lat": 41.3956608,
+    "lon": 2.1673484,
+    "heading": 225.6,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8205146898_8238778144_0",
+    "dist_along_edge_m": 84.6
+  },
+  {
     "id": "41.397698_2.170047",
     "lat": 41.3976984,
     "lon": 2.1700473,
@@ -1474,7 +3224,7 @@
     "lat": 41.39899929999999,
     "lon": 2.1704698,
     "heading": 137.1,
-    "street_name": "Plaça de Mossèn Jacint Verdaguer",
+    "street_name": "Passeig de Sant Joan",
     "highway_type": "footway",
     "edge_id": "8207484549_11829063598_0",
     "dist_along_edge_m": 56.7
@@ -1488,6 +3238,46 @@
     "highway_type": "footway",
     "edge_id": "8235449323_11371360365_0",
     "dist_along_edge_m": 10.1
+  },
+  {
+    "id": "41.396508_2.166554",
+    "lat": 41.3965076,
+    "lon": 2.166554,
+    "heading": 274.0,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "8235449336_8235449342_0",
+    "dist_along_edge_m": 28.2
+  },
+  {
+    "id": "41.396574_2.166640",
+    "lat": 41.396573999999994,
+    "lon": 2.1666397000000006,
+    "heading": 359.7,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "8235449340_8235926374_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.396043_2.167357",
+    "lat": 41.396043,
+    "lon": 2.1673571,
+    "heading": 316.6,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "8235449340_8238778151_0",
+    "dist_along_edge_m": 84.1
+  },
+  {
+    "id": "41.396281_2.166865",
+    "lat": 41.39628069999999,
+    "lon": 2.1668645000000004,
+    "heading": 314.7,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "8235449342_11125479492_0",
+    "dist_along_edge_m": 36.2
   },
   {
     "id": "41.397524_2.167331",
@@ -1518,6 +3308,26 @@
     "highway_type": "footway",
     "edge_id": "8235926378_11411061799_0",
     "dist_along_edge_m": 12.2
+  },
+  {
+    "id": "41.396219_2.167863",
+    "lat": 41.39621929999999,
+    "lon": 2.1678626,
+    "heading": 226.3,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8238740380_12259551372_0",
+    "dist_along_edge_m": 25.0
+  },
+  {
+    "id": "41.395995_2.167267",
+    "lat": 41.395995199999994,
+    "lon": 2.1672674000000005,
+    "heading": 184.1,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8238740382_8238778148_0",
+    "dist_along_edge_m": 28.6
   },
   {
     "id": "41.396908_2.168788",
@@ -1565,8 +3375,168 @@
     "lon": 2.1673719,
     "heading": 82.0,
     "street_name": "",
-    "highway_type": "footway",
+    "highway_type": "corridor",
     "edge_id": "8254596724_13421392911_0",
     "dist_along_edge_m": 48.2
+  },
+  {
+    "id": "41.395990_2.171979",
+    "lat": 41.395989599999986,
+    "lon": 2.1719787999999998,
+    "heading": 315.5,
+    "street_name": "Carrer de Bailèn",
+    "highway_type": "footway",
+    "edge_id": "8254596727_8254596729_0",
+    "dist_along_edge_m": 12.1
+  },
+  {
+    "id": "41.395913_2.171842",
+    "lat": 41.39591250000001,
+    "lon": 2.1718423,
+    "heading": 28.3,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "8254596729_11142021996_0",
+    "dist_along_edge_m": 15.0
+  },
+  {
+    "id": "41.394847_2.170761",
+    "lat": 41.39484699999999,
+    "lon": 2.1707608,
+    "heading": 253.4,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "pedestrian",
+    "edge_id": "8336103076_10182235271_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394828_2.170929",
+    "lat": 41.3948278,
+    "lon": 2.1709288,
+    "heading": 270.8,
+    "street_name": "",
+    "highway_type": "steps",
+    "edge_id": "8336103076_9556294662_0",
+    "dist_along_edge_m": 14.6
+  },
+  {
+    "id": "41.394852_2.171093",
+    "lat": 41.3948516,
+    "lon": 2.1710929,
+    "heading": 135.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "9556243972_10182235269_0",
+    "dist_along_edge_m": 35.5
+  },
+  {
+    "id": "41.396232_2.167843",
+    "lat": 41.396231500000006,
+    "lon": 2.1678426,
+    "heading": 129.6,
+    "street_name": "",
+    "highway_type": "service",
+    "edge_id": "9700799471_12259551372_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.396210_2.168164",
+    "lat": 41.396209899999995,
+    "lon": 2.1681635000000004,
+    "heading": 315.4,
+    "street_name": "",
+    "highway_type": "steps",
+    "edge_id": "10021380962_10021380963_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395146_2.171102",
+    "lat": 41.39514569999999,
+    "lon": 2.1711016,
+    "heading": 46.0,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "10182235268_10893766825_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.395687_2.171831",
+    "lat": 41.395687,
+    "lon": 2.1718313999999994,
+    "heading": 226.0,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "10182235268_10893766825_0",
+    "dist_along_edge_m": 85.6
+  },
+  {
+    "id": "41.395000_2.170908",
+    "lat": 41.39499959999999,
+    "lon": 2.1709084000000005,
+    "heading": 44.7,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "footway",
+    "edge_id": "10182235268_11142084213_0",
+    "dist_along_edge_m": 22.9
+  },
+  {
+    "id": "41.395165_2.170670",
+    "lat": 41.3951647,
+    "lon": 2.1706701000000006,
+    "heading": 57.2,
+    "street_name": "Carrer de Girona",
+    "highway_type": "pedestrian",
+    "edge_id": "10182235268_10182235270_0",
+    "dist_along_edge_m": 39.0
+  },
+  {
+    "id": "41.395676_2.169985",
+    "lat": 41.395675700000005,
+    "lon": 2.1699849999999996,
+    "heading": 135.3,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "10182235270_11012442316_0",
+    "dist_along_edge_m": 80.6
+  },
+  {
+    "id": "41.395812_2.171982",
+    "lat": 41.395812199999995,
+    "lon": 2.1719822000000004,
+    "heading": 226.1,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "footway",
+    "edge_id": "10893766825_12230315701_0",
+    "dist_along_edge_m": 18.8
+  },
+  {
+    "id": "41.395991_2.169948",
+    "lat": 41.39599119999999,
+    "lon": 2.169948,
+    "heading": 279.9,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "living_street",
+    "edge_id": "11012442310_13284262436_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.396223_2.166775",
+    "lat": 41.3962227,
+    "lon": 2.1667751000000006,
+    "heading": 49.8,
+    "street_name": "",
+    "highway_type": "service",
+    "edge_id": "11125479491_11125479492_0",
+    "dist_along_edge_m": 0.0
+  },
+  {
+    "id": "41.394476_2.164811",
+    "lat": 41.3944759,
+    "lon": 2.1648112,
+    "heading": 50.6,
+    "street_name": "",
+    "highway_type": "service",
+    "edge_id": "12026709467_12026722169_0",
+    "dist_along_edge_m": 7.5
   }
 ]

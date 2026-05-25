@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100902",
+    "latitude": 41.3956667,
+    "longitude": 2.1653736,
+    "heading": 266.9,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146881_8205146883_0",
+    "dist_along_edge_m": 23.1,
+    "source_image": "sv_41.395667_2.165374_h266.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25355.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A sunny day in a city street featuring a mix of pedestrian walkways, vehicle lanes, and green spaces.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "natural sunlight through scattered clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight from above",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalized"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "palm trees lining the sidewalk",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "small deciduous trees along the road",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "trees behind buildings",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic lampposts with decorative details",
+        "material": "metallic",
+        "colour": "silver-grey",
+        "style": "ornate",
+        "scale": "tall"
+      },
+      {
+        "zone": "center",
+        "element": "traffic lights",
+        "material": "metallic",
+        "colour": "black",
+        "style": "standard",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "parking meters",
+        "material": "metallic",
+        "colour": "black",
+        "style": "modern",
+        "scale": "small"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

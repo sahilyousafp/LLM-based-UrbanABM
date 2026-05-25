@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101247",
+    "latitude": 41.39628069999999,
+    "longitude": 2.1668645000000004,
+    "heading": 314.7,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "8235449342_11125479492_0",
+    "dist_along_edge_m": 36.2,
+    "source_image": "sv_41.396281_2.166865_h314.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20918.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined residential street with moderate vehicle traffic and parked cars along both sides.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead sunlight filtering through trees",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "overhead sunlight filtering through trees",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "overhead sunlight filtering through trees",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "smaller mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "smaller mature trees with green foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic lampposts with frosted glass globes",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "metallic lampposts with frosted glass globes",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "metallic lampposts with frosted glass globes",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Barcelona",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "Errocera ERUC",
+        "zone": "far_left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

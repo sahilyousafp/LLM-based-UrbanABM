@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091720",
+    "latitude": 41.3980348,
+    "longitude": 2.1647387,
+    "heading": 250.6,
+    "street_name": "Avinguda Diagonal (lateral muntanya)",
+    "highway_type": "tertiary",
+    "edge_id": "442540255_8109780138_0",
+    "dist_along_edge_m": 10.9,
+    "source_image": "sv_41.398035_2.164739_h250.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 21976.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A wide, tree-lined street with historic architecture and minimal pedestrian or vehicular traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky with diffused light",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky with diffused light",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic bollards with red caps",
+        "material": "metallic",
+        "colour": "red",
+        "scale": "small",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "metallic bollards with red caps",
+        "material": "metallic",
+        "colour": "red",
+        "scale": "small",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

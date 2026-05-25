@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101119",
+    "latitude": 41.3956608,
+    "longitude": 2.1673484,
+    "heading": 225.6,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "8205146898_8238778144_0",
+    "dist_along_edge_m": 84.6,
+    "source_image": "sv_41.395661_2.167348_h225.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 21959.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with trees and buildings, featuring a wide road section with zebra crossings and sidewalks.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "building facade with balconies",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along building facades",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal bollards",
+        "material_and_colour": "red",
+        "presence": "several"
+      },
+      {
+        "zone": "left",
+        "element": "trash bins",
+        "material_and_colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles parked along curb",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

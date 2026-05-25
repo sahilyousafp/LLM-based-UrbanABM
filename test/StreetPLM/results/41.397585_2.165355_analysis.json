@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "timestamp": "20260525_095936",
+    "latitude": 41.3975846,
+    "longitude": 2.1653549,
+    "heading": 136.4,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "7045171445_8340165868_0",
+    "dist_along_edge_m": 9.0,
+    "source_image": "sv_41.397585_2.165355_h136.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25768.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide sidewalks, moderate vehicle traffic, and large deciduous trees lining both sides.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse sunlight through leafy trees",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight from above",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous trees with lush foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "smaller deciduous trees along the road edges",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curbside",
+        "material": "metal",
+        "colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "left",
+        "element": "pedestrian crosswalk markings",
+        "material": "painted white lines",
+        "scale": "road marking"
+      },
+      {
+        "zone": "right",
+        "element": "traffic signal pole with red light illuminated",
+        "material": "metallic",
+        "colour": "red",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "CICLOVIA",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "CICLOVIA",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

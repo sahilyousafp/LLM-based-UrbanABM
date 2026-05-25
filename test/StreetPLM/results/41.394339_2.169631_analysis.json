@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "timestamp": "20260525_095029",
+    "latitude": 41.3943392,
+    "longitude": 2.1696314999999995,
+    "heading": 315.2,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "footway",
+    "edge_id": "5791432265_8319980478_0",
+    "dist_along_edge_m": 75.1,
+    "source_image": "sv_41.394339_2.169631_h315.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20775.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street scene with closed storefronts, parked cars, and pedestrians near a commercial area.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead streetlights",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overhead streetlights",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overhead streetlights",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare deciduous trees without leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "potted plants along the road",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "potted plants along the road",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal folding chairs and tables",
+        "material": "metal",
+        "colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "parked cars",
+        "material": "metal",
+        "colour": "various",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "garage doors",
+        "material": "metal",
+        "colour": "silver",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "BERTOCCHI",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "Santander",
+        "zone": "far_left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

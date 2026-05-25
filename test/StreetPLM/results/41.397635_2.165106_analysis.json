@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "timestamp": "20260525_090642",
+    "latitude": 41.397635,
+    "longitude": 2.1651062000000003,
+    "heading": 135.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30238032_7045171447_0",
+    "dist_along_edge_m": 11.7,
+    "source_image": "sv_41.397635_2.165106_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19245.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with wide roads, moderate greenery, and parked motorcycles.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "direct overhead sunlight",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead sunlight",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "direct overhead sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees along curbside",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "large deciduous trees lining street",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curb",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "motorcycles parked along curb",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles parked along curb",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

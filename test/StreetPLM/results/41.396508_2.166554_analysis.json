@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101144",
+    "latitude": 41.3965076,
+    "longitude": 2.166554,
+    "heading": 274.0,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "8235449336_8235449342_0",
+    "dist_along_edge_m": 28.2,
+    "source_image": "sv_41.396508_2.166554_h274.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24451.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with mixed traffic and moderate vegetation, transitioning to a more open area towards the right.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "sunlight through tree branches",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "overhead sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "various potted plants including ferns and succulents",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "large mature trees providing shade",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along curbside",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curb",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "white van parked on road",
+        "material": "plastic",
+        "colour": "white",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "cars driving on road",
+        "material": "metallic",
+        "colour": "varied",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

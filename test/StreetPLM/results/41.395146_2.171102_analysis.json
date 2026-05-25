@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "timestamp": "20260525_101637",
+    "latitude": 41.39514569999999,
+    "longitude": 2.1711016,
+    "heading": 46.0,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "10182235268_10893766825_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.395146_2.171102_h46.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 21347.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined plaza area with pedestrians and parked vehicle, featuring a mix of shaded and sunlit areas.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "dappled shade from dense tree canopy",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous tree with broad leaves",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along building facade",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white delivery truck",
+        "material": "metallic",
+        "colour": "white",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "metal railing along sidewalk",
+        "material": "metallic",
+        "colour": "silver",
+        "presence": "one"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

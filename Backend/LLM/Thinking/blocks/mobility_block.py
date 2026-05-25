@@ -227,8 +227,9 @@ class MobilityBlock(Block):
             candidates=prompt_cands,
             street_perception=street_perception,
             destination=destination,
-            path_hint_edge_id=dijkstra_edge_id,
+            path_hint_edge_id=None,           # suppress GPS label on free steps — compass direction used instead
             path_hint_direction=dijkstra_edge_direction,
+            next_waypoint={"lon": next_node[0], "lat": next_node[1]} if next_node else None,
             preferences=preferences,
             explore_budget=explore_budget,
             free_steps_remaining=free_steps_remaining,

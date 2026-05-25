@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100609",
+    "latitude": 41.39436629999999,
+    "longitude": 2.165396,
+    "heading": 231.2,
+    "street_name": "Carrer de Pau Claris",
+    "highway_type": "footway",
+    "edge_id": "8205064245_8205064285_0",
+    "dist_along_edge_m": 27.3,
+    "source_image": "sv_41.394366_2.165396_h231.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 18822.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with buildings and trees, featuring wide roads with minimal traffic and open sidewalks.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "various leafy trees along sidewalks",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "leafy trees lining streets",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "trash bins made of grey plastic",
+        "material": "plastic",
+        "colour": "grey",
+        "scale": "small",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "parking meters attached to poles",
+        "material": "metallic",
+        "colour": "silver",
+        "scale": "small",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

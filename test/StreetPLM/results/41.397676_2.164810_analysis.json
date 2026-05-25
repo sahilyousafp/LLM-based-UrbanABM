@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091759",
+    "latitude": 41.3976761,
+    "longitude": 2.1648098,
+    "heading": 71.1,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary",
+    "edge_id": "442540256_8109780136_0",
+    "dist_along_edge_m": 15.8,
+    "source_image": "sv_41.397676_2.164810_h71.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 17198.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with mixed traffic including bicycles, pedestrians, and vehicles, featuring wide sidewalks and a mix of modern and traditional architecture.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through sparse trees",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight from above",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young deciduous trees with spring foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "bare winter trees",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white bicycle lane markings",
+        "material": "paint",
+        "style": "simple",
+        "scale": "large"
+      },
+      {
+        "zone": "right",
+        "element": "dark stone balustrades along building facade",
+        "material": "stone",
+        "style": "ornamental",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "diáfaro",
+        "zone": "center",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

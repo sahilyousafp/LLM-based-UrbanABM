@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100408",
+    "latitude": 41.397872,
+    "longitude": 2.1649897,
+    "heading": 308.2,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "8109780139_11947495070_0",
+    "dist_along_edge_m": 10.2,
+    "source_image": "sv_41.397872_2.164990_h308.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 22457.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with wide roads, sparse pedestrian activity, and large billboard advertisement.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "blue sky with scattered clouds",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "blue sky with scattered clouds",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "leafless deciduous trees with thin branches",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small leafy trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole with green light",
+        "material_and_colour": "metallic grey",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "blue directional road signs",
+        "material_and_colour": "metallic blue",
+        "presence": "two"
+      },
+      {
+        "zone": "right",
+        "element": "blue temporary fencing barriers",
+        "material_and_colour": "plastic blue",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "HUAWEI",
+        "zone": "far_right",
+        "type": "billboard"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

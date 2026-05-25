@@ -1,0 +1,132 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091658",
+    "latitude": 41.39794849999999,
+    "longitude": 2.1646893000000005,
+    "heading": 315.5,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "442540255_9833663315_0",
+    "dist_along_edge_m": 8.8,
+    "source_image": "sv_41.397948_2.164689_h315.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26670.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with moderate vehicle traffic and pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "various deciduous trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "small evergreen bushes",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "potted plants along building facades",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "red public transport bus",
+        "material": "metallic",
+        "colour": "red",
+        "presence": "one"
+      },
+      {
+        "zone": "left",
+        "element": "black car",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "pedestrian crossing signal pole",
+        "material": "metallic",
+        "colour": "white",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "glass storefront windows",
+        "material": "glass",
+        "colour": "transparent",
+        "presence": "many"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "TIBIDABO",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "timestamp": "20260525_090707",
+    "latitude": 41.3975019,
+    "longitude": 2.1651379000000004,
+    "heading": 41.4,
+    "street_name": "Carrer de Provença",
+    "highway_type": "residential",
+    "edge_id": "30238032_3184416475_0",
+    "dist_along_edge_m": 8.6,
+    "source_image": "sv_41.397502_2.165138_h41.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24726.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban intersection with wide roads, open enclosures, and minimal vehicle and pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "blue sky without clouds",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "blue sky without clouds",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "blue sky without clouds",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small leafless trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small leafless trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small leafless trees along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal bicycle racks",
+        "material_and_colour": "silver",
+        "scale": "small",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "metal bicycle racks",
+        "material_and_colour": "silver",
+        "scale": "small",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycle parking spaces",
+        "material_and_colour": "black",
+        "scale": "large",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

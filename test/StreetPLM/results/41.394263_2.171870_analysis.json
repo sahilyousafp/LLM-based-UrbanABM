@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092522",
+    "latitude": 41.3942631,
+    "longitude": 2.1718701000000005,
+    "heading": 316.0,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "2764476452_11012409285_0",
+    "dist_along_edge_m": 43.0,
+    "source_image": "sv_41.394263_2.171870_h316.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20053.9,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Quiet urban street with wide sidewalks and moderate vegetation along both sides.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous tree with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small deciduous tree with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "large deciduous tree with green foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "concrete planter box with small tree",
+        "material": "concrete",
+        "colour": "brown",
+        "style": "simple",
+        "scale": "small"
+      },
+      {
+        "zone": "center",
+        "element": "concrete planter box with small tree",
+        "material": "concrete",
+        "colour": "brown",
+        "style": "simple",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "concrete planter box with small tree",
+        "material": "concrete",
+        "colour": "brown",
+        "style": "simple",
+        "scale": "small"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

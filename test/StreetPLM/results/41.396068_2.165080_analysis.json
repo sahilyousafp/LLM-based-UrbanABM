@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093325",
+    "latitude": 41.39606779999999,
+    "longitude": 2.1650801000000004,
+    "heading": 230.3,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "3184416540_8205146853_0",
+    "dist_along_edge_m": 5.9,
+    "source_image": "sv_41.396068_2.165080_h230.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26834.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Classically styled building frontage with pedestrians walking along a wide, tree-lined sidewalk under bright daylight conditions.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "soft afternoon sunlight filtering through trees",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young deciduous trees with thin trunks and sparse foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "established leafy trees providing dappled shade",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron lamppost with frosted glass coverings",
+        "material": "metallic",
+        "colour": "dark grey",
+        "style": "ornate",
+        "scale": "tall"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signal pole",
+        "material": "metallic",
+        "colour": "black",
+        "style": "standard",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "brown wooden door with decorative trim",
+        "material": "wood",
+        "colour": "brown",
+        "style": "classical",
+        "scale": "large"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "far_left",
+        "type": "label"
+      },
+      {
+        "text": "© Google",
+        "zone": "far_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

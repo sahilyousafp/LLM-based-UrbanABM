@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092828",
+    "latitude": 41.3962955,
+    "longitude": 2.1691702000000004,
+    "heading": 224.7,
+    "street_name": "Passatge de Pla",
+    "highway_type": "pedestrian",
+    "edge_id": "3047640918_3047640919_0",
+    "dist_along_edge_m": 44.7,
+    "source_image": "sv_41.396296_2.169170_h224.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 19507.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban plaza with mixed-use buildings featuring shops and residential apartments, surrounded by modest greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "large deciduous tree",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous tree",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black metal bicycle rack",
+        "material": "metal",
+        "colour": "black",
+        "scale": "small"
+      },
+      {
+        "zone": "center",
+        "element": "black metal bench",
+        "material": "metal",
+        "colour": "black",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "black metal bench",
+        "material": "metal",
+        "colour": "black",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "TABACS",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

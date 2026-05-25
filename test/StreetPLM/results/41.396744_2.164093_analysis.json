@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "timestamp": "20260525_090419",
+    "latitude": 41.396743699999995,
+    "longitude": 2.1640934000000005,
+    "heading": 316.0,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "secondary",
+    "edge_id": "30238031_3184416545_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.396744_2.164093_h316.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 29771.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with historic architecture and minimal vehicular traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffuse natural light through scattered clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "diffuse natural light through scattered clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "diffuse natural light through scattered clouds",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "medium-sized leafy trees along sidewalks",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "smaller trees and bushes between buildings",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "trees lining the street",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white van parked on curb",
+        "material": "metallic",
+        "colour": "white",
+        "presence": "one"
+      },
+      {
+        "zone": "left",
+        "element": "motorcycle parked near curb",
+        "material": "metallic",
+        "colour": "black/silver",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "car parked on street",
+        "material": "metallic",
+        "colour": "silver/black",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycle parked near curb",
+        "material": "metallic",
+        "colour": "black/silver",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom-left",
+        "type": "watermark"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom-right",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

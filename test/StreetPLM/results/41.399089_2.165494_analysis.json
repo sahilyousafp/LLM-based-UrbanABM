@@ -1,0 +1,154 @@
+{
+  "metadata": {
+    "timestamp": "20260525_090844",
+    "latitude": 41.399088799999994,
+    "longitude": 2.1654936999999994,
+    "heading": 316.0,
+    "street_name": "Carrer de Girona",
+    "highway_type": "residential",
+    "edge_id": "30243245_6874436555_0",
+    "dist_along_edge_m": 28.9,
+    "source_image": "sv_41.399089_2.165494_h316.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 32571.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide lanes, moderate greenery, and few pedestrians or vehicles.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature leafy trees",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "smaller deciduous trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "potted plants along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black asphalt road surface",
+        "material": "asphalt",
+        "colour": "black",
+        "scale": "wide",
+        "presence": "many"
+      },
+      {
+        "zone": "left",
+        "element": "white crosswalk markings",
+        "material": "paint",
+        "colour": "white",
+        "scale": "moderate",
+        "presence": "many"
+      },
+      {
+        "zone": "right",
+        "element": "metallic traffic signs",
+        "material": "metal",
+        "colour": "red/white",
+        "scale": "small",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "trash bins",
+        "material": "metal",
+        "colour": "black",
+        "scale": "medium",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "sidewalks with lampposts",
+        "material": "concrete",
+        "colour": "grey",
+        "scale": "wide",
+        "presence": "many"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "11",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

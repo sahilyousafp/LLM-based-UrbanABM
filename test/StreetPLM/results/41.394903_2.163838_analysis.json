@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093635",
+    "latitude": 41.3949033,
+    "longitude": 2.1638380000000006,
+    "heading": 139.1,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "footway",
+    "edge_id": "3184416783_8205064275_0",
+    "dist_along_edge_m": 7.9,
+    "source_image": "sv_41.394903_2.163838_h139.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 25176.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view featuring a commercial establishment with pedestrians walking by, surrounded by greenery and parked scooters.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead diffused sunlight through tree branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "shaded area under large tree",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature tree with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants along building facade",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole with red pedestrian signal illuminated",
+        "material_and_colour": "metallic silver",
+        "presence": "one"
+      },
+      {
+        "zone": "center",
+        "element": "blue motorbike parked against curb",
+        "material_and_colour": "blue",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycle parked against curb",
+        "material_and_colour": "blue",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "SKEYNDOR",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "QUEEN GOOD",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

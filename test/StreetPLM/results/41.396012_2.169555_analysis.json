@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092911",
+    "latitude": 41.3960124,
+    "longitude": 2.1695549999999995,
+    "heading": 314.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "living_street",
+    "edge_id": "3047640919_13507818460_0",
+    "dist_along_edge_m": 45.0,
+    "source_image": "sv_41.396012_2.169555_h314.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 21589.4,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Outdoor café area with people dining under a blue awning in a wide, open plaza surrounded by trees.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "blue awning providing shade",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large deciduous tree with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "small potted plants along the road edge",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white car parked along the road",
+        "material_and_colour": "white",
+        "style": "sedan",
+        "scale": "compact"
+      },
+      {
+        "zone": "right",
+        "element": "people sitting at outdoor tables under blue awning",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "La Particcela",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "La",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

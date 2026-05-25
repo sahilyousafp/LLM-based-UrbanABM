@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "timestamp": "20260525_090929",
+    "latitude": 41.399112200000005,
+    "longitude": 2.1650407000000005,
+    "heading": 44.7,
+    "street_name": "Carrer del Rosselló",
+    "highway_type": "secondary",
+    "edge_id": "30243245_6874436674_0",
+    "dist_along_edge_m": 25.2,
+    "source_image": "sv_41.399112_2.165041_h44.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 17719.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined street with wide lanes, open sidewalks, and moderate vehicle traffic under bright daylight.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through leafy branches",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight on road surface",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "shade from large tree",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "smaller deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "leafy trees with green foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic trash bins with lids",
+        "material": "metal",
+        "colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "white van parked along curb",
+        "material": "metal",
+        "colour": "white",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "trash bins with lids",
+        "material": "metal",
+        "colour": "black",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

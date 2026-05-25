@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "timestamp": "20260525_093209",
+    "latitude": 41.394300199999996,
+    "longitude": 2.1699812000000005,
+    "heading": 45.2,
+    "street_name": "Carrer del Consell de Cent",
+    "highway_type": "living_street",
+    "edge_id": "3184416495_10182235271_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.394300_2.169981_h45.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 28086.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street lined with buildings featuring balconies and signage, with moderate pedestrian and vehicular traffic.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead diffused sunlight through clouds",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead diffused sunlight through clouds",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "right",
+        "element": "small deciduous trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black metal railing with ornate details",
+        "material": "metallic",
+        "colour": "black",
+        "style": "decorative",
+        "scale": "medium"
+      },
+      {
+        "zone": "left",
+        "element": "white wall-mounted signage",
+        "material": "plastic",
+        "colour": "white",
+        "style": "plain",
+        "scale": "small"
+      },
+      {
+        "zone": "center",
+        "element": "yellow banner with text",
+        "material": "paper",
+        "colour": "yellow",
+        "style": "promotional",
+        "scale": "large"
+      },
+      {
+        "zone": "right",
+        "element": "white truck with red accents",
+        "material": "metallic",
+        "colour": "white/red",
+        "style": "utility",
+        "scale": "large"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "CENTR MEDIC",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "BASS",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "SOLVAY",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

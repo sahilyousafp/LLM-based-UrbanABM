@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094939",
+    "latitude": 41.395951399999994,
+    "longitude": 2.170092,
+    "heading": 311.7,
+    "street_name": "Carrer d'Aragó",
+    "highway_type": "footway",
+    "edge_id": "5791423752_5791454373_0",
+    "dist_along_edge_m": 22.5,
+    "source_image": "sv_41.395951_2.170092_h311.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 26503.3,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street scene with wide roads, minimal traffic, and moderate greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small green shrubs along the sidewalk",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "large mature trees providing partial shade",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small green bushes lining the sidewalk",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black asphalt road surface",
+        "material": "asphalt",
+        "colour": "black",
+        "style": "smooth",
+        "scale": "wide"
+      },
+      {
+        "zone": "center",
+        "element": "white crosswalk markings",
+        "material": "paint",
+        "colour": "white",
+        "style": "rectangular",
+        "scale": "wide"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycle parking area",
+        "material": "concrete",
+        "colour": "gray",
+        "style": "paved",
+        "scale": "moderate"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "NUEBA",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "LA CARROSA",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

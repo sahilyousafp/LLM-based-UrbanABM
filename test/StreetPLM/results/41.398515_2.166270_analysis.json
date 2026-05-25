@@ -1,0 +1,177 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091932",
+    "latitude": 41.398515,
+    "longitude": 2.1662701999999996,
+    "heading": 132.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "residential",
+    "edge_id": "1124790711_3207273472_0",
+    "dist_along_edge_m": 13.1,
+    "source_image": "sv_41.398515_2.166270_h132.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 31629.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "unknown",
+    "lighting": [
+      {
+        "zone": "far_left",
+        "element": "overhead clouds diffusing sunlight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "left",
+        "element": "overhead clouds diffusing sunlight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead clouds diffusing sunlight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "overhead clouds diffusing sunlight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "far_right",
+        "element": "overhead clouds diffusing sunlight",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "far_left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "far_right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "large mature leafy trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "left",
+        "element": "smaller mature leafy trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "sparse small shrubs along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "large mature leafy trees",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "far_left",
+        "element": "black metal lamppost with curved arms",
+        "material": "metal",
+        "colour": "black",
+        "style": "modern",
+        "scale": "medium"
+      },
+      {
+        "zone": "left",
+        "element": "black metal lamppost with curved arms",
+        "material": "metal",
+        "colour": "black",
+        "style": "modern",
+        "scale": "medium"
+      },
+      {
+        "zone": "center",
+        "element": "black metal lamppost with curved arms",
+        "material": "metal",
+        "colour": "black",
+        "style": "modern",
+        "scale": "medium"
+      },
+      {
+        "zone": "right",
+        "element": "black metal lamppost with curved arms",
+        "material": "metal",
+        "colour": "black",
+        "style": "modern",
+        "scale": "medium"
+      },
+      {
+        "zone": "far_right",
+        "element": "black metal lamppost with curved arms",
+        "material": "metal",
+        "colour": "black",
+        "style": "modern",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

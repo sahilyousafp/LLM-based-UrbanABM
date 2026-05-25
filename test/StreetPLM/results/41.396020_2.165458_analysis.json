@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091521",
+    "latitude": 41.3960195,
+    "longitude": 2.1654582,
+    "heading": 225.8,
+    "street_name": "Carrer de Mallorca",
+    "highway_type": "secondary",
+    "edge_id": "30243375_6855299025_0",
+    "dist_along_edge_m": 24.6,
+    "source_image": "sv_41.396020_2.165458_h225.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24572.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with wide roads, minimal traffic, and scattered greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "palm trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small palm trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "palm trees along sidewalks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "bike racks",
+        "material": "metallic",
+        "colour": "silver",
+        "presence": "several"
+      },
+      {
+        "zone": "left",
+        "element": "white bicycle symbols marked on road surface",
+        "material": "paint",
+        "colour": "white",
+        "scale": "large"
+      },
+      {
+        "zone": "right",
+        "element": "trash bins",
+        "material": "metallic",
+        "colour": "gray",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

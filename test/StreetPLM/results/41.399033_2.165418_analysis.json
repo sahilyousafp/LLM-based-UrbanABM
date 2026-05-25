@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "timestamp": "20260525_095516",
+    "latitude": 41.3990328,
+    "longitude": 2.1654184000000005,
+    "heading": 44.9,
+    "street_name": "Carrer de Girona",
+    "highway_type": "footway",
+    "edge_id": "6874436555_8224714464_0",
+    "dist_along_edge_m": 8.8,
+    "source_image": "sv_41.399033_2.165418_h44.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24216.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showing a mix of residential buildings and a quiet pedestrian area with minimal traffic and sparse vegetation.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "natural daylight through building facade",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "natural daylight through building facade",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "natural daylight through building facade",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "palm-like plants in pots near building entrance",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small potted plants along sidewalk",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "tree trunk without leaves, likely due to pruning or season",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white informational signboard with text",
+        "material": "cardboard",
+        "colour": "white",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "metallic utility pole",
+        "material": "steel",
+        "colour": "silver",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "AIA",
+        "zone": "right",
+        "type": "graffiti"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom-left",
+        "type": "watermark"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

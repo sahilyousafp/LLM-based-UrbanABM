@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091844",
+    "latitude": 41.3977605,
+    "longitude": 2.1651450000000008,
+    "heading": 255.3,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary",
+    "edge_id": "442540256_3207273500_0",
+    "dist_along_edge_m": 13.7,
+    "source_image": "sv_41.397760_2.165145_h255.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 20068.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view featuring buses, wide roads, and a mix of greenery and architectural details under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees with sparse foliage",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white marked crosswalk lines",
+        "material": "painted asphalt",
+        "presence": "many"
+      },
+      {
+        "zone": "right",
+        "element": "red bus stop signage",
+        "material": "metallic",
+        "color": "red",
+        "presence": "one"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "HEIN2",
+        "zone": "left",
+        "type": "label"
+      },
+      {
+        "text": "SVE VERANO TRENTE HIE GIS",
+        "zone": "left",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

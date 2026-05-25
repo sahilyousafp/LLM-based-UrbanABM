@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092546",
+    "latitude": 41.3957331,
+    "longitude": 2.1696043000000005,
+    "heading": 125.0,
+    "street_name": "",
+    "highway_type": "living_street",
+    "edge_id": "2819073400_13507818462_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.395733_2.169604_h125.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23078.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street with modern buildings, parked cars, and minimal pedestrian activity under overcast skies.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small ornamental trees with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "trees with green foliage",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "large mature trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic signal pole with yellow box",
+        "material_and_colour": "metallic, yellow",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "white car parked along curb",
+        "material_and_colour": "white",
+        "presence": "one"
+      },
+      {
+        "zone": "right",
+        "element": "trash bins with foot-pedal lids",
+        "material_and_colour": "blue",
+        "presence": "two"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

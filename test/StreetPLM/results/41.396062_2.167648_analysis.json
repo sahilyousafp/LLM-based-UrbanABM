@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100234",
+    "latitude": 41.39606229999999,
+    "longitude": 2.167648300000001,
+    "heading": 136.0,
+    "street_name": "Carrer de València",
+    "highway_type": "footway",
+    "edge_id": "7508581937_8238740380_0",
+    "dist_along_edge_m": 14.8,
+    "source_image": "sv_41.396062_2.167648_h136.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 18320.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Narrow city street lined with historic architecture featuring stone buildings, with moderate pedestrian and vehicle traffic under soft natural light.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "soft natural light filtering through leaves",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead cloud cover diffusing sunlight",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "diffused daylight through scattered clouds",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large leafy deciduous tree",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small evergreen shrubbery",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "white scooter",
+        "material": "metal",
+        "colour": "white",
+        "style": "modern",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "blue taxi stand sign",
+        "material": "metal",
+        "colour": "blue",
+        "style": "standard",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "taxi",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

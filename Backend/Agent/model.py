@@ -326,21 +326,36 @@ class CityAgent(mg.GeoAgent):
         # Get perception mode to determine what data to fetch
         perception_mode = getattr(self.model, 'perception_mode', 'both')
 
+        import math as _m
+
         result = []
         for entry in candidates:
             eid, geom, direction = entry[0], entry[1], entry[2]
             # Annotate each candidate with nearby amenity types (if mode allows)
             midpoint = Point(geom.coords[len(geom.coords) // 2])
-            
+
+            # Compute the travel bearing for this edge so perception lookup can
+            # prefer SV images that face roughly the same direction.
+            coords = list(geom.coords)
+            if len(coords) >= 2:
+                dlon = coords[-1][0] - coords[0][0]
+                dlat = coords[-1][1] - coords[0][1]
+                edge_bearing = (_m.degrees(_m.atan2(dlon, dlat)) + 360) % 360
+                if direction == "reverse":
+                    edge_bearing = (edge_bearing + 180) % 360
+            else:
+                edge_bearing = None
+
             # Fetch amenities based on perception mode
             if perception_mode in ['amenities', 'both']:
                 amenity_types = [a.get("type", "") for a in self.model.get_nearby_amenities(midpoint)[:3]]
             else:
                 amenity_types = []
-            
-            # Fetch perception based on perception mode
+
+            # Fetch perception based on perception mode — pass edge bearing so the
+            # lookup can prefer SV images whose camera faces the same direction.
             if perception_mode in ['perception', 'both']:
-                perception = self.model.get_streetview_perception(midpoint)
+                perception = self.model.get_streetview_perception(midpoint, heading=edge_bearing)
             else:
                 perception = None
                 
@@ -706,12 +721,13 @@ class CityModel(mesa.Model):
         point_key = (round(point.x, 6), round(point.y, 6))
         return self.node_to_edges.get(point_key, [])
     
-    def get_streetview_perception(self, point_geom) -> str:
+    def get_streetview_perception(self, point_geom, heading: float | None = None) -> str:
         """
         Find the nearest street view scene analysis within ~150m.
         Returns a prose paragraph summarising the scene, or empty string if none nearby.
+        heading: optional travel bearing (0–360°) — prefers SV images facing same direction.
         """
-        scene = self.get_nearby_perception(point_geom)
+        scene = self.get_nearby_perception(point_geom, heading=heading)
         if not scene:
             return ""
         field_labels = [
@@ -762,19 +778,19 @@ class CityModel(mesa.Model):
             print(f"  Point: lon={point_geom.x}, lat={point_geom.y}")
             return []
 
-    def get_nearby_perception(self, point_geom):
+    def get_nearby_perception(self, point_geom, heading: float | None = None):
         """
         Find the nearest street view scene analysis point within ~150m from DuckDB.
         Returns the full scene_analysis dict, or None if nothing nearby.
+        heading: optional travel bearing (0–360°). When provided, the JSON-cache
+                 fallback prefers SV entries whose camera faces the same direction
+                 (score = dist * (1 + 0.4 * angular_penalty)); DuckDB path unchanged.
         """
         result = None
         try:
-            # Query DuckDB for nearest perception point within ~150m
-            # 0.0015 degrees ≈ 150m at Barcelona latitude
             buffer_deg = 0.0015
-            
             query = f"""
-            SELECT 
+            SELECT
                 scene_overview, buildings, materials, building_condition,
                 street_furniture, vegetation_text, signage, ground_surfaces,
                 spatial_impression, pedestrian_activity, lighting_atmosphere,
@@ -790,7 +806,6 @@ class CityModel(mesa.Model):
             print(f"Perception DB query error: {e}")
 
         if result:
-            # Map database columns to scene_analysis dict format
             return {
                 "scene_overview": result[0] or "",
                 "buildings": result[1] or "",
@@ -808,19 +823,39 @@ class CityModel(mesa.Model):
                 "as_tourist": result[13] or "",
                 "as_student": result[14] or "",
             }
-        
-        # Fallback to JSON cache if DuckDB returns no result or fails
+
+        # Fallback to JSON cache if DuckDB returns no result or fails.
+        # When heading is provided, weight each candidate by angular alignment so
+        # the SV image that faces roughly the same direction as the edge is preferred.
         _THRESHOLD_DEG = 0.0015
         best = None
-        best_dist = _THRESHOLD_DEG
+        best_score = _THRESHOLD_DEG * 2  # sentinel > any real score
+
+        def _angle_diff(a, b):
+            d = abs(a - b) % 360
+            return d if d <= 180 else 360 - d
+
         for entry in self._sv_cache:
             dx = entry["lon"] - point_geom.x
             dy = entry["lat"] - point_geom.y
             dist = (dx * dx + dy * dy) ** 0.5
-            if dist < best_dist:
-                best_dist = dist
+            if dist > _THRESHOLD_DEG:
+                continue
+            if heading is not None and entry.get("heading") is not None:
+                ang_penalty = _angle_diff(heading, entry["heading"]) / 180.0
+                score = dist * (1.0 + 0.4 * ang_penalty)
+            else:
+                score = dist
+            if score < best_score:
+                best_score = score
                 best = entry
-        return dict(best["scene_analysis"]) if best else None
+
+        if best is None:
+            return None
+        result = dict(best["scene_analysis"])
+        if best.get("heading") is not None:
+            result["heading"] = best["heading"]
+        return result
 
     def _pick_target_for_archetype(self, archetype: str) -> dict | None:
         """Query a random amenity matching the archetype's preferred types. Returns None on failure."""

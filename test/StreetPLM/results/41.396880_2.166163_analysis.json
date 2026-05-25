@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "timestamp": "20260525_091213",
+    "latitude": 41.39687970000001,
+    "longitude": 2.1661632000000006,
+    "heading": 134.7,
+    "street_name": "Carrer del Bruc",
+    "highway_type": "residential",
+    "edge_id": "30243261_6855299023_0",
+    "dist_along_edge_m": 26.1,
+    "source_image": "sv_41.396880_2.166163_h134.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 18201.5,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street intersection with moderate traffic flow and mixed pedestrian and vehicular activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "diffused sunlight through sparse foliage",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "direct sunlight on road surface",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "deciduous trees with green leaves",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "evergreen trees with dense foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black and yellow taxi cab",
+        "material": "metallic paint",
+        "colour": "black,yellow",
+        "style": "standard vehicle",
+        "scale": "small"
+      },
+      {
+        "zone": "right",
+        "element": "dark green metal trash bin",
+        "material": "metal",
+        "colour": "dark green",
+        "style": "municipal",
+        "scale": "medium"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Google",
+        "zone": "bottom_left",
+        "type": "label"
+      },
+      {
+        "text": "Google",
+        "zone": "bottom_right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

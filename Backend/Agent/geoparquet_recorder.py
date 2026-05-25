@@ -92,7 +92,17 @@ class AgentRecord:
             'target_lat': self.target_lat,
             'perception_mode': self.perception_mode,
             'plan_json': json.dumps(self.plan),
+            'step_type': self._derive_step_type(),
         }
+
+    def _derive_step_type(self) -> str:
+        """Classify the step as forced/llm_gps/free from already-recorded fields."""
+        dr = self.decision_reason or ""
+        if "Forced destination step" in dr:
+            return "forced"
+        if self.current_plan.get("on_proposed_path"):
+            return "llm_gps"
+        return "free"
 
 
 class GeoParquetRecorder:
@@ -358,6 +368,16 @@ class GeoParquetRecorder:
             except Exception as e:
                 logger.warning(f"Could not extract thought stream: {e}")
         
+        # Fall back to extracting decision_reason from the thought_stream we just built.
+        # The async get_recent() call in model.py is unreliable (timing / wiring issues),
+        # but _store access above is proven to capture mobility events correctly.
+        if decision_reason is None:
+            for event in reversed(thought_stream):
+                if event.get('topic') == 'mobility' and event.get('description'):
+                    decision_reason = event['description']
+                    is_fallback = event.get('metadata', {}).get('fallback', False)
+                    break
+
         return AgentRecord(
             agent_id=agent.unique_id,
             step=step,

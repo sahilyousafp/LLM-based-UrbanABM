@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100345",
+    "latitude": 41.397984699999995,
+    "longitude": 2.1648186000000003,
+    "heading": 303.5,
+    "street_name": "Avinguda Diagonal",
+    "highway_type": "footway",
+    "edge_id": "8109780138_9833715817_0",
+    "dist_along_edge_m": 8.7,
+    "source_image": "sv_41.397985_2.164819_h303.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23420.1,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street view showing a dental clinic and a cafe with minimal pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overhead streetlights reflecting off building windows",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "building reflections in glass windows",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small potted plants along sidewalk",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "trees reflected in windows",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "streetlamp pole",
+        "material_and_colour": "metallic",
+        "presence": "few"
+      },
+      {
+        "zone": "left",
+        "element": "kerb",
+        "material_and_colour": "paved",
+        "presence": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "traffic lights",
+        "material_and_colour": "metallic",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Dental",
+        "zone": "left",
+        "type": "label"
+      },
+      {
+        "text": "Work Cafe",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

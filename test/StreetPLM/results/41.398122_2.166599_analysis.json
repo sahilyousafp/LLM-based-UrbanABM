@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "timestamp": "20260525_092108",
+    "latitude": 41.3981218,
+    "longitude": 2.1665994,
+    "heading": 72.5,
+    "street_name": "Avinguda Diagonal (lateral mar)",
+    "highway_type": "tertiary",
+    "edge_id": "1126848499_8109780145_0",
+    "dist_along_edge_m": 10.6,
+    "source_image": "sv_41.398122_2.166599_h72.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 23808.6,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Urban street under overcast skies with construction barriers indicating roadwork.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      },
+      {
+        "zone": "right",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "large deciduous trees with green foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "orange and white construction barriers",
+        "material": "plastic",
+        "colour": "orange/white",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "construction barriers",
+        "material": "plastic",
+        "colour": "orange/white",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "construction barriers",
+        "material": "plastic",
+        "colour": "orange/white",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

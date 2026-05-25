@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094225",
+    "latitude": 41.3950237,
+    "longitude": 2.1709596,
+    "heading": 135.6,
+    "street_name": "",
+    "highway_type": "corridor",
+    "edge_id": "5264057221_9556243972_0",
+    "dist_along_edge_m": 0.0,
+    "source_image": "sv_41.395024_2.170960_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 15402.8,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Narrow pedestrian area lined by historic architecture and lush greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "natural daylight through building facade",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead shadow from surrounding buildings",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "right",
+        "element": "large mature oak tree with broad foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [],
+    "visible_text": [
+      {
+        "text": "MIDAS SERAS",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "EL MI",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

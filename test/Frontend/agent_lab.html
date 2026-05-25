@@ -349,7 +349,7 @@
                 await fetch(`${state.apiUrl}/api/config/perception-mode`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(e.target.value),
+                    body: JSON.stringify({ mode: e.target.value }),
                 });
             });
 

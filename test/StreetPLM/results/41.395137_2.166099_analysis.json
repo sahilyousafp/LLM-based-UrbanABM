@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "timestamp": "20260525_100948",
+    "latitude": 41.39513699999999,
+    "longitude": 2.1660992,
+    "heading": 315.7,
+    "street_name": "Carrer de Roger de Llúria",
+    "highway_type": "footway",
+    "edge_id": "8205146883_8205146889_0",
+    "dist_along_edge_m": 84.5,
+    "source_image": "sv_41.395137_2.166099_h315.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 24184.2,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Wide avenue lined with mature trees and historic buildings, with no pedestrians or vehicles present.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "soft natural daylight filtering through trees",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "overhead midday sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature plane trees with green foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "smaller deciduous trees along sidewalks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "leafy deciduous trees lining streets",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "motorcycles parked along curbside",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "white road markings",
+        "material": "painted",
+        "colour": "white",
+        "presence": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "motorcycles parked along curbside",
+        "material": "metallic",
+        "colour": "black",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

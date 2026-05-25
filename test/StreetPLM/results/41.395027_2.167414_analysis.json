@@ -1,0 +1,87 @@
+{
+  "metadata": {
+    "timestamp": "20260525_094209",
+    "latitude": 41.3950267,
+    "longitude": 2.1674135999999997,
+    "heading": 135.2,
+    "street_name": "Passatge del Rector Oliveras",
+    "highway_type": "pedestrian",
+    "edge_id": "4682083407_4682083408_0",
+    "dist_along_edge_m": 63.4,
+    "source_image": "sv_41.395027_2.167414_h135.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda",
+    "latency_ms": 17437.0,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Narrow alleyway between buildings with limited greenery and no visible street amenities or signs.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "natural daylight through sparse foliage",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "natural daylight through sparse foliage",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "center",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small deciduous trees with green leaves",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small deciduous trees with green leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}
