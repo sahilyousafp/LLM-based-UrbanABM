@@ -458,13 +458,75 @@ All four recordings use the same archetype (tourist), same destination (Verdague
 
 ---
 
-## 5. Framing for Thesis Contribution
+## 5. LLM-Based Simulation vs Traditional Systems — Beyond Visual Understanding
+
+A natural question arises: if trajectory simulation is accurate and well-validated, and if visual understanding can be partially encoded through attraction/repulsion field adjustments, what does the LLM layer actually add? The answer goes beyond perception and applies to the foreseeable future of urban simulation as a research and planning instrument.
+
+### 5.1 Zero-Shot Scenario Evaluation
+
+Traditional models — Social Force Models, trajectory prediction networks, RL agents — are calibrated on historical data. They extrapolate forward from patterns that have already been observed. If the future contains something genuinely novel — a post-pandemic street reorganisation, a new type of public space, a policy that has never been implemented — the model applies a learned pattern that no longer applies. It cannot flag this; it simply extrapolates.
+
+An LLM agent does not extrapolate. It evaluates. If you describe a street that has never existed — *"a formerly car-dominated arterial, now a linear park with cycling infrastructure and outdoor market stalls"* — the agent reasons about it using general social and spatial knowledge. It does not need empirical pedestrian data from that street before it can say something coherent about how a tourist or commuter would navigate it.
+
+This is the only class of simulation that can produce behaviourally grounded predictions about spaces that do not yet exist, without first collecting training data from them. For urban planning — where the question is always about a proposed future, not a documented past — this is a structural advantage.
+
+### 5.2 Interpretable Causality at the Decision Level
+
+Traditional ABMs produce behaviour they cannot explain. You can observe that agents cluster near a park, but the model cannot tell you whether that is because of the shade, the seating, the social activity, or the route topology. The rule is hardcoded; the causal attribution is invisible.
+
+Every step in this system produces a natural language justification recorded in `decision_reason`:
+
+> *"Edge 742 is on the shortest path to the destination and passes a café, which aligns with my morning exploration goal and current hunger level."*
+
+This is auditable. Reasons can be tagged, categorised, and counted systematically. Trial 5 (visual preference fingerprinting) is designed exactly for this: isolating which visual features appear as justifications for off-path choices, and whether they correlate with specific StreetPLM field values. A Social Force Model repulsive force coefficient cannot be communicated to a city council; a quoted agent reasoning trace can.
+
+For policy communication, causal interpretability is not a convenience — it is what makes the simulation useful to stakeholders who are not modellers.
+
+### 5.3 Heterogeneous Agent Populations Without Re-Parameterisation
+
+In traditional ABMs, creating a new agent type requires writing new rules or fitting new parameter distributions to empirical data. A mobility-impaired elderly tourist and a student running late are two different rule sets that must be coded explicitly, calibrated separately, and validated independently. If you do not have empirical data for a population group, you cannot model it.
+
+An LLM agent's identity comes from a text description in the prompt. Pace, curiosity, social preferences, physical constraints, cultural context — these emerge from the archetype profile, not from code. You can write a new archetype and observe whether its behaviour is coherent with the description, without implementing a new rule set. This means:
+
+- Populations too small to calibrate empirically (first-time visitors from a specific cultural background, users of a newly introduced mobility device) can be plausibly modelled from description
+- Behavioural hypotheses can be tested by perturbing the description rather than rewriting a model
+- The same simulation infrastructure handles all archetypes — the differentiation is in the prompt, not the code
+
+### 5.4 Integration of Qualitative and Contextual Knowledge
+
+Traditional models accept structured inputs: coordinates, speeds, densities, force parameters. They cannot process a news article about a street festival, a cultural norm about personal space, a policy document about shared streets, or a temperature forecast that might change whether a pedestrian takes a shaded route. This information exists and shapes real behaviour, but there is no mechanism to introduce it into a parameterised rule system without manually translating it into numerical adjustments.
+
+LLM agents process natural language, so any text-based information can influence behaviour directly. Event descriptions, weather narratives, time-of-day framing, cultural context — all can be injected into the prompt and will shape decisions. This makes the simulation responsive to the full texture of the real world, not only its geometric and physical structure.
+
+### 5.5 The Honest Limitation: Stochasticity and Scale
+
+None of the above advantages are free.
+
+**Stochasticity:** LLM decisions are sampled from a distribution that cannot be directly inspected. The 36% GPS defection rate observed in these recordings — the same prompt producing different choices on different runs — is a direct consequence. Traditional models are deterministic or have well-characterised distributions; LLM decisions require ensemble runs to estimate behavioural tendencies. This complicates statistical comparison and increases the number of recordings needed per trial condition.
+
+**Scale:** A Social Force Model simulates 5,000 agents × 1,000 steps in seconds. One LLM agent × 300 steps costs real API time and money. The system does not scale to crowd dynamics. For emergent physical phenomena — lane formation, arch formation at bottlenecks, wave propagation — traditional physics-based models remain the correct and only practical tool.
+
+**The complementary framing:** LLM-based agents operate at the cognitive level; traditional models operate at the physical level. They answer different questions. The parquet trajectories this system generates are themselves trajectory data — they can be fed into Social Force Model calibration pipelines, used as training data for trajectory prediction networks, or aggregated into flow maps. The relationship is not competitive; it is a pipeline:
+
+```
+LLM agent reasoning
+    → individual decision at each step
+    → parquet-recorded trajectory
+    → aggregate flow analysis (traditional tools)
+    → policy-relevant spatial insight
+```
+
+The LLM layer provides the cognitive grounding for the individual trajectory. Traditional tools then scale those trajectories to the crowd level. Neither step replaces the other.
+
+---
+
+## 6. Framing for Thesis Contribution
 
 This simulation system occupies a position between three research traditions:
 
 **Rule-based ABM** (Mesa, Social Force Model): deterministic, interpretable, no perception  
 **RL-based navigation** (CrowdNav, SUMO-RL, FLOW): adaptive, requires training data, no visual reasoning  
-**LLM-based reasoning** (this system): zero-shot, visually grounded, verbally interpretable — but stochastic and dependent on prompt design
+**LLM-based reasoning** (this system): zero-shot, visually grounded, verbally interpretable — but stochastic and not scalable to crowds
 
 The vision-action trials are designed to answer the question that neither rule-based ABM nor RL can answer: **does the visual character of an urban street causally influence where a cognitively realistic agent goes?**
 
