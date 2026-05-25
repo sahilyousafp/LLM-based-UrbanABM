@@ -31,6 +31,7 @@ def mobility_decision_prompt(
     street_perception: dict | None = None,
     destination: dict | None = None,
     path_hint_edge_id: int | None = None,
+    path_hint_direction: str | None = None,
     preferences: list | None = None,
     explore_budget: int = 1,
     free_steps_remaining: int = 0,
@@ -54,23 +55,38 @@ def mobility_decision_prompt(
     """
     vc = visited_counts or {}
 
-    def _visit_tag(edge_id):
+    # Archetype-specific urgency thresholds in metres (Euclidean to destination).
+    # Kept small so agents explore freely for most of the journey and only converge
+    # in the final approach. Eixample block ≈ 113m, so 60m ≈ half a block.
+    # Tourist: 3 free steps/cycle → needs a slightly wider window to converge in time.
+    if archetype == "tourist":
+        _almost_there_m = 60    # m — start forcing GPS convergence
+        _getting_close_m = 150  # m — start suppressing novelty bias + urgency text
+    elif archetype == "resident":
+        _almost_there_m = 40
+        _getting_close_m = 100
+    elif archetype == "student":
+        _almost_there_m = 50
+        _getting_close_m = 120
+    else:  # commuter or unknown (explore_budget=0 anyway, thresholds moot)
+        _almost_there_m = 50
+        _getting_close_m = 120
+
+    def _visit_tag(edge_id, direction):
+        # Pedestrian movement: direction is irrelevant — suppress visit penalty for
+        # the GPS edge regardless of which direction it appears in the candidate list.
+        if edge_id == path_hint_edge_id and nav_mode in ('gps', 'both'):
+            return ""
+        # Near destination — reaching the goal overrides exploration novelty
+        # dist_m is computed in the destination block below; candidates_text is built after it
+        if dist_m is not None and dist_m <= _getting_close_m:
+            return ""
         n = vc.get(str(edge_id), 0)
         if n == 0:
             return " [NEW]"
         if n >= 2:
             return f" [visited {n}x — strongly avoid revisiting]"
         return f" [visited {n}x]"
-
-    candidates_text = "\n".join(
-        f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
-        f"amenities=[{', '.join(c.get('amenities', [])[:3])}] "
-        f"{'env=[' + c['perception'][:100] + '] ' if c.get('perception') else ''}"
-        f"desc={c.get('description', '')}"
-        f"{_visit_tag(c['edge_id'])}"
-        f"{' [SHORTEST PATH TO DESTINATION]' if c['edge_id'] == path_hint_edge_id and nav_mode in ('gps', 'both') else ''}"
-        for i, c in enumerate(candidates)
-    )
 
     # Build scene description block from text fields
     perception_text = ""
@@ -100,11 +116,13 @@ def mobility_decision_prompt(
         if lines:
             perception_text = "\n\nScene description at current location (from visual analysis):\n" + "\n".join(lines)
 
-    # Always compute bearing/compass when destination exists — used by both nav modes and urgency tiers
+    # Always compute bearing/compass when destination exists and not yet visited.
+    # After arrival, destination["visited"]=True — skip so dist_m-based visit suppression
+    # and urgency text stop anchoring the agent to the old destination.
     destination_text = ""
     compass = None
     dist_m = None
-    if destination and destination.get("name"):
+    if destination and destination.get("name") and not destination.get("visited"):
         import math as _math
         dlon = destination.get('lon', 0) - current_position.get('lon', 0)
         dlat = destination.get('lat', 0) - current_position.get('lat', 0)
@@ -117,13 +135,26 @@ def mobility_decision_prompt(
             int((bearing_deg + 22.5) / 45) % 8
         ]
         if nav_mode in ("direction_sense", "both"):
-            destination_text = (
-                f"\n\nTarget Destination: {destination['name']} "
-                f"(type: {destination.get('amenity_type', 'unknown')}) "
-                f"— approximately {dist_m:.0f}m to the {compass}. "
-                f"This is your primary goal. During free steps, prefer edges heading {compass} "
-                f"unless a pressing need or genuinely interesting feature draws you elsewhere."
-            )
+            # In the urgency zone, the GPS label is more precise than the Euclidean
+            # compass bearing (the Dijkstra path may temporarily go against the bearing
+            # to route around the block). Suppress the directional suggestion so it
+            # doesn't contradict the [SHORTEST PATH TO DESTINATION] label.
+            in_urgency_zone = dist_m <= _getting_close_m
+            if nav_mode == "both" and in_urgency_zone:
+                destination_text = (
+                    f"\n\nTarget Destination: {destination['name']} "
+                    f"(type: {destination.get('amenity_type', 'unknown')}) "
+                    f"— approximately {dist_m:.0f}m away ({compass} direction). "
+                    f"This is your primary goal. Follow the [SHORTEST PATH TO DESTINATION] label."
+                )
+            else:
+                destination_text = (
+                    f"\n\nTarget Destination: {destination['name']} "
+                    f"(type: {destination.get('amenity_type', 'unknown')}) "
+                    f"— approximately {dist_m:.0f}m to the {compass}. "
+                    f"This is your primary goal. During free steps, prefer edges heading {compass} "
+                    f"unless a pressing need or genuinely interesting feature draws you elsewhere."
+                )
         else:
             destination_text = (
                 f"\n\nTarget Destination: {destination['name']} "
@@ -132,10 +163,21 @@ def mobility_decision_prompt(
                 f"This is your primary goal."
             )
 
-    # Urgency label based on distance to destination
+    # candidates_text built here so _visit_tag can use dist_m (computed above)
+    candidates_text = "\n".join(
+        f"  [{i}] edge_id={c['edge_id']} dir={c.get('direction','fwd')} "
+        f"amenities=[{', '.join(c.get('amenities', [])[:3])}] "
+        f"{'env=[' + c['perception'][:100] + '] ' if c.get('perception') else ''}"
+        f"desc={c.get('description', '')}"
+        f"{_visit_tag(c['edge_id'], c.get('direction', 'forward'))}"
+        f"{' [SHORTEST PATH TO DESTINATION]' if c['edge_id'] == path_hint_edge_id and nav_mode in ('gps', 'both') else ''}"
+        for i, c in enumerate(candidates)
+    )
+
+    # Urgency label — show real distance in metres (more meaningful than hop count)
     dist_label = ""
-    if steps_to_destination is not None:
-        dist_label = f" ({steps_to_destination} steps to destination)"
+    if dist_m is not None:
+        dist_label = f" ({dist_m:.0f}m to destination)"
 
     # Nav-mode-aware convergence hint used in urgency text
     if nav_mode in ("gps", "both"):
@@ -145,26 +187,16 @@ def mobility_decision_prompt(
     else:
         convergence_hint = "your destination"
 
-    # Archetype-specific urgency thresholds:
-    # Tourist uses GPS and checks the map often — convergence pressure fires earlier.
-    # Commuter always force-Dijkstra (budget=0) so thresholds are moot for them.
-    if archetype == "tourist":
-        _almost_there = 6    # hops (vs. 4 for others)
-        _getting_close = 20  # hops (vs. 10 for others)
-    else:
-        _almost_there = 4
-        _getting_close = 10
-
-    # Exploration context: free-step language scaled by distance urgency
+    # Exploration context: free-step language scaled by real distance to destination
     if explore_budget > 0:
-        n = steps_to_destination  # shorthand
+        d = dist_m  # Euclidean metres — consistent regardless of edge length
 
-        if n is not None and n <= _almost_there:
+        if d is not None and d <= _almost_there_m:
             deviation_context = (
                 f"\n\n** ALMOST THERE{dist_label} — you are very close to your destination. "
                 f"Take {convergence_hint} now. Do not detour. **"
             )
-        elif n is not None and n <= _getting_close:
+        elif d is not None and d <= _getting_close_m:
             if free_steps_remaining > 0:
                 deviation_context = (
                     f"\n\n** GETTING CLOSE{dist_label} — {free_steps_remaining} free step(s) left. "
@@ -200,7 +232,9 @@ def mobility_decision_prompt(
         avoid = plan_context.get("perception_avoid", [])
         active_target = plan_context.get("active_target")
 
-        lines = [f"\n\nCurrent Plan Phase: {goal}"]
+        time_of_day = plan_context.get("time_of_day", "")
+        phase_header = f"{goal} ({time_of_day})" if time_of_day else goal
+        lines = [f"\n\nCurrent Plan Phase: {phase_header}"]
         if prefs:
             lines.append(f"  Prefer streets with: {', '.join(prefs)}")
         if avoid:
@@ -232,7 +266,8 @@ Choose the index of the best candidate for this agent to move to next.
 Your preferences: {', '.join(preferences) if preferences else 'none'}.
 On free steps: explore streets and amenities that match your archetype and needs. Strongly prefer [NEW] edges over revisited ones — edges marked [visited 2x+] should almost never be chosen again.
 If comfort < 0.4, prefer edges toward parks, plazas, or streets with greenery. If hunger > 0.7 or energy < 0.3, prioritise edges near relevant amenities.
-{"When in doubt between an amenity edge and [SHORTEST PATH TO DESTINATION], prefer the path — you can always visit amenities along the way." if nav_mode in ('gps', 'both') else f"When in doubt, prefer {convergence_hint} — you can always explore on the next free step." if nav_mode == 'direction_sense' else "Keep your destination in mind even while exploring freely."}
+{"GPS RULE: If any candidate shows [SHORTEST PATH TO DESTINATION], you MUST choose it. Visit counts, amenity preferences, and archetype interests are NOT valid reasons to skip it. The only permitted exception is a critical survival need: hunger > 0.9 or energy < 0.1. Restaurants, shops, or curiosity do not qualify." if nav_mode in ('gps', 'both') else f"Prefer edges heading {compass or 'toward destination'} to stay on track — you can always explore on the next free step." if nav_mode == 'direction_sense' else "Keep your destination in mind even while exploring freely."}
+{"IMPORTANT: A nearby amenity whose type matches your destination (e.g. a pharmacy near an edge when your target is a pharmacy) is NOT your destination. The amenity list shows what is close to each edge — it does not mean the edge leads to your specific named target. Only [SHORTEST PATH TO DESTINATION] points to the actual place you are trying to reach." if destination and destination.get("name") and not destination.get("visited") and nav_mode in ('gps', 'both') else ""}
 
 Respond with JSON:
 {{"choice": <index 0-{len(candidates)-1}>, "reasoning": "<one sentence why>"}}"""

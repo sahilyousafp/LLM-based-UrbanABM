@@ -50,8 +50,28 @@ class MobilityBlock(Block):
         target_node = destination.get("target_node") if destination else None
         current_node = position.get("current_node")
 
+        # --- User-configured destination: cap budget regardless of distance ---
+        # A tourist who has explicitly entered a destination (like typing an address
+        # into Google Maps) navigates with intent — budget=3 causes a diverging random
+        # walk that never converges. Cap at 1 so the F→D cycle makes net progress.
+        # Plan-assigned destinations keep the full archetype budget (free exploration).
+        if destination and destination.get("source") == "user_configured" and not destination.get("visited"):
+            explore_budget = min(explore_budget, 1)
+
+        # --- Distance-based budget reduction ---
+        # Shrink further as the agent closes in: pure Dijkstra in the final approach.
+        if destination and not destination.get("visited") and destination.get("lon"):
+            import math as _math
+            _ALMOST_THERE = {"tourist": 60, "resident": 40, "student": 50}.get(archetype, 50)
+            dlon = (destination["lon"] - position.get("lon", 0)) * 111320 * _math.cos(_math.radians(position.get("lat", 0)))
+            dlat = (destination["lat"] - position.get("lat", 0)) * 110540
+            dist_to_dest = _math.sqrt(dlon ** 2 + dlat ** 2)
+            if dist_to_dest <= _ALMOST_THERE:
+                explore_budget = 0          # pure Dijkstra in final approach
+
         # --- Dijkstra path computation ---
         dijkstra_edge_id = None
+        dijkstra_edge_direction = None
         dijkstra_edge_data = None
         steps_to_destination = None
 
@@ -59,6 +79,7 @@ class MobilityBlock(Block):
             # Check arrival
             if current_node == target_node:
                 destination["target_node"] = None
+                destination["visited"] = True   # suppresses dist_m anchoring in prompt
                 await self.memory.status.update("destination", destination)
                 await self.memory.status.update("explore_steps", 0)
                 await self.memory.stream.add(
@@ -82,6 +103,7 @@ class MobilityBlock(Block):
                     end = geom.coords[-1] if direction == "forward" else geom.coords[0]
                     if (round(end[0], 6), round(end[1], 6)) == next_node:
                         dijkstra_edge_id = eid
+                        dijkstra_edge_direction = direction
                         # Prefer the richer candidate dict (has amenities/perception)
                         for c in candidate_edges:
                             if c["edge_id"] == eid:
@@ -170,6 +192,7 @@ class MobilityBlock(Block):
         if current_phase:
             plan_context = {
                 "goal": current_phase.get("goal", ""),
+                "time_of_day": current_phase.get("time_of_day", ""),
                 "active_target": current_phase.get("active_target"),
                 "perception_preferences": (
                     current_phase.get("perception_preferences", [])
@@ -205,6 +228,7 @@ class MobilityBlock(Block):
             street_perception=street_perception,
             destination=destination,
             path_hint_edge_id=dijkstra_edge_id,
+            path_hint_direction=dijkstra_edge_direction,
             preferences=preferences,
             explore_budget=explore_budget,
             free_steps_remaining=free_steps_remaining,

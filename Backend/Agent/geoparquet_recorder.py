@@ -423,6 +423,9 @@ class GeoParquetRecorder:
                     group_gdf = pd.concat([existing, group_gdf], ignore_index=True)
                     group_gdf = gpd.GeoDataFrame(group_gdf, crs="EPSG:4326")
 
+                # Deduplicate: keep the latest record for each (agent_id, step) pair.
+                # Guards against any code path that calls record_agent_state twice per step.
+                group_gdf = group_gdf.drop_duplicates(subset=['agent_id', 'step'], keep='last')
                 group_gdf.to_parquet(str(file_path))
                 written_paths.append(file_path)
                 logger.info(f"Flushed {len(group_gdf)} records for '{archetype}/{mode}' to {file_path}")

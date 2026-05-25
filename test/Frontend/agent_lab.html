@@ -138,8 +138,8 @@
             <div class="section-title">Navigation Aid</div>
             <select id="nav-mode" class="input-field">
                 <option value="gps">GPS — exact path hint (commuter)</option>
-                <option value="direction_sense">Direction Sense — compass only (resident)</option>
-                <option value="both" selected>Both (student default)</option>
+                <option value="direction_sense">Direction Sense — compass only</option>
+                <option value="both" selected>Both (resident/student/tourist)</option>
                 <option value="none">None — free exploration only</option>
             </select>
 
@@ -323,7 +323,7 @@
 
             // Set initial nav mode based on currently selected archetype
             const initArchetype = document.getElementById("archetype").value;
-            const initNavDefaults = { commuter: "gps", resident: "direction_sense", student: "both", tourist: "both" };
+            const initNavDefaults = { commuter: "gps", resident: "both", student: "both", tourist: "both" };
             const initNavMode = initNavDefaults[initArchetype] || "both";
             document.getElementById("nav-mode").value = initNavMode;
             fetch(`${state.apiUrl}/api/config/nav-mode`, {
@@ -356,7 +356,7 @@
             // Auto-set nav mode default when archetype changes
             const ARCHETYPE_NAV_DEFAULTS = {
                 commuter: "gps",
-                resident: "direction_sense",
+                resident: "both",
                 student: "both",
                 tourist: "both",
             };

@@ -12,12 +12,17 @@ from LLM.Thinking.prompts import needs_evaluation_prompt, visual_satisfaction_pr
 logger = logging.getLogger(__name__)
 
 # Need decay rates per step (subtracted each simulation step)
+# Each step ≈ 30s of walking. Rates calibrated so hunger fills in ~2h (240 steps),
+# energy drains in ~3h, social/comfort shift noticeably over 2–3h walks.
 DECAY_RATES = {
-    "hunger": 0.015,   # Hunger increases ~1.5% per step — noticeable buildup
-    "energy": 0.010,   # Energy depletes ~1.0% per step — meaningful changes
-    "social": 0.010,   # Social need increases ~1.0% per step — visible growth
-    "comfort": 0.015,  # Comfort erodes ~1.5% per step — matches the calibrated visual restoration scale
+    "hunger": 0.003,   # 0→full in ~333 steps ≈ ~2.8h walking
+    "energy": 0.003,   # full→0 in ~333 steps ≈ ~2.8h walking
+    "social": 0.003,   # 0→full in ~333 steps ≈ ~2.8h walking
+    "comfort": 0.003,  # full→0 in ~333 steps ≈ ~2.8h walking
 }
+
+# Agent must be within this distance (metres) of an amenity to receive satisfaction
+AMENITY_SATISFACTION_RADIUS_M = 30
 
 # Amenity type to needs mapping (rule-based fallback)
 AMENITY_NEED_MAP = {
@@ -72,42 +77,45 @@ class NeedsBlock(Block):
                 satisfaction_reasoning = visual_result.get("reasoning", "Visual environment affected needs")
                 llm_used = visual_result.get("llm_used", False)
 
-        # 2. Amenity satisfaction evaluation (if at an amenity)
+        # 2. Amenity satisfaction evaluation (only if agent is physically at the amenity)
+        # nearby_amenities is sorted by dist; require the closest to be within
+        # AMENITY_SATISFACTION_RADIUS_M so passing restaurants don't satisfy hunger.
         if nearby_amenities:
             closest = nearby_amenities[0]  # Already sorted by distance
-            amenity_type = closest.get("type", "").lower()
-            amenity_name = closest.get("name", "Unknown")
+            if closest.get("dist", 9999) <= AMENITY_SATISFACTION_RADIUS_M:
+                amenity_type = closest.get("type", "").lower()
+                amenity_name = closest.get("name", "Unknown")
 
-            amenity_result = await self._evaluate_amenity_satisfaction(
-                archetype=archetype,
-                needs=needs,
-                cognition=cognition,
-                amenity_name=amenity_name,
-                amenity_type=amenity_type,
-                street_perception=street_perception,
-            )
-            if amenity_result:
-                needs = amenity_result["needs"]
-                satisfaction_source = "amenity" if satisfaction_source == "none" else "combined"
-                satisfaction_reasoning = amenity_result.get("reasoning", f"Visited {amenity_name}")
-                visited_amenity = {"name": amenity_name, "type": amenity_type}
-                llm_used = amenity_result.get("llm_used", False) or llm_used
-
-                # Log amenity visit to stream
-                await self.memory.stream.add(
-                    topic="amenity_visit",
-                    step=step,
-                    description=f"{amenity_result.get('activity', f'Visited {amenity_name}')}. Needs after: hunger={needs['hunger']:.2f}, "
-                                f"energy={needs['energy']:.2f}, social={needs['social']:.2f}, comfort={needs['comfort']:.2f}",
-                    metadata={"amenity": visited_amenity, "llm_used": llm_used},
+                amenity_result = await self._evaluate_amenity_satisfaction(
+                    archetype=archetype,
+                    needs=needs,
+                    cognition=cognition,
+                    amenity_name=amenity_name,
+                    amenity_type=amenity_type,
+                    street_perception=street_perception,
                 )
+                if amenity_result:
+                    needs = amenity_result["needs"]
+                    satisfaction_source = "amenity" if satisfaction_source == "none" else "combined"
+                    satisfaction_reasoning = amenity_result.get("reasoning", f"Visited {amenity_name}")
+                    visited_amenity = {"name": amenity_name, "type": amenity_type}
+                    llm_used = amenity_result.get("llm_used", False) or llm_used
 
-                # Append to visited amenities list (keep last 20)
-                visited_list = await self.memory.status.get("visited_amenities", [])
-                visited_list.append({**visited_amenity, "step": step})
-                if len(visited_list) > 20:
-                    visited_list = visited_list[-20:]
-                await self.memory.status.update("visited_amenities", visited_list)
+                    # Log amenity visit to stream
+                    await self.memory.stream.add(
+                        topic="amenity_visit",
+                        step=step,
+                        description=f"{amenity_result.get('activity', f'Visited {amenity_name}')}. Needs after: hunger={needs['hunger']:.2f}, "
+                                    f"energy={needs['energy']:.2f}, social={needs['social']:.2f}, comfort={needs['comfort']:.2f}",
+                        metadata={"amenity": visited_amenity, "llm_used": llm_used},
+                    )
+
+                    # Append to visited amenities list (keep last 20)
+                    visited_list = await self.memory.status.get("visited_amenities", [])
+                    visited_list.append({**visited_amenity, "step": step})
+                    if len(visited_list) > 20:
+                        visited_list = visited_list[-20:]
+                    await self.memory.status.update("visited_amenities", visited_list)
 
         await self.memory.status.update("needs", needs)
         await self.memory.status.update("satisfaction_source", satisfaction_source)

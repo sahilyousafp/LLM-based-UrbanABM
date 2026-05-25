@@ -436,6 +436,7 @@ async def configure_single_agent(payload: dict = Body(...)):
         "lon": target_lon_final,
         "lat": target_lat_final,
         "target_node": target_node,
+        "source": "user_configured",
     }
 
     agent = CityAgent(
@@ -820,7 +821,11 @@ async def get_agent_perception_text(agent_id: int):
 
 @app.get("/api/agent/{agent_id}/planned-path")
 async def get_agent_planned_path(agent_id: int):
-    """Return Dijkstra path as GeoJSON LineString (current shortest path to target)."""
+    """Return Dijkstra path as GeoJSON LineString (current shortest path to target).
+
+    Uses a single Dijkstra pass with full path reconstruction — O(E log V) instead
+    of the previous N × O(E log V) incremental approach.
+    """
     agent = _find_agent(agent_id)
     if not agent:
         return {"error": "Agent not found"}
@@ -830,6 +835,8 @@ async def get_agent_planned_path(agent_id: int):
         return {"agent_id": agent_id, "path": None}
 
     try:
+        import heapq
+
         position = await agent.memory.status.get("position", {})
         current_node = position.get("current_node")
         if not current_node:
@@ -839,45 +846,72 @@ async def get_agent_planned_path(agent_id: int):
         raw_target = target_info.get("target_node")
         target_node = (round(float(raw_target[0]), 6), round(float(raw_target[1]), 6))
 
-        path_nodes = [current_node]
-        current = current_node
-        max_iterations = 1000
+        if current_node == target_node:
+            return {"agent_id": agent_id, "path": None}
 
-        while current != target_node and len(path_nodes) < max_iterations:
-            next_node = city_model.dijkstra_next_node(current, target_node)
-            if next_node is None:
-                logger.warning(
-                    f"[planned-path] Dijkstra blocked at node {current} "
-                    f"after {len(path_nodes)} hops toward target {target_node}"
-                )
+        # Single-pass Dijkstra with predecessor tracking
+        dist = {current_node: 0.0}
+        prev: dict = {current_node: None}
+        heap = [(0.0, current_node)]
+
+        while heap:
+            d, u = heapq.heappop(heap)
+            if d > dist.get(u, float("inf")):
+                continue
+            if u == target_node:
                 break
-            path_nodes.append(next_node)
-            current = next_node
+            for entry in city_model.node_to_edges.get(u, []):
+                _eid, geom, direction = entry[0], entry[1], entry[2]
+                weight_mult = entry[3] if len(entry) > 3 else 1.0
+                v = (
+                    (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
+                    if direction == "forward"
+                    else (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
+                )
+                length_m = entry[4] if len(entry) > 4 else geom.length * 111000
+                new_dist = d + length_m * weight_mult
+                if new_dist < dist.get(v, float("inf")):
+                    dist[v] = new_dist
+                    prev[v] = u
+                    heapq.heappush(heap, (new_dist, v))
+
+        if target_node not in prev:
+            logger.warning(f"[planned-path] No path from {current_node} to {target_node}")
+            return {"agent_id": agent_id, "path": None}
+
+        # Reconstruct node sequence from predecessor map
+        path_nodes = []
+        node = target_node
+        while node is not None:
+            path_nodes.append(node)
+            node = prev.get(node)
+        path_nodes.reverse()
 
         if len(path_nodes) < 2:
             return {"agent_id": agent_id, "path": None}
 
+        # Build coordinate list by stitching edge geometries
         coords = []
         for i in range(len(path_nodes) - 1):
             u, v = path_nodes[i], path_nodes[i + 1]
             for entry in city_model.node_to_edges.get(u, []):
-                edge_id, edge_geom, direction = entry[0], entry[1], entry[2]
-                if direction == "forward":
-                    end_node = edge_geom.coords[-1]
-                else:
-                    end_node = edge_geom.coords[0]
-                end_node_key = (round(end_node[0], 6), round(end_node[1], 6))
-
-                if end_node_key == v:
-                    if direction == "forward":
-                        edge_coords = list(edge_geom.coords)
-                    else:
-                        edge_coords = list(edge_geom.coords)[::-1]
-
-                    if i == 0:
-                        coords.extend([(lon, lat) for lon, lat in edge_coords])
-                    else:
-                        coords.extend([(lon, lat) for lon, lat in edge_coords[1:]])
+                edge_geom, direction = entry[1], entry[2]
+                end_key = (
+                    (round(edge_geom.coords[-1][0], 6), round(edge_geom.coords[-1][1], 6))
+                    if direction == "forward"
+                    else (round(edge_geom.coords[0][0], 6), round(edge_geom.coords[0][1], 6))
+                )
+                if end_key == v:
+                    edge_coords = (
+                        list(edge_geom.coords)
+                        if direction == "forward"
+                        else list(edge_geom.coords)[::-1]
+                    )
+                    coords.extend(
+                        [(lon, lat) for lon, lat in edge_coords]
+                        if i == 0
+                        else [(lon, lat) for lon, lat in edge_coords[1:]]
+                    )
                     break
 
         if len(coords) < 2:

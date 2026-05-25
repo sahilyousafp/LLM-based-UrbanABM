@@ -18,12 +18,32 @@ from typing import Optional, Tuple, List
 logger = logging.getLogger(__name__)
 
 
+def _matches_any_avoid(perception: dict, avoid_list: list) -> bool:
+    """
+    Check if a perception dict matches any entry in avoid_list.
+    Each entry is either:
+      - a plain string  → substring match across all perception values
+      - {"field": str, "value": str} → match only within the named field
+    """
+    for item in avoid_list:
+        if isinstance(item, dict):
+            field = item.get("field", "")
+            value = item.get("value", "")
+            if value.lower() in str(perception.get(field, "")).lower():
+                return True
+        else:
+            perception_text = " ".join(str(v) for v in perception.values())
+            if str(item).lower() in perception_text.lower():
+                return True
+    return False
+
+
 def _filter_by_plan_avoid(
     agent, edges: List[Tuple[str, LineString, str]]
 ) -> List[Tuple[str, LineString, str]]:
     """
-    Filter connected edges based on plan's perception_avoid keywords.
-    Hard filter: remove edges whose perception matches any avoid keyword.
+    Filter connected edges based on plan's perception_avoid list.
+    Hard filter: remove edges whose perception matches any avoid entry.
     If all edges filtered out, return originals (forced deviation).
     """
     plan = agent.memory.status._data.get("plan", {})
@@ -42,12 +62,7 @@ def _filter_by_plan_avoid(
         if not perception:
             filtered.append(entry)
             continue
-        # Concatenate all perception text fields for substring matching
-        perception_text = " ".join(str(v) for v in perception.values())
-        has_avoided = any(
-            ak.lower() in perception_text.lower() for ak in avoid_list
-        )
-        if not has_avoided:
+        if not _matches_any_avoid(perception, avoid_list):
             filtered.append(entry)
 
     if not filtered:

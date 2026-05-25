@@ -537,6 +537,26 @@ class CityModel(mesa.Model):
             self.edges = {}
             self.node_to_edges = defaultdict(list)
 
+            import math as _math
+            _REF_LAT = 41.4  # central latitude of the Eixample study area
+
+            def _metric_length(geom) -> float:
+                """Approximate metric length of a WGS84 LineString in metres.
+
+                Uses a flat-earth approximation with per-segment latitude scaling.
+                Accurate to <0.1% for street-level segments (<500 m).
+                """
+                total = 0.0
+                cs = list(geom.coords)
+                for i in range(len(cs) - 1):
+                    dlon = cs[i + 1][0] - cs[i][0]
+                    dlat = cs[i + 1][1] - cs[i][1]
+                    mid_lat = (cs[i][1] + cs[i + 1][1]) / 2
+                    dx = dlon * 111320 * _math.cos(_math.radians(mid_lat))
+                    dy = dlat * 110540
+                    total += _math.sqrt(dx * dx + dy * dy)
+                return total if total > 0 else 1e-6
+
             for _, row in edges_df.iterrows():
                 edge_id = row['edge_id']
                 edge_geom = wkt.loads(row['wkt'])
@@ -544,18 +564,17 @@ class CityModel(mesa.Model):
                 end_point = wkt.loads(row['end_wkt'])
                 road_class = row.get('road_class') or 'connector'
                 weight_multiplier = _ROAD_WEIGHT.get(road_class, 2.0)
+                length_m = _metric_length(edge_geom)
 
                 self.edges[edge_id] = edge_geom
 
                 # BIDIRECTIONAL: Map BOTH start and end points to edges
-                # This allows agents to traverse edges in both directions
+                # Tuple: (edge_id, edge_geom, direction, weight_multiplier, length_m)
                 start_key = (round(start_point.x, 6), round(start_point.y, 6))
                 end_key = (round(end_point.x, 6), round(end_point.y, 6))
 
-                # From start point: can take this edge in forward direction
-                self.node_to_edges[start_key].append((edge_id, edge_geom, 'forward', weight_multiplier))
-                # From end point: can take this edge in reverse direction
-                self.node_to_edges[end_key].append((edge_id, edge_geom, 'reverse', weight_multiplier))
+                self.node_to_edges[start_key].append((edge_id, edge_geom, 'forward', weight_multiplier, length_m))
+                self.node_to_edges[end_key].append((edge_id, edge_geom, 'reverse', weight_multiplier, length_m))
 
             print(f"[OK] Built BIDIRECTIONAL network graph with {len(self.node_to_edges)} nodes")
 
@@ -855,11 +874,12 @@ class CityModel(mesa.Model):
             for entry in self.node_to_edges.get(u, []):
                 _eid, geom, direction = entry[0], entry[1], entry[2]
                 weight_mult = entry[3] if len(entry) > 3 else 1.0
+                length_m = entry[4] if len(entry) > 4 else geom.length * 111000
                 if direction == "forward":
                     v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
                 else:
                     v = (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
-                new_dist = d + geom.length * weight_mult
+                new_dist = d + length_m * weight_mult
                 if new_dist < dist.get(v, float("inf")):
                     dist[v] = new_dist
                     prev[v] = u
@@ -928,11 +948,12 @@ class CityModel(mesa.Model):
             for entry in self.node_to_edges.get(u, []):
                 _eid, geom, direction = entry[0], entry[1], entry[2]
                 weight_mult = entry[3] if len(entry) > 3 else 1.0
+                length_m = entry[4] if len(entry) > 4 else geom.length * 111000
                 if direction == "forward":
                     v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
                 else:
                     v = (round(geom.coords[0][0], 6), round(geom.coords[0][1], 6))
-                new_dist = d + geom.length * weight_mult
+                new_dist = d + length_m * weight_mult
                 if new_dist < dist.get(v, float("inf")):
                     dist[v] = new_dist
                     prev[v] = u

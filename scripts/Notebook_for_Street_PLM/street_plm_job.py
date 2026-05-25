@@ -110,8 +110,8 @@ GCP_PROJECT_ID     = os.environ.get("GCP_PROJECT_ID", "")
 # Previous (2 km x 2 km centred on Passeig de Gracia):
 # BBOX = {"min_lon": 2.1500, "min_lat": 41.3862, "max_lon": 2.1740, "max_lat": 41.4042}
 BBOX = {
-    "min_lon": 2.166667,
-    "min_lat": 41.396468,
+    "min_lon": 2.163671,     # shifted ~250 m west
+    "min_lat": 41.394222,    # shifted ~250 m south
     "max_lon": 2.172096,
     "max_lat": 41.399895,
 }

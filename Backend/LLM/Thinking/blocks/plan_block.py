@@ -82,6 +82,7 @@ class PlanBlock(Block):
         """
         profile = await self.memory.status.get("agent_profile", {})
         archetype = profile.get("archetype", "resident")
+        needs = await self.memory.status.get("needs", {})
         plan = await self.memory.status.get("plan", {})
 
         # Initialize plan from config on first run
@@ -102,46 +103,63 @@ class PlanBlock(Block):
             encountered = self._extract_qualities(street_perception)
             plan.setdefault("encountered_qualities", []).extend(encountered)
 
-        # Check if current phase is complete
-        current_phase = plan.get("current_phase")
-        if current_phase:
-            phase_complete = await self._check_phase_complete(
-                current_phase, nearby_amenities, step
+        # --- En-route stop: check completion ---
+        # If an en_route_stop is active, check whether the stop goal is met first.
+        # On completion, restore the interrupted main phase.
+        if plan.get("en_route_stop_active") and plan.get("current_phase"):
+            stop_complete = await self._check_phase_complete(
+                plan["current_phase"], nearby_amenities, step
             )
-            if phase_complete:
-                plan["completed_phases"].append(current_phase["id"])
-                plan["current_phase"] = None
+            if stop_complete:
+                completed_stop_id = plan["current_phase"]["id"]
+                plan["completed_phases"].append(completed_stop_id)
                 await self.memory.stream.add(
-                    topic="plan",
-                    step=step,
-                    description=f"Completed phase: {current_phase['id']} ({current_phase['goal']})",
-                    metadata={"phase_id": current_phase["id"]},
+                    topic="plan", step=step,
+                    description=f"Completed en-route stop: {completed_stop_id} ({plan['current_phase']['goal']})",
+                    metadata={"stop_id": completed_stop_id},
                 )
+                plan["current_phase"] = plan.get("interrupted_phase")
+                plan["interrupted_phase"] = None
+                plan["en_route_stop_active"] = False
 
-        # Advance to next phase if needed
-        if plan.get("current_phase") is None:
-            next_phase = self._advance_phase(plan)
-            if next_phase:
-                plan["current_phase"] = next_phase
-                # Record phase start step
-                plan.setdefault("phase_start_steps", {})[next_phase["id"]] = step
-                # Resolve active target from target_types
-                model = self.context.get("model")
-                if model and next_phase.get("target_types"):
-                    position = await self.memory.status.get("position", {})
-                    active_target = self._resolve_target(
-                        model, position, next_phase["target_types"]
-                    )
-                    if active_target:
-                        plan["current_phase"]["active_target"] = active_target
-                        # Sync plan target into destination memory so Dijkstra routes toward it
-                        await self._sync_plan_target_to_destination(active_target)
-                await self.memory.stream.add(
-                    topic="plan",
-                    step=step,
-                    description=f"Started phase: {next_phase['id']} ({next_phase['goal']})",
-                    metadata={"phase_id": next_phase["id"]},
+        # --- Main phase: check completion (only when no en_route_stop running) ---
+        if not plan.get("en_route_stop_active"):
+            current_phase = plan.get("current_phase")
+            if current_phase:
+                phase_complete = await self._check_phase_complete(
+                    current_phase, nearby_amenities, step
                 )
+                if phase_complete:
+                    plan["completed_phases"].append(current_phase["id"])
+                    plan["current_phase"] = None
+                    await self.memory.stream.add(
+                        topic="plan",
+                        step=step,
+                        description=f"Completed phase: {current_phase['id']} ({current_phase['goal']})",
+                        metadata={"phase_id": current_phase["id"]},
+                    )
+
+            # Advance to next phase if needed
+            if plan.get("current_phase") is None:
+                next_phase = self._advance_phase(plan)
+                if next_phase:
+                    plan["current_phase"] = next_phase
+                    plan.setdefault("phase_start_steps", {})[next_phase["id"]] = step
+                    model = self.context.get("model")
+                    if model and next_phase.get("target_types"):
+                        position = await self.memory.status.get("position", {})
+                        active_target = self._resolve_target(
+                            model, position, next_phase["target_types"]
+                        )
+                        if active_target:
+                            plan["current_phase"]["active_target"] = active_target
+                            await self._sync_plan_target_to_destination(active_target)
+                    await self.memory.stream.add(
+                        topic="plan",
+                        step=step,
+                        description=f"Started phase: {next_phase['id']} ({next_phase['goal']})",
+                        metadata={"phase_id": next_phase["id"]},
+                    )
 
         # Resolve active_target for pre-initialized phase if not yet set
         current_phase = plan.get("current_phase")
@@ -155,6 +173,10 @@ class PlanBlock(Block):
                 if active_target:
                     current_phase["active_target"] = active_target
                     await self._sync_plan_target_to_destination(active_target)
+
+        # --- En-route stop: check triggers (only when main phase is active, no stop running) ---
+        if plan.get("current_phase") and not plan.get("en_route_stop_active"):
+            await self._check_and_trigger_en_route_stop(plan, needs, step)
 
         # Apply perception_avoid hard filter only for rule_based mode
         # LLM modes: perception_avoid is passed as soft guidance via plan_context
@@ -174,29 +196,43 @@ class PlanBlock(Block):
 
         await self.memory.status.update("plan", plan)
 
+        current_phase = plan.get("current_phase", {}) or {}
         return BlockResult(
             action="plan_updated",
             params={
                 "current_phase_index": plan.get("current_phase_index", 0),
                 "current_phase": plan.get("current_phase"),
+                "en_route_stop_active": plan.get("en_route_stop_active", False),
                 "status": plan.get("status", "active"),
             },
-            reasoning=f"Plan phase {plan.get('current_phase_index', 0)}: {plan.get('current_phase', {}).get('goal', 'none')}",
+            reasoning=f"Plan phase {plan.get('current_phase_index', 0)}: {current_phase.get('goal', 'none')}",
             fallback=False,
         )
 
     def _init_plan(self, archetype: str) -> dict:
-        """Initialize plan from config for given archetype."""
+        """Initialize plan from config for given archetype.
+
+        Supports both legacy {"phases": [...]} format and new
+        {"profile": {...}, "daily_plan": [...]} format.
+        """
         archetype_plan = self.plans_config.get(archetype, {})
-        phases = archetype_plan.get("phases", [])
+        if "daily_plan" in archetype_plan:
+            phases = archetype_plan["daily_plan"]
+            plan_profile = archetype_plan.get("profile", {})
+        else:
+            phases = archetype_plan.get("phases", [])
+            plan_profile = {}
         return {
             "phases": phases,
+            "profile": plan_profile,
             "current_phase_index": 0,
             "current_phase": None,
             "completed_phases": [],
+            "interrupted_phase": None,
+            "en_route_stop_active": False,
             "target_override": None,
             "encountered_qualities": [],
-            "phase_start_steps": {},  # phase_id -> step number when started
+            "phase_start_steps": {},
             "status": "active" if phases else "completed",
         }
 
@@ -267,10 +303,10 @@ class PlanBlock(Block):
             if hasattr(model, "con"):
                 types_sql = ", ".join(f"'{t}'" for t in types_lower)
                 query = f"""
-                    SELECT name, category, lon, lat,
+                    SELECT name, amenity, ST_X(geometry) as lon, ST_Y(geometry) as lat,
                         ST_Distance(geometry, ST_GeomFromText('POINT ({lon} {lat})')) AS dist
                     FROM amenities
-                    WHERE LOWER(category) IN ({types_sql})
+                    WHERE LOWER(amenity) IN ({types_sql})
                     ORDER BY dist
                     LIMIT 1
                 """
@@ -288,12 +324,20 @@ class PlanBlock(Block):
         return None
 
     async def _sync_plan_target_to_destination(self, active_target: dict) -> None:
-        """Write the plan's active_target into destination memory so Dijkstra routes to it."""
+        """Write the plan's active_target into destination memory so Dijkstra routes to it.
+
+        Does not override destinations explicitly set by the user (source == "user_configured")
+        so the test lab's configured target is always respected.
+        """
         try:
-            from shapely.geometry import Point
             import math
             lon, lat = active_target.get("lon", 0.0), active_target.get("lat", 0.0)
             model = self.context.get("model")
+
+            existing = await self.memory.status.get("destination", {}) or {}
+            if existing.get("source") == "user_configured":
+                return
+
             # Find the network node closest to the target coordinates
             target_node = None
             if model and hasattr(model, "node_to_edges"):
@@ -306,7 +350,6 @@ class PlanBlock(Block):
                         best_dist = d
                         target_node = node
 
-            existing = await self.memory.status.get("destination", {}) or {}
             await self.memory.status.update("destination", {
                 **existing,
                 "name": active_target.get("name", "Plan target"),
@@ -315,9 +358,83 @@ class PlanBlock(Block):
                 "lat": lat,
                 "target_node": target_node,
                 "source": "plan",
+                "visited": False,
             })
         except Exception as e:
             logger.warning(f"Failed to sync plan target to destination: {e}")
+
+    async def _check_and_trigger_en_route_stop(
+        self, plan: dict, needs: dict, step: int
+    ) -> None:
+        """Check if any en_route_stop trigger fires for the current main phase.
+
+        Skips triggering if the destination is user-configured — the stop's
+        _sync_plan_target_to_destination would be blocked by the guard anyway,
+        leaving the agent with no valid Dijkstra target for the stop.
+        """
+        destination = await self.memory.status.get("destination", {}) or {}
+        if destination.get("source") == "user_configured":
+            return
+
+        current_phase = plan.get("current_phase", {})
+        stops = current_phase.get("en_route_stops", [])
+        if not stops:
+            return
+
+        visited = await self.memory.status.get("visited_amenities", [])
+        phase_start = plan.get("phase_start_steps", {}).get(current_phase.get("id", ""), 0)
+
+        for stop in stops:
+            trigger = stop.get("trigger", {})
+            need_key = trigger.get("need")
+            threshold = trigger.get("threshold", 1.0)
+            if not need_key or needs.get(need_key, 0) < threshold:
+                continue
+
+            # Skip if already satisfied this stop during the current phase
+            stop_types = [t.lower() for t in stop.get("target_types", [])]
+            already_done = any(
+                v.get("type", "").lower() in stop_types and v.get("step", 0) >= phase_start
+                for v in visited
+            )
+            if already_done:
+                continue
+
+            # Build the stop as an ephemeral phase dict
+            stop_phase = {
+                "id": stop.get("id", f"stop_{step}"),
+                "goal": stop.get("goal", "en-route stop"),
+                "target_types": stop.get("target_types", []),
+                "max_visits": stop.get("max_visits", 1),
+                "priority": "medium",
+                "perception_preferences": [],
+                "perception_avoid": [],
+                "en_route_stops": [],
+            }
+
+            plan["interrupted_phase"] = plan["current_phase"]
+            plan["current_phase"] = stop_phase
+            plan["en_route_stop_active"] = True
+            plan.setdefault("phase_start_steps", {})[stop_phase["id"]] = step
+
+            # Resolve and sync target for the stop
+            model = self.context.get("model")
+            if model and stop_phase["target_types"]:
+                position = await self.memory.status.get("position", {})
+                active_target = self._resolve_target(model, position, stop_phase["target_types"])
+                if active_target:
+                    plan["current_phase"]["active_target"] = active_target
+                    await self._sync_plan_target_to_destination(active_target)
+
+            await self.memory.stream.add(
+                topic="plan", step=step,
+                description=(
+                    f"En-route stop triggered: {stop_phase['id']} — {stop['goal']} "
+                    f"({need_key}={needs.get(need_key, 0):.2f} ≥ {threshold})"
+                ),
+                metadata={"stop_id": stop_phase["id"]},
+            )
+            break  # only one stop at a time
 
     def _extract_qualities(self, perception: dict) -> list:
         """Extract non-empty perception field names as quality labels."""
