@@ -1,24 +1,41 @@
 import json
 import logging
 import os
+import shutil
 import sys
+import uuid
+import threading
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Query, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 import duckdb
+import numpy as np
+import pyproj
 from shapely import wkt
+from shapely.geometry import Point, LineString
 
 logger = logging.getLogger(__name__)
 
 # Load .env from project root before anything else
 PROJECT_ROOT = Path(__file__).parent.parent.parent
+FRONTEND_DIR = PROJECT_ROOT / "Frontend"
 load_dotenv(PROJECT_ROOT / ".env")
 
-from model import CityModel
+from model import CityModel, CityAgent
 from geoparquet_recorder import create_recorder, get_recorder, clear_recorder, recover_unmerged_sessions
+
+# Import Overture pipeline for map data downloads
+_env_dir = Path(__file__).parent.parent / "Environment"
+sys.path.insert(0, str(_env_dir))
+from overture_to_duckdb import OverturePipeline
+
+# Import external data plugin registry
+_plugins_dir = _env_dir / "plugins"
+sys.path.insert(0, str(_plugins_dir.parent))
+from plugins.registry import list_with_status, get_plugin
 
 # Ensure Backend root on path (model.py also does this, but be explicit here)
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -38,7 +55,7 @@ app.add_middleware(
 # Database path
 DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
 
-# Street view grid output directory
+# Street view grid — Qwen2.5-VL results (new schema) from Backend/Environment/output
 SV_OUTPUT_DIR = PROJECT_ROOT / "Backend" / "Environment" / "output"
 SV_IMAGES_DIR = SV_OUTPUT_DIR / "images"
 SV_RESULTS_DIR = SV_OUTPUT_DIR / "results"
@@ -194,6 +211,94 @@ async def get_walk_network():
     finally:
         con.close()
 
+
+@app.get("/api/walk_network/candidates")
+async def get_walk_network_candidates(
+    bbox: str = Query(..., description="west,south,east,north in WGS84"),
+    spacing: int = Query(200, ge=50, le=500, description="Sample spacing in metres"),
+):
+    """Sample points along walk edges within a bbox at `spacing` metres.
+
+    Returns GeoJSON with properties matching street_plm_job.py sample points:
+    lat, lon, heading, street_name, highway_type, edge_id, dist_along_edge_m.
+    """
+    try:
+        w, s, e, n = [float(x) for x in bbox.split(",")]
+    except Exception:
+        return {"error": "bbox must be 'west,south,east,north'"}
+
+    UTM31N = "EPSG:32631"
+    try:
+        to_utm = pyproj.Transformer.from_crs("EPSG:4326", UTM31N, always_xy=True)
+        to_wgs = pyproj.Transformer.from_crs(UTM31N, "EPSG:4326", always_xy=True)
+    except Exception as exc:
+        return {"error": f"Projection setup failed: {exc}"}
+
+    try:
+        con = get_db_connection()
+        rows = con.execute("""
+            SELECT id, ST_AsText(geometry), name, road_type
+            FROM walk_edges
+            WHERE ST_Intersects(geometry, ST_MakeEnvelope(?, ?, ?, ?))
+        """, [w, s, e, n]).fetchall()
+        con.close()
+    except Exception as exc:
+        logger.warning(f"Candidates walk_edges query failed: {exc}")
+        return {"type": "FeatureCollection", "features": []}
+
+    seen_cells: set = set()
+    features = []
+
+    for row in rows:
+        edge_id, wkt_str, name, road_type = row
+        if not wkt_str:
+            continue
+        try:
+            line_wgs = wkt.loads(wkt_str)
+            coords_proj = [to_utm.transform(x, y) for x, y in line_wgs.coords]
+        except Exception:
+            continue
+
+        line_proj = LineString(coords_proj)
+        length = line_proj.length
+        if length < 1:
+            continue
+
+        n_steps = max(1, int(length / spacing))
+        for i in range(n_steps + 1):
+            dist = min(i * spacing, length)
+            p = line_proj.interpolate(dist)
+            offset = 1.0 if dist + 1.0 < length else -1.0
+            p2 = line_proj.interpolate(dist + offset)
+            dx, dy = p2.x - p.x, p2.y - p.y
+            heading = float((np.degrees(np.arctan2(dx, dy)) + 360) % 360)
+
+            lon, lat = to_wgs.transform(p.x, p.y)
+            if not (w <= lon <= e and s <= lat <= n):
+                continue
+
+            cell = (round(lat, 4), round(lon, 4))
+            if cell in seen_cells:
+                continue
+            seen_cells.add(cell)
+
+            features.append({
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [round(lon, 6), round(lat, 6)]},
+                "properties": {
+                    "lat": round(lat, 6),
+                    "lon": round(lon, 6),
+                    "heading": round(heading, 1),
+                    "street_name": name or "",
+                    "highway_type": road_type or "unknown",
+                    "edge_id": edge_id or "",
+                    "dist_along_edge_m": round(float(dist), 1),
+                },
+            })
+
+    return {"type": "FeatureCollection", "features": features}
+
+
 @app.get("/api/roads")
 async def get_roads():
     """Get roads/drive network as GeoJSON"""
@@ -288,6 +393,285 @@ async def respawn_agents(count: int = 15):
         "status": "respawned",
         "count": len(city_model.city_agents),
         "step": city_model.steps,
+    }
+
+
+@app.post("/api/agents/respawn_advanced")
+async def respawn_agents_advanced(payload: dict = Body(...)):
+    """
+    Advanced respawn supporting click / random-in-zone / POI / home-work spawn modes.
+
+    Body:
+      {
+        "count": int (1-100, used only when spawn_mode == 'random'),
+        "spawn_mode": "click" | "random" | "poi" | "home_work",
+        "points": [{"lon": float, "lat": float, "archetype": str}, ...],
+        "home_points": [{lon,lat}, ...] (home_work only — residents start here),
+        "work_points": [{lon,lat}, ...] (home_work only — commuters start here),
+        "archetype_mix": {"resident":0.25, "commuter":0.25, "tourist":0.25, "student":0.25}
+      }
+    """
+    global city_model
+    from shapely.geometry import LineString
+
+    spawn_mode = str(payload.get("spawn_mode", "random"))
+    count = max(1, min(100, int(payload.get("count", 15))))
+    points = payload.get("points", []) or []
+    home_points = payload.get("home_points", []) or []
+    work_points = payload.get("work_points", []) or []
+    mix = payload.get("archetype_mix", {}) or {}
+
+    archetypes = list(CityAgent.ARCHETYPES)
+
+    def _normalise_mix(m: dict) -> list[str]:
+        """Turn the archetype mix into a deterministic sequence covering `count` agents."""
+        if not m:
+            return [archetypes[i % len(archetypes)] for i in range(count)]
+        total = sum(max(0.0, float(v)) for v in m.values()) or 1.0
+        seq: list[str] = []
+        for arch in archetypes:
+            n = int(round(count * max(0.0, float(m.get(arch, 0))) / total))
+            seq.extend([arch] * n)
+        while len(seq) < count:
+            seq.append(archetypes[len(seq) % len(archetypes)])
+        return seq[:count]
+
+    # Resolve the (lon, lat, archetype) triples we want to materialise.
+    triples: list[tuple[float, float, str]] = []
+    if spawn_mode == "click" and points:
+        for p in points:
+            arch = str(p.get("archetype") or archetypes[len(triples) % len(archetypes)])
+            try:
+                triples.append((float(p["lon"]), float(p["lat"]), arch))
+            except (KeyError, TypeError, ValueError):
+                continue
+    elif spawn_mode == "home_work" and (home_points or work_points):
+        for p in home_points:
+            try:
+                triples.append((float(p["lon"]), float(p["lat"]), "resident"))
+            except (KeyError, TypeError, ValueError):
+                continue
+        for p in work_points:
+            try:
+                triples.append((float(p["lon"]), float(p["lat"]), "commuter"))
+            except (KeyError, TypeError, ValueError):
+                continue
+    elif spawn_mode == "poi" and points:
+        # Same shape as click — UI pre-filters amenities client-side.
+        arch_seq = _normalise_mix(mix) if mix else None
+        for idx, p in enumerate(points[:count]):
+            arch = (arch_seq[idx] if arch_seq else None) or str(p.get("archetype") or archetypes[idx % len(archetypes)])
+            try:
+                triples.append((float(p["lon"]), float(p["lat"]), arch))
+            except (KeyError, TypeError, ValueError):
+                continue
+    else:
+        # "random" — fall back to the legacy edge-based spawn.
+        city_model = CityModel(num_agents=count)
+        return {
+            "status": "respawned",
+            "spawn_mode": "random",
+            "count": len(city_model.city_agents),
+            "step": city_model.steps,
+        }
+
+    if not triples:
+        return {"error": "No valid spawn points supplied for mode '{}'".format(spawn_mode)}
+
+    # Rebuild empty model so the new agents own the network state.
+    city_model = CityModel(num_agents=0)
+
+    placed = 0
+    skipped = 0
+    for lon, lat, arch in triples:
+        if arch not in CityAgent.ARCHETYPES:
+            arch = archetypes[placed % len(archetypes)]
+        start_node = city_model._find_nearest_node(lon, lat)
+        if not start_node:
+            skipped += 1
+            continue
+        edges_at_start = city_model.node_to_edges.get(start_node, [])
+        if not edges_at_start:
+            skipped += 1
+            continue
+        forward = [e for e in edges_at_start if e[2] == "forward"] or edges_at_start
+        edge_id, edge_geom, direction = forward[0][0], forward[0][1], forward[0][2]
+        if direction == "reverse":
+            edge_geom = LineString(list(edge_geom.coords)[::-1])
+        start_point = Point(edge_geom.coords[0])
+
+        target_info = None
+        try:
+            target_info = city_model._pick_target_for_archetype(arch)
+            if target_info:
+                tn = city_model._find_nearest_node(target_info["lon"], target_info["lat"])
+                target_info["target_node"] = tn
+        except Exception:
+            target_info = None
+
+        try:
+            agent = CityAgent(
+                model=city_model,
+                geometry=start_point,
+                crs="EPSG:4326",
+                edge_id=int(edge_id),
+                edge_geom=edge_geom,
+                archetype=arch,
+                target_info=target_info,
+            )
+            city_model.city_agents.append(agent)
+            placed += 1
+        except Exception as e:
+            logger.warning(f"respawn_advanced: failed to place agent at ({lon},{lat}): {e}")
+            skipped += 1
+
+    return {
+        "status": "respawned",
+        "spawn_mode": spawn_mode,
+        "count": placed,
+        "skipped": skipped,
+        "step": city_model.steps,
+    }
+
+
+@app.post("/api/streetview/download")
+async def download_streetview(payload: dict = Body(...)):
+    """
+    Sample candidate points inside ``bbox`` at ``spacing`` metres and fetch JPEGs
+    from the Google Street View Static API. Skips any candidate within
+    ``spacing / 2`` metres of an already-analysed point. Does NOT run VLM
+    inference — that lane remains the offline batch job.
+
+    Body: {"bbox": [west, south, east, north], "spacing": int}
+    """
+    import math
+    import re as _re
+    import requests
+
+    bbox = payload.get("bbox") or []
+    spacing = int(payload.get("spacing", 200))
+    spacing = max(40, min(spacing, 600))
+    if len(bbox) != 4:
+        return {"error": "bbox must be [west, south, east, north]"}
+
+    api_key = os.environ.get("GOOGLE_STREETVIEW_API_KEY", "")
+    if not api_key:
+        return {
+            "error": "GOOGLE_STREETVIEW_API_KEY not configured in .env",
+            "downloaded": [],
+            "skipped": 0,
+        }
+
+    west, south, east, north = [float(x) for x in bbox]
+    if east < west or north < south:
+        return {"error": "bbox bounds inverted"}
+
+    ref_lat = (north + south) / 2.0
+    deg_per_m_lat = 1.0 / 110540.0
+    deg_per_m_lon = 1.0 / (111320.0 * math.cos(math.radians(ref_lat)) or 1.0)
+    step_lat = spacing * deg_per_m_lat
+    step_lon = spacing * deg_per_m_lon
+
+    # Existing analysis files so we don't re-download.
+    existing: list[tuple[float, float]] = []
+    if SV_RESULTS_DIR.is_dir():
+        for jf in SV_RESULTS_DIR.glob("*_analysis.json"):
+            m = _re.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", jf.name)
+            if m:
+                existing.append((float(m.group(1)), float(m.group(2))))
+    if SV_IMAGES_DIR.is_dir():
+        for jp in SV_IMAGES_DIR.glob("sv_*.jpg"):
+            m = _re.match(r"^sv_(-?\d+\.\d+)_(-?\d+\.\d+)_h\d+\.jpg$", jp.name)
+            if m:
+                existing.append((float(m.group(1)), float(m.group(2))))
+    SV_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
+
+    near_threshold = (spacing / 2.0) * deg_per_m_lat  # ~degrees latitude
+    near_threshold_sq = near_threshold ** 2
+
+    def _is_near_existing(lat: float, lon: float) -> bool:
+        for (elat, elon) in existing:
+            if (elat - lat) ** 2 + (elon - lon) ** 2 <= near_threshold_sq:
+                return True
+        return False
+
+    # Grid-sample inside the bbox. We rely on the Street View metadata API to
+    # reject candidates with no panorama coverage (rural / blocked).
+    downloaded: list[dict] = []
+    skipped = 0
+    requested = 0
+    lat = south
+    while lat <= north and requested < 200:
+        lon = west
+        while lon <= east and requested < 200:
+            requested += 1
+            if _is_near_existing(lat, lon):
+                skipped += 1
+                lon += step_lon
+                continue
+
+            # Probe metadata first (free, distinguishes "no panorama" from billable fetch)
+            try:
+                meta = requests.get(
+                    "https://maps.googleapis.com/maps/api/streetview/metadata",
+                    params={"location": f"{lat:.6f},{lon:.6f}", "radius": 50, "key": api_key},
+                    timeout=10,
+                ).json()
+                if meta.get("status") != "OK":
+                    skipped += 1
+                    lon += step_lon
+                    continue
+                pano_lat = float(meta.get("location", {}).get("lat", lat))
+                pano_lon = float(meta.get("location", {}).get("lng", lon))
+            except Exception:
+                skipped += 1
+                lon += step_lon
+                continue
+
+            if _is_near_existing(pano_lat, pano_lon):
+                skipped += 1
+                lon += step_lon
+                continue
+
+            heading = 0  # north — keeps file naming deterministic
+            fname = f"sv_{pano_lat:.6f}_{pano_lon:.6f}_h{heading}.jpg"
+            fpath = SV_IMAGES_DIR / fname
+            if fpath.exists():
+                skipped += 1
+                lon += step_lon
+                continue
+            try:
+                img = requests.get(
+                    "https://maps.googleapis.com/maps/api/streetview",
+                    params={
+                        "size": "640x640",
+                        "location": f"{pano_lat:.6f},{pano_lon:.6f}",
+                        "heading": heading,
+                        "pitch": 0,
+                        "fov": 90,
+                        "key": api_key,
+                    },
+                    timeout=20,
+                )
+                if img.status_code == 200 and img.content[:3] == b"\xff\xd8\xff":
+                    fpath.write_bytes(img.content)
+                    downloaded.append({"lat": pano_lat, "lon": pano_lon, "filename": fname})
+                    existing.append((pano_lat, pano_lon))
+                else:
+                    skipped += 1
+            except Exception:
+                skipped += 1
+            lon += step_lon
+        lat += step_lat
+
+    return {
+        "status": "ok",
+        "spacing_m": spacing,
+        "bbox": [west, south, east, north],
+        "requested": requested,
+        "downloaded": downloaded,
+        "skipped": skipped,
+        "note": "VLM analysis is offline — run street_plm_job.py to populate scene fields.",
     }
 
 @app.get("/api/agent/{agent_id}")
@@ -747,66 +1131,60 @@ async def get_llm_stats():
 
 @app.get("/api/streetview_grid")
 async def get_streetview_grid():
-    """Return GeoJSON of streetview scene analysis data read directly from JSON result files."""
+    """Return GeoJSON of new-schema JSON files from Backend/Environment/output/results/."""
     import json as json_lib
     import re
 
     features = []
-    if not SV_RESULTS_DIR.is_dir():
-        return {"type": "FeatureCollection", "features": [], "error": "Results directory not found"}
+    seen: set = set()  # (round4-lat, round4-lon) dedup
 
-    for json_file in sorted(SV_RESULTS_DIR.glob("*_analysis.json")):
-        # Parse lat/lon from filename: {lat}_{lon}_analysis.json
-        m = re.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", json_file.name)
-        if not m:
-            continue
-        lat, lon = float(m.group(1)), float(m.group(2))
-        try:
-            data = json_lib.loads(json_file.read_text(encoding="utf-8"))
-        except Exception:
-            continue
+    # ── 1. New-schema: test/StreetPLM/results/ (Qwen2.5-VL) ─────────
+    if SV_RESULTS_DIR.is_dir():
+        for json_file in sorted(SV_RESULTS_DIR.glob("*_analysis.json")):
+            m = re.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", json_file.name)
+            if not m:
+                continue
+            lat, lon = float(m.group(1)), float(m.group(2))
+            key = (round(lat, 4), round(lon, 4))
+            seen.add(key)
+            try:
+                data = json_lib.loads(json_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            meta = data.get("metadata", {})
+            scene = data.get("scene_analysis") or {}
+            src_img = meta.get("source_image", "")
+            features.append({
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [lon, lat]},
+                "properties": {
+                    "lat": lat, "lon": lon,
+                    "heading": meta.get("heading", 0.0),
+                    "image_url": f"/api/streetview_grid/image/{src_img}" if src_img else "",
+                    "model": meta.get("model", ""),
+                    "timestamp": meta.get("timestamp", ""),
+                    "schema": "new",
+                    "scene": scene.get("scene", ""),
+                    "lighting": json_lib.dumps(scene.get("lighting", []), ensure_ascii=False),
+                    "spatial_character": json_lib.dumps(scene.get("spatial_character", []), ensure_ascii=False),
+                    "crowdedness": json_lib.dumps(scene.get("crowdedness", []), ensure_ascii=False),
+                    "greenery": json_lib.dumps(scene.get("greenery", []), ensure_ascii=False),
+                    "street_amenities": json_lib.dumps(scene.get("street_amenities", []), ensure_ascii=False),
+                    "visible_text": json_lib.dumps(scene.get("visible_text", []), ensure_ascii=False),
+                },
+            })
 
-        meta = data.get("metadata", {})
-        scene = data.get("scene_analysis") or {}
-        src_img = meta.get("source_image", "")
-
-        features.append({
-            "type": "Feature",
-            "geometry": {"type": "Point", "coordinates": [lon, lat]},
-            "properties": {
-                "lat": lat,
-                "lon": lon,
-                "heading": meta.get("heading", 0.0),
-                "image_url": f"/api/streetview_grid/image/{src_img}" if src_img else "",
-                "model": meta.get("model", ""),
-                "timestamp": meta.get("timestamp", ""),
-                "scene_overview": scene.get("scene_overview", ""),
-                "buildings": scene.get("buildings", ""),
-                "materials": scene.get("materials", ""),
-                "building_condition": scene.get("building_condition", ""),
-                "street_furniture": scene.get("street_furniture", ""),
-                "vegetation": scene.get("vegetation", ""),
-                "signage": scene.get("signage", ""),
-                "ground_surfaces": scene.get("ground_surfaces", ""),
-                "spatial_enclosure": scene.get("spatial_enclosure", ""),
-                "pedestrian_activity": scene.get("pedestrian_activity", ""),
-                "lighting_atmosphere": scene.get("lighting_atmosphere", ""),
-                "as_resident": scene.get("as_resident", ""),
-                "as_commuter": scene.get("as_commuter", ""),
-                "as_tourist": scene.get("as_tourist", ""),
-                "as_student": scene.get("as_student", ""),
-            },
-        })
     return {"type": "FeatureCollection", "features": features}
 
 
 @app.get("/api/streetview_grid/image/{filename}")
 async def get_streetview_image(filename: str):
-    """Serve a street view grid image file."""
-    filepath = SV_IMAGES_DIR / filename
-    if not filepath.is_file():
-        return {"error": "Image not found"}
-    return FileResponse(filepath, media_type="image/jpeg")
+    """Serve a street view image from either the StreetPLM or legacy output directory."""
+    for images_dir in [SV_IMAGES_DIR, SV_OUTPUT_DIR / "images"]:
+        filepath = images_dir / filename
+        if filepath.is_file():
+            return FileResponse(filepath, media_type="image/jpeg")
+    return {"error": "Image not found", "filename": filename}
 
 
 @app.get("/api/streetview_grid/json/{filename}")
@@ -1011,6 +1389,168 @@ async def get_recording_status():
     }
 
 
+# ── Overture download jobs ─────────────────────────────────────────────────
+_overture_jobs: dict[str, dict] = {}  # job_id → progress dict
+
+@app.post("/api/overture/download")
+async def start_overture_download(payload: dict = Body(...)):
+    """Start a background Overture Maps download for the given bbox."""
+    bbox_list = payload.get("bbox")  # [west, south, east, north]
+    layers = payload.get("layers", ["buildings", "amenities", "transport"])
+    location_name = payload.get("location_name", "custom_zone")
+    gcp_project = payload.get("gcp_project") or None
+    if not bbox_list or len(bbox_list) != 4:
+        return {"error": "bbox must be [west, south, east, north]"}
+
+    bbox = {
+        "min_lon": bbox_list[0], "min_lat": bbox_list[1],
+        "max_lon": bbox_list[2], "max_lat": bbox_list[3],
+    }
+    job_id = str(uuid.uuid4())[:8]
+
+    pipeline = OverturePipeline(
+        bbox=bbox, location_name=location_name,
+        layers=layers, gcp_project=gcp_project,
+        db_path=DB_PATH,
+        job_id=job_id,
+    )
+    _overture_jobs[job_id] = pipeline.progress
+
+    def run():
+        pipeline.run()
+
+    threading.Thread(target=run, daemon=True).start()
+    return {"job_id": job_id, "status": "started"}
+
+
+@app.get("/api/overture/status/{job_id}")
+async def get_overture_status(job_id: str):
+    if job_id not in _overture_jobs:
+        return {"error": "Unknown job"}
+    return _overture_jobs[job_id]
+
+
+@app.post("/api/overture/save/{job_id}")
+async def save_overture_download(job_id: str, payload: dict = Body(...)):
+    """Save downloaded data by appending to existing DB or saving as new file."""
+    global city_model
+
+    if job_id not in _overture_jobs:
+        return {"error": "Unknown job"}
+
+    mode = payload.get("mode", "append")  # "append" or "new"
+    db_name = payload.get("db_name")
+
+    # Get pending file path from the job progress (set by pipeline)
+    progress = _overture_jobs[job_id]
+    pending_path = progress.get("pending_path")
+
+    if not pending_path:
+        return {"error": "No pending database found for this job"}
+
+    pending_path = Path(pending_path)
+    if not pending_path.exists():
+        return {"error": "Pending database file not found"}
+
+    try:
+        if mode == "append":
+            # Append downloaded tables to the live database
+            pending_con = duckdb.connect(str(pending_path), read_only=True)
+            pending_con.execute("INSTALL spatial; LOAD spatial;")
+            main_con = duckdb.connect(str(DB_PATH))
+            main_con.execute("INSTALL spatial; LOAD spatial;")
+
+            tables = ["buildings", "amenities", "walk_edges"]
+            for tbl in tables:
+                try:
+                    # Check if table exists in pending
+                    pending_con.execute(f"SELECT 1 FROM {tbl} LIMIT 1")
+
+                    # Export pending table to temp parquet
+                    import tempfile
+                    with tempfile.NamedTemporaryFile(suffix='.parquet', delete=False) as tmp:
+                        tmp_path = tmp.name
+                    pending_con.execute(f"COPY {tbl} TO '{tmp_path}' (FORMAT PARQUET)")
+
+                    # Insert rows that don't already exist (by id)
+                    main_con.execute(f"""
+                        INSERT INTO {tbl}
+                        SELECT * FROM read_parquet('{tmp_path}')
+                        WHERE id NOT IN (SELECT id FROM {tbl})
+                    """)
+                    os.unlink(tmp_path)
+                    count = main_con.execute(f"SELECT COUNT(*) FROM {tbl}").fetchone()[0]
+                except Exception as e:
+                    logger.warning(f"Failed to append {tbl}: {e}")
+
+            pending_con.close()
+            main_con.close()
+
+            # Reinitialize the model with updated data
+            city_model = CityModel(num_agents=num_agents, spawn_seed=spawn_seed)
+            pending_path.unlink(missing_ok=True)
+
+            return {
+                "status": "ok",
+                "mode": "append",
+                "message": "Data appended to map database"
+            }
+
+        elif mode == "new":
+            # Save pending file as a new database
+            if not db_name or not db_name.strip():
+                return {"error": "db_name required for new mode"}
+
+            # Sanitize filename
+            db_name = "".join(c for c in db_name if c.isalnum() or c == "_")
+            if not db_name:
+                return {"error": "Invalid database name"}
+
+            new_db_path = DB_PATH.parent / f"{db_name}.duckdb"
+            shutil.copy2(str(pending_path), str(new_db_path))
+            pending_path.unlink(missing_ok=True)
+
+            return {
+                "status": "ok",
+                "mode": "new",
+                "filename": f"{db_name}.duckdb",
+                "message": f"Database saved as {db_name}.duckdb"
+            }
+
+        else:
+            return {"error": f"Unknown mode: {mode}"}
+
+    except Exception as exc:
+        logger.error(f"Save failed: {exc}")
+        pending_path.unlink(missing_ok=True)
+        return {"error": f"Save failed: {exc}"}
+
+
+@app.post("/api/database/upload")
+async def upload_database(file: UploadFile = File(...)):
+    """Upload a DuckDB database file and reload the model."""
+    global city_model
+    if not file.filename or not (file.filename.endswith('.duckdb') or file.filename.endswith('.db')):
+        return {"error": "Please upload a .duckdb or .db file"}
+    try:
+        content = await file.read()
+        if len(content) == 0:
+            return {"error": "Uploaded file is empty"}
+        backup_path = DB_PATH.with_name(DB_PATH.stem + ".bak" + DB_PATH.suffix)
+        if DB_PATH.exists():
+            shutil.copy2(str(DB_PATH), str(backup_path))
+        DB_PATH.write_bytes(content)
+        city_model = CityModel(num_agents=num_agents, spawn_seed=spawn_seed)
+        return {
+            "status": "ok",
+            "filename": file.filename,
+            "agents": len(city_model.city_agents),
+            "message": f"Database loaded: {file.filename} ({len(content)//1024} KB)"
+        }
+    except Exception as exc:
+        return {"error": f"Upload failed: {exc}"}
+
+
 @app.get("/api/recording/download/{filename}")
 async def download_recording(filename: str):
     """
@@ -1032,6 +1572,108 @@ async def download_recording(filename: str):
         media_type="application/octet-stream",
         filename=filename,
     )
+
+
+@app.get("/api/assets/agents/{filename}")
+async def serve_agent_glb(filename: str):
+    """Serve GLB agent character models to the frontend."""
+    safe = Path(filename).name  # strip any path traversal
+    file_path = FRONTEND_DIR / "assets" / "agents" / safe
+    if not file_path.exists() or file_path.suffix.lower() != ".glb":
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail=f"Asset not found: {safe}")
+    return FileResponse(str(file_path), media_type="model/gltf-binary")
+
+
+# ── External Data Source endpoints ───────────────────────────────────────────
+_ext_jobs: dict[str, dict] = {}  # job_id → progress dict
+
+
+@app.get("/api/external/sources")
+async def list_external_sources():
+    """List all available external data plugins with their loaded status."""
+    try:
+        con = duckdb.connect(str(DB_PATH))
+        con.execute("INSTALL spatial; LOAD spatial;")
+        result = list_with_status(con)
+        con.close()
+        return {"sources": result}
+    except Exception as e:
+        return {"sources": [], "error": str(e)}
+
+
+@app.post("/api/external/{source_name}/download")
+async def start_external_download(source_name: str, payload: dict = Body(default={})):
+    """Start a background download job for an external data plugin."""
+    plugin = get_plugin(source_name)
+    if not plugin:
+        return {"error": f"Unknown source: {source_name}"}
+
+    bbox_list = payload.get("bbox")
+    if not bbox_list or len(bbox_list) != 4:
+        return {"error": "bbox must be [west, south, east, north]"}
+
+    bbox = {
+        "min_lon": bbox_list[0], "min_lat": bbox_list[1],
+        "max_lon": bbox_list[2], "max_lat": bbox_list[3],
+    }
+    job_id = f"{source_name}_{str(uuid.uuid4())[:8]}"
+    progress = {"pct": 0, "status": "running", "log": [], "error": None}
+    _ext_jobs[job_id] = progress
+
+    def _progress_cb(pct: float, msg: str) -> None:
+        progress["pct"] = pct
+        progress["log"].append(msg)
+        if len(progress["log"]) > 50:
+            progress["log"] = progress["log"][-50:]
+
+    def run():
+        try:
+            con = duckdb.connect(str(DB_PATH))
+            con.execute("INSTALL spatial; LOAD spatial;")
+            row_count = plugin.fetch(bbox=bbox, con=con, progress_cb=_progress_cb)
+            con.close()
+            progress["pct"] = 100
+            progress["status"] = "done"
+            progress["row_count"] = row_count
+            # Reload model context so agents see new data immediately
+            global city_model
+            try:
+                city_model = CityModel(num_agents=num_agents, spawn_seed=spawn_seed)
+            except Exception as e:
+                logger.warning(f"Model reload after {source_name} download failed: {e}")
+        except Exception as e:
+            logger.error(f"External download {source_name} failed: {e}")
+            progress["status"] = "error"
+            progress["error"] = str(e)
+
+    threading.Thread(target=run, daemon=True).start()
+    return {"job_id": job_id, "status": "started"}
+
+
+@app.get("/api/external/{source_name}/status/{job_id}")
+async def get_external_status(source_name: str, job_id: str):
+    if job_id not in _ext_jobs:
+        return {"error": "Unknown job"}
+    return _ext_jobs[job_id]
+
+
+@app.delete("/api/external/{source_name}")
+async def remove_external_source(source_name: str):
+    """Drop the ext_* table for this plugin from DuckDB."""
+    global city_model
+    plugin = get_plugin(source_name)
+    if not plugin:
+        return {"error": f"Unknown source: {source_name}"}
+    try:
+        con = duckdb.connect(str(DB_PATH))
+        con.execute("INSTALL spatial; LOAD spatial;")
+        plugin.drop_table(con)
+        con.close()
+        city_model = CityModel(num_agents=num_agents, spawn_seed=spawn_seed)
+        return {"status": "ok", "message": f"{source_name} data removed"}
+    except Exception as e:
+        return {"error": str(e)}
 
 
 if __name__ == "__main__":

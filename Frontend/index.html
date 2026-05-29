@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Urban ABM — Pedestrian Simulation Lab</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+
+<link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js"></script>
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ================ MAP + DIM OVERLAY ================ -->
+  <div id="map"></div>
+  <div class="map-dim"></div>
+
+  <!-- ================ TOPBAR ================ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo"></div>
+      <div class="titles">
+        <div class="t1">Universal Singularity</div>
+        <div class="t2">Pedestrian Simulation Lab · Barcelona Eixample</div>
+      </div>
+  </header>
+
+  <!-- ================ PANEL 1 — Streetview Extraction ================ -->
+  <section class="panel-stage" id="panel-1" data-active="false">
+
+    <!-- LEFT: Streetview Extraction controls -->
+    <div class="slot left">
+      <div class="panel control-panel">
+        <div class="head">
+          <div class="eyebrow">Step 1 of 5</div>
+          <h3>Streetview Extraction</h3>
+          <p class="meta" style="margin: 6px 0 0 0;">Draw a zone to plan a Street View capture. Click any existing point to inspect its image and scene analysis.</p>
+        </div>
+        <div class="body col" style="gap: 14px;">
+          <div class="col" style="gap: 6px;">
+            <div class="row between">
+              <span class="meta">Spacing</span>
+              <span class="meta" id="p1-spacing-label">200 m</span>
+            </div>
+            <input type="range" min="50" max="500" step="10" value="200" class="slider" id="p1-spacing">
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi"><div class="val" id="p1-kpi-existing">—</div><div class="lbl">Existing</div></div>
+            <div class="kpi"><div class="val" id="p1-kpi-candidates">0</div><div class="lbl">Candidates</div></div>
+          </div>
+
+          <label class="row" style="font-size: 12px; gap: 6px;">
+            <input type="checkbox" id="p1-skip-near" checked> Skip near existing
+          </label>
+
+          <button class="btn primary" id="p1-download">Download New Images</button>
+          <div class="meta" id="p1-status">Existing 300+ analyzed points shown as grey dots. Click any to inspect.</div>
+        </div>
+      </div>
+
+      <!-- Compact Street View preview — appears below extraction controls when a point is clicked -->
+      <div class="panel" id="p1-sv-popover" style="display:none;">
+        <div class="head row between">
+          <div>
+            <div class="eyebrow">Street View</div>
+            <h3 id="p1-popover-title">Selected Point</h3>
+          </div>
+          <div class="row" style="gap:4px;">
+            <button class="btn ghost tiny" id="p1-popover-expand" title="View details">⤢</button>
+            <button class="btn ghost tiny" id="p1-popover-close">×</button>
+          </div>
+        </div>
+        <div class="popover-image">
+          <img id="p1-popover-img" alt="Street View" style="filter: brightness(1) contrast(1) saturate(1);">
+          <div class="badges">
+            <span class="chip" id="p1-popover-coord">—</span>
+            <span class="chip accent" id="p1-popover-heading">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Overture data panel -->
+    <div class="slot right">
+      <div class="search-bar" id="search-bar">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search location…" autocomplete="off">
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <!-- Base layer: Overture Maps download -->
+      <div class="panel" id="p1-overture-panel">
+          <div class="head">
+            <div class="eyebrow">Overture Maps</div>
+            <h3>Download Zone Data</h3>
+            <p class="meta" style="margin:6px 0 0;">Download buildings, amenities and walk network for the drawn zone directly from Overture's public dataset.</p>
+          </div>
+          <div class="body col" style="gap:12px;">
+            <div class="zone-bbox-display" id="p1-zone-bbox">No zone drawn yet.</div>
+            <button class="btn primary" id="p1-overture-details" disabled>Details &amp; Download</button>
+            <button class="btn" id="p1-overture-upload">Upload Database …</button>
+            <input type="file" id="p1-overture-file-input" accept=".duckdb,.db" style="display:none">
+            <div id="p1-overture-progress" style="display:none;">
+              <div class="meta" id="p1-overture-status">Preparing…</div>
+              <div class="ov-progress-bar"><div class="ov-progress-fill" id="p1-overture-fill" style="width:0%"></div></div>
+              <div class="ov-log" id="p1-overture-log"></div>
+              <div id="ov-save-actions" style="display:none; gap:8px; margin-top:8px; display:flex;">
+                <button class="btn primary" id="ov-save-append">Append to Map</button>
+                <button class="btn" id="ov-save-new">Save as New DB</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- External Data Sources card -->
+      <div class="panel" id="p1-external-panel">
+        <div class="head">
+          <div class="eyebrow">External Data</div>
+          <h3>Data Sources</h3>
+          <p class="meta" style="margin:6px 0 0;">Enrich agent perception with transit stops, weather, noise, and custom layers.</p>
+        </div>
+        <div class="body col" style="gap:10px;" id="p1-ext-source-list">
+          <div class="meta" id="p1-ext-loading" style="opacity:0.6;">Loading sources…</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ================ PANEL 2 — VLM Configuration ================ -->
+  <section class="panel-stage" id="panel-2" data-active="false">
+    <div class="grid">
+      <div class="panel params-panel">
+        <div class="head row between">
+          <div>
+            <div class="eyebrow">Step 2 of 5</div>
+            <h3>VLM Parameters</h3>
+            <p class="meta" style="margin: 4px 0 0 0;">Choose which scene attributes to extract. Edit each prompt to fine-tune the VLM output.</p>
+          </div>
+          <button class="btn tiny" id="p2-add-param">+ Custom</button>
+        </div>
+        <div class="list" id="p2-param-list"></div>
+      </div>
+
+      <div class="panel vlm-panel">
+        <div class="head row between">
+          <div>
+            <div class="eyebrow">Vision Models</div>
+            <h3>Engine</h3>
+          </div>
+          <span class="chip warning">v2 — runtime VLM coming soon</span>
+        </div>
+        <div class="list" id="p2-vlm-list"></div>
+        <div style="padding: 0 18px 18px;">
+          <button class="btn primary" id="p2-analyze" disabled style="width: 100%;">
+            Analyze Selection — Runtime VLM Disabled
+          </button>
+          <p class="meta" style="text-align: center; margin-top: 8px;">
+            All ~300 points already analyzed by Qwen2.5-VL. Edits to prompts will apply when runtime VLM is enabled.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ PANEL 3 — Personality ================ -->
+  <section class="panel-stage" id="panel-3" data-active="false">
+
+    <!-- UNSELECTED: big cards floating at bottom centre -->
+    <div class="archetype-bar" id="p3-bar"></div>
+
+    <!-- SELECTED: 3-column layout -->
+    <div class="p3-layout hidden" id="p3-layout">
+
+      <!-- LEFT: info panel + thumb strip -->
+      <div class="p3-col-left">
+        <div class="panel p3-info-panel">
+          <div class="head">
+            <div class="eyebrow">Step 3 of 5</div>
+            <h3>Personality</h3>
+            <p class="meta" style="margin:6px 0 0 0;">Tune the four archetypes that drive agent decisions. Click an archetype card to edit its profile and daily plan.</p>
+          </div>
+          <div class="body col" style="gap:8px;">
+            <button class="btn primary" id="p3-save" style="width: 100%;">Save</button>
+            <div class="row" style="gap:6px;">
+              <button class="btn tiny" id="p3-export">Export JSON</button>
+              <button class="btn ghost tiny" id="p3-reload-saved">Reload Saved</button>
+              <button class="btn ghost tiny" id="p3-reload-defaults">Restore Defaults</button>
+            </div>
+          </div>
+        </div>
+        <div class="p3-thumb-strip" id="p3-thumbs"></div>
+      </div>
+
+      <!-- CENTER: inline profile editor -->
+      <div class="p3-col-center">
+        <div class="panel p3-editor-panel" id="p3-editor">
+          <div class="head row between">
+            <div>
+              <div class="eyebrow">Profile Editor</div>
+              <h3 id="p3-editor-title">Archetype</h3>
+            </div>
+            <button class="btn ghost tiny" id="p3-editor-close">×</button>
+          </div>
+          <div class="body" id="p3-editor-body"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: full-height character viewer — no panel box, canvas floats free -->
+      <div class="p3-col-right p3-char-panel" id="p3-char-viewer">
+        <canvas id="p3-char-canvas"></canvas>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================ PANEL 4 — Single Agent ================ -->
+  <section class="panel-stage" id="panel-4" data-active="false">
+
+    <div class="slot left-tall p4-left">
+      <div class="panel">
+        <div class="head">
+          <div class="eyebrow">Step 4 of 5</div>
+          <h3>Single Agent</h3>
+        </div>
+        <div class="body col" style="gap: 12px;">
+          <div class="col" style="gap: 6px;">
+            <div class="field-label">Archetype</div>
+            <select class="input" id="p4-archetype">
+              <option value="resident">Resident</option>
+              <option value="commuter">Commuter</option>
+              <option value="tourist">Tourist</option>
+              <option value="student">Student</option>
+            </select>
+          </div>
+
+          <div class="col" style="gap: 6px;">
+            <div class="field-label">Navigation Aid</div>
+            <select class="input" id="p4-navmode">
+              <option value="both">Both — GPS + Compass</option>
+              <option value="gps">GPS only</option>
+              <option value="direction_sense">Compass only</option>
+              <option value="none">None — free roam</option>
+            </select>
+          </div>
+
+          <div class="col" style="gap: 8px;">
+            <div class="field-label">Nav Thresholds</div>
+            <div class="nav-threshold-row">
+              <span class="threshold-label">GPS switch</span>
+              <div class="threshold-edit-group" id="p4-gps-group">
+                <span class="threshold-value" id="p4-gps-val">120</span>
+                <span class="threshold-unit">m</span>
+                <button class="threshold-edit-btn" id="p4-gps-edit" title="Edit GPS threshold">✎</button>
+              </div>
+            </div>
+            <div class="nav-threshold-row">
+              <span class="threshold-label">Compass switch</span>
+              <div class="threshold-edit-group" id="p4-compass-group">
+                <span class="threshold-value" id="p4-compass-val">60</span>
+                <span class="threshold-unit">m</span>
+                <button class="threshold-edit-btn" id="p4-compass-edit" title="Edit compass threshold">✎</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col" style="gap: 6px;">
+            <button class="btn primary" id="p4-pick-start">Pick Start</button>
+            <button class="btn" id="p4-pick-target" disabled>Pick Target</button>
+            <button class="btn ghost tiny" id="p4-reset">Reset</button>
+          </div>
+
+          <div class="meta" id="p4-config-status">Click <b>Pick Start</b> then click anywhere on the map.</div>
+        </div>
+      </div>
+
+      <div class="panel llm-engine-panel">
+        <div class="head row between">
+          <div>
+            <div class="eyebrow">LLM Engine</div>
+            <h3 id="p4-llm-current">—</h3>
+          </div>
+          <span class="chip ghost" id="p4-llm-stats">0 calls</span>
+        </div>
+        <div class="body">
+          <div class="llm-tab-row" id="p4-llm-tabs">
+            <button data-v="local" aria-selected="true">Local</button>
+            <button data-v="api"   aria-selected="false">API</button>
+          </div>
+          <select class="input" id="p4-llm-provider"></select>
+          <div class="llm-field-group">
+            <div class="field-label llm-field-label">Model</div>
+            <input class="input" id="p4-llm-model" placeholder="auto-fills on selection">
+          </div>
+          <div class="llm-field-group" id="p4-key-group">
+            <div class="field-label llm-field-label">API Key</div>
+            <input class="input" id="p4-llm-key" placeholder="sk-…" style="font-family:'JetBrains Mono',monospace;">
+          </div>
+          <div class="row" style="margin-top:8px; gap:6px;">
+            <button class="btn primary tiny" id="p4-llm-apply">Apply</button>
+            <button class="btn ghost tiny" id="p4-compare-toggle">Compare</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slot right-tall">
+      <div class="metric-card expandable-card" data-detail-id="cognition">
+        <h4>Cognition <button class="expand-card-btn" title="Expand">⤢</button></h4>
+        <div class="cognition-grid">
+          <div class="cell"><div class="v" id="p4-mood">—</div><div class="l">Mood</div></div>
+          <div class="cell"><div class="v" id="p4-curiosity">—</div><div class="l">Curiosity</div></div>
+          <div class="cell"><div class="v" id="p4-fatigue">—</div><div class="l">Fatigue</div></div>
+        </div>
+      </div>
+
+      <div class="metric-card expandable-card" data-detail-id="needs">
+        <h4>Needs <button class="expand-card-btn" title="Expand">⤢</button></h4>
+        <div class="needs-bar" id="p4-needs"></div>
+      </div>
+
+      <div class="metric-card expandable-card" data-detail-id="emotion">
+        <h4>Emotion Mix <button class="expand-card-btn" title="Expand">⤢</button></h4>
+        <div class="emotion-pie">
+          <svg viewBox="-1 -1 2 2" id="p4-emotion-svg"></svg>
+          <div class="emotion-legend" id="p4-emotion-legend"></div>
+        </div>
+      </div>
+
+      <div class="metric-card thought-stream-card expandable-card" data-detail-id="thoughts">
+        <h4>Thought Stream <button class="expand-card-btn" title="Expand">⤢</button></h4>
+        <div class="thought-stream" id="p4-thoughts"></div>
+      </div>
+
+      <div class="metric-card expandable-card" data-detail-id="perception">
+        <h4>What The Agent Sees <button class="expand-card-btn" title="Expand">⤢</button></h4>
+        <div id="p4-perception"></div>
+      </div>
+    </div>
+
+    <div class="slot bottom-center">
+      <div class="control-dock">
+        <button class="btn" id="p4-play">&#9654; Play</button>
+        <button class="btn ghost" id="p4-pause" disabled>&#9646;&#9646; Pause</button>
+        <button class="btn ghost" id="p4-step" disabled>Step ›</button>
+        <button class="btn ghost" id="p4-results" disabled>Results</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Detail overlay (panel 4) — expands any metric card into a floating panel -->
+  <div class="modal-backdrop hidden" id="p4-detail-overlay" style="align-items:flex-start; justify-content:flex-end; padding: 90px 24px 24px;">
+    <div class="panel p4-detail-panel">
+      <div class="head row between">
+        <h3 id="p4-detail-title">Detail</h3>
+        <button class="btn ghost tiny" id="p4-detail-close">×</button>
+      </div>
+      <div class="p4-detail-body" id="p4-detail-body"></div>
+    </div>
+  </div>
+
+  <!-- Results modal (panel 4) -->
+  <div class="modal-backdrop hidden" id="p4-results-modal">
+    <div class="panel modal">
+      <div class="head row between">
+        <div>
+          <div class="eyebrow">Session Results</div>
+          <h3>Agent Performance</h3>
+        </div>
+        <button class="btn ghost tiny" id="p4-results-close">×</button>
+      </div>
+      <div class="body col" style="gap: 14px;" id="p4-results-body"></div>
+    </div>
+  </div>
+
+  <!-- ================ PANEL 5 — Multi Agent ================ -->
+  <section class="panel-stage" id="panel-5" data-active="false">
+
+    <div class="slot left">
+      <div class="panel">
+        <div class="head">
+          <div class="eyebrow">Step 5 of 5</div>
+          <h3>Multi Agent</h3>
+        </div>
+        <div class="body col" style="gap: 14px;">
+
+          <div class="col" style="gap: 6px;">
+            <div class="row between"><span class="field-label">Agent Count</span><span class="meta" id="p5-count-label">15</span></div>
+            <input type="range" class="slider" id="p5-count" min="1" max="100" step="1" value="15">
+          </div>
+
+          <div class="col" style="gap: 6px;">
+            <div class="field-label">Spawn Mode</div>
+            <div class="segmented" id="p5-spawn-mode">
+              <button data-v="random"     aria-selected="true">Random</button>
+              <button data-v="click"      aria-selected="false">Click</button>
+              <button data-v="poi"        aria-selected="false">POIs</button>
+              <button data-v="home_work"  aria-selected="false">Home/Work</button>
+            </div>
+            <div class="meta" id="p5-spawn-hint">Random respawn on the walk network.</div>
+          </div>
+
+          <div class="col" id="p5-mix-panel" style="gap: 6px; display: none;">
+            <div class="field-label">Archetype Mix</div>
+            <div class="slider-row"><span>Resident</span><input class="slider" id="p5-mix-resident" min="0" max="1" step="0.05" value="0.25" type="range"><span id="p5-mix-resident-v">25%</span></div>
+            <div class="slider-row"><span>Commuter</span><input class="slider" id="p5-mix-commuter" min="0" max="1" step="0.05" value="0.25" type="range"><span id="p5-mix-commuter-v">25%</span></div>
+            <div class="slider-row"><span>Tourist</span> <input class="slider" id="p5-mix-tourist"  min="0" max="1" step="0.05" value="0.25" type="range"><span id="p5-mix-tourist-v">25%</span></div>
+            <div class="slider-row"><span>Student</span> <input class="slider" id="p5-mix-student"  min="0" max="1" step="0.05" value="0.25" type="range"><span id="p5-mix-student-v">25%</span></div>
+          </div>
+
+          <div class="row" style="gap: 6px;">
+            <button class="btn primary" id="p5-spawn">Spawn</button>
+            <button class="btn ghost tiny" id="p5-clear-pins">Clear pins</button>
+          </div>
+          <div class="meta" id="p5-spawn-status">Ready</div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top: 12px;">
+        <div class="head"><div class="eyebrow">Recording</div><h3>Session</h3></div>
+        <div class="body col" style="gap: 8px;">
+          <input class="input" id="p5-rec-name" placeholder="Session name (optional)">
+          <div class="row" style="gap: 6px;">
+            <button class="btn primary" id="p5-rec-start">&#9679; Start</button>
+            <button class="btn ghost"   id="p5-rec-stop" disabled>&#9632; Stop</button>
+          </div>
+          <div class="meta" id="p5-rec-status">Idle</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slot right-tall">
+      <div class="panel llm-engine-panel">
+        <div class="head row between">
+          <div>
+            <div class="eyebrow">LLM Engine</div>
+            <h3 id="p5-llm-current">—</h3>
+          </div>
+          <span class="chip ghost" id="p5-llm-stats">0 calls</span>
+        </div>
+        <div class="body">
+          <div class="llm-tab-row" id="p5-llm-tabs">
+            <button data-v="local" aria-selected="true">Local</button>
+            <button data-v="api"   aria-selected="false">API</button>
+          </div>
+          <select class="input apple-select" id="p5-llm-provider"></select>
+          <div class="llm-field-group">
+            <div class="field-label llm-field-label">Model</div>
+            <input class="input" id="p5-llm-model" placeholder="auto-fills on selection">
+          </div>
+          <div class="llm-field-group" id="p5-key-group">
+            <div class="field-label llm-field-label">API Key</div>
+            <input class="input" id="p5-llm-key" placeholder="sk-…" style="font-family:'JetBrains Mono',monospace;">
+          </div>
+          <div class="row" style="margin-top:8px; gap:6px;">
+            <button class="btn primary tiny" id="p5-llm-apply">Apply</button>
+            <button class="btn ghost tiny" id="p5-compare-toggle">Compare</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card" style="flex: 1; min-height: 0; display: flex; flex-direction: column;">
+        <h4>Agents (<span id="p5-agent-count">0</span>)</h4>
+        <div class="agent-grid" id="p5-agent-grid"></div>
+      </div>
+    </div>
+
+    <div class="slot bottom-center">
+      <div class="control-dock">
+        <button class="btn primary" id="p5-play">&#9654; Play</button>
+        <button class="btn ghost"   id="p5-pause" disabled>&#9646;&#9646; Pause</button>
+        <button class="btn ghost"   id="p5-step">Step ›</button>
+        <div style="display:flex; align-items:center; gap:8px; padding: 0 10px; min-width: 140px;">
+          <span class="meta">Speed</span>
+          <input type="range" class="slider" id="p5-speed" min="0.25" max="5" step="0.25" value="1" style="width: 80px;">
+          <span class="meta" id="p5-speed-label">1.0×</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ================ BOTTOM PILL NAV ================ -->
+  <nav class="pill-nav">
+    <button class="btn ghost tiny" id="nav-prev">&#8249; Back</button>
+    <div class="dots">
+      <div class="dot" data-panel="1" data-state="active"><span class="num">1</span> Map</div>
+      <div class="dot" data-panel="2" data-state="locked"><span class="num">2</span> VLM</div>
+      <div class="dot" data-panel="3" data-state="locked"><span class="num">3</span> Personality</div>
+      <div class="dot" data-panel="4" data-state="locked"><span class="num">4</span> Single</div>
+      <div class="dot" data-panel="5" data-state="locked"><span class="num">5</span> Multi</div>
+    </div>
+    <button class="btn primary tiny" id="nav-next">Next &#8250;</button>
+  </nav>
+
+  <div class="bottom-actions">
+    <button class="icon-btn" id="btn-llm-stats" title="LLM stats">
+      <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-theme" title="Toggle map theme">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-settings" title="Settings">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+
+  <!-- ================ SETTINGS DRAWER ================ -->
+  <aside class="drawer" id="drawer" data-open="false">
+    <div class="head row between">
+      <h3>Settings</h3>
+      <button class="btn ghost tiny" id="drawer-close">×</button>
+    </div>
+    <div class="body col" style="gap: 18px;">
+
+      <div class="col" style="gap: 8px;">
+        <div class="field-label">Map theme</div>
+        <div class="segmented" id="s-theme">
+          <button data-v="dark"  aria-selected="true">Dark</button>
+          <button data-v="light" aria-selected="false">Light</button>
+        </div>
+      </div>
+
+      <div class="col" style="gap: 8px;">
+        <div class="field-label">Backend URLs</div>
+        <input class="input" id="s-map-url"  value="http://127.0.0.1:8000">
+        <input class="input" id="s-lab-url"  value="http://127.0.0.1:8100">
+      </div>
+
+      <div class="col" style="gap: 8px;">
+        <div class="field-label">Perception Mode</div>
+        <div class="segmented" id="s-perception">
+          <button data-v="both"        aria-selected="true">Both</button>
+          <button data-v="amenities"   aria-selected="false">Amenities</button>
+          <button data-v="perception"  aria-selected="false">Perception</button>
+          <button data-v="rule_based"  aria-selected="false">Rule-Based</button>
+        </div>
+      </div>
+
+      <div class="col" style="gap: 8px;">
+        <div class="field-label">Map layers</div>
+        <label class="row" style="font-size: 12px;"><input type="checkbox" id="s-layer-buildings" checked> Buildings</label>
+        <label class="row" style="font-size: 12px;"><input type="checkbox" id="s-layer-walk"      checked> Walk network</label>
+        <label class="row" style="font-size: 12px;"><input type="checkbox" id="s-layer-amenities" checked> Amenities</label>
+        <label class="row" style="font-size: 12px;"><input type="checkbox" id="s-layer-streetview" checked> Street View dots</label>
+      </div>
+
+      <div class="col" style="gap: 8px;">
+        <div class="field-label">Database</div>
+        <button class="btn" id="s-db-import-btn">Import Database…</button>
+        <input type="file" id="s-db-file-input" accept=".duckdb,.db" style="display:none">
+      </div>
+
+      <button class="btn danger" id="s-restart">Restart Wizard</button>
+      <div class="meta">State persists in <span class="kbd">localStorage</span>. Restart clears all settings.</div>
+    </div>
+  </aside>
+
+  <div class="toasts" id="toasts"></div>
+
+  <!-- ================ ZONE FAB ================ -->
+  <div class="zone-fab hidden" id="zone-fab">
+    <button class="btn primary" id="p1-draw-fab">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;vertical-align:-2px;margin-right:5px"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      Draw Zone
+    </button>
+    <button class="btn ghost tiny" id="p1-clear-fab">Clear</button>
+  </div>
+
+</div>
+
+<!-- Overture Download Modal -->
+<div class="modal-backdrop hidden" id="overture-modal">
+  <div class="panel modal overture-modal-panel">
+    <div class="head row between">
+      <div>
+        <div class="eyebrow">Overture Maps</div>
+        <h3>Download Details</h3>
+      </div>
+      <button class="btn ghost tiny" id="overture-modal-close">×</button>
+    </div>
+    <div class="body col" style="gap:14px;">
+      <div class="field-row">
+        <div class="field-label">Location Name</div>
+        <input class="input" id="ov-name" placeholder="e.g. Eixample Barcelona" value="custom_zone">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Bounding Box</div>
+        <div class="ov-bbox-pill" id="ov-bbox-pill">No zone drawn</div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Layers to Download</div>
+        <div class="col" style="gap:8px; margin-top:4px;">
+          <label class="ov-check-row"><input type="checkbox" id="ov-layer-buildings" checked> <span>Buildings</span> <span class="meta">footprints, height, class</span></label>
+          <label class="ov-check-row"><input type="checkbox" id="ov-layer-amenities" checked> <span>Amenities / Places</span> <span class="meta">POIs, names, categories</span></label>
+          <label class="ov-check-row"><input type="checkbox" id="ov-layer-transport" checked> <span>Walk Network</span> <span class="meta">pedestrian edges, roads</span></label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">GCP Project ID <span class="meta">(optional — for BigQuery fallback)</span></div>
+        <input class="input" id="ov-gcp" placeholder="my-gcp-project-id">
+      </div>
+      <div class="field-row">
+        <div class="field-label">Overture Release <span class="meta">(from OVERTURE_RELEASE in .env, or override)</span></div>
+        <input class="input" id="ov-release" placeholder="2024-11-13.0">
+      </div>
+      <button class="btn primary" id="ov-start-btn">Start Download</button>
+    </div>
+  </div>
+</div>
+
+<!-- Streetview Detail Overlay -->
+<div class="modal-backdrop hidden" id="sv-detail-modal">
+  <div class="panel sv-detail-panel">
+    <div class="head row between">
+      <div>
+        <div class="eyebrow">Street View</div>
+        <h3 id="sv-detail-title">Selected Point</h3>
+      </div>
+      <button class="btn ghost tiny" id="sv-detail-close">×</button>
+    </div>
+    <div class="sv-detail-body">
+      <div class="sv-detail-left">
+        <div class="popover-image">
+          <img id="sv-detail-img" alt="Street View" style="filter: brightness(1) contrast(1) saturate(1);">
+          <div class="badges">
+            <span class="chip" id="sv-detail-coord">—</span>
+            <span class="chip accent" id="sv-detail-heading">—</span>
+          </div>
+        </div>
+        <div class="filter-grid">
+          <label class="col"><span class="lbl">Brightness</span><input class="slider" id="sv-flt-b" type="range" min="0.4" max="1.6" step="0.05" value="1"></label>
+          <label class="col"><span class="lbl">Contrast</span>  <input class="slider" id="sv-flt-c" type="range" min="0.4" max="1.6" step="0.05" value="1"></label>
+          <label class="col"><span class="lbl">Saturate</span>  <input class="slider" id="sv-flt-s" type="range" min="0"   max="2"   step="0.05" value="1"></label>
+        </div>
+      </div>
+      <div class="sv-detail-right">
+        <div class="scene-fields" id="sv-detail-fields"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LLM Compare Modal (shared by panels 4 & 5) -->
+<div class="modal-backdrop hidden" id="llm-compare-modal">
+  <div class="panel modal llm-compare-modal-panel">
+    <div class="head row between">
+      <div>
+        <div class="eyebrow">Model Comparison</div>
+        <h3>Choose the right LLM for your simulation</h3>
+      </div>
+      <button class="btn ghost tiny" id="llm-compare-close">×</button>
+    </div>
+    <div class="body llm-compare-modal-body" id="llm-compare-body"></div>
+  </div>
+</div>
+
+<script src="dist/main.js"></script>
+</body>
+</html>

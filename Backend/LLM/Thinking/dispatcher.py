@@ -54,6 +54,7 @@ class BlockDispatcher:
         street_perception: Optional[dict] = None,
         needs_new_edge: bool = True,
         nearby_agents: Optional[list] = None,
+        nearby_transit: Optional[list] = None,
     ) -> StepResult:
         """
         Run all blocks for one simulation step.
@@ -64,6 +65,7 @@ class BlockDispatcher:
             nearby_amenities: POIs within range of current position
             street_perception: VLM-analysed street environment at current location
             nearby_agents: other agents within ~55m (pre-step snapshot)
+            nearby_transit: transit stops within ~80m from ext_transit_stops
         """
         # 1. NeedsBlock — always runs (cheap)
         needs_result = await self.needs_block.run(
@@ -90,6 +92,7 @@ class BlockDispatcher:
                 step=step, candidate_edges=candidate_edges,
                 street_perception=street_perception,
                 nearby_agents=nearby_agents,
+                nearby_transit=nearby_transit,
             )
         else:
             # We are still traversing the current edge

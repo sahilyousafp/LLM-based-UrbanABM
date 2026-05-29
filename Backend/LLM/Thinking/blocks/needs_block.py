@@ -53,11 +53,17 @@ class NeedsBlock(Block):
         archetype = profile.get("archetype", "resident")
         cognition = await self.memory.status.get("cognition_state", {})
 
-        # Decay needs each step
+        # Weather multipliers from ext_weather snapshot (loaded at model init)
+        weather = self.context.get("current_weather", {})
+        _rain_mult = 1.5 if weather.get("rain_mm", 0) > 1.0 else 1.0
+        _heat_mult = 1.3 if weather.get("temp_c", 20) > 30 else 1.0
+        _wind_mult = 1.2 if weather.get("wind_ms", 0) > 8 else 1.0
+
+        # Decay needs each step (weather modulates comfort and energy decay)
         needs["hunger"] = min(1.0, needs.get("hunger", 0.5) + DECAY_RATES["hunger"])
-        needs["energy"] = max(0.0, needs.get("energy", 1.0) - DECAY_RATES["energy"])
+        needs["energy"] = max(0.0, needs.get("energy", 1.0) - DECAY_RATES["energy"] * _heat_mult)
         needs["social"] = min(1.0, needs.get("social", 0.5) + DECAY_RATES["social"])
-        needs["comfort"] = max(0.0, needs.get("comfort", 0.7) - DECAY_RATES["comfort"])
+        needs["comfort"] = max(0.0, needs.get("comfort", 0.7) - DECAY_RATES["comfort"] * _rain_mult * _wind_mult)
 
         visited_amenity = None
         llm_used = False

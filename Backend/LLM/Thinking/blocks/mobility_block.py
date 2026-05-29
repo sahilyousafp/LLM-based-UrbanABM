@@ -36,6 +36,7 @@ class MobilityBlock(Block):
 
         street_perception = kwargs.get("street_perception")
         nearby_agents = kwargs.get("nearby_agents")
+        nearby_transit = kwargs.get("nearby_transit")
 
         position = await self.memory.status.get("position", {})
         needs = await self.memory.status.get("needs", {})
@@ -240,6 +241,7 @@ class MobilityBlock(Block):
             steps_to_destination=steps_to_destination,
             nav_mode=nav_mode,
             nearby_agents=nearby_agents,
+            nearby_transit=nearby_transit,
         )
 
         response = await self.llm.chat_json(messages)

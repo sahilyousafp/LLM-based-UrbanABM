@@ -66,7 +66,7 @@ class CityAgent(mg.GeoAgent):
 
         # --- LLM + Memory + Thinking ---
         self.memory = Memory(agent_id=self.unique_id)
-        ctx = {"model": model}
+        ctx = {"model": model, "current_weather": getattr(model, "current_weather", {})}
         plans_path = getattr(model, "plans_path", None)
         if plans_path:
             ctx["plans_path"] = plans_path
@@ -252,6 +252,7 @@ class CityAgent(mg.GeoAgent):
         candidate_edges = self._get_candidate_edges()
 
         nearby_agents = self.model.get_nearby_agents(self.unique_id, self.geometry, agent_snapshot) if agent_snapshot else []
+        nearby_transit = self.model.get_nearby_external_data(self.geometry, "ext_transit_stops", radius_deg=0.0007)
 
         result = await self.dispatcher.run(
             step=self.model.steps,
@@ -260,6 +261,7 @@ class CityAgent(mg.GeoAgent):
             street_perception=self.street_perception,
             needs_new_edge=needs_new_edge,
             nearby_agents=nearby_agents,
+            nearby_transit=nearby_transit,
         )
 
         if needs_new_edge and result.mobility.action == "move_to_edge":
@@ -723,7 +725,40 @@ class CityModel(mesa.Model):
         else:
             print("[WARN] No agents were spawned!")
             print("  Check the errors above for details")
-    
+
+        # Load current weather snapshot from ext_weather (if plugin was run)
+        self.current_weather = self._load_weather_snapshot()
+
+    def _load_weather_snapshot(self) -> dict:
+        """Read the latest weather row from ext_weather into a plain dict."""
+        try:
+            row = self.con.execute(
+                "SELECT condition, temp_c, rain_mm, wind_ms, humidity_pct FROM ext_weather LIMIT 1"
+            ).fetchone()
+            if row:
+                w = {"condition": row[0], "temp_c": row[1], "rain_mm": row[2],
+                     "wind_ms": row[3], "humidity_pct": row[4]}
+                print(f"[OK] Weather loaded: {w['condition']}, {w['temp_c']:.1f}°C, rain={w['rain_mm']}mm/h")
+                return w
+        except Exception:
+            pass
+        return {}
+
+    def get_nearby_external_data(self, point_geom, table: str, radius_deg: float = 0.001) -> list[dict]:
+        """Generic spatial query against any ext_* table that has a geometry column."""
+        try:
+            rows = self.con.execute(f"""
+                SELECT * EXCLUDE geometry,
+                       ST_Distance(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})')) * 111000 AS dist_m
+                FROM {table}
+                WHERE ST_DWithin(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'), {radius_deg})
+                ORDER BY dist_m
+                LIMIT 10
+            """).fetchdf()
+            return rows.to_dict(orient="records")
+        except Exception:
+            return []
+
     def find_connected_edges(self, point):
         """Find edges connected to the given point (bidirectional network)"""
         point_key = (round(point.x, 6), round(point.y, 6))
