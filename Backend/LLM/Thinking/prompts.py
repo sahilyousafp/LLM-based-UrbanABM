@@ -40,6 +40,7 @@ def mobility_decision_prompt(
     steps_to_destination: int | None = None,
     nav_mode: str = "both",
     next_waypoint: dict | None = None,
+    nearby_agents: list | None = None,
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
@@ -285,11 +286,19 @@ def mobility_decision_prompt(
         guidance = _arch_guidance.get(archetype, "Prefer edges whose env=[...] suggests pleasant, well-maintained surroundings.")
         perc_rule = f"\nPerception-guided free step: {guidance}"
 
+    # Build nearby agents line for the prompt
+    nearby_agents_text = ""
+    if nearby_agents:
+        from collections import Counter
+        arch_counts = Counter(a.get("archetype", "unknown") for a in nearby_agents)
+        parts = [f"{count} {arch}" for arch, count in sorted(arch_counts.items())]
+        nearby_agents_text = f"\n  Nearby agents: {', '.join(parts)} within 55m"
+
     user_content = f"""Agent Profile:
   Archetype: {archetype}
   Needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
   Mood: {cognition.get('mood', 'neutral')}, Curiosity: {cognition.get('curiosity', 0.7):.2f}, Fatigue: {cognition.get('fatigue', 0.0):.2f}
-  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{perception_text}{destination_text}{deviation_context}{plan_text}
+  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{nearby_agents_text}{perception_text}{destination_text}{deviation_context}{plan_text}
 
 Recent Movement History:
 {recent_history}

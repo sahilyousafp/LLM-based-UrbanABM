@@ -40,12 +40,13 @@ AMENITY_NEED_MAP = {
 class NeedsBlock(Block):
     """Decays and updates agent needs each step."""
 
-    async def run(self, step: int, nearby_amenities: Optional[list] = None, street_perception: Optional[dict] = None, **kwargs) -> BlockResult:
+    async def run(self, step: int, nearby_amenities: Optional[list] = None, street_perception: Optional[dict] = None, nearby_agents: Optional[list] = None, **kwargs) -> BlockResult:
         """
         Args:
             step: current simulation step
             nearby_amenities: list of {"name", "type", "dist"} from model query
             street_perception: dict with scene_overview, buildings, vegetation, etc. from visual analysis
+            nearby_agents: list of {"id", "archetype", "dist_m"} agents within ~55m
         """
         needs = await self.memory.status.get("needs", {})
         profile = await self.memory.status.get("agent_profile", {})
@@ -60,8 +61,21 @@ class NeedsBlock(Block):
 
         visited_amenity = None
         llm_used = False
-        satisfaction_source = "none"
+        sources = []  # accumulates all satisfaction sources this step
         satisfaction_reasoning = "Needs updated via decay only"
+
+        # 0. Crowd social bonus — proximity to other agents reduces social need (rule-based)
+        if nearby_agents:
+            crowd_bonus = min(0.05, len(nearby_agents) * 0.01)
+            needs["social"] = max(0.0, needs["social"] - crowd_bonus)
+            sources.append("crowd")
+            satisfaction_reasoning = f"crowd nearby ({len(nearby_agents)} agents), social -{crowd_bonus:.2f}"
+            await self.memory.stream.add(
+                topic="needs",
+                step=step,
+                description=f"Crowd nearby: {len(nearby_agents)} agent(s) within 55m. Social need reduced by {crowd_bonus:.2f}.",
+                metadata={"crowd_count": len(nearby_agents), "crowd_bonus": crowd_bonus},
+            )
 
         # 1. Visual satisfaction evaluation (every 5 steps to avoid fully cancelling decay)
         if street_perception and step % 5 == 0:
@@ -73,7 +87,7 @@ class NeedsBlock(Block):
             )
             if visual_result:
                 needs = visual_result["needs"]
-                satisfaction_source = "visual"
+                sources.append("visual")
                 satisfaction_reasoning = visual_result.get("reasoning", "Visual environment affected needs")
                 llm_used = visual_result.get("llm_used", False)
 
@@ -96,7 +110,7 @@ class NeedsBlock(Block):
                 )
                 if amenity_result:
                     needs = amenity_result["needs"]
-                    satisfaction_source = "amenity" if satisfaction_source == "none" else "combined"
+                    sources.append("amenity")
                     satisfaction_reasoning = amenity_result.get("reasoning", f"Visited {amenity_name}")
                     visited_amenity = {"name": amenity_name, "type": amenity_type}
                     llm_used = amenity_result.get("llm_used", False) or llm_used
@@ -116,6 +130,8 @@ class NeedsBlock(Block):
                     if len(visited_list) > 20:
                         visited_list = visited_list[-20:]
                     await self.memory.status.update("visited_amenities", visited_list)
+
+        satisfaction_source = "+".join(sources) if sources else "none"
 
         await self.memory.status.update("needs", needs)
         await self.memory.status.update("satisfaction_source", satisfaction_source)

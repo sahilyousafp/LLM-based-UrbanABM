@@ -193,22 +193,27 @@ class CityAgent(mg.GeoAgent):
         
         # LLM-driven modes: use dispatcher with optional fallback
         try:
+            snapshot = getattr(self.model, '_step_snapshot', None)
             loop = asyncio.get_event_loop()
             if loop.is_running():
                 # Called from within an async context (e.g. FastAPI) — use new loop in thread
                 import concurrent.futures
                 with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-                    future = pool.submit(asyncio.run, self._async_step())
+                    future = pool.submit(asyncio.run, self._async_step(snapshot))
                     future.result(timeout=30)
             else:
-                loop.run_until_complete(self._async_step())
+                loop.run_until_complete(self._async_step(snapshot))
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"Agent {self.unique_id} step error: {e}")
             # Fallback to simple movement
             self._simple_move()
 
-    async def _async_step(self) -> None:
+    def get_archetype(self) -> str:
+        """Return this agent's archetype from memory without an async call."""
+        return self.memory.status._data.get("agent_profile", {}).get("archetype", "resident")
+
+    async def _async_step(self, agent_snapshot: list | None = None) -> None:
         """Full async step: query amenities, run dispatcher, update geometry."""
         perception_mode = getattr(self.model, 'perception_mode', 'both')
 
@@ -246,12 +251,15 @@ class CityAgent(mg.GeoAgent):
 
         candidate_edges = self._get_candidate_edges()
 
+        nearby_agents = self.model.get_nearby_agents(self.unique_id, self.geometry, agent_snapshot) if agent_snapshot else []
+
         result = await self.dispatcher.run(
             step=self.model.steps,
             candidate_edges=candidate_edges,
             nearby_amenities=self.nearby_amenities,
             street_perception=self.street_perception,
             needs_new_edge=needs_new_edge,
+            nearby_agents=nearby_agents,
         )
 
         if needs_new_edge and result.mobility.action == "move_to_edge":
@@ -753,6 +761,14 @@ class CityModel(mesa.Model):
                 parts.append(f"{label}: {val}")
         return " | ".join(parts) if parts else ""
 
+    def get_nearby_agents(self, own_id: int, own_geom, snapshot: list, radius_deg: float = 0.0005) -> list[dict]:
+        """Return agents within radius_deg (~55m) of own_geom, excluding self."""
+        return [
+            {"id": uid, "archetype": arch, "dist_m": round(own_geom.distance(geom) * 111000)}
+            for uid, geom, arch in snapshot
+            if uid != own_id and own_geom.distance(geom) <= radius_deg
+        ]
+
     def get_nearby_amenities(self, point_geom):
         """
         Query DuckDB for amenities within ~50m of the point.
@@ -1012,8 +1028,8 @@ class CityModel(mesa.Model):
 
     def step(self):
         self.steps += 1
-        # Step all agents
         random.shuffle(self.city_agents)
+        self._step_snapshot = [(a.unique_id, a.geometry, a.get_archetype()) for a in self.city_agents]
         for agent in self.city_agents:
             agent.step()
         
@@ -1025,13 +1041,16 @@ class CityModel(mesa.Model):
         """Async-native step for use within FastAPI endpoints."""
         self.steps += 1
         random.shuffle(self.city_agents)
-        
+
+        # Snapshot all agent positions before the step so each agent can see peers
+        agent_snapshot = [(a.unique_id, a.geometry, a.get_archetype()) for a in self.city_agents]
+
         # Run all agent async steps concurrently
         # If recording, capture agent states after each step
         if self._recorder and self._recorder.is_recording:
             # Record each agent's state after stepping
             for agent in self.city_agents:
-                await agent._async_step()
+                await agent._async_step(agent_snapshot)
                 # Extract decision data from agent's last mobility action
                 decision_reason = None
                 is_fallback = False
@@ -1054,7 +1073,7 @@ class CityModel(mesa.Model):
                 )
         else:
             # Normal step without recording
-            await asyncio.gather(*[agent._async_step() for agent in self.city_agents])
+            await asyncio.gather(*[agent._async_step(agent_snapshot) for agent in self.city_agents])
         
         if self.tracker and self.steps % 10 == 0:
             self.tracker.flush()

@@ -53,6 +53,7 @@ class BlockDispatcher:
         nearby_amenities: Optional[list] = None,
         street_perception: Optional[dict] = None,
         needs_new_edge: bool = True,
+        nearby_agents: Optional[list] = None,
     ) -> StepResult:
         """
         Run all blocks for one simulation step.
@@ -62,10 +63,12 @@ class BlockDispatcher:
             candidate_edges: edges reachable from agent's current position
             nearby_amenities: POIs within range of current position
             street_perception: VLM-analysed street environment at current location
+            nearby_agents: other agents within ~55m (pre-step snapshot)
         """
         # 1. NeedsBlock — always runs (cheap)
         needs_result = await self.needs_block.run(
-            step=step, nearby_amenities=nearby_amenities, street_perception=street_perception
+            step=step, nearby_amenities=nearby_amenities, street_perception=street_perception,
+            nearby_agents=nearby_agents,
         )
 
         # 2. CognitionBlock — always runs (cheap between intervals)
@@ -86,6 +89,7 @@ class BlockDispatcher:
             mobility_result = await self.mobility_block.run(
                 step=step, candidate_edges=candidate_edges,
                 street_perception=street_perception,
+                nearby_agents=nearby_agents,
             )
         else:
             # We are still traversing the current edge

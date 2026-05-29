@@ -35,6 +35,7 @@ class MobilityBlock(Block):
             return BlockResult(action="stay", params={}, reasoning="No candidate edges available", fallback=True)
 
         street_perception = kwargs.get("street_perception")
+        nearby_agents = kwargs.get("nearby_agents")
 
         position = await self.memory.status.get("position", {})
         needs = await self.memory.status.get("needs", {})
@@ -62,7 +63,8 @@ class MobilityBlock(Block):
         # Shrink further as the agent closes in: pure Dijkstra in the final approach.
         if destination and not destination.get("visited") and destination.get("lon"):
             import math as _math
-            _ALMOST_THERE = {"tourist": 60, "resident": 40, "student": 50}.get(archetype, 50)
+            _default = {"tourist": 60, "resident": 40, "student": 50}.get(archetype, 50)
+            _ALMOST_THERE = getattr(model, "nav_compass_dist", _default)
             dlon = (destination["lon"] - position.get("lon", 0)) * 111320 * _math.cos(_math.radians(position.get("lat", 0)))
             dlat = (destination["lat"] - position.get("lat", 0)) * 110540
             dist_to_dest = _math.sqrt(dlon ** 2 + dlat ** 2)
@@ -237,6 +239,7 @@ class MobilityBlock(Block):
             visited_counts=visit_counts,
             steps_to_destination=steps_to_destination,
             nav_mode=nav_mode,
+            nearby_agents=nearby_agents,
         )
 
         response = await self.llm.chat_json(messages)
