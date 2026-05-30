@@ -1230,14 +1230,17 @@ function _openDetailModal(p: Record<string, unknown>): void {
 function _initAnalyseCard(): void {
   if (p1VlmBound) return; p1VlmBound = true;
 
-  // Populate model dropdown from VLM_CARDS
+  // Populate model dropdown from VLM_CARDS and upgrade to apple-select style
   const modelSel = $('#p1-vlm-model-select') as HTMLSelectElement | null;
   if (modelSel) {
     modelSel.innerHTML = VLM_CARDS
       .filter((v) => v.id !== 'custom-hf')
       .map((v) => `<option value="${v.id}"${state.vlm.provider === v.id ? ' selected' : ''}>${escapeHtml(v.name)}</option>`)
-      .join('') + `<option value="custom-hf"${state.vlm.provider === 'custom-hf' ? ' selected' : ''}>+ Custom HuggingFace</option>`;
+      .join('') + `<option value="custom-hf"${state.vlm.provider === 'custom-hf' ? ' selected' : ''}>+ Custom HuggingFace — Custom</option>`;
     modelSel.addEventListener('change', () => { state.vlm.provider = modelSel.value; saveState(); });
+    appleSelect(modelSel);
+    const wrap = modelSel.closest<HTMLElement>('.asl-wrap');
+    if (wrap) { wrap.style.flex = '1'; wrap.style.width = 'auto'; }
   }
 
   // Compare button — opens model comparison overlay
@@ -1545,15 +1548,18 @@ function buildVLMList(): void {
   // Populate once; after that just sync the selected value
   if (sel.options.length === 0) {
     sel.innerHTML = VLM_CARDS
+      .filter((v) => v.id !== 'custom-hf')
       .map((v) => `<option value="${escapeHtml(v.id)}">${escapeHtml(v.name)}</option>`)
-      .join('');
+      .join('') + `<option value="custom-hf">+ Custom HuggingFace — Custom</option>`;
     sel.addEventListener('change', () => {
       state.vlm.provider = sel.value;
-      // Keep the main panel dropdown in sync
       const mainSel = $('#p1-vlm-model-select') as HTMLSelectElement | null;
       if (mainSel) mainSel.value = sel.value;
       saveState();
     });
+    appleSelect(sel);
+    const wrap = sel.closest<HTMLElement>('.asl-wrap');
+    if (wrap) { wrap.style.flex = '1'; wrap.style.width = 'auto'; }
   }
   sel.value = state.vlm.provider;
 }
