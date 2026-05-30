@@ -545,9 +545,9 @@ async function onStreetviewClick(e: MapboxMapEvent): Promise<void> {
   state.selectedPoint = { lat: p.lat, lon: p.lon, image_url: p.image_url };
   saveState();
 
-  // Add to analyse selection if card is in single/multi mode
-  const analyseBody = $('#p1-analyse-body') as HTMLElement | null;
-  if (analyseBody && analyseBody.style.display !== 'none' && (_analyseMode === 'single' || _analyseMode === 'multi')) {
+  // Add to analyse selection if modal is open and in single/multi mode
+  const analyseModal = $('#analyse-modal') as HTMLElement | null;
+  if (analyseModal && !analyseModal.classList.contains('hidden') && (_analyseMode === 'single' || _analyseMode === 'multi')) {
     const key = `${p.lat}_${p.lon}`;
     if (_analyseMode === 'single') { _analysePoints.clear(); _analysePoints.add(key); }
     else { if (_analysePoints.has(key)) _analysePoints.delete(key); else _analysePoints.add(key); }
@@ -1130,17 +1130,92 @@ function _updateAnalyseButton(): void {
 function _initAnalyseCard(): void {
   if (p1VlmBound) return; p1VlmBound = true;
 
-  // Collapse / expand toggle
-  const body   = $('#p1-analyse-body')  as HTMLElement;
-  const toggle = $('#p1-analyse-toggle') as HTMLElement;
-  const head   = $('#p1-analyse-head')  as HTMLElement;
-  const flipToggle = () => {
-    const open = body.style.display !== 'none';
-    body.style.display = open ? 'none' : '';
-    toggle.textContent  = open ? '▾' : '▴';
-    if (!open) { buildParamList(); buildVLMList(); }
-  };
-  head.addEventListener('click', flipToggle);
+  // Populate model dropdown from VLM_CARDS
+  const modelSel = $('#p1-vlm-model-select') as HTMLSelectElement | null;
+  if (modelSel) {
+    modelSel.innerHTML = VLM_CARDS
+      .filter((v) => v.id !== 'custom-hf')
+      .map((v) => `<option value="${v.id}"${state.vlm.provider === v.id ? ' selected' : ''}>${escapeHtml(v.name)}</option>`)
+      .join('') + `<option value="custom-hf"${state.vlm.provider === 'custom-hf' ? ' selected' : ''}>+ Custom HuggingFace</option>`;
+    modelSel.addEventListener('change', () => { state.vlm.provider = modelSel.value; saveState(); });
+  }
+
+  // Compare button — opens model comparison overlay
+  const compareModal = $('#vlm-compare-modal') as HTMLElement;
+  $('#p1-vlm-compare')?.addEventListener('click', () => {
+    const list = $('#vlm-compare-list') as HTMLElement;
+    list.innerHTML = '';
+    VLM_CARDS.forEach((v) => {
+      const selected = state.vlm.provider === v.id;
+      const div = document.createElement('div');
+      div.className = 'vlm-card';
+      div.setAttribute('data-selected', selected ? 'true' : 'false');
+      const propsHtml = Object.entries(v.props).map(
+        ([k, val]) => `<div class="prop"><b>${escapeHtml(k)}:</b> ${escapeHtml(val)}</div>`
+      ).join('');
+      div.innerHTML = `
+        <div class="top">
+          <span class="name">${escapeHtml(v.name)}</span>
+          ${v.active ? '<span class="chip success" style="font-size:11px;">Active</span>' : ''}
+          ${selected ? '<span class="chip" style="font-size:11px;">Selected</span>' : ''}
+        </div>
+        <div class="props">${propsHtml}</div>
+        <div class="pros">${escapeHtml(v.pros)}</div>
+        <div class="cons">${escapeHtml(v.cons)}</div>`;
+      div.addEventListener('click', () => {
+        state.vlm.provider = v.id; saveState();
+        if (modelSel) modelSel.value = v.id;
+        const modalSel2 = $('#p1-vlm-model-select-modal') as HTMLSelectElement | null;
+        if (modalSel2) modalSel2.value = v.id;
+        compareModal.classList.add('hidden');
+      });
+      list.appendChild(div);
+    });
+    compareModal.classList.remove('hidden');
+  });
+  $('#vlm-compare-modal-close')?.addEventListener('click', () => compareModal.classList.add('hidden'));
+  compareModal.addEventListener('click', (e) => { if (e.target === compareModal) compareModal.classList.add('hidden'); });
+
+  // Compare button inside the analyse modal — reuses the same compare overlay
+  $('#p1-vlm-compare-modal-btn')?.addEventListener('click', () => {
+    const list = $('#vlm-compare-list') as HTMLElement;
+    const modalSel = $('#p1-vlm-model-select-modal') as HTMLSelectElement | null;
+    list.innerHTML = '';
+    VLM_CARDS.forEach((v) => {
+      const selected = state.vlm.provider === v.id;
+      const div = document.createElement('div');
+      div.className = 'vlm-card';
+      div.setAttribute('data-selected', selected ? 'true' : 'false');
+      const propsHtml = Object.entries(v.props).map(
+        ([k, val]) => `<div class="prop"><b>${escapeHtml(k)}:</b> ${escapeHtml(val)}</div>`
+      ).join('');
+      div.innerHTML = `
+        <div class="top">
+          <span class="name">${escapeHtml(v.name)}</span>
+          ${v.active ? '<span class="chip success" style="font-size:11px;">Active</span>' : ''}
+          ${selected ? '<span class="chip" style="font-size:11px;">Selected</span>' : ''}
+        </div>
+        <div class="props">${propsHtml}</div>
+        <div class="pros">${escapeHtml(v.pros)}</div>
+        <div class="cons">${escapeHtml(v.cons)}</div>`;
+      div.addEventListener('click', () => {
+        state.vlm.provider = v.id; saveState();
+        const mainSel = $('#p1-vlm-model-select') as HTMLSelectElement | null;
+        if (mainSel) mainSel.value = v.id;
+        if (modalSel) modalSel.value = v.id;
+        compareModal.classList.add('hidden');
+      });
+      list.appendChild(div);
+    });
+    compareModal.classList.remove('hidden');
+  });
+
+  // Open / close analyse modal
+  const modal = $('#analyse-modal') as HTMLElement;
+  const openModal = () => { modal.classList.remove('hidden'); buildParamList(); buildVLMList(); };
+  $('#p1-analyse-open')?.addEventListener('click', openModal);
+  $('#analyse-modal-close')?.addEventListener('click', () => modal.classList.add('hidden'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
 
   // + Custom field button
   $('#p1-vlm-add-param')!.addEventListener('click', () => {
@@ -1381,33 +1456,22 @@ function buildParamList(): void {
   (state.vlm.customFields || []).forEach((f) => appendRow(f, true));
 }
 function buildVLMList(): void {
-  const list = $('#p1-vlm-model-list') as HTMLElement;
-  list.innerHTML = '';
-  VLM_CARDS.forEach((v) => {
-    const selected = state.vlm.provider === v.id;
-    const div = document.createElement('div');
-    div.className = 'vlm-card';
-    div.setAttribute('data-selected', selected ? 'true' : 'false');
-    const propsHtml = Object.entries(v.props).map(
-      ([k, val]) => `<div class="prop"><b>${escapeHtml(k)}:</b> ${escapeHtml(val)}</div>`
-    ).join('');
-    div.innerHTML = `
-      <div class="top">
-        <span class="name">${escapeHtml(v.name)}</span>
-        ${v.active ? '<span class="chip success">Active</span>' : ''}
-      </div>
-      <div class="props">${propsHtml}</div>
-      <div class="pros">${escapeHtml(v.pros)}</div>
-      <div class="cons">${escapeHtml(v.cons)}</div>
-      ${v.id === 'custom-hf'
-        ? `<input class="input" placeholder="user/repo (HuggingFace)" style="margin-top:8px;" id="p2-custom-hf">`
-        : ''}`;
-    div.addEventListener('click', (ev) => {
-      if ((ev.target as HTMLElement).tagName === 'INPUT') return;
-      state.vlm.provider = v.id; saveState(); buildVLMList();
+  const sel = $('#p1-vlm-model-select-modal') as HTMLSelectElement | null;
+  if (!sel) return;
+  // Populate once; after that just sync the selected value
+  if (sel.options.length === 0) {
+    sel.innerHTML = VLM_CARDS
+      .map((v) => `<option value="${escapeHtml(v.id)}">${escapeHtml(v.name)}</option>`)
+      .join('');
+    sel.addEventListener('change', () => {
+      state.vlm.provider = sel.value;
+      // Keep the main panel dropdown in sync
+      const mainSel = $('#p1-vlm-model-select') as HTMLSelectElement | null;
+      if (mainSel) mainSel.value = sel.value;
+      saveState();
     });
-    list.appendChild(div);
-  });
+  }
+  sel.value = state.vlm.provider;
 }
 
 /* =====================================================================
