@@ -25,7 +25,7 @@ const DEFAULT_STATE: UABMState = {
   mapServerUrl: 'http://127.0.0.1:8000',
   labServerUrl: 'http://127.0.0.1:8100',
   perceptionMode: 'both',
-  layers: { buildings: true, walk: true, amenities: true, streetview: true },
+  layers: { buildings: true, walk: true, amenities: false, streetview: true },
   zone: { bbox: null, spacing: 200 },
   selectedPoint: null,
   vlm: { provider: 'qwen25vl-3b', enabledFields: null, customPrompt: {}, customFields: [], fieldStructures: {} },
@@ -268,10 +268,9 @@ async function loadStaticLayers(): Promise<void> {
       id: 'amenities-pt', type: 'circle', source: 'amenities',
       paint: {
         'circle-radius': 3,
-        'circle-color': '#a78bfa',
-        'circle-stroke-color': '#5b21b6',
-        'circle-stroke-width': 0.5,
-        'circle-opacity': 0.55,
+        'circle-color': '#c4b5fd',
+        'circle-stroke-width': 0,
+        'circle-opacity': 0.4,
       },
     });
     map.on('click', 'amenities-pt', onAmenityClick);
@@ -287,16 +286,23 @@ async function loadStaticLayers(): Promise<void> {
       id: 'sv-pt', type: 'circle', source: 'sv',
       paint: {
         'circle-radius': 4,
-        'circle-color': '#64d2ff',
-        'circle-stroke-color': '#0a84ff',
+        // cyan = analyzed (has VLM result), grey-white = downloaded image only
+        'circle-color': ['match', ['get', 'schema'], 'image_only', '#aeaeb2', '#64d2ff'],
+        'circle-stroke-color': ['match', ['get', 'schema'], 'image_only', '#636366', '#0a84ff'],
         'circle-stroke-width': 0.5,
-        'circle-opacity': 0.78,
+        'circle-opacity': 0.85,
       },
     });
     map.on('click', 'sv-pt', onStreetviewClick);
     map.on('mouseenter', 'sv-pt', () => { if (map) map.getCanvas().style.cursor = 'pointer'; });
     map.on('mouseleave', 'sv-pt', () => { if (map) map.getCanvas().style.cursor = ''; });
-    const kpi = $('#p1-kpi-existing'); if (kpi) kpi.textContent = String(data.features.length);
+    // Populate Existing KPI from actual image count, not just analyzed results
+    try {
+      const stats = await api.m<{ images: number; results: number }>('/api/streetview/stats');
+      const kpi = $('#p1-kpi-existing'); if (kpi) kpi.textContent = String(stats.images);
+    } catch {
+      const kpi = $('#p1-kpi-existing'); if (kpi) kpi.textContent = String(data.features.length);
+    }
   } catch (e) { console.warn('streetview layer failed', e); }
 
   // Selected streetview point highlight
@@ -312,13 +318,38 @@ async function loadStaticLayers(): Promise<void> {
     },
   });
 
+  // Selected amenity highlight — darker purple, white border
+  map.addSource('amenity-selected', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+  map.addLayer({
+    id: 'amenity-pt-selected', type: 'circle', source: 'amenity-selected',
+    paint: {
+      'circle-radius': 8,
+      'circle-color': '#7c3aed',
+      'circle-stroke-color': '#ffffff',
+      'circle-stroke-width': 2,
+      'circle-opacity': 0.95,
+    },
+  });
+
   // Candidates / pins / agents / trail / planned / reachable
   map.addSource('sv-candidates', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
   map.addLayer({
     id: 'sv-candidates-pt', type: 'circle', source: 'sv-candidates',
     paint: {
-      'circle-radius': 5, 'circle-color': '#30d158',
-      'circle-stroke-color': '#0a84ff', 'circle-stroke-width': 1.5, 'circle-opacity': 0.85,
+      'circle-radius': 5,
+      'circle-color': '#636366',
+      'circle-stroke-color': '#48484a', 'circle-stroke-width': 1, 'circle-opacity': 0.7,
+    },
+  });
+
+  // Points downloaded in the current session — shown in orange until page refresh
+  map.addSource('sv-downloading', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+  map.addLayer({
+    id: 'sv-downloading-pt', type: 'circle', source: 'sv-downloading',
+    paint: {
+      'circle-radius': 6,
+      'circle-color': '#ff9f0a',
+      'circle-stroke-color': '#ffffff', 'circle-stroke-width': 1.5, 'circle-opacity': 0.95,
     },
   });
 
@@ -411,7 +442,7 @@ function applyLayerVisibility(): void {
     buildings:  ['buildings-fill', 'buildings-line'],
     walk:       ['walk-line'],
     amenities:  ['amenities-pt'],
-    streetview: ['sv-pt', 'sv-candidates-pt'],
+    streetview: ['sv-pt', 'sv-candidates-pt', 'sv-downloading-pt'],
   };
   for (const [k, ids] of Object.entries(mapping)) {
     for (const id of ids) {
@@ -485,10 +516,24 @@ function onAmenityClick(e: MapboxMapEvent): void {
     ${tagHtml}
   </div>`;
 
+  // Highlight selected amenity on map
+  const amenityHighlight = {
+    type: 'FeatureCollection' as const,
+    features: [{ type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: coords }, properties: {} }],
+  };
+  (map?.getSource('amenity-selected') as { setData: (d: unknown) => void } | undefined)
+    ?.setData(amenityHighlight);
+
   amenityPopup = new mapboxgl.Popup({ className: 'amenity-popup', closeButton: true, maxWidth: '300px' })
     .setLngLat(coords)
     .setHTML(html)
     .addTo(map as unknown as Parameters<MapboxPopup['addTo']>[0]) as MapboxPopup;
+
+  // Clear highlight when popup is dismissed
+  amenityPopup.on('close', () => {
+    (map?.getSource('amenity-selected') as { setData: (d: unknown) => void } | undefined)
+      ?.setData({ type: 'FeatureCollection', features: [] });
+  });
 }
 
 /* =====================================================================
@@ -499,6 +544,15 @@ async function onStreetviewClick(e: MapboxMapEvent): Promise<void> {
   const p = e.features[0].properties;
   state.selectedPoint = { lat: p.lat, lon: p.lon, image_url: p.image_url };
   saveState();
+
+  // Add to analyse selection if card is in single/multi mode
+  const analyseBody = $('#p1-analyse-body') as HTMLElement | null;
+  if (analyseBody && analyseBody.style.display !== 'none' && (_analyseMode === 'single' || _analyseMode === 'multi')) {
+    const key = `${p.lat}_${p.lon}`;
+    if (_analyseMode === 'single') { _analysePoints.clear(); _analysePoints.add(key); }
+    else { if (_analysePoints.has(key)) _analysePoints.delete(key); else _analysePoints.add(key); }
+    _updateAnalyseButton();
+  }
 
   // Highlight the clicked point on the map
   const highlightGeo = {
@@ -569,7 +623,6 @@ function activatePanel(n: PanelId): void {
   refreshNavDots();
   updateZoneFab();
   if (n === 1) panel1Enter();
-  if (n === 2) panel2Enter();
   if (n === 3) panel3Enter();
   if (n === 4) panel4Enter();
   if (n === 5) panel5Enter();
@@ -593,6 +646,13 @@ function refreshNavDots(): void {
   });
   ($('#nav-prev') as HTMLButtonElement).disabled = state.currentPanel === 1;
   ($('#nav-next') as HTMLButtonElement).disabled = state.currentPanel === 5;
+  // Keep dot numbers correct for nav order 1,3,4,5
+  let dispNum = 0;
+  $$('.pill-nav .dot').forEach((dot) => {
+    dispNum++;
+    const numEl = dot.querySelector('.num');
+    if (numEl) numEl.textContent = String(dispNum);
+  });
 }
 
 /* =====================================================================
@@ -760,25 +820,122 @@ function panel1Enter(): void {
   $('#p1-draw-fab')!.addEventListener('click', () => { startZoneDraw(); });
   $('#p1-clear-fab')!.addEventListener('click', clearZone);
 
-  $('#p1-download')!.addEventListener('click', async () => {
-    if (!currentBbox) { toast('Draw a zone first.', 'warning'); return; }
-    ($('#p1-status') as HTMLElement).textContent = 'Downloading… this may take a minute.';
+  $('#p1-delete-unanalyzed')!.addEventListener('click', async () => {
+    if (!confirm('Delete all downloaded images that have no VLM analysis? This cannot be undone.')) return;
     try {
-      const res = await api.postJSON<{
-        error?: string;
-        downloaded?: { lat: number; lon: number; filename: string }[];
-        skipped?: number;
-      }>(api.map, '/api/streetview/download', {
-        bbox: currentBbox, spacing: state.zone.spacing,
-      });
-      if (res.error) { toast(res.error, 'danger'); ($('#p1-status') as HTMLElement).textContent = res.error; return; }
-      const dl = (res.downloaded || []).length;
-      toast(`Downloaded ${dl} images, skipped ${res.skipped || 0}.`, 'success');
-      ($('#p1-status') as HTMLElement).textContent = `Done — ${dl} new images saved.`;
+      const r = await fetch(`${api.map}/api/streetview/images/unanalyzed`, { method: 'DELETE' });
+      const res = await r.json() as { deleted?: number; freed_mb?: number; error?: string };
+      if (res.error) { toast(res.error, 'danger'); return; }
+      toast(`Deleted ${res.deleted} unanalyzed images (${res.freed_mb} MB freed).`, 'success');
+      // Refresh existing count and map dots
+      const [fresh, stats] = await Promise.all([
+        api.m<{ features: unknown[] }>('/api/streetview_grid'),
+        api.m<{ images: number; results: number }>('/api/streetview/stats'),
+      ]);
+      (map.getSource('sv') as { setData: (d: unknown) => void } | undefined)?.setData(fresh);
+      ($('#p1-kpi-existing') as HTMLElement).textContent = String(stats.images);
+    } catch (e) {
+      toast(`Delete failed: ${e instanceof Error ? e.message : e}`, 'danger');
+    }
+  });
+
+  let _svPoller: number | null = null;
+  const _svDownloadedFeatures: { type: 'Feature'; geometry: { type: 'Point'; coordinates: [number, number] }; properties: Record<string, never> }[] = [];
+
+  function _updateDownloadingLayer(): void {
+    (map.getSource('sv-downloading') as { setData: (d: unknown) => void } | undefined)
+      ?.setData({ type: 'FeatureCollection', features: _svDownloadedFeatures });
+  }
+
+  $('#p1-download')!.addEventListener('click', async () => {
+    _svDownloadedFeatures.length = 0;
+    _updateDownloadingLayer();
+    if (!currentBbox) { toast('Draw a zone first.', 'warning'); return; }
+
+    const progressDiv  = $('#p1-sv-progress')    as HTMLElement;
+    const statusEl     = $('#p1-sv-progress-status') as HTMLElement;
+    const fillEl       = $('#p1-sv-progress-fill')   as HTMLElement;
+    const logEl        = $('#p1-sv-progress-log')    as HTMLElement;
+    const mainStatus   = $('#p1-status')             as HTMLElement;
+    const kpiExisting  = $('#p1-kpi-existing')       as HTMLElement;
+
+    progressDiv.style.display = '';
+    statusEl.textContent = 'Starting download…';
+    fillEl.style.width   = '0%';
+    logEl.innerHTML      = '';
+    ($('#p1-download') as HTMLButtonElement).disabled = true;
+
+    try {
+      const res = await api.postJSON<{ error?: string; job_id?: string }>(
+        api.map, '/api/streetview/download', { bbox: currentBbox, spacing: state.zone.spacing },
+      );
+      if (res.error || !res.job_id) {
+        toast(res.error || 'Download failed', 'danger');
+        mainStatus.textContent = res.error || 'Download failed';
+        progressDiv.style.display = 'none';
+        ($('#p1-download') as HTMLButtonElement).disabled = false;
+        return;
+      }
+
+      const jobId = res.job_id;
+      if (_svPoller) clearInterval(_svPoller);
+      _svPoller = setInterval(async () => {
+        try {
+          const s = await api.m<{
+            status: string; pct: number;
+            downloaded: number; skipped: number; total: number;
+            existing: number; log: string[];
+          }>(`/api/streetview/download/status/${jobId}`);
+
+          fillEl.style.width   = `${s.pct}%`;
+          statusEl.textContent = `${s.downloaded} downloaded · ${s.skipped} skipped · ${s.total} candidates`;
+          kpiExisting.textContent  = String(s.existing);
+
+          // Append new log lines and update map for newly downloaded points
+          const rendered = logEl.childElementCount;
+          let mapDirty = false;
+          (s.log || []).slice(rendered).forEach((line) => {
+            const d = document.createElement('div');
+            d.textContent = line;
+            logEl.appendChild(d);
+            logEl.scrollTop = logEl.scrollHeight;
+            // Parse "✓ lat,lon" lines → add orange dot to map immediately
+            const m = line.match(/^✓\s*(-?\d+\.\d+),(-?\d+\.\d+)/);
+            if (m) {
+              _svDownloadedFeatures.push({
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [parseFloat(m[2]), parseFloat(m[1])] },
+                properties: {},
+              });
+              mapDirty = true;
+            }
+          });
+          if (mapDirty) _updateDownloadingLayer();
+
+          if (s.status === 'done' || s.status === 'error') {
+            clearInterval(_svPoller!); _svPoller = null;
+            ($('#p1-download') as HTMLButtonElement).disabled = false;
+            mainStatus.textContent = `Done — ${s.downloaded} new images saved.`;
+            toast(`Downloaded ${s.downloaded} images, skipped ${s.skipped}.`, 'success');
+            // Reload streetview dots on map and update Existing from actual image count
+            try {
+              const [fresh, stats] = await Promise.all([
+                api.m<{ features: unknown[] }>('/api/streetview_grid'),
+                api.m<{ images: number; results: number }>('/api/streetview/stats'),
+              ]);
+              (map.getSource('sv') as { setData: (d: unknown) => void } | undefined)?.setData(fresh);
+              kpiExisting.textContent = String(stats.images);
+            } catch { /* ok */ }
+          }
+        } catch { /* poll error — keep retrying */ }
+      }, 1500) as unknown as number;
+
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       toast(`Download failed: ${msg}`, 'danger');
-      ($('#p1-status') as HTMLElement).textContent = msg;
+      mainStatus.textContent = msg;
+      progressDiv.style.display = 'none';
+      ($('#p1-download') as HTMLButtonElement).disabled = false;
     }
   });
 
@@ -949,12 +1106,136 @@ function panel1Enter(): void {
     }
     fileInput.value = '';
   });
+
+  _initAnalyseCard();
 }
 
 /* =====================================================================
-   PANEL 2 — VLM Configuration
+   VLM Configuration (embedded in Panel 1 Analyse card)
    ===================================================================== */
-let p2Bound = false;
+let p1VlmBound = false;
+let _analyseMode: 'single' | 'multi' | 'unanalyzed' | 'all' = 'single';
+let _analysePoints: Set<string> = new Set(); // keys: "lat_lon"
+
+function _updateAnalyseButton(): void {
+  const btn  = $('#p1-vlm-analyze') as HTMLButtonElement | null;
+  const stat = $('#p1-sel-status') as HTMLElement | null;
+  if (!btn || !stat) return;
+  const count = _analysePoints.size;
+  btn.disabled = count === 0;
+  btn.textContent = count > 0 ? `Analyse ${count} image${count === 1 ? '' : 's'}` : 'Analyse — select points first';
+  stat.textContent = count > 0 ? `${count} point${count === 1 ? '' : 's'} selected.` : 'No points selected.';
+}
+
+function _initAnalyseCard(): void {
+  if (p1VlmBound) return; p1VlmBound = true;
+
+  // Collapse / expand toggle
+  const body   = $('#p1-analyse-body')  as HTMLElement;
+  const toggle = $('#p1-analyse-toggle') as HTMLElement;
+  const head   = $('#p1-analyse-head')  as HTMLElement;
+  const flipToggle = () => {
+    const open = body.style.display !== 'none';
+    body.style.display = open ? 'none' : '';
+    toggle.textContent  = open ? '▾' : '▴';
+    if (!open) { buildParamList(); buildVLMList(); }
+  };
+  head.addEventListener('click', flipToggle);
+
+  // + Custom field button
+  $('#p1-vlm-add-param')!.addEventListener('click', () => {
+    const key = 'custom_' + Date.now();
+    state.vlm.customFields.push({ key, label: 'New Field', prompt: 'Describe…' });
+    state.vlm.enabledFields!.push(key);
+    saveState(); buildParamList();
+  });
+
+  // Selection mode buttons
+  (['single', 'multi', 'unanalyzed', 'all'] as const).forEach((mode) => {
+    const btnId = mode === 'unanalyzed' ? '#p1-sel-unseen' : `#p1-sel-${mode}`;
+    $(btnId)?.addEventListener('click', () => {
+      _analyseMode = mode;
+      // Highlight active button
+      ['#p1-sel-single','#p1-sel-multi','#p1-sel-unseen','#p1-sel-all'].forEach((id) => {
+        const el = $(id) as HTMLButtonElement | null;
+        if (el) el.setAttribute('data-active', el.id.includes(mode === 'unanalyzed' ? 'unseen' : mode) ? 'true' : 'false');
+      });
+
+      // Immediate selection for bulk modes
+      if (mode === 'unanalyzed' || mode === 'all') {
+        _analysePoints.clear();
+        const src = map?.getSource('sv') as { _data?: { features: { properties: { lat: number; lon: number; schema?: string } }[] } } | undefined;
+        const features = src?._data?.features ?? [];
+        features.forEach((f) => {
+          if (mode === 'all' || f.properties.schema === 'image_only') {
+            _analysePoints.add(`${f.properties.lat}_${f.properties.lon}`);
+          }
+        });
+        _updateAnalyseButton();
+      } else {
+        // single / multi — wait for map clicks; clear for single
+        if (mode === 'single') { _analysePoints.clear(); _updateAnalyseButton(); }
+      }
+    });
+  });
+
+  // Analyse button
+  let _vlmPoller: number | null = null;
+  $('#p1-vlm-analyze')!.addEventListener('click', async () => {
+    if (_analysePoints.size === 0) return;
+    const progressDiv  = $('#p1-vlm-progress')          as HTMLElement;
+    const statusEl     = $('#p1-vlm-progress-status')   as HTMLElement;
+    const fillEl       = $('#p1-vlm-progress-fill')     as HTMLElement;
+    const logEl        = $('#p1-vlm-progress-log')      as HTMLElement;
+    progressDiv.style.display = '';
+    fillEl.style.width = '0%';
+    statusEl.textContent = 'Starting analysis…';
+    logEl.innerHTML = '';
+    ($('#p1-vlm-analyze') as HTMLButtonElement).disabled = true;
+    try {
+      const res = await api.postJSON<{ job_id?: string; error?: string }>(
+        api.map, '/api/streetview/analyze',
+        { images: [..._analysePoints], params: state.vlm },
+      );
+      if (res.error || !res.job_id) {
+        toast(res.error || 'Analysis failed', 'danger');
+        progressDiv.style.display = 'none';
+        _updateAnalyseButton();
+        return;
+      }
+      const jobId = res.job_id;
+      if (_vlmPoller) clearInterval(_vlmPoller);
+      _vlmPoller = setInterval(async () => {
+        try {
+          const s = await api.m<{ status: string; pct: number; done: number; total: number; log: string[] }>(
+            `/api/streetview/analyze/status/${jobId}`
+          );
+          fillEl.style.width = `${s.pct}%`;
+          statusEl.textContent = `${s.done} / ${s.total} analysed`;
+          const rendered = logEl.childElementCount;
+          (s.log || []).slice(rendered).forEach((line) => {
+            const d = document.createElement('div'); d.textContent = line;
+            logEl.appendChild(d); logEl.scrollTop = logEl.scrollHeight;
+          });
+          if (s.status === 'done' || s.status === 'error') {
+            clearInterval(_vlmPoller!); _vlmPoller = null;
+            _updateAnalyseButton();
+            toast(`Analysis complete — ${s.done} images processed.`, 'success');
+            // Reload sv source so grey dots become cyan
+            try {
+              const fresh = await api.m<{ features: unknown[] }>('/api/streetview_grid');
+              (map.getSource('sv') as { setData: (d: unknown) => void } | undefined)?.setData(fresh);
+            } catch { /* ok */ }
+          }
+        } catch { /* poll error */ }
+      }, 1500) as unknown as number;
+    } catch (e) {
+      toast(`Analysis failed: ${e instanceof Error ? e.message : e}`, 'danger');
+      progressDiv.style.display = 'none';
+      _updateAnalyseButton();
+    }
+  });
+}
 
 function renderSubFields(row: HTMLElement, fieldKey: string): void {
   if (!(fieldKey in state.vlm.fieldStructures)) {
@@ -1032,7 +1313,7 @@ function renderSubFields(row: HTMLElement, fieldKey: string): void {
 }
 
 function buildParamList(): void {
-  const list = $('#p2-param-list') as HTMLElement;
+  const list = $('#p1-vlm-param-list') as HTMLElement;
   list.innerHTML = '';
   if (!state.vlm.enabledFields) {
     state.vlm.enabledFields = PERCEPTION_FIELDS.map((f) => f.key);
@@ -1100,7 +1381,7 @@ function buildParamList(): void {
   (state.vlm.customFields || []).forEach((f) => appendRow(f, true));
 }
 function buildVLMList(): void {
-  const list = $('#p2-vlm-list') as HTMLElement;
+  const list = $('#p1-vlm-model-list') as HTMLElement;
   list.innerHTML = '';
   VLM_CARDS.forEach((v) => {
     const selected = state.vlm.provider === v.id;
@@ -1128,16 +1409,6 @@ function buildVLMList(): void {
     list.appendChild(div);
   });
 }
-function panel2Enter(): void {
-  buildParamList(); buildVLMList();
-  if (p2Bound) return; p2Bound = true;
-  $('#p2-add-param')!.addEventListener('click', () => {
-    const key = 'custom_' + Date.now();
-    state.vlm.customFields.push({ key, label: 'New Field', prompt: 'Describe…' });
-    state.vlm.enabledFields!.push(key);
-    saveState(); buildParamList();
-  });
-}
 
 /* =====================================================================
    PANEL 3 — Personality with Three.js archetype figures (GLB models)
@@ -1150,7 +1421,7 @@ const ARCHETYPE_COLORS: Record<string, string> = {
 const ARCHETYPE_GLB: Record<string, string> = {
   resident: 'agent_res_low_512px.glb',
   commuter: 'agent_com_low_512px.glb',
-  tourist:  'agent_tou_low_512px.glb',
+  tourist:  'agent_tou_Female.glb',
   student:  'agent_stu_low_512px.glb',
 };
 const GENERIC_GLB = 'agent_gen_low_512px.glb';
@@ -1169,6 +1440,20 @@ let p3Bound = false;
 
 const _gltfLoader = new GLTFLoader();
 
+function _syncRendererSize(renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera): void {
+  const canvas = renderer.domElement;
+  const dpr = renderer.getPixelRatio();
+  const displayW = canvas.clientWidth;
+  const displayH = canvas.clientHeight;
+  if (displayW < 1 || displayH < 1) return;
+  // Only resize if drawing buffer doesn't match CSS display size × dpr
+  if (canvas.width !== Math.round(displayW * dpr) || canvas.height !== Math.round(displayH * dpr)) {
+    renderer.setSize(displayW, displayH, false);
+    camera.aspect = displayW / displayH;
+    camera.updateProjectionMatrix();
+  }
+}
+
 function buildArchetypeFigure(
   canvas: HTMLCanvasElement,
   colorHex: string,
@@ -1176,8 +1461,10 @@ function buildArchetypeFigure(
   card: HTMLElement,
   focusHead = false,
 ): ArchRenderer {
-  const w = canvas.clientWidth || 152;
-  const h = canvas.clientHeight || 192;
+  // getBoundingClientRect is reliable even when clientWidth hasn't settled yet
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width  || canvas.clientWidth  || 152;
+  const h = rect.height || canvas.clientHeight || 192;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(w, h, false);
@@ -1188,7 +1475,8 @@ function buildArchetypeFigure(
   const eyeY   = focusHead ? 1.59 : 0.9;
   const camZ   = focusHead ? 1.1  : 2.8;
   const fov    = focusHead ? 28   : 38;
-  const camera = new THREE.PerspectiveCamera(fov, w / h, 0.01, 200);
+  const aspect = w > 0 && h > 0 ? w / h : 1;
+  const camera = new THREE.PerspectiveCamera(fov, aspect, 0.01, 200);
   camera.position.set(0, eyeY, camZ);
   camera.lookAt(0, eyeY, 0);
 
@@ -1218,6 +1506,7 @@ function buildArchetypeFigure(
   canvas.addEventListener('pointermove', (e) => {
     if (!dragActive) return;
     group.rotation.y = dragStartRotY + (e.clientX - dragStartX) * 0.01;
+    _syncRendererSize(renderer, camera);
     renderer.render(scene, camera);
   });
   const endDrag = () => { dragActive = false; canvas.style.cursor = 'grab'; };
@@ -1278,6 +1567,7 @@ function buildArchetypeFigure(
       }
 
       // Force one render so the SkinnedMesh skeleton binds and is visible immediately
+      _syncRendererSize(renderer, camera);
       renderer.render(scene, camera);
 
       card.classList.remove('arch-loading');
@@ -1311,6 +1601,7 @@ function startRenderLoop(): void {
         r.group.position.y = Math.sin(elapsed * 1.1) * 0.018;
         r.group.rotation.z = Math.sin(elapsed * 0.7) * 0.006;
       }
+      _syncRendererSize(r.renderer, r.camera);
       r.renderer.render(r.scene, r.camera);
     }
   };
@@ -2884,14 +3175,17 @@ function bindGlobalControls(): void {
     const n = +d.getAttribute('data-panel')! as PanelId;
     if (state.panelStatus[n] !== 'locked') activatePanel(n);
   }));
+  // Panel 2 removed — nav skips from 1→3 and 3→1
+  const _NAV_ORDER: PanelId[] = [1, 3, 4, 5];
   $('#nav-prev')!.addEventListener('click', () => {
-    if (state.currentPanel > 1) activatePanel((state.currentPanel - 1) as PanelId);
+    const idx = _NAV_ORDER.indexOf(state.currentPanel as PanelId);
+    if (idx > 0) activatePanel(_NAV_ORDER[idx - 1]);
   });
   $('#nav-next')!.addEventListener('click', () => {
-    const cur = state.currentPanel;
-    if (cur < 5) {
-      markPanelDone(cur);
-      activatePanel((cur + 1) as PanelId);
+    const idx = _NAV_ORDER.indexOf(state.currentPanel as PanelId);
+    if (idx < _NAV_ORDER.length - 1) {
+      markPanelDone(state.currentPanel as PanelId);
+      activatePanel(_NAV_ORDER[idx + 1]);
     }
   });
   $('#p1-popover-expand')?.addEventListener('click',
