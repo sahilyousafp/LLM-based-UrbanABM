@@ -1207,16 +1207,10 @@ function _openDetailModal(p: Record<string, unknown>): void {
     fields.classList.add('hidden');
     gallery.classList.remove('hidden');
     analysisTab.dataset.disabled = _hasAnalysisData(p) ? 'false' : 'true';
-    // Wire tab buttons (re-wire each open to avoid stale closures)
+    // Wire tab buttons — fields are kept current by _openDetailModal and thumbnail clicks,
+    // so tabs only need to toggle visibility.
     tabs.querySelectorAll<HTMLElement>('.sv-tab').forEach((t) => {
-      t.onclick = () => {
-        const activeThumb = gallery.querySelector<HTMLElement>('.sv-thumb.active');
-        const activeKey = activeThumb?.querySelector('img')?.alt ?? key;
-        const src2 = map?.getSource('sv') as { _data?: { features: { properties: Record<string, unknown> }[] } } | undefined;
-        const feat = (src2?._data?.features ?? []).find((f) => `${f.properties?.lat}_${f.properties?.lon}` === activeKey);
-        _switchDetailTab(t.dataset.tab as 'gallery' | 'analysis');
-        if (t.dataset.tab === 'analysis' && feat) _buildSceneFields(feat.properties, fields);
-      };
+      t.onclick = () => _switchDetailTab(t.dataset.tab as 'gallery' | 'analysis');
     });
   } else {
     tabs.classList.add('hidden');
