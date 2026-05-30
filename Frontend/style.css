@@ -1324,6 +1324,50 @@ select.input option, select.select option {
 .sv-tab[data-disabled="true"] {
   opacity: 0.35; cursor: not-allowed; pointer-events: none;
 }
+
+/* ── Scene Field Analysis — structured display ──────────────────────────── */
+.scene-fields { display: flex; flex-direction: column; gap: 8px; }
+.sv-detail-right .scene-fields { max-height: none; overflow-y: visible; }
+.sfa-section {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 10px 12px; border-radius: 12px;
+  background: rgba(255,255,255,0.025); border: 1px solid var(--panel-border);
+}
+.sfa-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text-muted); font-weight: 600;
+}
+.sfa-plain {
+  font-size: 12.5px; line-height: 1.6; color: var(--text-2); font-style: italic;
+}
+.sfa-body { display: flex; flex-direction: column; gap: 5px; }
+.sfa-row { display: flex; align-items: flex-start; gap: 7px; flex-wrap: wrap; }
+.sfa-zone {
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 6px; white-space: nowrap;
+  flex-shrink: 0; align-self: flex-start; margin-top: 1px;
+}
+.sfa-zone-far-left  { background: rgba(94,92,230,0.18);  color: #9b99f5; border: 1px solid rgba(94,92,230,0.3); }
+.sfa-zone-left      { background: rgba(10,132,255,0.15); color: #64d2ff; border: 1px solid rgba(10,132,255,0.3); }
+.sfa-zone-center    { background: rgba(255,255,255,0.06); color: var(--text-2); border: 1px solid var(--panel-border); }
+.sfa-zone-right     { background: rgba(255,159,10,0.15); color: #ffc878; border: 1px solid rgba(255,159,10,0.3); }
+.sfa-zone-far-right { background: rgba(255,55,95,0.15);  color: #ff8ba0; border: 1px solid rgba(255,55,95,0.3); }
+.sfa-pairs { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
+.sfa-chip {
+  display: flex; align-items: stretch; border-radius: 7px;
+  border: 1px solid var(--panel-border); overflow: hidden; font-size: 11px;
+}
+.sfa-chip-key {
+  padding: 3px 7px; background: rgba(255,255,255,0.05);
+  color: var(--text-muted); font-weight: 500;
+  border-right: 1px solid var(--panel-border);
+}
+.sfa-chip-val { padding: 3px 8px; font-weight: 600; }
+.sfa-c-danger  { background: rgba(255,69,58,0.14);   color: #ff908a; }
+.sfa-c-warning { background: rgba(255,159,10,0.14);  color: #ffc878; }
+.sfa-c-success { background: rgba(48,209,88,0.14);   color: #74e89b; }
+.sfa-c-accent  { background: rgba(10,132,255,0.14);  color: #64d2ff; }
+.sfa-c-neutral { background: rgba(255,255,255,0.05); color: var(--text-2); }
 .sv-gallery {
   display: grid; grid-template-columns: repeat(auto-fill, 52px);
   gap: 5px; overflow-y: auto; align-content: start;

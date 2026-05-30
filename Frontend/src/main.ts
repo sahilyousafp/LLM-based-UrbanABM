@@ -1080,6 +1080,7 @@ let p1VlmBound = false;
 let _analyseMode: 'single' | 'multi' | 'unanalyzed' | 'all' = 'single';
 let _analysePoints: Set<string> = new Set(); // keys: "lat_lon"
 let _lastClickedProps: Record<string, unknown> = {};
+let _activeDetailProps: Record<string, unknown> = {}; // props of the gallery-focused image
 
 function _updateAnalyseButton(): void {
   const openBtn = $('#p1-analyse-open') as HTMLButtonElement | null;
@@ -1116,26 +1117,78 @@ function _hasAnalysisData(p: Record<string, unknown>): boolean {
   });
 }
 
+function _sfaValueClass(val: string): string {
+  const v = val.toLowerCase().trim();
+  if (['dark','obstructed','empty','none','enclosed','absent'].includes(v)) return 'c-danger';
+  if (['dim','sparse','narrow','semi','few','partial'].includes(v)) return 'c-warning';
+  if (['bright','dense','wide','open','adequate','clear','signalised','many','several'].includes(v)) return 'c-success';
+  if (['sidewalk','plaza','shared','road','zebra','sign','label','graffiti','moderate',
+       'pedestrian'].some(w => v.includes(w))) return 'c-accent';
+  return 'c-neutral';
+}
+
 function _buildSceneFields(p: Record<string, unknown>, container: HTMLElement): void {
   container.innerHTML = '';
   PERCEPTION_FIELDS.forEach((spec) => {
     const raw = p[spec.key];
     if (!raw || String(raw).trim().length < 2) return;
-    let display = String(raw).trim();
-    if (display.startsWith('[')) {
+    const rawStr = String(raw).trim();
+
+    const section = document.createElement('div');
+    section.className = 'sfa-section';
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'sfa-label';
+    labelEl.textContent = spec.label;
+    section.appendChild(labelEl);
+
+    if (rawStr.startsWith('[')) {
       try {
-        const arr = JSON.parse(display) as Record<string, unknown>[];
-        display = arr.map((obj) => {
-          const zone = obj['zone'] ? `[${obj['zone']}] ` : '';
-          const parts = Object.entries(obj).filter(([k]) => k !== 'zone').map(([, v]) => String(v));
-          return zone + parts.join(' · ');
-        }).join('\n');
-      } catch { /* leave as-is */ }
+        const arr = JSON.parse(rawStr) as Record<string, unknown>[];
+        const body = document.createElement('div');
+        body.className = 'sfa-body';
+        arr.forEach((obj) => {
+          const row = document.createElement('div');
+          row.className = 'sfa-row';
+          const zone = obj['zone'] ? String(obj['zone']) : null;
+          if (zone) {
+            const zoneEl = document.createElement('span');
+            zoneEl.className = `sfa-zone sfa-zone-${zone.replace(/_/g, '-')}`;
+            zoneEl.textContent = zone.replace(/_/g, ' ');
+            row.appendChild(zoneEl);
+          }
+          const pairs = document.createElement('div');
+          pairs.className = 'sfa-pairs';
+          Object.entries(obj).filter(([k]) => k !== 'zone').forEach(([key, val]) => {
+            const chip = document.createElement('div');
+            chip.className = 'sfa-chip';
+            const kEl = document.createElement('span');
+            kEl.className = 'sfa-chip-key';
+            kEl.textContent = key;
+            const vEl = document.createElement('span');
+            vEl.className = `sfa-chip-val sfa-${_sfaValueClass(String(val))}`;
+            vEl.textContent = String(val);
+            chip.appendChild(kEl);
+            chip.appendChild(vEl);
+            pairs.appendChild(chip);
+          });
+          row.appendChild(pairs);
+          body.appendChild(row);
+        });
+        section.appendChild(body);
+      } catch {
+        const plain = document.createElement('div');
+        plain.className = 'sfa-plain';
+        plain.textContent = rawStr;
+        section.appendChild(plain);
+      }
+    } else {
+      const plain = document.createElement('div');
+      plain.className = 'sfa-plain';
+      plain.textContent = rawStr;
+      section.appendChild(plain);
     }
-    const el = document.createElement('div');
-    el.className = 'field';
-    el.innerHTML = `<div class="k">${escapeHtml(spec.label)}</div><div style="white-space:pre-line">${escapeHtml(display)}</div>`;
-    container.appendChild(el);
+    container.appendChild(section);
   });
 }
 
@@ -1169,12 +1222,12 @@ function _buildGallery(activePropKey: string): void {
     thumb.addEventListener('click', () => {
       gallery.querySelectorAll('.sv-thumb').forEach((t) => t.classList.remove('active'));
       thumb.classList.add('active');
+      _activeDetailProps = p;  // track for Analysis tab — don't build fields yet
       const is = p.image_url ? api.map + (p.image_url as string) : '';
       ($('#sv-detail-img') as HTMLImageElement).src = is;
       ($('#sv-detail-title') as HTMLElement).textContent = `(${(p.lat as number)?.toFixed(5)}, ${(p.lon as number)?.toFixed(5)})`;
       ($('#sv-detail-coord') as HTMLElement).textContent = `${(p.lat as number)?.toFixed(5)}, ${(p.lon as number)?.toFixed(5)}`;
       ($('#sv-detail-heading') as HTMLElement).textContent = `Heading ${p.heading ?? 0}°`;
-      _buildSceneFields(p, $('#sv-detail-fields') as HTMLElement);
       const analysisTab = $('#sv-tab-analysis') as HTMLElement;
       const hasAnalysis = _hasAnalysisData(p);
       analysisTab.dataset.disabled = hasAnalysis ? 'false' : 'true';
@@ -1200,17 +1253,20 @@ function _openDetailModal(p: Record<string, unknown>): void {
   const analysisTab = $('#sv-tab-analysis') as HTMLElement;
 
   if (_analysePoints.size > 1) {
+    _activeDetailProps = p;  // initialize with the first-opened image
     tabs.classList.remove('hidden');
     _buildGallery(key);
-    // Start on gallery tab
     _switchDetailTab('gallery');
     fields.classList.add('hidden');
     gallery.classList.remove('hidden');
     analysisTab.dataset.disabled = _hasAnalysisData(p) ? 'false' : 'true';
-    // Wire tab buttons — fields are kept current by _openDetailModal and thumbnail clicks,
-    // so tabs only need to toggle visibility.
     tabs.querySelectorAll<HTMLElement>('.sv-tab').forEach((t) => {
-      t.onclick = () => _switchDetailTab(t.dataset.tab as 'gallery' | 'analysis');
+      t.onclick = () => {
+        if (t.dataset.tab === 'analysis') {
+          _buildSceneFields(_activeDetailProps, fields);
+        }
+        _switchDetailTab(t.dataset.tab as 'gallery' | 'analysis');
+      };
     });
   } else {
     tabs.classList.add('hidden');
