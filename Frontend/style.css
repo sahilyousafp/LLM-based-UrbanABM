@@ -717,8 +717,7 @@ select.input option, select.select option {
 
 .p3-col-center {
   flex: 1; min-width: 0;
-  /* 5 % narrower than natural flex width (was 20 %; +15 % requested) */
-  max-width: calc((100vw - 36px - 588px) * 0.95);
+  max-width: calc((100vw - 36px - 627px) * 0.95);
   display: flex; flex-direction: column;
 }
 .p3-editor-panel {
@@ -1303,3 +1302,40 @@ select.input option, select.select option {
 .ov-check-row input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px; }
 .ov-check-row span { color: var(--text); }
 .ov-check-row .meta { margin-left: auto; }
+
+/* ── Street View gallery tabs ───────────────────────────────────────────── */
+.sv-detail-tabs {
+  display: flex; gap: 4px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px; padding: 3px;
+  border: 1px solid var(--panel-border);
+  flex-shrink: 0;
+}
+.sv-detail-tabs.hidden { display: none; }
+.sv-tab {
+  flex: 1; padding: 6px 12px; border-radius: 8px; border: none;
+  background: transparent; color: var(--text-muted);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
+}
+.sv-tab.active {
+  background: rgba(255,255,255,0.08); color: var(--text);
+}
+.sv-tab[data-disabled="true"] {
+  opacity: 0.35; cursor: not-allowed; pointer-events: none;
+}
+.sv-gallery {
+  display: grid; grid-template-columns: repeat(auto-fill, 52px);
+  gap: 5px; overflow-y: auto; align-content: start;
+}
+.sv-gallery.hidden { display: none; }
+.sv-thumb {
+  width: 52px; height: 52px;
+  border-radius: 6px; overflow: hidden; cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 150ms var(--ease), transform 150ms var(--ease);
+  background: rgba(255,255,255,0.04); flex-shrink: 0;
+}
+.sv-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sv-thumb:hover { border-color: rgba(255,255,255,0.25); transform: scale(1.05); }
+.sv-thumb.active { border-color: var(--accent); }

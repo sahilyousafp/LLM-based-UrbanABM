@@ -1177,7 +1177,7 @@ function _buildGallery(activePropKey: string): void {
       _buildSceneFields(p, $('#sv-detail-fields') as HTMLElement);
       const analysisTab = $('#sv-tab-analysis') as HTMLElement;
       const hasAnalysis = _hasAnalysisData(p);
-      analysisTab.style.display = hasAnalysis ? '' : 'none';
+      analysisTab.dataset.disabled = hasAnalysis ? 'false' : 'true';
       const activeTab = ($('#sv-detail-tabs') as HTMLElement).querySelector<HTMLElement>('.sv-tab.active');
       if (activeTab?.dataset.tab === 'analysis' && !hasAnalysis) _switchDetailTab('gallery');
     });
@@ -1206,7 +1206,7 @@ function _openDetailModal(p: Record<string, unknown>): void {
     _switchDetailTab('gallery');
     fields.classList.add('hidden');
     gallery.classList.remove('hidden');
-    analysisTab.style.display = _hasAnalysisData(p) ? '' : 'none';
+    analysisTab.dataset.disabled = _hasAnalysisData(p) ? 'false' : 'true';
     // Wire tab buttons (re-wire each open to avoid stale closures)
     tabs.querySelectorAll<HTMLElement>('.sv-tab').forEach((t) => {
       t.onclick = () => {
