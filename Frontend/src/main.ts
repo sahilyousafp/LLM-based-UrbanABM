@@ -541,70 +541,32 @@ function onAmenityClick(e: MapboxMapEvent): void {
    ===================================================================== */
 async function onStreetviewClick(e: MapboxMapEvent): Promise<void> {
   if (bboxDrawing || !e.features?.length) return;
-  const p = e.features[0].properties;
-  state.selectedPoint = { lat: p.lat, lon: p.lon, image_url: p.image_url };
-  saveState();
+  const p = e.features[0].properties as Record<string, unknown>;
+  const isCtrl = !!(e.originalEvent as MouseEvent)?.ctrlKey || !!(e.originalEvent as MouseEvent)?.metaKey;
+  const key = `${p.lat}_${p.lon}`;
 
-  // Add to analyse selection if modal is open and in single/multi mode
-  const analyseModal = $('#analyse-modal') as HTMLElement | null;
-  if (analyseModal && !analyseModal.classList.contains('hidden') && (_analyseMode === 'single' || _analyseMode === 'multi')) {
-    const key = `${p.lat}_${p.lon}`;
-    if (_analyseMode === 'single') { _analysePoints.clear(); _analysePoints.add(key); }
-    else { if (_analysePoints.has(key)) _analysePoints.delete(key); else _analysePoints.add(key); }
-    _updateAnalyseButton();
+  if (isCtrl) {
+    if (_analysePoints.has(key)) _analysePoints.delete(key);
+    else _analysePoints.add(key);
+  } else {
+    _analysePoints.clear();
+    _analysePoints.add(key);
+    state.selectedPoint = { lat: p.lat as number, lon: p.lon as number, image_url: p.image_url as string | undefined };
+    saveState();
   }
 
-  // Highlight the clicked point on the map
-  const highlightGeo = {
-    type: 'FeatureCollection' as const,
-    features: [{
-      type: 'Feature' as const,
-      geometry: { type: 'Point' as const, coordinates: [p.lon, p.lat] },
-      properties: {},
-    }],
-  };
-  (map?.getSource('sv-selected') as { setData: (d: unknown) => void } | undefined)
-    ?.setData(highlightGeo);
+  _lastClickedProps = p;
+  _updateAnalyseButton();
+  _updateSelectionHighlight();
 
-  // Populate collapsed view (left panel)
+  // Populate compact popover with the last clicked image
   ($('#p1-sv-popover') as HTMLElement).style.display = '';
-  const title = `(${p.lat?.toFixed(5)}, ${p.lon?.toFixed(5)})`;
-  const coordStr = `${p.lat?.toFixed(5)}, ${p.lon?.toFixed(5)}`;
-  const headingStr = `Heading ${p.heading ?? 0}°`;
-  const imgSrc = p.image_url ? api.map + p.image_url : '';
-  ($('#p1-popover-title') as HTMLElement).textContent = title;
-  ($('#p1-popover-coord') as HTMLElement).textContent = coordStr;
-  ($('#p1-popover-heading') as HTMLElement).textContent = headingStr;
+  const lat = p.lat as number; const lon = p.lon as number;
+  ($('#p1-popover-title') as HTMLElement).textContent = `(${lat?.toFixed(5)}, ${lon?.toFixed(5)})`;
+  ($('#p1-popover-coord') as HTMLElement).textContent = `${lat?.toFixed(5)}, ${lon?.toFixed(5)}`;
+  ($('#p1-popover-heading') as HTMLElement).textContent = `Heading ${p.heading ?? 0}°`;
+  const imgSrc = p.image_url ? api.map + (p.image_url as string) : '';
   if (imgSrc) ($('#p1-popover-img') as HTMLImageElement).src = imgSrc;
-
-  // Populate expanded overlay
-  ($('#sv-detail-title') as HTMLElement).textContent = title;
-  ($('#sv-detail-coord') as HTMLElement).textContent = coordStr;
-  ($('#sv-detail-heading') as HTMLElement).textContent = headingStr;
-  if (imgSrc) ($('#sv-detail-img') as HTMLImageElement).src = imgSrc;
-
-  // Build scene fields for expanded overlay
-  const fields = $('#sv-detail-fields') as HTMLElement;
-  fields.innerHTML = '';
-  PERCEPTION_FIELDS.forEach((spec) => {
-    const raw = (p as Record<string, unknown>)[spec.key];
-    if (!raw || String(raw).trim().length < 2) return;
-    let display = String(raw).trim();
-    if (display.startsWith('[')) {
-      try {
-        const arr = JSON.parse(display) as Record<string, unknown>[];
-        display = arr.map((obj) => {
-          const zone = obj['zone'] ? `[${obj['zone']}] ` : '';
-          const parts = Object.entries(obj).filter(([k]) => k !== 'zone').map(([, v]) => String(v));
-          return zone + parts.join(' · ');
-        }).join('\n');
-      } catch { /* leave as-is */ }
-    }
-    const el = document.createElement('div');
-    el.className = 'field';
-    el.innerHTML = `<div class="k">${escapeHtml(spec.label)}</div><div style="white-space:pre-line">${escapeHtml(display)}</div>`;
-    fields.appendChild(el);
-  });
 }
 
 /* =====================================================================
@@ -952,7 +914,8 @@ function panel1Enter(): void {
   $('#p1-popover-close')!.addEventListener('click',
     () => {
       ($('#p1-sv-popover') as HTMLElement).style.display = 'none';
-      state.selectedPoint = null; saveState();
+      state.selectedPoint = null; _analysePoints.clear(); _lastClickedProps = {};
+      _updateAnalyseButton(); _updateSelectionHighlight(); saveState();
       (map?.getSource('sv-selected') as { setData: (d: unknown) => void } | undefined)
         ?.setData({ type: 'FeatureCollection', features: [] });
     });
@@ -1116,15 +1079,152 @@ function panel1Enter(): void {
 let p1VlmBound = false;
 let _analyseMode: 'single' | 'multi' | 'unanalyzed' | 'all' = 'single';
 let _analysePoints: Set<string> = new Set(); // keys: "lat_lon"
+let _lastClickedProps: Record<string, unknown> = {};
 
 function _updateAnalyseButton(): void {
-  const btn  = $('#p1-vlm-analyze') as HTMLButtonElement | null;
-  const stat = $('#p1-sel-status') as HTMLElement | null;
-  if (!btn || !stat) return;
+  const openBtn = $('#p1-analyse-open') as HTMLButtonElement | null;
+  const runBtn  = $('#p1-vlm-analyze')  as HTMLButtonElement | null;
   const count = _analysePoints.size;
-  btn.disabled = count === 0;
-  btn.textContent = count > 0 ? `Analyse ${count} image${count === 1 ? '' : 's'}` : 'Analyse — select points first';
-  stat.textContent = count > 0 ? `${count} point${count === 1 ? '' : 's'} selected.` : 'No points selected.';
+
+  if (openBtn) {
+    if (count === 0)      openBtn.textContent = 'Analyse Images';
+    else if (count === 1) openBtn.textContent = 'Analyse Current Image';
+    else                  openBtn.textContent = `Analyse Selected Images (${count})`;
+  }
+
+  if (runBtn) {
+    runBtn.disabled = count === 0;
+    if (count === 0)      runBtn.textContent = 'Select images first';
+    else if (count === 1) runBtn.textContent = 'Run Analysis';
+    else                  runBtn.textContent = `Run Analysis (${count})`;
+  }
+}
+
+function _updateSelectionHighlight(): void {
+  const src = map?.getSource('sv') as { _data?: { features: { properties: Record<string, unknown>; geometry: unknown; type: string }[] } } | undefined;
+  const allFeatures = src?._data?.features ?? [];
+  const selected = allFeatures.filter((f) => _analysePoints.has(`${f.properties?.lat}_${f.properties?.lon}`));
+  (map?.getSource('sv-selected') as { setData: (d: unknown) => void } | undefined)?.setData({
+    type: 'FeatureCollection', features: selected,
+  });
+}
+
+function _hasAnalysisData(p: Record<string, unknown>): boolean {
+  return PERCEPTION_FIELDS.some((spec) => {
+    const raw = p[spec.key];
+    return raw && String(raw).trim().length > 2;
+  });
+}
+
+function _buildSceneFields(p: Record<string, unknown>, container: HTMLElement): void {
+  container.innerHTML = '';
+  PERCEPTION_FIELDS.forEach((spec) => {
+    const raw = p[spec.key];
+    if (!raw || String(raw).trim().length < 2) return;
+    let display = String(raw).trim();
+    if (display.startsWith('[')) {
+      try {
+        const arr = JSON.parse(display) as Record<string, unknown>[];
+        display = arr.map((obj) => {
+          const zone = obj['zone'] ? `[${obj['zone']}] ` : '';
+          const parts = Object.entries(obj).filter(([k]) => k !== 'zone').map(([, v]) => String(v));
+          return zone + parts.join(' · ');
+        }).join('\n');
+      } catch { /* leave as-is */ }
+    }
+    const el = document.createElement('div');
+    el.className = 'field';
+    el.innerHTML = `<div class="k">${escapeHtml(spec.label)}</div><div style="white-space:pre-line">${escapeHtml(display)}</div>`;
+    container.appendChild(el);
+  });
+}
+
+function _switchDetailTab(tab: 'gallery' | 'analysis'): void {
+  ($('#sv-detail-tabs') as HTMLElement).querySelectorAll<HTMLElement>('.sv-tab').forEach((t) => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  const fields  = $('#sv-detail-fields')  as HTMLElement;
+  const gallery = $('#sv-detail-gallery') as HTMLElement;
+  if (tab === 'analysis') {
+    fields.classList.remove('hidden'); gallery.classList.add('hidden');
+  } else {
+    fields.classList.add('hidden'); gallery.classList.remove('hidden');
+  }
+}
+
+function _buildGallery(activePropKey: string): void {
+  const gallery = $('#sv-detail-gallery') as HTMLElement;
+  gallery.innerHTML = '';
+  const src = map?.getSource('sv') as { _data?: { features: { properties: Record<string, unknown> }[] } } | undefined;
+  const allFeatures = src?._data?.features ?? [];
+  _analysePoints.forEach((key) => {
+    const feat = allFeatures.find((f) => `${f.properties?.lat}_${f.properties?.lon}` === key);
+    if (!feat) return;
+    const p = feat.properties;
+    const imgSrc = p.image_url ? api.map + (p.image_url as string) : '';
+    const isActive = key === activePropKey;
+    const thumb = document.createElement('div');
+    thumb.className = 'sv-thumb' + (isActive ? ' active' : '');
+    if (imgSrc) { const img = document.createElement('img'); img.src = imgSrc; img.alt = key; thumb.appendChild(img); }
+    thumb.addEventListener('click', () => {
+      gallery.querySelectorAll('.sv-thumb').forEach((t) => t.classList.remove('active'));
+      thumb.classList.add('active');
+      const is = p.image_url ? api.map + (p.image_url as string) : '';
+      ($('#sv-detail-img') as HTMLImageElement).src = is;
+      ($('#sv-detail-title') as HTMLElement).textContent = `(${(p.lat as number)?.toFixed(5)}, ${(p.lon as number)?.toFixed(5)})`;
+      ($('#sv-detail-coord') as HTMLElement).textContent = `${(p.lat as number)?.toFixed(5)}, ${(p.lon as number)?.toFixed(5)}`;
+      ($('#sv-detail-heading') as HTMLElement).textContent = `Heading ${p.heading ?? 0}°`;
+      _buildSceneFields(p, $('#sv-detail-fields') as HTMLElement);
+      const analysisTab = $('#sv-tab-analysis') as HTMLElement;
+      const hasAnalysis = _hasAnalysisData(p);
+      analysisTab.style.display = hasAnalysis ? '' : 'none';
+      const activeTab = ($('#sv-detail-tabs') as HTMLElement).querySelector<HTMLElement>('.sv-tab.active');
+      if (activeTab?.dataset.tab === 'analysis' && !hasAnalysis) _switchDetailTab('gallery');
+    });
+    gallery.appendChild(thumb);
+  });
+}
+
+function _openDetailModal(p: Record<string, unknown>): void {
+  const key = `${p.lat}_${p.lon}`;
+  const imgSrc = p.image_url ? api.map + (p.image_url as string) : '';
+  ($('#sv-detail-img') as HTMLImageElement).src = imgSrc;
+  ($('#sv-detail-title') as HTMLElement).textContent = `(${(p.lat as number)?.toFixed(5)}, ${(p.lon as number)?.toFixed(5)})`;
+  ($('#sv-detail-coord') as HTMLElement).textContent = `${(p.lat as number)?.toFixed(5)}, ${(p.lon as number)?.toFixed(5)}`;
+  ($('#sv-detail-heading') as HTMLElement).textContent = `Heading ${p.heading ?? 0}°`;
+  _buildSceneFields(p, $('#sv-detail-fields') as HTMLElement);
+
+  const tabs    = $('#sv-detail-tabs')    as HTMLElement;
+  const gallery = $('#sv-detail-gallery') as HTMLElement;
+  const fields  = $('#sv-detail-fields')  as HTMLElement;
+  const analysisTab = $('#sv-tab-analysis') as HTMLElement;
+
+  if (_analysePoints.size > 1) {
+    tabs.classList.remove('hidden');
+    _buildGallery(key);
+    // Start on gallery tab
+    _switchDetailTab('gallery');
+    fields.classList.add('hidden');
+    gallery.classList.remove('hidden');
+    analysisTab.style.display = _hasAnalysisData(p) ? '' : 'none';
+    // Wire tab buttons (re-wire each open to avoid stale closures)
+    tabs.querySelectorAll<HTMLElement>('.sv-tab').forEach((t) => {
+      t.onclick = () => {
+        const activeThumb = gallery.querySelector<HTMLElement>('.sv-thumb.active');
+        const activeKey = activeThumb?.querySelector('img')?.alt ?? key;
+        const src2 = map?.getSource('sv') as { _data?: { features: { properties: Record<string, unknown> }[] } } | undefined;
+        const feat = (src2?._data?.features ?? []).find((f) => `${f.properties?.lat}_${f.properties?.lon}` === activeKey);
+        _switchDetailTab(t.dataset.tab as 'gallery' | 'analysis');
+        if (t.dataset.tab === 'analysis' && feat) _buildSceneFields(feat.properties, fields);
+      };
+    });
+  } else {
+    tabs.classList.add('hidden');
+    gallery.classList.add('hidden');
+    fields.classList.remove('hidden');
+  }
+
+  ($('#sv-detail-modal') as HTMLElement).classList.remove('hidden');
 }
 
 function _initAnalyseCard(): void {
@@ -1225,39 +1325,23 @@ function _initAnalyseCard(): void {
     saveState(); buildParamList();
   });
 
-  // Selection mode buttons
-  (['single', 'multi', 'unanalyzed', 'all'] as const).forEach((mode) => {
-    const btnId = mode === 'unanalyzed' ? '#p1-sel-unseen' : `#p1-sel-${mode}`;
-    $(btnId)?.addEventListener('click', () => {
-      _analyseMode = mode;
-      // Highlight active button
-      ['#p1-sel-single','#p1-sel-multi','#p1-sel-unseen','#p1-sel-all'].forEach((id) => {
-        const el = $(id) as HTMLButtonElement | null;
-        if (el) el.setAttribute('data-active', el.id.includes(mode === 'unanalyzed' ? 'unseen' : mode) ? 'true' : 'false');
-      });
-
-      // Immediate selection for bulk modes
-      if (mode === 'unanalyzed' || mode === 'all') {
-        _analysePoints.clear();
-        const src = map?.getSource('sv') as { _data?: { features: { properties: { lat: number; lon: number; schema?: string } }[] } } | undefined;
-        const features = src?._data?.features ?? [];
-        features.forEach((f) => {
-          if (mode === 'all' || f.properties.schema === 'image_only') {
-            _analysePoints.add(`${f.properties.lat}_${f.properties.lon}`);
-          }
-        });
-        _updateAnalyseButton();
-      } else {
-        // single / multi — wait for map clicks; clear for single
-        if (mode === 'single') { _analysePoints.clear(); _updateAnalyseButton(); }
-      }
-    });
-  });
-
-  // Analyse button
+  // Analyse button (run button inside the modal)
   let _vlmPoller: number | null = null;
-  $('#p1-vlm-analyze')!.addEventListener('click', async () => {
+  $('#p1-vlm-analyze')?.addEventListener('click', async () => {
     if (_analysePoints.size === 0) return;
+    // Respect re-analyse toggle: if unchecked, skip already-analysed images
+    const reanalyse = ($('#p1-reanalyse-toggle') as HTMLInputElement | null)?.checked ?? false;
+    let pointsToSend = [..._analysePoints];
+    if (!reanalyse) {
+      const svSrc = map?.getSource('sv') as { _data?: { features: { properties: Record<string, unknown> }[] } } | undefined;
+      const analysed = new Set(
+        (svSrc?._data?.features ?? [])
+          .filter((f) => f.properties.schema && f.properties.schema !== 'image_only')
+          .map((f) => `${f.properties.lat}_${f.properties.lon}`)
+      );
+      pointsToSend = pointsToSend.filter((k) => !analysed.has(k));
+    }
+    if (pointsToSend.length === 0) { toast('All selected images are already analysed. Enable Re-analyse to reprocess.', 'warning'); return; }
     const progressDiv  = $('#p1-vlm-progress')          as HTMLElement;
     const statusEl     = $('#p1-vlm-progress-status')   as HTMLElement;
     const fillEl       = $('#p1-vlm-progress-fill')     as HTMLElement;
@@ -1270,7 +1354,7 @@ function _initAnalyseCard(): void {
     try {
       const res = await api.postJSON<{ job_id?: string; error?: string }>(
         api.map, '/api/streetview/analyze',
-        { images: [..._analysePoints], params: state.vlm },
+        { images: pointsToSend, params: state.vlm },
       );
       if (res.error || !res.job_id) {
         toast(res.error || 'Analysis failed', 'danger');
@@ -3252,8 +3336,9 @@ function bindGlobalControls(): void {
       activatePanel(_NAV_ORDER[idx + 1]);
     }
   });
-  $('#p1-popover-expand')?.addEventListener('click',
-    () => ($('#sv-detail-modal') as HTMLElement)?.classList.remove('hidden'));
+  $('#p1-popover-expand')?.addEventListener('click', () => {
+    if (Object.keys(_lastClickedProps).length) _openDetailModal(_lastClickedProps);
+  });
   $('#sv-detail-close')?.addEventListener('click',
     () => ($('#sv-detail-modal') as HTMLElement)?.classList.add('hidden'));
   document.addEventListener('keydown', (e) => {
