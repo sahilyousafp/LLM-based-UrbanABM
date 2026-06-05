@@ -1,0 +1,260 @@
+{
+  "tourist": {
+    "profile": {
+      "interests": [
+        "architecture",
+        "culture",
+        "food",
+        "parks"
+      ],
+      "pace": "leisurely",
+      "curiosity": "high",
+      "social": "low",
+      "description": "A curious visitor spending the day exploring the neighbourhood's cultural highlights, enjoying good food, and wandering through pleasant streets."
+    },
+    "daily_plan": [
+      {
+        "id": "morning_attraction",
+        "time_of_day": "morning",
+        "goal": "Visit a cultural attraction or museum",
+        "target_types": [
+          "attraction",
+          "museum"
+        ],
+        "max_visits": 1,
+        "perception_preferences": [
+          "buildings",
+          "spatial_enclosure",
+          "vegetation"
+        ],
+        "perception_avoid": [],
+        "en_route_stops": [
+          {
+            "id": "breakfast_stop",
+            "trigger": {
+              "need": "hunger",
+              "threshold": 0.55
+            },
+            "goal": "Grab breakfast on the way",
+            "target_types": [
+              "cafe",
+              "bakery"
+            ],
+            "max_visits": 1
+          }
+        ]
+      },
+      {
+        "id": "midday_lunch",
+        "time_of_day": "afternoon",
+        "goal": "Find a restaurant or cafe for a proper lunch",
+        "target_types": [
+          "restaurant",
+          "cafe"
+        ],
+        "max_visits": 1,
+        "perception_preferences": [
+          "pedestrian_activity",
+          "street_furniture"
+        ],
+        "perception_avoid": [],
+        "en_route_stops": []
+      },
+      {
+        "id": "afternoon_park",
+        "time_of_day": "evening",
+        "goal": "Relax in a park or find a scenic viewpoint",
+        "target_types": [
+          "park",
+          "viewpoint"
+        ],
+        "max_visits": 1,
+        "perception_preferences": [
+          "vegetation",
+          "lighting_atmosphere",
+          "spatial_enclosure"
+        ],
+        "perception_avoid": [],
+        "en_route_stops": [
+          {
+            "id": "energy_stop",
+            "trigger": {
+              "need": "energy",
+              "threshold": 0.3
+            },
+            "goal": "Pick up a snack to keep energy up",
+            "target_types": [
+              "supermarket",
+              "bakery"
+            ],
+            "max_visits": 1
+          }
+        ]
+      }
+    ]
+  },
+  "resident": {
+    "profile": {
+      "interests": [
+        "local_shops",
+        "green_spaces",
+        "community",
+        "neighbours"
+      ],
+      "pace": "moderate",
+      "curiosity": "low",
+      "social": "high",
+      "description": "A local resident running daily errands and enjoying familiar neighbourhood spaces with a comfortable, unhurried routine."
+    },
+    "daily_plan": [
+      {
+        "id": "morning_errands",
+        "time_of_day": "morning",
+        "goal": "Do the grocery shopping at a nearby supermarket or bakery",
+        "target_types": [
+          "supermarket",
+          "bakery"
+        ],
+        "max_visits": 1,
+        "perception_preferences": [
+          "street_furniture",
+          "spatial_enclosure"
+        ],
+        "perception_avoid": [],
+        "en_route_stops": [
+          {
+            "id": "pharmacy_stop",
+            "trigger": {
+              "need": "health",
+              "threshold": 0.4
+            },
+            "goal": "Stop at the pharmacy before errands",
+            "target_types": [
+              "pharmacy"
+            ],
+            "max_visits": 1
+          }
+        ]
+      },
+      {
+        "id": "afternoon_leisure",
+        "time_of_day": "afternoon",
+        "goal": "Relax in a nearby park or playground",
+        "target_types": [
+          "park",
+          "playground"
+        ],
+        "max_visits": 1,
+        "perception_preferences": [
+          "vegetation",
+          "lighting_atmosphere"
+        ],
+        "perception_avoid": [],
+        "en_route_stops": []
+      }
+    ]
+  },
+  "commuter": {
+    "profile": {
+      "interests": [
+        "efficiency",
+        "punctuality"
+      ],
+      "pace": "fast",
+      "curiosity": "low",
+      "social": "high",
+      "description": "A focused commuter whose single priority is reaching work on time with minimal deviation."
+    },
+    "daily_plan": [
+      {
+        "id": "commute_to_work",
+        "time_of_day": "morning",
+        "goal": "Reach the workplace as efficiently as possible",
+        "target_types": [],
+        "max_visits": 0,
+        "perception_preferences": [
+          "street_furniture",
+          "lighting_atmosphere"
+        ],
+        "perception_avoid": [],
+        "en_route_stops": []
+      }
+    ]
+  },
+  "student": {
+    "profile": {
+      "interests": [
+        "study_spaces",
+        "social_spots",
+        "food",
+        "parks",
+        "music"
+      ],
+      "pace": "moderate",
+      "curiosity": "moderate",
+      "social": "high",
+      "description": "A university student heading to campus in the morning and meeting friends at cafes or parks in the afternoon."
+    },
+    "daily_plan": [
+      {
+        "id": "morning_campus",
+        "time_of_day": "morning",
+        "goal": "Reach campus or the library to study",
+        "target_types": [
+          "university",
+          "library"
+        ],
+        "max_visits": 1,
+        "perception_preferences": [
+          "pedestrian_activity",
+          "lighting_atmosphere"
+        ],
+        "perception_avoid": [
+          {
+            "field": "lighting_atmosphere",
+            "value": "dim"
+          },
+          {
+            "field": "street_furniture",
+            "value": "absent"
+          }
+        ],
+        "en_route_stops": [
+          {
+            "id": "coffee_before_class",
+            "trigger": {
+              "need": "hunger",
+              "threshold": 0.5
+            },
+            "goal": "Grab a coffee or snack before class",
+            "target_types": [
+              "cafe"
+            ],
+            "max_visits": 1
+          }
+        ]
+      },
+      {
+        "id": "afternoon_social",
+        "time_of_day": "afternoon",
+        "goal": "Meet friends at a cafe or grab a bite together",
+        "target_types": [
+          "cafe",
+          "fast_food"
+        ],
+        "max_visits": 2,
+        "perception_preferences": [
+          "pedestrian_activity",
+          "vegetation"
+        ],
+        "perception_avoid": [
+          {
+            "field": "street_furniture",
+            "value": "absent"
+          }
+        ],
+        "en_route_stops": []
+      }
+    ]
+  }
+}

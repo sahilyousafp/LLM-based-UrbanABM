@@ -76,16 +76,26 @@ node_modules/
 # Generated graph output
 graphify-out/
 
-# Street View imagery (large binary data, regenerated from scripts)
+# Street View imagery and VLM analysis (large binary/data, regenerated from scripts)
 Backend/Environment/output/images/
+Backend/Environment/output/results/
 scripts/streetview_analysis/output/images/
 test/StreetPLM.zip
+test/StreetPLM/images/
+test/StreetPLM/results/
 
 # Tool caches
 .aider.tags.cache.v4/
 .aider.chat.history.md
 test/.claude/
+Frontend/.graphify_*
 
 # Test output directories
 test/Visualise/
 test/tracking_data/2*/
+
+# Design reference files (large blends, videos)
+Frontend/reference/
+
+# Utility scripts (ad-hoc)
+Frontend/count_divs.py

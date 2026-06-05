@@ -1,0 +1,17 @@
+{
+  "name": "uabm-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --outfile=dist/main.js --platform=browser --format=iife --minify",
+    "dev": "esbuild src/main.ts --bundle --outfile=dist/main.js --platform=browser --format=iife --sourcemap --watch"
+  },
+  "dependencies": {
+    "three": "^0.161.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.161.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.0"
+  }
+}
