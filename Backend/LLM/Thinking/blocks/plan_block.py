@@ -22,6 +22,7 @@ Plan memory structure:
     "status": "active"            # active | completed | blocked
 }
 """
+import asyncio
 import json
 import logging
 from pathlib import Path
@@ -41,14 +42,22 @@ VALID_PERCEPTION_KEYS = {
 
 
 def load_plans_json(path: Optional[Path] = None) -> dict:
-    """Load plans configuration from JSON file."""
+    """Load plans configuration from JSON file.
+
+    Prefers a ``<stem>.local.json`` sibling when present so user edits made
+    through the frontend (POST /api/profiles) override the shipped defaults
+    without touching the canonical file.
+    """
     if path is None:
-        path = Path(__file__).parent / "plans.json"
-    if not path.exists():
-        logger.warning(f"Plans config not found at {path}, using empty plans")
+        # plans.json lives in the parent Thinking/ directory, not inside blocks/
+        path = Path(__file__).parent.parent / "plans.json"
+    local_path = path.with_name(f"{path.stem}.local.json")
+    chosen = local_path if local_path.exists() else path
+    if not chosen.exists():
+        logger.warning(f"Plans config not found at {chosen}, using empty plans")
         return {}
     try:
-        with open(path, "r", encoding="utf-8") as f:
+        with open(chosen, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         logger.error(f"Failed to load plans config: {e}")
@@ -101,7 +110,10 @@ class PlanBlock(Block):
         # Record encountered perception qualities at current location
         if street_perception:
             encountered = self._extract_qualities(street_perception)
-            plan.setdefault("encountered_qualities", []).extend(encountered)
+            encountered_list = plan.setdefault("encountered_qualities", [])
+            encountered_list.extend(encountered)
+            if len(encountered_list) > 200:
+                encountered_list[:] = encountered_list[-200:]
 
         # --- En-route stop: check completion ---
         # If an en_route_stop is active, check whether the stop goal is met first.
@@ -310,7 +322,8 @@ class PlanBlock(Block):
                     ORDER BY dist
                     LIMIT 1
                 """
-                row = model.con.execute(query).fetchone()
+                row = await asyncio.to_thread(model.con.execute, query)
+                row = row.fetchone()
                 if row:
                     return {
                         "name": row[0] or "Unknown",
