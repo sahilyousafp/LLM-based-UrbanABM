@@ -31,7 +31,7 @@ from spatial_memory import PerceptionDiary
 # ── 4. Backend imports (unchanged source) ──────────────────────────────────
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 import duckdb
 from shapely import wkt
 from shapely.geometry import Point
@@ -158,6 +158,69 @@ async def get_frontend_config():
         "perception_mode": getattr(city_model, "perception_mode", "both"),
         "archetypes": list(CityAgent.ARCHETYPES),
     }
+
+
+# ── 8b. Profiles (read/write personality JSON) ─────────────────────────────
+PROFILES_DEFAULT = TEST_DIR / "Profile.json"
+PROFILES_PLANS   = TEST_DIR / "plans.json"
+PROFILES_LOCAL   = TEST_DIR / "plans.local.json"
+
+
+@app.get("/api/profiles")
+async def get_profiles():
+    """Return the personality profile tree (prefers plans.local.json over plans.json)."""
+    import json as _json
+    source = None
+    if PROFILES_LOCAL.exists():
+        source = PROFILES_LOCAL
+    elif PROFILES_PLANS.exists():
+        source = PROFILES_PLANS
+    elif PROFILES_DEFAULT.exists():
+        source = PROFILES_DEFAULT
+    if source is None:
+        return {"profiles": {}, "source": None}
+    try:
+        data = _json.loads(source.read_text(encoding="utf-8"))
+    except Exception as e:
+        return {"error": f"Failed to read {source.name}: {e}"}
+    return {"profiles": data, "source": source.name}
+
+
+@app.get("/api/profiles/defaults")
+async def get_default_profiles():
+    """Return original shipped profiles from plans.json, ignoring any plans.local.json."""
+    import json as _json
+    source = PROFILES_PLANS if PROFILES_PLANS.exists() else PROFILES_DEFAULT
+    if source is None or not source.exists():
+        return {"profiles": {}, "source": None}
+    try:
+        data = _json.loads(source.read_text(encoding="utf-8"))
+    except Exception as e:
+        return {"error": f"Failed to read {source.name}: {e}"}
+    return {"profiles": data, "source": source.name}
+
+
+@app.post("/api/profiles")
+async def save_profiles(payload: dict = Body(...)):
+    """Persist edited profile tree to plans.local.json (never overwrites plans.json)."""
+    import json as _json
+    profiles = payload.get("profiles") if isinstance(payload, dict) and "profiles" in payload else payload
+    if not isinstance(profiles, dict):
+        return {"error": "Body must be a dict or {'profiles': {...}}"}
+    try:
+        PROFILES_LOCAL.write_text(_json.dumps(profiles, indent=2, ensure_ascii=False), encoding="utf-8")
+    except Exception as e:
+        return {"error": f"Failed to write plans.local.json: {e}"}
+    # Also reload plans into any active plan blocks so a follow-up run picks them up.
+    try:
+        for agent in city_model.city_agents:
+            blk = getattr(agent.dispatcher, "plan_block", None)
+            if blk is not None:
+                from LLM.Thinking.blocks.plan_block import load_plans_json
+                blk.plans_config = load_plans_json(getattr(city_model, "plans_path", None))
+    except Exception as e:
+        logger.warning(f"Could not refresh plan blocks: {e}")
+    return {"status": "saved", "path": str(PROFILES_LOCAL), "archetypes": list(profiles.keys())}
 
 
 # ── 9. Spatial data endpoints ──────────────────────────────────────────────
@@ -321,7 +384,7 @@ async def configure_single_agent(payload: dict = Body(...)):
     if start_node == target_node:
         return {"error": "Start and target are the same node"}
 
-    edges_at_start = city_model.node_to_edges.get(start_node, [])
+    edges_at_start = (city_model.node_to_ped_edges if city_model.routing_mode == "footway" else city_model.node_to_edges).get(start_node, [])
     if not edges_at_start:
         return {"error": "No edges at snapped start node"}
 
@@ -330,6 +393,7 @@ async def configure_single_agent(payload: dict = Body(...)):
     if reachability_check is None:
         # Try to find nearest reachable node to target
         import heapq
+        _edges = city_model.node_to_ped_edges if city_model.routing_mode == "footway" else city_model.node_to_edges
         visited = set()
         heap = [(0.0, start_node)]
         while heap:
@@ -337,7 +401,7 @@ async def configure_single_agent(payload: dict = Body(...)):
             if u in visited:
                 continue
             visited.add(u)
-            for entry in city_model.node_to_edges.get(u, []):
+            for entry in _edges.get(u, []):
                 geom, direction = entry[1], entry[2]
                 if direction == "forward":
                     v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))
@@ -527,6 +591,7 @@ async def step_continuous():
         )
 
     agents_data = []
+    agent_state = None
     for agent in city_model.city_agents:
         needs = await agent.memory.status.get("needs", {})
         agents_data.append({
@@ -536,10 +601,29 @@ async def step_continuous():
             "nearby_count": len(agent.nearby_amenities),
             "needs": needs,
         })
+        # Bundle all per-agent refresh data so the frontend needs only this one call
+        if agent_state is None:
+            cognition = await agent.memory.status.get("cognition_state", {})
+            profile   = await agent.memory.status.get("agent_profile", {})
+            dest      = await agent.memory.status.get("destination", {})
+            stream_nodes = await agent.memory.stream.get_recent_all(n=10000)
+            agent_state = {
+                "cognition_state": cognition,
+                "needs": needs,
+                "archetype": profile.get("archetype", "unknown"),
+                "destination": dest,
+                "location": {"lon": agent.geometry.x, "lat": agent.geometry.y},
+                "stream_events": [
+                    {"step": nd.step, "topic": nd.topic,
+                     "description": nd.description, "metadata": nd.metadata}
+                    for nd in stream_nodes
+                ],
+            }
 
     return {
         "step": city_model.steps,
         "agents": agents_data,
+        "agent_state": agent_state,
         "diary_entries": len(perception_diary.entries),
         "llm_stats": city_model.llm_client.stats(),
     }
@@ -869,13 +953,15 @@ async def get_agent_planned_path(agent_id: int):
         prev: dict = {current_node: None}
         heap = [(0.0, current_node)]
 
+        edges_dict = city_model.node_to_ped_edges if city_model.routing_mode == "footway" else city_model.node_to_edges
+
         while heap:
             d, u = heapq.heappop(heap)
             if d > dist.get(u, float("inf")):
                 continue
             if u == target_node:
                 break
-            for entry in city_model.node_to_edges.get(u, []):
+            for entry in edges_dict.get(u, []):
                 _eid, geom, direction = entry[0], entry[1], entry[2]
                 weight_mult = entry[3] if len(entry) > 3 else 1.0
                 v = (
@@ -909,7 +995,7 @@ async def get_agent_planned_path(agent_id: int):
         coords = []
         for i in range(len(path_nodes) - 1):
             u, v = path_nodes[i], path_nodes[i + 1]
-            for entry in city_model.node_to_edges.get(u, []):
+            for entry in edges_dict.get(u, []):
                 edge_geom, direction = entry[1], entry[2]
                 end_key = (
                     (round(edge_geom.coords[-1][0], 6), round(edge_geom.coords[-1][1], 6))
@@ -995,7 +1081,7 @@ async def get_agent_proposed_path(agent_id: int):
                     coords = []
                     for i in range(len(path_nodes) - 1):
                         u, v = path_nodes[i], path_nodes[i + 1]
-                        for entry in city_model.node_to_edges.get(u, []):
+                        for entry in (city_model.node_to_ped_edges if city_model.routing_mode == "footway" else city_model.node_to_edges).get(u, []):
                             edge_id, edge_geom, direction = entry[0], entry[1], entry[2]
                             end = edge_geom.coords[-1] if direction == "forward" else edge_geom.coords[0]
                             end_key = (round(end[0], 6), round(end[1], 6))
@@ -1252,9 +1338,69 @@ async def get_nav_mode():
     return {"mode": getattr(city_model, "nav_mode", "both")}
 
 
+@app.post("/api/config/nav-thresholds")
+async def set_nav_thresholds(
+    gps_dist: int = Body(..., embed=True),
+    compass_dist: int = Body(..., embed=True),
+):
+    """Set GPS (final-approach forced-Dijkstra) and compass activation distances in metres."""
+    city_model.nav_gps_dist = max(10, gps_dist)
+    city_model.nav_compass_dist = max(10, compass_dist)
+    return {
+        "status": "updated",
+        "nav_gps_dist": city_model.nav_gps_dist,
+        "nav_compass_dist": city_model.nav_compass_dist,
+    }
+
+
+@app.get("/api/config/nav-thresholds")
+async def get_nav_thresholds():
+    return {
+        "nav_gps_dist": getattr(city_model, "nav_gps_dist", 120),
+        "nav_compass_dist": getattr(city_model, "nav_compass_dist", 60),
+    }
+
+
 @app.get("/api/llm/stats")
 async def get_llm_stats():
     return city_model.llm_client.stats()
+
+
+@app.post("/api/config/llm")
+async def update_llm_config(payload: dict = Body(...)):
+    """Hot-swap the LLM provider/model on the lab server (takes effect on next step)."""
+    import sys, os, httpx
+    provider  = payload.get("provider", "")
+    model     = payload.get("model", "")
+    base_url  = payload.get("base_url", "")
+    api_key   = payload.get("api_key", "")
+    # Validate Ollama reachability only — not the model name.
+    # If the model doesn't exist, Ollama returns 404 at inference time and the error banner shows it.
+    if provider == "ollama":
+        ollama_base = (base_url.rstrip("/v1").rstrip("/")) if base_url else "http://localhost:11434"
+        try:
+            httpx.get(f"{ollama_base}/api/tags", timeout=3.0)
+        except httpx.ConnectError:
+            return JSONResponse(status_code=422, content={"error": "Ollama is not running. Start it with: ollama serve"})
+        except Exception as e:
+            return JSONResponse(status_code=422, content={"error": f"Could not reach Ollama at {ollama_base}: {e}"})
+
+    sys.path.insert(0, str(Path(__file__).parent.parent / "Backend"))
+    os.environ["LLM_PROVIDER"] = provider
+    os.environ["LLM_MODEL"] = model
+    # Always overwrite these so stale values from .env.test don't pollute the new provider
+    os.environ["LLM_BASE_URL"] = base_url
+    os.environ["LLM_API_KEY"] = api_key  # empty string for local providers = correct sentinel
+    from LLM.llm_config import LLMConfig
+    from LLM.llm_client import LLMClient
+    new_config = LLMConfig.from_env()
+    city_model.llm_client = LLMClient(new_config)
+    for agent in city_model.city_agents:
+        agent.dispatcher.llm = city_model.llm_client
+        agent.dispatcher.needs_block.llm = city_model.llm_client
+        agent.dispatcher.cognition_block.llm = city_model.llm_client
+        agent.dispatcher.mobility_block.llm = city_model.llm_client
+    return {"status": "updated", "provider": provider, "model": model}
 
 
 # ── 16. Trail (movement history) ───────────────────────────────────────────
@@ -1337,24 +1483,93 @@ async def stop_recording():
     file_path = recorder.stop_recording()
     if not file_path:
         return {"status": "error"}
+    try:
+        rel = str(file_path.relative_to(TEST_RECORDING_DIR)).replace("\\", "/")
+    except ValueError:
+        rel = file_path.name
     status = recorder.get_status()
     return {
         "status": "recording_stopped",
         "file_path": str(file_path),
-        "file_name": file_path.name,
+        "file_name": rel,
         "total_records": status["total_records"],
     }
+
+
+@app.get("/api/recording/list")
+async def list_recordings():
+    """List all saved GeoParquet recording files in the tracking_data directory."""
+    files = []
+    if TEST_RECORDING_DIR.exists():
+        for f in TEST_RECORDING_DIR.rglob("*.parquet"):
+            try:
+                stat = f.stat()
+                files.append({
+                    "filename": f.name,
+                    "rel_path": str(f.relative_to(TEST_RECORDING_DIR)).replace("\\", "/"),
+                    "size_kb": round(stat.st_size / 1024),
+                    "modified": stat.st_mtime,
+                })
+            except Exception:
+                continue
+    files.sort(key=lambda x: x["modified"], reverse=True)
+    return {"files": files}
+
+
+@app.get("/api/recording/load")
+async def load_recording_data(filename: str):
+    """Load a GeoParquet recording and return agent trajectories as JSON."""
+    file_path = TEST_RECORDING_DIR / filename
+    if not file_path.exists():
+        return {"error": "File not found", "filename": filename}
+    try:
+        import pandas as pd
+        df = pd.read_parquet(str(file_path))
+        agents = []
+        for agent_id, group in df.groupby("agent_id"):
+            group = group.sort_values("step")
+            row0 = group.iloc[0]
+            positions = [[float(r["longitude"]), float(r["latitude"])] for _, r in group.iterrows()]
+            start = None
+            if "start_lon" in df.columns and row0.get("start_lon") is not None:
+                try:
+                    start = [float(row0["start_lon"]), float(row0["start_lat"])]
+                except Exception:
+                    pass
+            target = None
+            if "target_lon" in df.columns and row0.get("target_lon") is not None:
+                try:
+                    target = [float(row0["target_lon"]), float(row0["target_lat"])]
+                except Exception:
+                    pass
+            agents.append({
+                "id": int(agent_id),
+                "archetype": str(row0.get("archetype", "unknown")),
+                "positions": positions,
+                "start": start,
+                "target": target,
+            })
+        total_steps = int(df["step"].max()) if len(df) else 0
+        return {
+            "session": file_path.stem,
+            "total_steps": total_steps,
+            "agents": agents,
+        }
+    except Exception as e:
+        return {"error": str(e), "filename": filename}
 
 
 @app.get("/api/recording/status")
 async def get_recording_status():
     recorder = get_recorder()
     if not recorder:
-        return {"is_recording": False}
+        return {"is_recording": False, "steps_recorded": 0, "total_records": 0}
     status = recorder.get_status()
     return {
         "is_recording": status["is_recording"],
-        "session_id": status["session_id"],
+        "session_id": status.get("session_id"),
+        "steps_recorded": status.get("steps_recorded", 0),
+        "total_records": status.get("total_records", 0),
     }
 
 
@@ -1399,12 +1614,13 @@ async def get_reachable_area(lon: float, lat: float, max_nodes: int = 500):
 
     visited = set()
     heap = [(0.0, start_node)]
+    _edges = city_model.node_to_ped_edges if city_model.routing_mode == "footway" else city_model.node_to_edges
     while heap and len(visited) < max_nodes:
         d, u = heapq.heappop(heap)
         if u in visited:
             continue
         visited.add(u)
-        for entry in city_model.node_to_edges.get(u, []):
+        for entry in _edges.get(u, []):
             geom, direction = entry[1], entry[2]
             if direction == "forward":
                 v = (round(geom.coords[-1][0], 6), round(geom.coords[-1][1], 6))

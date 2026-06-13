@@ -160,7 +160,7 @@ class PlanBlock(Block):
                     model = self.context.get("model")
                     if model and next_phase.get("target_types"):
                         position = await self.memory.status.get("position", {})
-                        active_target = self._resolve_target(
+                        active_target = await self._resolve_target(
                             model, position, next_phase["target_types"]
                         )
                         if active_target:
@@ -179,7 +179,7 @@ class PlanBlock(Block):
             model = self.context.get("model")
             if model:
                 position = await self.memory.status.get("position", {})
-                active_target = self._resolve_target(
+                active_target = await self._resolve_target(
                     model, position, current_phase["target_types"]
                 )
                 if active_target:
@@ -286,7 +286,7 @@ class PlanBlock(Block):
         ]
         return len(target_visits) >= max_visits
 
-    def _resolve_target(
+    async def _resolve_target(
         self, model, position: dict, target_types: list
     ) -> Optional[dict]:
         """Find nearest amenity matching target_types.
@@ -343,7 +343,6 @@ class PlanBlock(Block):
         so the test lab's configured target is always respected.
         """
         try:
-            import math
             lon, lat = active_target.get("lon", 0.0), active_target.get("lat", 0.0)
             model = self.context.get("model")
 
@@ -351,17 +350,10 @@ class PlanBlock(Block):
             if existing.get("source") == "user_configured":
                 return
 
-            # Find the network node closest to the target coordinates
+            # Find the nearest reachable network node (main connected component)
             target_node = None
-            if model and hasattr(model, "node_to_edges"):
-                best_dist = float("inf")
-                for node in model.node_to_edges:
-                    dx = (node[0] - lon) * 111320 * math.cos(math.radians(lat))
-                    dy = (node[1] - lat) * 110540
-                    d = math.sqrt(dx * dx + dy * dy)
-                    if d < best_dist:
-                        best_dist = d
-                        target_node = node
+            if model:
+                target_node = model._find_nearest_node(lon, lat)
 
             await self.memory.status.update("destination", {
                 **existing,
@@ -434,7 +426,7 @@ class PlanBlock(Block):
             model = self.context.get("model")
             if model and stop_phase["target_types"]:
                 position = await self.memory.status.get("position", {})
-                active_target = self._resolve_target(model, position, stop_phase["target_types"])
+                active_target = await self._resolve_target(model, position, stop_phase["target_types"])
                 if active_target:
                     plan["current_phase"]["active_target"] = active_target
                     await self._sync_plan_target_to_destination(active_target)
