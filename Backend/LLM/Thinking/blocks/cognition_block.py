@@ -70,10 +70,16 @@ class CognitionBlock(Block):
         fallback = False
 
         if response and "mood" in response:
+            def _safe_float(val, default):
+                try:
+                    return float(val)
+                except (ValueError, TypeError):
+                    return default
+
             new_cognition = {
                 "mood": response.get("mood", current_cognition.get("mood", "neutral")),
-                "curiosity": max(0.0, min(1.0, float(response.get("curiosity", 0.7)))),
-                "fatigue": max(0.0, min(1.0, float(response.get("fatigue", 0.0)))),
+                "curiosity": max(0.0, min(1.0, _safe_float(response.get("curiosity", 0.7), 0.7))),
+                "fatigue": max(0.0, min(1.0, _safe_float(response.get("fatigue", 0.0), 0.0))),
             }
             summary = response.get("summary", "")
         else:

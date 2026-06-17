@@ -335,7 +335,16 @@ class CityModel(mesa.Model):
         self.steps += 1
         reset_step_counter(self.steps)
         random.shuffle(self.city_agents)
-        await asyncio.gather(*[agent._async_step() for agent in self.city_agents])
+        results = await asyncio.gather(
+            *[agent._async_step() for agent in self.city_agents],
+            return_exceptions=True,
+        )
+        import logging
+        _logger = logging.getLogger(__name__)
+        for agent, result in zip(self.city_agents, results):
+            if isinstance(result, Exception):
+                _logger.error(f"Agent {agent.unique_id} step failed: {result}")
+                agent._advance_along_edge()
         if self.tracker and self.steps % 10 == 0:
             self.tracker.flush()
     

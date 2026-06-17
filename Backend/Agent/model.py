@@ -165,8 +165,12 @@ class CityAgent(mg.GeoAgent):
         # Apply mobility decision — move to chosen edge
         if needs_new_edge and result.mobility.action == "move_to_edge":
             self._apply_mobility(result.mobility.params)
-        elif result.mobility.action == "stay":
-            pass  # Stay on current edge
+        elif needs_new_edge:
+            import logging
+            logging.getLogger(__name__).warning(
+                f"Agent {self.unique_id} stuck at edge end (action={result.mobility.action}), falling back"
+            )
+            self._select_next_edge_sync()
 
         # Advance position along current edge
         self._advance_along_edge()
@@ -534,8 +538,16 @@ class CityModel(mesa.Model):
         self.steps += 1
         reset_step_counter(self.steps)
         random.shuffle(self.city_agents)
-        # Run all agent async steps concurrently
-        await asyncio.gather(*[agent._async_step() for agent in self.city_agents])
+        results = await asyncio.gather(
+            *[agent._async_step() for agent in self.city_agents],
+            return_exceptions=True,
+        )
+        import logging
+        _logger = logging.getLogger(__name__)
+        for agent, result in zip(self.city_agents, results):
+            if isinstance(result, Exception):
+                _logger.error(f"Agent {agent.unique_id} step failed: {result}")
+                agent._simple_move()
         if self.tracker and self.steps % 10 == 0:
             self.tracker.flush()
     

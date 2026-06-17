@@ -68,11 +68,19 @@ class NeedsBlock(Block):
             response = await self.llm.chat_json(messages)
 
             if response and all(k in response for k in ("hunger_delta", "energy_delta", "social_delta")):
-                needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - response["hunger_delta"]))
-                needs["energy"] = max(0.0, min(1.0, needs["energy"] + response["energy_delta"]))
-                needs["social"] = max(0.0, min(1.0, needs["social"] - response["social_delta"]))
-                activity = response.get("activity", f"Visited {amenity_name}")
-                llm_used = True
+                try:
+                    needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - float(response["hunger_delta"])))
+                    needs["energy"] = max(0.0, min(1.0, needs["energy"] + float(response["energy_delta"])))
+                    needs["social"] = max(0.0, min(1.0, needs["social"] - float(response["social_delta"])))
+                    activity = response.get("activity", f"Visited {amenity_name}")
+                    llm_used = True
+                except (ValueError, TypeError):
+                    logger.warning(f"Non-numeric need deltas from LLM: {response}")
+                    deltas = AMENITY_NEED_MAP.get(amenity_type, {})
+                    needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - deltas.get("hunger", 0)))
+                    needs["energy"] = max(0.0, min(1.0, needs["energy"] + deltas.get("energy", 0)))
+                    needs["social"] = max(0.0, min(1.0, needs["social"] - deltas.get("social", 0)))
+                    activity = f"Visited {amenity_name} ({amenity_type})"
             else:
                 # Rule-based fallback
                 deltas = AMENITY_NEED_MAP.get(amenity_type, {})
