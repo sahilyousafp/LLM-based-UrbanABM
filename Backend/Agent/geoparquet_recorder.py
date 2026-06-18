@@ -184,6 +184,7 @@ class GeoParquetRecorder:
         # Temp file tracking for merge
         self._temp_file_counter: int = 0
         self._temp_files: List[Path] = []
+        self._last_written_paths: List[Path] = []  # tracks all successfully flushed paths
 
         logger.info(
             f"GeoParquetRecorder initialized. Output: {self.output_dir} | "
@@ -214,34 +215,13 @@ class GeoParquetRecorder:
         self.buffer = []
         self.total_records = 0
         self._temp_files = []
+        self._last_written_paths = []
         self.stats = {
             'agents_tracked': set(),
             'steps_recorded': 0,
             'records_written': 0,
         }
-        
-        logger.info(f"Recording started: {self.session_id}")
-        return self.session_id
-        
-        # Sequential run numbering
-        existing = sorted(self.output_dir.glob("run_*.parquet"))
-        run_num = len(existing) + 1
-        self.session_name = session_name or f"run_{run_num:04d}"
-        self.session_id = f"{self.session_name}_{id(self)}"
-        self.start_time = datetime.now()
-        self.start_step = 0
-        self._recording_date = self.start_time.strftime("%Y-%m-%d")
-        self._first_archetype = None
-        self.is_recording = True
-        self.buffer = []
-        self.total_records = 0
-        self._temp_files = []
-        self.stats = {
-            'agents_tracked': set(),
-            'steps_recorded': 0,
-            'records_written': 0,
-        }
-        
+
         logger.info(f"Recording started: {self.session_id}")
         return self.session_id
 
@@ -282,10 +262,10 @@ class GeoParquetRecorder:
                 self.total_records += 1
                 self.stats['agents_tracked'].add(agent.unique_id)
                 self.stats['steps_recorded'] = max(self.stats['steps_recorded'], step)
+                should_flush = len(self.buffer) >= self.max_buffer_size
 
-                # Auto-flush if buffer is full
-                if len(self.buffer) >= self.max_buffer_size:
-                    self._flush_to_parquet()
+            if should_flush:
+                threading.Thread(target=self._flush_locked, daemon=True).start()
                     
         except Exception as e:
             logger.error(f"Failed to record agent {agent.unique_id}: {e}")
@@ -410,6 +390,11 @@ class GeoParquetRecorder:
             perception_mode=self._get_current_mode(),
         )
     
+    def _flush_locked(self, is_final_flush: bool = False) -> Optional[Path]:
+        """Acquire buffer_lock then flush — safe to call from a background thread."""
+        with self.buffer_lock:
+            return self._flush_to_parquet(is_final_flush=is_final_flush)
+
     def _flush_to_parquet(self, is_final_flush: bool = False) -> Optional[Path]:
         if not self.buffer:
             logger.debug("No data to flush")
@@ -452,6 +437,8 @@ class GeoParquetRecorder:
 
             self.stats['records_written'] += len(self.buffer)
             self.buffer = []
+            if written_paths:
+                self._last_written_paths.extend(written_paths)
             return written_paths[0] if written_paths else None
 
         except ImportError as e:
@@ -532,7 +519,11 @@ class GeoParquetRecorder:
             return None
 
         self.is_recording = False
-        final_path = self._flush_to_parquet(is_final_flush=True)
+        final_path = self._flush_locked(is_final_flush=True)
+        # Buffer may be empty if all data was already flushed in intermediate writes —
+        # fall back to the most recently flushed path so callers always get a valid file.
+        if final_path is None and self._last_written_paths:
+            final_path = self._last_written_paths[-1]
         logger.info(f"Recording stopped. Total records: {self.total_records} -> {final_path}")
         return final_path
 

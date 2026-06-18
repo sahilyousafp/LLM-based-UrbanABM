@@ -1,34 +1,26 @@
 {
   "metadata": {
-    "timestamp": "20260311_225840",
-    "latitude": 41.391409700000004,
-    "longitude": 2.1552724,
-    "heading": 38.80214985563077,
+    "timestamp": "20260613_163807",
+    "latitude": 41.39141,
+    "longitude": 2.155272,
+    "heading": 45.0,
     "street_name": "Carrer d'Aribau",
     "highway_type": "road",
-    "edge_id": "14665576-acae-4c74-82a0-f54f0e94057f",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.391410_2.155272_h38.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "a0bd572b-8a12-4c5f-a4ae-ae5915dd657f",
+    "source_image": "sv_41.391410_2.155272_h45.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 43964.8,
+    "latency_ms": 1220542.5,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A sunny day in a city street with tall buildings lining both sides of the road. The sun casts long shadows across the sidewalk and street, indicating it is midday. People are walking along the sidewalk, some carrying bags or pushing carts. A white van is parked on the left side of the street. The buildings have balconies with plants and flowers. The ground is paved with concrete and has a few trees planted along the sidewalk. The sky is clear and blue.",
-    "buildings": "The buildings are multi-story structures made of stone and brick. They have large windows and doors. Some have balconies with railings. The ground floor has storefronts with signs and displays.",
-    "materials": "The ground is paved with concrete and has a few trees planted along the sidewalk. The buildings have a mix of stone and brick facades. Some have balconies with plants and flowers.",
-    "building_condition": "unknown",
-    "street_furniture": "There are benches and trash cans along the sidewalk.",
-    "vegetation": "There are a few trees planted along the sidewalk.",
-    "signage": "There are several signs posted on the buildings and on the street.",
-    "ground_surfaces": "The ground is paved with concrete.",
-    "spatial_enclosure": "The street is relatively narrow but wide enough for cars to drive through.",
-    "pedestrian_activity": "People are walking along the sidewalk.",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The area appears to be residential.",
-    "as_commuter": "unknown",
-    "as_tourist": "The area is scenic and attractive.",
-    "as_student": "The area is quiet and peaceful."
-  }
+    "scene": "unknown",
+    "lighting": [],
+    "spatial_character": [],
+    "crowdedness": [],
+    "greenery": [],
+    "street_amenities": [],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

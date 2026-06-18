@@ -37,6 +37,7 @@ class MobilityBlock(Block):
         street_perception = kwargs.get("street_perception")
         nearby_agents = kwargs.get("nearby_agents")
         nearby_transit = kwargs.get("nearby_transit")
+        time_of_day = kwargs.get("time_of_day", "")
 
         position = await self.memory.status.get("position", {})
         needs = await self.memory.status.get("needs", {})
@@ -73,6 +74,7 @@ class MobilityBlock(Block):
                 explore_budget = 0          # pure Dijkstra in final approach
 
         # --- Dijkstra path computation ---
+        next_node = None
         dijkstra_edge_id = None
         dijkstra_edge_direction = None
         dijkstra_edge_data = None
@@ -100,7 +102,10 @@ class MobilityBlock(Block):
                 # dead-end stubs, one-way connectors). If we only search candidate_edges,
                 # dijkstra_edge_data stays None → force_dijkstra becomes False →
                 # commuters (budget=0) and budget-exhausted steps silently free-explore.
-                all_node_edges = model.node_to_edges.get(current_node, [])
+                _active_graph = (model.node_to_ped_edges
+                                 if getattr(model, 'routing_mode', 'all') == 'footway'
+                                 else model.node_to_edges)
+                all_node_edges = _active_graph.get(current_node, [])
                 for entry in all_node_edges:
                     eid, geom, direction = entry[0], entry[1], entry[2]
                     end = geom.coords[-1] if direction == "forward" else geom.coords[0]
@@ -195,7 +200,7 @@ class MobilityBlock(Block):
         if current_phase:
             plan_context = {
                 "goal": current_phase.get("goal", ""),
-                "time_of_day": current_phase.get("time_of_day", ""),
+                "time_of_day": time_of_day or current_phase.get("time_of_day", ""),
                 "active_target": current_phase.get("active_target"),
                 "perception_preferences": (
                     current_phase.get("perception_preferences", [])
@@ -219,7 +224,58 @@ class MobilityBlock(Block):
             for c in prompt_candidates
         ]
 
+        # If both amenity and perception context are absent the LLM has no basis
+        # for choosing and will almost always fall back to Dijkstra anyway — skip
+        # the wasted LLM call and apply the least-visited-edge heuristic directly.
+        has_any_context = (
+            street_perception is not None
+            or any(c.get("amenities") for c in prompt_cands)
+        )
+        if not has_any_context:
+            visit_counts_now = await self.memory.status.get("visited_edges", {})
+            candidates_sorted = sorted(
+                candidate_edges,
+                key=lambda e: visit_counts_now.get(str(e["edge_id"]), 0)
+            )
+            chosen = candidates_sorted[0]
+            reasoning = "No perception or amenity data — least-visited edge heuristic"
+            chosen_edge_id = chosen["edge_id"]
+            is_on_path = (chosen_edge_id == dijkstra_edge_id)
+            visit_counts_now[str(chosen_edge_id)] = visit_counts_now.get(str(chosen_edge_id), 0) + 1
+            await self.memory.status.update("visited_edges", visit_counts_now)
+            await self.memory.status.update("current_plan", {
+                "goal": "move", "target_edge_id": chosen_edge_id, "on_proposed_path": is_on_path,
+            })
+            await self.memory.stream.add(
+                topic="mobility", step=step,
+                description=f"Moved to edge {chosen_edge_id} ({chosen.get('direction','fwd')}). Reason: {reasoning}",
+                metadata={
+                    "edge_id": chosen_edge_id, "fallback": True, "on_path": is_on_path,
+                    "perception_available": False, "data_sources": "[no-data]",
+                },
+            )
+            return BlockResult(
+                action="move_to_edge",
+                params={
+                    "edge_id": chosen["edge_id"],
+                    "direction": chosen.get("direction", "forward"),
+                    "geom": chosen.get("geom"),
+                    "on_proposed_path": is_on_path,
+                },
+                reasoning=reasoning, fallback=True,
+            )
+
         visit_counts = await self.memory.status.get("visited_edges", {})
+
+        # Build memory context from stored summaries
+        memory_summaries = await self.memory.status.get("memory_summaries", [])
+        memory_unified = await self.memory.status.get("memory_summary_unified", "")
+        _mem_parts = []
+        if memory_unified:
+            _mem_parts.append(f"[Long-term memory]\n{memory_unified}")
+        if memory_summaries:
+            _mem_parts.append("[Recent memory]\n" + "\n---\n".join(memory_summaries))
+        memory_context = "\n\n".join(_mem_parts)
 
         messages = mobility_decision_prompt(
             archetype=archetype,
@@ -242,27 +298,47 @@ class MobilityBlock(Block):
             nav_mode=nav_mode,
             nearby_agents=nearby_agents,
             nearby_transit=nearby_transit,
+            time_of_day=time_of_day,
+            memory_context=memory_context,
         )
 
-        response = await self.llm.chat_json(messages)
-        chosen_idx = response.get("choice")
-        reasoning = response.get("reasoning", "")
+        # Budget guard: each step only LLM_CALLS_PER_STEP agents may call the LLM.
+        # model.llm_budget_acquire() is atomic in asyncio's single-threaded event loop.
+        _budget_granted = model.llm_budget_acquire() if model else True
 
         fallback = False
-        if chosen_idx is None or not isinstance(chosen_idx, int) or chosen_idx >= len(prompt_cands):
+        if not _budget_granted:
+            # Budget exhausted — skip LLM, fall back to rule-based immediately.
             if dijkstra_edge_data is not None:
                 chosen = dijkstra_edge_data
-                reasoning = "LLM fallback: following Dijkstra toward destination"
+                reasoning = "Budget limit reached: following Dijkstra toward destination"
             else:
                 candidate_edges_sorted = sorted(
                     candidate_edges,
                     key=lambda e: visit_counts.get(str(e["edge_id"]), 0)
                 )
                 chosen = candidate_edges_sorted[0]
-                reasoning = "LLM fallback: least-visited edge (no destination set)"
+                reasoning = "Budget limit reached: least-visited edge heuristic"
             fallback = True
         else:
-            chosen = candidate_edges[chosen_idx]
+            response = await self.llm.chat_json(messages)
+            chosen_idx = response.get("choice")
+            reasoning = response.get("reasoning", "")
+
+            if chosen_idx is None or not isinstance(chosen_idx, int) or chosen_idx >= len(prompt_cands):
+                if dijkstra_edge_data is not None:
+                    chosen = dijkstra_edge_data
+                    reasoning = "LLM fallback: following Dijkstra toward destination"
+                else:
+                    candidate_edges_sorted = sorted(
+                        candidate_edges,
+                        key=lambda e: visit_counts.get(str(e["edge_id"]), 0)
+                    )
+                    chosen = candidate_edges_sorted[0]
+                    reasoning = "LLM fallback: least-visited edge (no destination set)"
+                fallback = True
+            else:
+                chosen = candidate_edges[chosen_idx]
 
         chosen_edge_id = chosen["edge_id"]
         is_on_path = (chosen_edge_id == dijkstra_edge_id)

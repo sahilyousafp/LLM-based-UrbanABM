@@ -1,34 +1,117 @@
 {
   "metadata": {
-    "timestamp": "20260311_210950",
-    "latitude": 41.397241799999996,
-    "longitude": 2.1555822,
-    "heading": 320.89973240007726,
+    "timestamp": "20260613_182700",
+    "latitude": 41.397242,
+    "longitude": 2.155582,
+    "heading": 131.0,
     "street_name": "",
     "highway_type": "road",
     "edge_id": "85f320b4-ca03-43c8-b60e-db4098e1493a",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.397242_2.155582_h320.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "source_image": "sv_41.397242_2.155582_h131.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 85419.5,
+    "latency_ms": 278454.0,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A view of a storefront with a closed metal shuttered door, featuring a sign reading 'flotarium' and a yellow Lays potato chip advertisement, with a small potted plant in front of the entrance.",
-    "buildings": "The building has a gray concrete facade with a red brick upper level, while the ground floor is made of white concrete blocks.",
-    "materials": "The exterior walls feature a mix of materials including concrete, brick, and possibly wood or metal.",
-    "building_condition": "unknown",
-    "street_furniture": "There are two potted plants, one on either side of the entrance.",
-    "vegetation": "The area around the entrance includes several potted plants, adding a touch of greenery to the otherwise industrial-looking space.",
-    "signage": "A large poster advertising Lays potato chips hangs on the wall inside the store.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The building may have been used for retail or office purposes, given its location and appearance.",
-    "as_commuter": "The building may be a convenient stop for commuters traveling through the area.",
-    "as_tourist": "The area may offer a glimpse into the local way of life.",
-    "as_student": "The area may offer opportunities for students to learn about local customs and traditions."
-  }
+    "scene": "Urban street with modernist architecture, graffiti, and moderate pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "graffiti on wall"
+      },
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "graffiti on wall"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "graffiti on wall"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "graffiti on wall"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "graffiti on wall"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "right",
+        "element": "deciduous tree with green foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "UPA",
+        "zone": "far_left",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

@@ -96,6 +96,12 @@ test/tracking_data/2*/
 
 # Design reference files (large blends, videos)
 Frontend/reference/
+Frontend/public/video/
+
+# Large binaries — never commit executables or archives to git
+*.exe
+Backend/Environment/output/Archive/
+Backend/Environment/output/*.zip
 
 # Utility scripts (ad-hoc)
 Frontend/count_divs.py

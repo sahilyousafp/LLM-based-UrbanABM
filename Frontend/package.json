@@ -3,15 +3,24 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "esbuild src/main.ts --bundle --outfile=dist/main.js --platform=browser --format=iife --minify",
-    "dev": "esbuild src/main.ts --bundle --outfile=dist/main.js --platform=browser --format=iife --sourcemap --watch"
+    "dev":     "vite",
+    "build":   "tsc --noEmit && vite build",
+    "preview": "vite preview --port 8091",
+    "legacy-dev":   "esbuild src/main_legacy.ts --bundle --outfile=dist/main.js --platform=browser --format=iife --sourcemap --watch",
+    "legacy-build": "esbuild src/main_legacy.ts --bundle --outfile=dist/main.js --platform=browser --format=iife --minify"
   },
   "dependencies": {
-    "three": "^0.161.0"
+    "preact": "^10.25.4",
+    "three": "^0.161.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "@types/three": "^0.161.0",
+    "@vitejs/plugin-react": "^4.3.0",
     "esbuild": "^0.20.0",
-    "typescript": "^5.3.0"
+    "typescript": "^5.3.0",
+    "vite": "^5.3.0"
   }
 }

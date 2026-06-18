@@ -1,0 +1,96 @@
+{
+  "metadata": {
+    "timestamp": "20260607_090130",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "llava-hf/llava-onevision-qwen2-7b-ov-hf",
+    "device": "cuda:0",
+    "latency_ms": 47240.349256,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Busy city street with pedestrians, cyclists, and parked cars, featuring modern and contemporary architecture.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "street lamps with frosted glass globes",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "natural daylight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "caution",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "stained-glass windows and ornate metalwork"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "caution",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "contemporary",
+        "building_condition": "good",
+        "storefront_type": "restaurant",
+        "architectural_details": "large glass facades and minimalist design"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "tall trees with lush foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "potted plants along the sidewalk",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metal barriers",
+        "material_and_colour": "",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "traffic signs",
+        "material_and_colour": "",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

@@ -1,34 +1,126 @@
 {
   "metadata": {
-    "timestamp": "20260311_180844",
-    "latitude": 41.390243699999985,
-    "longitude": 2.1523453,
-    "heading": 225.99377934589623,
-    "street_name": "",
+    "timestamp": "20260613_155820",
+    "latitude": 41.390244,
+    "longitude": 2.152345,
+    "heading": 156.0,
+    "street_name": "Carrer de Casanova",
     "highway_type": "road",
-    "edge_id": "c53df0ba-7edd-43ed-a8e4-8ffec376ccd9",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.390244_2.152345_h225.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "05e70c4f-ae8d-4c20-bd33-8e0062ad07e5",
+    "source_image": "sv_41.390244_2.152345_h156.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 8692.3,
+    "latency_ms": 315850.0,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A sunny day in a park with a playground, surrounded by buildings,",
-    "buildings": "Two large buildings, one cream-colored and one brown, with multiple stories and windows,",
-    "materials": "The cream-colored building has a flat roof and a decorative facade with columns, while the brown building has a pitched roof and a more ornate facade with arches and balconies,",
-    "building_condition": "unknown",
-    "street_furniture": "Benches and tables are scattered throughout the park, providing shade and seating for visitors,",
-    "vegetation": "sparse trees and grassy areas provide some greenery, with a few bare branches visible,",
-    "signage": "A sign reading 'Eixample' hangs above the entrance to the park,",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "People are walking along the sidewalk, some sitting on benches, and others playing in the playground,",
-    "lighting_atmosphere": "The sun shines down on the scene, casting long shadows across the grass,",
-    "as_resident": "The park appears to be a popular spot for locals and tourists alike,",
-    "as_commuter": "unknown",
-    "as_tourist": "unknown",
-    "as_student": "The park is a quiet oasis in the midst of a bustling city."
-  }
+    "scene": "Neoclassical office buildings flanking a wide road with moderate pedestrian activity and sparse greenery.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra",
+        "architectural_style": "neoclassical",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare deciduous trees with thin branches",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small grassy area with sparse vegetation",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black painted cast-iron double-arm street lamp",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "white picket fence",
+        "material_and_colour": "white wood",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

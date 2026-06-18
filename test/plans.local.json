@@ -256,5 +256,58 @@
         "en_route_stops": []
       }
     ]
+  },
+  "Sahil Yousaf": {
+    "profile": {
+      "interests": [
+        "Local cafe",
+        "green spaces",
+        "community areas",
+        "open seating",
+        "residents"
+      ],
+      "pace": "moderate",
+      "curiosity": "high",
+      "social": "high",
+      "description": "Immigrant student who loves walking through lively streets with green spaces and touristic features.",
+      "age": "young",
+      "gender": "male"
+    },
+    "daily_plan": [
+      {
+        "id": "Morning_Explorehase_1",
+        "time_of_day": "morning",
+        "goal": "Explore the city and local culture",
+        "target_types": [
+          "Bakery",
+          "Cafe",
+          "library",
+          "institute"
+        ],
+        "perception_preferences": [
+          "crowd",
+          "greenery",
+          "outdoor seating",
+          "street furniture",
+          "aesthetic architecture"
+        ],
+        "perception_avoid": [
+          {
+            "field": "less crowd",
+            "value": ""
+          },
+          {
+            "field": "dirty streets",
+            "value": ""
+          },
+          {
+            "field": "narrow spaces",
+            "value": ""
+          }
+        ],
+        "max_visits": 1,
+        "en_route_stops": []
+      }
+    ]
   }
 }

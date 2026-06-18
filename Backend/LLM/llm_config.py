@@ -23,7 +23,7 @@ class LLMConfig:
 
     # Computed property: resolved base_url for each provider
     _SUPPORTED_PROVIDERS = frozenset({
-        "openrouter", "groq", "ollama", "vllm", "docker", "openai", "deepseek", "gemini", "custom",
+        "openrouter", "groq", "ollama", "vllm", "docker", "openai", "deepseek", "gemini", "lmdeploy", "custom",
     })
 
     def resolved_base_url(self) -> str:
@@ -38,10 +38,11 @@ class LLMConfig:
             "openai": "https://api.openai.com/v1",
             "deepseek": "https://api.deepseek.com/v1",
             "gemini": "https://generativelanguage.googleapis.com/v1beta/openai/",
+            "lmdeploy": "http://localhost:8002/v1",
         }
         return defaults.get(self.provider)
 
-    _NO_KEY_PROVIDERS = frozenset({"ollama", "vllm", "docker"})
+    _NO_KEY_PROVIDERS = frozenset({"ollama", "vllm", "docker", "lmdeploy"})
 
     def resolved_api_key(self) -> str:
         """Return api_key or fall back to environment variable."""

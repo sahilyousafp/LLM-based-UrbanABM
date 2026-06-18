@@ -161,6 +161,10 @@
                 LLM calls: <span id="llm-calls">0</span><br>
                 Tokens: <span id="llm-tokens">0</span>
             </div>
+            <div id="llm-error-banner" style="display:none; margin-top:8px; padding:8px; background:rgba(255,180,0,0.15); border:1px solid rgba(255,180,0,0.5); border-radius:4px; font-size:11px; color:#ffb400; line-height:1.5;">
+                ⚠ LLM unreachable — running rule-based fallback.<br>
+                <span id="llm-error-detail" style="color:#aaa;"></span>
+            </div>
         </div>
     </div>
 
@@ -285,6 +289,7 @@
             isRecording: false,
             map: null,
         };
+        let isStepping = false;
 
         function toast(msg, ms = 2000) {
             const el = document.getElementById("toast");
@@ -522,25 +527,43 @@
         }
 
         async function stepOnce() {
-            if (!state.agentId) return;
-            const res = await fetch(`${state.apiUrl}/api/step_continuous`, { method: "POST" }).then(r => r.json());
-            document.getElementById("step-num").textContent = res.step;
-            if (res.llm_stats) {
-                document.getElementById("llm-calls").textContent = res.llm_stats.total_calls || 0;
-                document.getElementById("llm-tokens").textContent = (res.llm_stats.total_input_tokens || 0) + (res.llm_stats.total_output_tokens || 0);
+            if (!state.agentId || isStepping) return;
+            isStepping = true;
+            try {
+                const res = await fetch(`${state.apiUrl}/api/step_continuous`, { method: "POST" }).then(r => r.json());
+                document.getElementById("step-num").textContent = res.step;
+                if (res.llm_stats) {
+                    const s = res.llm_stats;
+                    document.getElementById("llm-calls").textContent = s.total_calls || 0;
+                    document.getElementById("llm-tokens").textContent = (s.total_input_tokens || 0) + (s.total_output_tokens || 0);
+                    const banner = document.getElementById("llm-error-banner");
+                    const detail = document.getElementById("llm-error-detail");
+                    if (s.total_errors > 0 && s.total_calls === 0) {
+                        banner.style.display = "block";
+                        detail.textContent = `${s.total_errors} error(s). Check: ollama list`;
+                    } else {
+                        banner.style.display = "none";
+                    }
+                }
+                await refreshAll();
+            } catch (e) { console.warn('step error', e); }
+            finally {
+                isStepping = false;
+                if (state.runInterval !== null) {
+                    state.runInterval = setTimeout(stepOnce, state.stepIntervalMs);
+                }
             }
-            await refreshAll();
         }
 
         function startRun() {
-            if (state.runInterval) return;
-            state.runInterval = setInterval(stepOnce, state.stepIntervalMs);
+            if (state.runInterval !== null) return;
             document.getElementById("run-btn").disabled = true;
             document.getElementById("pause-btn").disabled = false;
+            state.runInterval = setTimeout(stepOnce, 0);
         }
 
         function stopRun() {
-            if (state.runInterval) clearInterval(state.runInterval);
+            if (state.runInterval !== null) clearTimeout(state.runInterval);
             state.runInterval = null;
             document.getElementById("run-btn").disabled = false;
             document.getElementById("pause-btn").disabled = true;

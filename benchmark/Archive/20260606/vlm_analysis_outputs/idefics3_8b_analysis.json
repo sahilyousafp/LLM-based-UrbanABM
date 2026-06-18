@@ -1,0 +1,159 @@
+{
+  "metadata": {
+    "timestamp": "20260606_142332",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "HuggingFaceM4/Idefics3-8B-Llama3",
+    "device": "cuda:0",
+    "latency_ms": 61175.66200300007,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A busy urban street with pedestrians and vehicles, lined with multi-story buildings and trees, under a partly cloudy sky.",
+    "lighting": [
+      {
+        "zone": "far_left",
+        "element": "sky",
+        "condition": "bright"
+      },
+      {
+        "zone": "left",
+        "element": "buildings",
+        "condition": "bright"
+      },
+      {
+        "zone": "center",
+        "element": "street",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "buildings",
+        "condition": "bright"
+      },
+      {
+        "zone": "far_right",
+        "element": "sky",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "dense"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "trees",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "center",
+        "element": "sidewalk",
+        "material_and_colour": "stone",
+        "presence": "many"
+      },
+      {
+        "zone": "center",
+        "element": "street",
+        "material_and_colour": "asphalt",
+        "presence": "many"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "STOP",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "BICICLETA",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

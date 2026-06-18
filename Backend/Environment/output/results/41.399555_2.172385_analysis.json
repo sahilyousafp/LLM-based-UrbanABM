@@ -1,34 +1,133 @@
 {
   "metadata": {
-    "timestamp": "20260311_221702",
-    "latitude": 41.399554599999995,
-    "longitude": 2.1723852,
-    "heading": 72.50539978835008,
+    "timestamp": "20260613_192130",
+    "latitude": 41.399555,
+    "longitude": 2.172385,
+    "heading": 255.0,
     "street_name": "Avinguda Diagonal",
     "highway_type": "road",
-    "edge_id": "362401e8-3f05-4d88-86f5-b33cffc6470a",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.399555_2.172385_h72.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "8bfdc628-004d-4068-9009-1b809a8e4e56",
+    "source_image": "sv_41.399555_2.172385_h255.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 85433.4,
+    "latency_ms": 271141.4,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide city street with cars and pedestrians, lined with tall buildings and trees. The street has a mix of old and new architecture, with some buildings featuring ornate facades and others displaying more modern designs. The street is relatively quiet, with only a few people walking along the sidewalk and a few cars driving by. The sky is overcast, casting a soft, diffused light over the scene.",
-    "buildings": "The buildings along the street are primarily made of stone and feature a mix of rectangular and arched windows. Some have balconies, while others have decorative cornices. The street is lined with trees, adding a touch of greenery to the urban landscape.",
-    "materials": "The street is paved with asphalt, with white lines marking the lanes and pedestrian crossings. The buildings' facades are constructed from a combination of stone, brick, and glass, giving them a varied appearance.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans placed along the sidewalk, providing a place for pedestrians to rest and dispose of waste.",
-    "vegetation": "The trees lining the street are leafy and mature, with branches stretching out over the sidewalk. They add a natural touch to the urban environment.",
-    "signage": "There are several signs posted along the street, including directional signs and advertisements. Some are mounted on poles, while others are attached to the buildings.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The street appears to be a popular spot for locals, with several people stopping to chat or take photos. It also seems to attract tourists, who come to admire the architecture and soak up the atmosphere.",
-    "as_commuter": "The street is a convenient location for commuters, with several buses and trains passing through the area. It's a busy but not overwhelming spot, with plenty of space to navigate.",
-    "as_tourist": "The street is a popular destination for visitors, with several restaurants and shops catering to tourists. It's a great place to grab a bite to eat or do some shopping.",
-    "as_student": "The street is a bustling hub for students, with several young people studying or working in the area. They seem to be enjoying the lively atmosphere."
-  }
+    "scene": "Tree-lined urban street with moderate pedestrian activity and parked vehicles.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants on window ledges",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "metal bollards",
+        "material_and_colour": "silver metal",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "TAXI",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "BUS",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

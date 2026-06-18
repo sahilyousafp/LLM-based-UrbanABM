@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLM Benchmark — Barcelona Streetview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --card2: #1f2333;
+  --border: #2a2d3a;
+  --border2: #363a4f;
+  --accent: #6c8aff;
+  --accent2: #ff6c8a;
+  --text: #e4e6f0;
+  --muted: #8b8fa3;
+  --green: #4ade80;
+  --amber: #fbbf24;
+  --mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+  --display: 'Syne', 'Inter', sans-serif;
+  --body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --left-w: 300px;
+  --header-h: 68px;
+  --selector-h: 72px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ═══ HEADER ═══════════════════════════════════════════════════════ */
+header {
+  height: var(--header-h);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15, 17, 23, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+.header-title {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.header-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.chip {
+  background: rgba(108, 138, 255, 0.08);
+  border: 1px solid rgba(108, 138, 255, 0.2);
+  color: var(--muted);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-family: var(--mono);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.header-badge {
+  background: var(--accent);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+/* ═══ BODY LAYOUT ════════════════════════════════════════════════ */
+.body-layout {
+  display: flex;
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ═══ LEFT PANEL ═════════════════════════════════════════════════ */
+.left-panel {
+  width: var(--left-w);
+  min-width: var(--left-w);
+  max-width: var(--left-w);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-panel::-webkit-scrollbar { width: 4px; }
+.left-panel::-webkit-scrollbar-track { background: transparent; }
+.left-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.image-wrap {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: #000;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.image-wrap:hover img { transform: scale(1.02); }
+
+.image-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 10px 14px 8px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.7);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.left-section {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.left-section-title {
+  font-family: var(--display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5px 12px;
+  font-size: 0.78rem;
+}
+
+.mk {
+  color: var(--muted);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mv {
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  word-break: break-all;
+}
+
+/* Coverage dots */
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.cov-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.cov-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.cov-dot.filled { background: rgba(74, 222, 128, 0.12); border: 1px solid rgba(74,222,128,0.3); }
+.cov-dot.partial { background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251,191,36,0.3); }
+.cov-dot.empty { background: rgba(139, 143, 163, 0.08); border: 1px solid var(--border); }
+
+.cov-label {
+  font-size: 0.6rem;
+  color: var(--muted);
+  text-align: center;
+  font-family: var(--mono);
+  letter-spacing: 0.03em;
+}
+
+/* Latency bar chart */
+.latency-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.lat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lat-logo {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.lat-track {
+  flex: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.lat-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lat-val {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ═══ RIGHT PANEL ════════════════════════════════════════════════ */
+.right-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══ MODEL SELECTOR ════════════════════════════════════════════ */
+.selector-bar {
+  height: var(--selector-h);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: sticky;
+  top: var(--header-h);
+  z-index: 90;
+  background: rgba(15, 17, 23, 0.95);
+  backdrop-filter: blur(12px);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.selector-bar::-webkit-scrollbar { height: 0; }
+
+.selector-label {
+  font-size: 0.7rem;
+  font-family: var(--display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.model-pills {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.model-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px 7px 9px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  position: relative;
+  user-select: none;
+}
+
+.model-pill:hover {
+  border-color: var(--border2);
+  background: var(--card2);
+}
+
+.model-pill.active {
+  border-color: var(--pill-color);
+  background: color-mix(in srgb, var(--pill-color) 12%, transparent);
+}
+
+.pill-logo {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.pill-name {
+  font-family: var(--display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: color 0.18s;
+}
+
+.model-pill.active .pill-name {
+  color: var(--pill-color);
+}
+
+.pill-latency {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--muted);
+  background: var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.18s;
+}
+
+.model-pill.active .pill-latency {
+  background: color-mix(in srgb, var(--pill-color) 18%, transparent);
+  color: var(--pill-color);
+  border-color: color-mix(in srgb, var(--pill-color) 35%, transparent);
+}
+
+.selector-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.sel-count {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.sel-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  font-family: var(--mono);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.sel-btn:hover {
+  background: var(--card2);
+  color: var(--text);
+  border-color: var(--border2);
+}
+
+/* ═══ COMPARISON AREA ═══════════════════════════════════════════ */
+.comparison-area {
+  flex: 1;
+  overflow-x: auto;
+  padding: 20px;
+}
+
+.comparison-area::-webkit-scrollbar { height: 6px; }
+.comparison-area::-webkit-scrollbar-track { background: var(--bg); }
+.comparison-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+.columns-wrap {
+  display: flex;
+  gap: 16px;
+  min-width: fit-content;
+  align-items: flex-start;
+}
+
+.model-column {
+  min-width: 300px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: colIn 0.28s ease forwards;
+}
+
+@keyframes colIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ COLUMN HEADER CARD ════════════════════════════════════════ */
+.col-header {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.col-header-top {
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.col-logo {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.col-model-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.col-model-name {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-model-id {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-header-badges {
+  display: flex;
+  gap: 6px;
+  padding: 10px 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.badge-latency {
+  background: rgba(255, 108, 138, 0.1);
+  border: 1px solid rgba(255, 108, 138, 0.25);
+  color: var(--accent2);
+}
+
+.badge-device {
+  background: rgba(108, 138, 255, 0.08);
+  border: 1px solid rgba(108, 138, 255, 0.2);
+  color: var(--accent);
+}
+
+.badge-status {
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  color: var(--green);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+}
+
+/* ═══ SECTION CARDS ═════════════════════════════════════════════ */
+.section-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.section-card.diff-section {
+  border-color: rgba(255, 108, 138, 0.25);
+}
+
+.section-header {
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  user-select: none;
+}
+
+.section-header:hover { background: rgba(255,255,255,0.02); }
+
+.section-icon { font-size: 0.9rem; }
+
+.section-title {
+  font-family: var(--display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  flex: 1;
+  letter-spacing: 0.01em;
+}
+
+.section-chevron {
+  color: var(--muted);
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+}
+
+.section-card.collapsed .section-chevron { transform: rotate(-90deg); }
+
+.section-body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.2s ease;
+}
+
+.section-card.collapsed .section-body {
+  max-height: 0 !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+}
+
+/* Scene text */
+.scene-text {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+/* Zone pill */
+.zone-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(108,138,255,0.1);
+  color: var(--accent);
+  border: 1px solid rgba(108,138,255,0.2);
+  white-space: nowrap;
+}
+
+/* Lighting row */
+.lighting-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 7px;
+  transition: background 0.15s;
+}
+
+.lighting-row:hover { background: rgba(255,255,255,0.02); }
+
+.lighting-row.diff-row {
+  background: rgba(255, 108, 138, 0.07);
+  border-left: 2px solid var(--accent2);
+  padding-left: 10px;
+}
+
+.light-element {
+  flex: 1;
+  font-size: 0.8rem;
+  color: var(--text);
+  text-transform: capitalize;
+}
+
+.cond-chip {
+  font-family: var(--mono);
+  font-size: 0.67rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.cond-bright  { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+.cond-adequate { background: rgba(108,138,255,0.1); color: var(--accent); border: 1px solid rgba(108,138,255,0.2); }
+.cond-dim     { background: rgba(139,143,163,0.1); color: var(--muted); border: 1px solid var(--border); }
+
+/* Spatial character zone card */
+.spatial-zone {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 12px;
+  transition: border-color 0.15s;
+}
+
+.spatial-zone.diff-row {
+  border-color: rgba(255, 108, 138, 0.35);
+  background: rgba(255, 108, 138, 0.04);
+  border-left: 2px solid var(--accent2);
+}
+
+.spatial-zone-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.spatial-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 7px;
+}
+
+.spat-badge {
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+  text-transform: lowercase;
+}
+
+.spat-badge.highlight {
+  background: rgba(108,138,255,0.08);
+  border-color: rgba(108,138,255,0.2);
+  color: var(--accent);
+}
+
+.arch-line {
+  font-size: 0.73rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.arch-style {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.arch-detail {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.7rem;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Crowdedness row */
+.crowd-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 7px;
+}
+
+.crowd-row.diff-row {
+  background: rgba(255, 108, 138, 0.07);
+  border-left: 2px solid var(--accent2);
+  padding-left: 10px;
+}
+
+.density-pill {
+  font-family: var(--mono);
+  font-size: 0.67rem;
+  padding: 2px 9px;
+  border-radius: 4px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.density-empty    { background: rgba(139,143,163,0.1); color: var(--muted); border: 1px solid var(--border); }
+.density-sparse   { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+.density-moderate { background: rgba(249,115,22,0.1); color: #f97316; border: 1px solid rgba(249,115,22,0.25); }
+.density-dense    { background: rgba(255,108,138,0.1); color: var(--accent2); border: 1px solid rgba(255,108,138,0.25); }
+
+/* Greenery row */
+.green-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 7px;
+}
+
+.green-row.diff-row {
+  background: rgba(255, 108, 138, 0.07);
+  border-left: 2px solid var(--accent2);
+  padding-left: 10px;
+}
+
+.cover-pill {
+  font-family: var(--mono);
+  font-size: 0.67rem;
+  padding: 2px 9px;
+  border-radius: 4px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cover-sparse  { background: rgba(134,239,172,0.1); color: #86efac; border: 1px solid rgba(134,239,172,0.25); }
+.cover-moderate { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+.cover-dense   { background: rgba(22,163,74,0.15); color: #4ade80; border: 1px solid rgba(22,163,74,0.4); }
+
+/* Amenity row */
+.amenity-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 7px;
+}
+
+.amenity-row.diff-row {
+  background: rgba(255, 108, 138, 0.07);
+  border-left: 2px solid var(--accent2);
+  padding-left: 10px;
+}
+
+.amenity-tag {
+  font-size: 0.68rem;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.amenity-tag.zone-tag {
+  background: rgba(108,138,255,0.08);
+  border-color: rgba(108,138,255,0.18);
+  color: var(--accent);
+}
+
+.amenity-tag.element-tag {
+  color: var(--text);
+  background: rgba(228,230,240,0.05);
+  border-color: var(--border2);
+}
+
+/* Visible text chips */
+.text-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.text-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(108,138,255,0.04);
+  border: 1px solid rgba(108,138,255,0.12);
+}
+
+.text-entry.diff-row {
+  background: rgba(255, 108, 138, 0.07);
+  border-color: rgba(255, 108, 138, 0.25);
+  border-left: 2px solid var(--accent2);
+}
+
+.text-quote {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.text-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  padding: 2px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.text-tag-zone {
+  background: rgba(251,191,36,0.08);
+  border: 1px solid rgba(251,191,36,0.2);
+  color: #fbbf24;
+}
+
+.text-tag-type {
+  background: rgba(139,143,163,0.1);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+/* Empty state */
+.empty-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+  padding: 6px 0;
+}
+
+/* No models selected */
+.no-models {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-family: var(--display);
+  min-width: 300px;
+}
+
+.no-models-icon { font-size: 2.5rem; opacity: 0.4; }
+.no-models-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+.no-models-sub { font-size: 0.8rem; text-align: center; }
+
+/* ═══ RESPONSIVE ════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  :root { --left-w: 260px; }
+}
+
+@media (max-width: 700px) {
+  .left-panel { display: none; }
+  :root { --left-w: 0px; }
+  .header-chips { display: none; }
+}
+
+/* ═══ SCROLLBAR ═════════════════════════════════════════════════ */
+.comparison-area::-webkit-scrollbar { height: 6px; }
+.comparison-area::-webkit-scrollbar-track { background: transparent; }
+.comparison-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* Diff label badge */
+.diff-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(255, 108, 138, 0.1);
+  border: 1px solid rgba(255, 108, 138, 0.25);
+  color: var(--accent2);
+  margin-left: auto;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">VLM Benchmark — Barcelona Streetview</div>
+  <div class="header-chips">
+    <span class="chip">📍 Passeig de Gràcia</span>
+    <span class="chip">41.39°N 2.16°E</span>
+    <span class="chip">↗ Heading 139°</span>
+    <span class="chip">5 Models</span>
+  </div>
+  <div class="header-badge">04 BENCHMARK</div>
+</header>
+
+<div class="body-layout">
+
+  <!-- ═══ LEFT PANEL ═══ -->
+  <div class="left-panel">
+    <div class="image-wrap">
+      <img id="streetImg" src="vlm_analysis_outputs/barcelona_streetview.jpg" alt="Barcelona Streetview" onerror="this.style.opacity='0.3'">
+      <div class="image-overlay">
+        <span>barcelona_streetview.jpg</span>
+        <span>74 KB · JPEG</span>
+      </div>
+    </div>
+
+    <div class="left-section">
+      <div class="left-section-title">Location Metadata</div>
+      <div class="meta-grid">
+        <span class="mk">📍 Lat/Lon</span>
+        <span class="mv">41.3917, 2.1649</span>
+        <span class="mk">🛣️ Street</span>
+        <span class="mv">Passeig de Gracia</span>
+        <span class="mk">🧭 Heading</span>
+        <span class="mv">139°</span>
+        <span class="mk">🏷️ Highway</span>
+        <span class="mv">primary</span>
+        <span class="mk">📅 Date</span>
+        <span class="mv">2026-06-07</span>
+      </div>
+    </div>
+
+    <div class="left-section">
+      <div class="left-section-title">Analysis Coverage</div>
+      <div class="coverage-grid" id="coverageGrid"></div>
+    </div>
+
+    <div class="left-section" style="flex:1;">
+      <div class="left-section-title">Inference Latency</div>
+      <div class="latency-bars" id="latencyBars"></div>
+    </div>
+  </div>
+
+  <!-- ═══ RIGHT PANEL ═══ -->
+  <div class="right-panel">
+
+    <!-- Model selector -->
+    <div class="selector-bar">
+      <span class="selector-label">Models</span>
+      <div class="model-pills" id="modelPills"></div>
+      <div class="selector-controls">
+        <span class="sel-count" id="selCount">4 of 4</span>
+        <button class="sel-btn" id="btnAll">All</button>
+        <button class="sel-btn" id="btnNone">None</button>
+      </div>
+    </div>
+
+    <!-- Comparison columns -->
+    <div class="comparison-area">
+      <div class="columns-wrap" id="columnsWrap"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  EMBEDDED DATA
+// ═══════════════════════════════════════════════════════════════════
+const MODEL_DATA = {
+  qwen: {
+    key: 'qwen',
+    displayName: 'Qwen2.5-VL',
+    org: 'Qwen / Alibaba',
+    brandColor: '#7B5CF5',
+    data: {"metadata":{"timestamp":"20260607_093058","latitude":41.391694,"longitude":2.164944,"heading":139.0,"street_name":"Passeig de Gracia","highway_type":"primary","edge_id":"benchmark","dist_along_edge_m":null,"source_image":"barcelona_streetview.jpg","model":"Qwen/Qwen2.5-VL-7B-Instruct","device":"cuda:0","latency_ms":40604.60843200008,"status":"ok"},"scene_analysis":{"scene":"Crowded modernist street with ornate architecture, mature trees, and busy pedestrian activity.","lighting":[{"zone":"center","element":"overhead diffused sunlight through tree canopies","condition":"adequate"}],"spatial_character":[{"zone":"left","width":"wide","enclosure":"open","passability":"clear","lane_type":"sidewalk","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"retail","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"center","width":"wide","enclosure":"open","passability":"clear","lane_type":"main_roadway","crossing":"zebra","architectural_style":"modernist","building_condition":"excellent","storefront_type":"retail","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"right","width":"wide","enclosure":"open","passability":"clear","lane_type":"sidewalk","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"retail","architectural_details":"ornate balconies with wrought-iron railings"}],"crowdedness":[{"zone":"center","density_level":"dense"}],"greenery":[{"zone":"left","element":"mature London plane trees with mottled grey-green bark","coverage":"dense"}],"street_amenities":[{"zone":"left","element":"cast-iron street lamps with frosted globes","material_and_colour":"black painted cast iron","presence":"several"},{"zone":"center","element":"yellow painted concrete bollards","material_and_colour":"yellow concrete","presence":"several"},{"zone":"right","element":"potted plants on window ledges","material_and_colour":"various","presence":"several"}],"visible_text":[]},"nearby_landmarks":[]}
+  },
+  llava: {
+    key: 'llava',
+    displayName: 'LLaVA-OneVision',
+    org: 'LLaVA-HF',
+    brandColor: '#3B82F6',
+    data: {"metadata":{"timestamp":"20260607_093206","latitude":41.391694,"longitude":2.164944,"heading":139.0,"street_name":"Passeig de Gracia","highway_type":"primary","edge_id":"benchmark","dist_along_edge_m":null,"source_image":"barcelona_streetview.jpg","model":"llava-hf/llava-onevision-qwen2-7b-ov-hf","device":"cuda:0","latency_ms":60373.401803999965,"status":"ok"},"scene_analysis":{"scene":"A bustling city street with pedestrians walking alongside ornate buildings under an overcast sky.","lighting":[{"zone":"left","element":"Overcast sky diffusing sunlight","condition":"adequate"},{"zone":"center","element":"Street lamps off during daytime","condition":"dim"}],"spatial_character":[{"zone":"left","width":"wide","enclosure":"open","passability":"caution","lane_type":"sidewalk","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"retail","architectural_details":"Gaudian-style facades with ornamental details"},{"zone":"center","width":"wide","enclosure":"open","passability":"caution","lane_type":"sidewalk","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"retail","architectural_details":"Gaudian-style facades with ornamental details"},{"zone":"right","width":"wide","enclosure":"open","passability":"caution","lane_type":"sidewalk","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"retail","architectural_details":"Gaudian-style facades with ornamental details"},{"zone":"far_right","width":"wide","enclosure":"open","passability":"caution","lane_type":"sidewalk","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"retail","architectural_details":"Gaudian-style facades with ornamental details"}],"crowdedness":[{"zone":"left","density_level":"moderate"},{"zone":"center","density_level":"moderate"},{"zone":"right","density_level":"moderate"},{"zone":"far_right","density_level":"moderate"}],"greenery":[{"zone":"left","element":"Lush green trees lining the sidewalk","coverage":"dense"},{"zone":"center","element":"Potted plants along the sidewalk","coverage":"moderate"},{"zone":"right","element":"Lush green trees lining the sidewalk","coverage":"dense"},{"zone":"far_right","element":"Lush green trees lining the sidewalk","coverage":"dense"}],"street_amenities":[{"zone":"left","element":"Bollards separating sidewalks and streets","material_and_colour":"","presence":"several"},{"zone":"center","element":"Bollards separating sidewalks and streets","material_and_colour":"","presence":"several"},{"zone":"right","element":"Bollards separating sidewalks and streets","material_and_colour":"","presence":"several"},{"zone":"far_right","element":"Bollards separating sidewalks and streets","material_and_colour":"","presence":"several"}],"visible_text":[{"text":"MERCAT","zone":"far_left","type":"sign"}]},"nearby_landmarks":[]}
+  },
+  internvl: {
+    key: 'internvl',
+    displayName: 'InternVL2.5-8B',
+    org: 'OpenGVLab',
+    brandColor: '#10B981',
+    data: {"metadata":{"timestamp":"20260607_093308","latitude":41.391694,"longitude":2.164944,"heading":139.0,"street_name":"Passeig de Gracia","highway_type":"primary","edge_id":"benchmark","dist_along_edge_m":null,"source_image":"barcelona_streetview.jpg","model":"OpenGVLab/InternVL2_5-8B","device":"cuda:0","latency_ms":45927.79060800013,"status":"ok"},"scene_analysis":{"scene":"Pedestrian street with moderate activity on Passeig de Gracia, featuring ornate buildings and greenery.","lighting":[{"zone":"left","element":"overcast sky","condition":"dim"}],"spatial_character":[{"zone":"far_left","width":"narrow","enclosure":"open","passability":"clear","lane_type":"main_roadway","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"office","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"left","width":"moderate","enclosure":"open","passability":"clear","lane_type":"main_roadway","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"office","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"center","width":"wide","enclosure":"open","passability":"clear","lane_type":"road","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"office","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"right","width":"moderate","enclosure":"open","passability":"clear","lane_type":"road","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"office","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"far_right","width":"narrow","enclosure":"open","passability":"clear","lane_type":"road","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"office","architectural_details":"ornate balconies with wrought-iron railings"}],"crowdedness":[{"zone":"center","density_level":"moderate"}],"greenery":[{"zone":"center","element":"mature trees with dense foliage","coverage":"moderate"}],"street_amenities":[{"zone":"center","element":"bicycle lane","material_and_colour":"grey asphalt","presence":"several"},{"zone":"far_right","element":"metal barricades","material_and_colour":"grey metal","presence":"several"}],"visible_text":[{"text":"Passeig de Gracia","zone":"center","type":"sign"},{"text":"NO ENTRY","zone":"far_right","type":"sign"}]},"nearby_landmarks":[]}
+  },
+  phi: {
+    key: 'phi',
+    displayName: 'Phi-3.5-Vision',
+    org: 'Microsoft',
+    brandColor: '#0078D4',
+    data: {"metadata":{"timestamp":"20260607_093355","latitude":41.391694,"longitude":2.164944,"heading":139.0,"street_name":"Passeig de Gracia","highway_type":"primary","edge_id":"benchmark","dist_along_edge_m":null,"source_image":"barcelona_streetview.jpg","model":"microsoft/Phi-3.5-vision-instruct","device":"cuda:0","latency_ms":38231.24951400041,"status":"ok"},"scene_analysis":{"scene":"Tree-lined residential street with moderate pedestrian activity and parked vehicles.","lighting":[{"zone":"far_left","element":"direct overhead midday sun","condition":"bright"}],"spatial_character":[{"zone":"far_left","width":"narrow","enclosure":"enclosed","passability":"clear","lane_type":"sidewalk","crossing":"none","architectural_style":"modernist","building_condition":"excellent","storefront_type":"retail","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"center","width":"moderate","enclosure":"semi","passability":"clear","lane_type":"road","crossing":"zebra","architectural_style":"contemporary","building_condition":"good","storefront_type":"restaurant","architectural_details":null}],"crowdedness":[{"zone":"far_left","density_level":"sparse"},{"zone":"center","density_level":"moderate"}],"greenery":[{"zone":"far_left","element":"mature London plane trees with mottled grey-green bark","coverage":"dense"},{"zone":"right","element":"terracotta-potted rosemary shrubs on window ledges","coverage":"sparse"}],"street_amenities":[{"zone":"far_left","element":"ornate cast-iron double-arm street lamp with frosted globe","material_and_colour":"black painted cast iron","presence":"few"},{"zone":"center","element":"yellow painted concrete bollard","material_and_colour":"yellow concrete","presence":"several"}],"visible_text":[{"text":"MERCAT","zone":"far_left","type":"sign"}]},"nearby_landmarks":[]}
+  },
+  idefics3: {
+    key: 'idefics3',
+    displayName: 'Idefics3-8B',
+    org: 'HuggingFace',
+    brandColor: '#FF9D00',
+    data: {"metadata":{"timestamp":"20260607_093502","latitude":41.391694,"longitude":2.164944,"heading":139.0,"street_name":"Passeig de Gracia","highway_type":"primary","edge_id":"benchmark","dist_along_edge_m":null,"source_image":"barcelona_streetview.jpg","model":"HuggingFaceM4/Idefics3-8B-Llama3","device":"cuda:0","latency_ms":62238.151862,"status":"ok"},"scene_analysis":{"scene":"Busy street with pedestrians and vehicles in a city with modernist architecture.","lighting":[{"zone":"left","element":"dappled shade from dense tree canopy","condition":"dim"},{"zone":"center","element":"direct overhead midday sun","condition":"bright"}],"spatial_character":[{"zone":"far_left","width":"narrow","enclosure":"open","passability":"clear","lane_type":"sidewalk","crossing":"zebra","architectural_style":"modernist","building_condition":"good","storefront_type":"retail","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"left","width":"moderate","enclosure":"semi","passability":"clear","lane_type":"road","crossing":"zebra","architectural_style":"contemporary","building_condition":"fair","storefront_type":"restaurant","architectural_details":null},{"zone":"center","width":"moderate","enclosure":"semi","passability":"clear","lane_type":"road","crossing":"signalised","architectural_style":"art_nouveau","building_condition":"good","storefront_type":"retail","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"right","width":"narrow","enclosure":"open","passability":"clear","lane_type":"sidewalk","crossing":"none","architectural_style":"modernist","building_condition":"good","storefront_type":"retail","architectural_details":"ornate balconies with wrought-iron railings"},{"zone":"far_right","width":"narrow","enclosure":"open","passability":"clear","lane_type":"sidewalk","crossing":"none","architectural_style":"art_nouveau","building_condition":"good","storefront_type":"retail","architectural_details":"ornate balconies with wrought-iron railings"}],"crowdedness":[{"zone":"center","density_level":"dense"}],"greenery":[{"zone":"left","element":"mature London plane trees with mottled grey-green bark","coverage":"dense"},{"zone":"right","element":"terracotta-potted rosemary shrubs on window ledges","coverage":"sparse"}],"street_amenities":[{"zone":"left","element":"ornate cast-iron double-arm street lamp with frosted globe","material_and_colour":"black painted cast iron","presence":"few"},{"zone":"center","element":"yellow painted concrete bollard","material_and_colour":"yellow concrete","presence":"several"}],"visible_text":[{"text":"MERCAT","zone":"far_left","type":"sign"},{"text":"P","zone":"center","type":"sign"}]},"nearby_landmarks":[]}
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════════
+//  SVG LOGOS
+// ═══════════════════════════════════════════════════════════════════
+const LOGOS = {
+  qwen:     `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#7B5CF5" fill-opacity="0.15"/><text x="16" y="22" text-anchor="middle" font-size="15" font-weight="800" font-family="Syne,Inter,sans-serif" fill="#7B5CF5">Q</text></svg>`,
+  llava:    `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#3B82F6" fill-opacity="0.15"/><text x="16" y="21" text-anchor="middle" font-size="9" font-weight="800" font-family="Syne,Inter,sans-serif" fill="#3B82F6">LLaVA</text></svg>`,
+  internvl: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#10B981" fill-opacity="0.15"/><text x="16" y="22" text-anchor="middle" font-size="11" font-weight="800" font-family="Syne,Inter,sans-serif" fill="#10B981">IV</text></svg>`,
+  phi:      `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#0078D4" fill-opacity="0.1"/><rect x="7" y="7" width="8" height="8" fill="#F25022"/><rect x="17" y="7" width="8" height="8" fill="#7FBA00"/><rect x="7" y="17" width="8" height="8" fill="#00A4EF"/><rect x="17" y="17" width="8" height="8" fill="#FFB900"/></svg>`,
+  idefics3: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#FF9D00" fill-opacity="0.15"/><text x="16" y="22" text-anchor="middle" font-size="13" font-weight="800" font-family="Syne,Inter,sans-serif" fill="#FF9D00">HF</text></svg>`
+};
+
+const LOGOS_LARGE = {
+  qwen:     `<svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#7B5CF5" fill-opacity="0.15"/><text x="24" y="34" text-anchor="middle" font-size="24" font-weight="800" font-family="Syne,Inter,sans-serif" fill="#7B5CF5">Q</text></svg>`,
+  llava:    `<svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#3B82F6" fill-opacity="0.15"/><text x="24" y="31" text-anchor="middle" font-size="12" font-weight="800" font-family="Syne,Inter,sans-serif" fill="#3B82F6">LLaVA</text></svg>`,
+  internvl: `<svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#10B981" fill-opacity="0.15"/><text x="24" y="33" text-anchor="middle" font-size="16" font-weight="800" font-family="Syne,Inter,sans-serif" fill="#10B981">IV</text></svg>`,
+  phi:      `<svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#0078D4" fill-opacity="0.1"/><rect x="9" y="9" width="13" height="13" fill="#F25022"/><rect x="26" y="9" width="13" height="13" fill="#7FBA00"/><rect x="9" y="26" width="13" height="13" fill="#00A4EF"/><rect x="26" y="26" width="13" height="13" fill="#FFB900"/></svg>`,
+  idefics3: `<svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="12" fill="#FF9D00" fill-opacity="0.15"/><text x="24" y="33" text-anchor="middle" font-size="19" font-weight="800" font-family="Syne,Inter,sans-serif" fill="#FF9D00">HF</text></svg>`
+};
+
+// ═══════════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════════
+const ORDER = ['qwen', 'llava', 'internvl', 'phi', 'idefics3'];
+const activeModels = new Set(ORDER);
+
+// ═══════════════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = String(s ?? '');
+  return d.innerHTML;
+}
+
+function fmtLatency(ms) {
+  return (ms / 1000).toFixed(1) + 's';
+}
+
+function condClass(c) {
+  if (c === 'bright') return 'cond-bright';
+  if (c === 'adequate') return 'cond-adequate';
+  return 'cond-dim';
+}
+
+function densityClass(d) {
+  if (d === 'empty')    return 'density-empty';
+  if (d === 'sparse')   return 'density-sparse';
+  if (d === 'moderate') return 'density-moderate';
+  if (d === 'dense')    return 'density-dense';
+  return 'density-empty';
+}
+
+function coverageClass(c) {
+  if (c === 'sparse')   return 'cover-sparse';
+  if (c === 'moderate') return 'cover-moderate';
+  if (c === 'dense')    return 'cover-dense';
+  return 'cover-sparse';
+}
+
+// Get reference model (first active)
+function getRefKey() {
+  for (const k of ORDER) if (activeModels.has(k)) return k;
+  return null;
+}
+
+function isDiff(refArr, thisArr, matchFn) {
+  if (!refArr || !thisArr) return true;
+  return JSON.stringify(refArr) !== JSON.stringify(thisArr);
+}
+
+function zoneDiff(refArr, thisZone, field) {
+  if (!refArr) return false;
+  const refItem = refArr.find(r => r.zone === thisZone.zone);
+  if (!refItem) return true;
+  return refItem[field] !== thisZone[field];
+}
+
+function rowDiff(refArr, thisItem, key) {
+  if (!refArr) return false;
+  const ref = refArr.find(r => r.zone === thisItem.zone);
+  if (!ref) return true;
+  if (key) return ref[key] !== thisItem[key];
+  return JSON.stringify(ref) !== JSON.stringify(thisItem);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  LEFT PANEL — COVERAGE & LATENCY
+// ═══════════════════════════════════════════════════════════════════
+function buildLeftPanel() {
+  const sections = [
+    { key: 'lighting',         label: 'Lighting',  icon: '💡' },
+    { key: 'spatial_character',label: 'Spatial',   icon: '🏢' },
+    { key: 'crowdedness',      label: 'Crowd',     icon: '👥' },
+    { key: 'greenery',         label: 'Greenery',  icon: '🌳' },
+    { key: 'street_amenities', label: 'Amenities', icon: '🪑' },
+    { key: 'visible_text',     label: 'Text',      icon: '🪧' },
+  ];
+
+  const covGrid = document.getElementById('coverageGrid');
+  covGrid.innerHTML = sections.map(s => {
+    const counts = ORDER.map(k => {
+      const arr = MODEL_DATA[k].data.scene_analysis[s.key];
+      return arr && arr.length > 0 ? 1 : 0;
+    });
+    const filled = counts.reduce((a, b) => a + b, 0);
+    const cls = filled === ORDER.length ? 'filled' : filled > 0 ? 'partial' : 'empty';
+    return `<div class="cov-item">
+      <div class="cov-dot ${cls}">${s.icon}</div>
+      <div class="cov-label">${s.label}</div>
+    </div>`;
+  }).join('');
+
+  // Latency bars
+  const maxLat = Math.max(...ORDER.map(k => MODEL_DATA[k].data.metadata.latency_ms));
+  const latBars = document.getElementById('latencyBars');
+  latBars.innerHTML = ORDER.map(k => {
+    const m = MODEL_DATA[k];
+    const lat = m.data.metadata.latency_ms;
+    const pct = (lat / maxLat * 100).toFixed(1);
+    const ratio = lat / maxLat;
+    const r = Math.round(255 * ratio);
+    const g = Math.round(222 * (1 - ratio * 0.6));
+    const color = `rgb(${r}, ${g}, 80)`;
+    return `<div class="lat-row">
+      <div class="lat-logo">${LOGOS[k]}</div>
+      <div class="lat-track">
+        <div class="lat-fill" style="width:${pct}%; background:${color};"></div>
+      </div>
+      <div class="lat-val">${fmtLatency(lat)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  MODEL SELECTOR PILLS
+// ═══════════════════════════════════════════════════════════════════
+function buildPills() {
+  const container = document.getElementById('modelPills');
+  container.innerHTML = ORDER.map(k => {
+    const m = MODEL_DATA[k];
+    const isActive = activeModels.has(k);
+    return `<button class="model-pill ${isActive ? 'active' : ''}"
+              data-key="${k}"
+              style="--pill-color:${m.brandColor}">
+      <span class="pill-logo">${LOGOS[k]}</span>
+      <span class="pill-name">${m.displayName}</span>
+      <span class="pill-latency">${fmtLatency(m.data.metadata.latency_ms)}</span>
+    </button>`;
+  }).join('');
+
+  container.querySelectorAll('.model-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const key = pill.dataset.key;
+      if (activeModels.has(key)) {
+        if (activeModels.size <= 1) return;
+        activeModels.delete(key);
+      } else {
+        activeModels.add(key);
+      }
+      updatePillStates();
+      renderColumns();
+    });
+  });
+
+  updateSelCount();
+}
+
+function updatePillStates() {
+  document.querySelectorAll('.model-pill').forEach(pill => {
+    const key = pill.dataset.key;
+    pill.classList.toggle('active', activeModels.has(key));
+  });
+  updateSelCount();
+}
+
+function updateSelCount() {
+  const el = document.getElementById('selCount');
+  if (el) el.textContent = `${activeModels.size} of ${ORDER.length}`;
+}
+
+document.getElementById('btnAll').addEventListener('click', () => {
+  ORDER.forEach(k => activeModels.add(k));
+  updatePillStates();
+  renderColumns();
+});
+
+document.getElementById('btnNone').addEventListener('click', () => {
+  const first = ORDER.find(k => activeModels.has(k));
+  ORDER.forEach(k => activeModels.delete(k));
+  if (first) activeModels.add(first);
+  updatePillStates();
+  renderColumns();
+});
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION RENDERERS
+// ═══════════════════════════════════════════════════════════════════
+function renderScene(sa) {
+  if (!sa.scene) return `<div class="empty-note">No scene description</div>`;
+  return `<div class="scene-text">${esc(sa.scene)}</div>`;
+}
+
+function renderLighting(sa, refSa) {
+  const items = sa.lighting || [];
+  if (!items.length) return `<div class="empty-note">No lighting data</div>`;
+  return items.map(item => {
+    const isDiffRow = refSa && rowDiff(refSa.lighting, item, 'condition');
+    return `<div class="lighting-row ${isDiffRow ? 'diff-row' : ''}">
+      <span class="zone-pill">${esc(item.zone)}</span>
+      <span class="light-element">${esc(item.element)}</span>
+      <span class="cond-chip ${condClass(item.condition)}">${esc(item.condition)}</span>
+      ${isDiffRow ? '<span class="diff-badge">≠</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderSpatial(sa, refSa) {
+  const items = sa.spatial_character || [];
+  if (!items.length) return `<div class="empty-note">No spatial data</div>`;
+  return items.map(item => {
+    const isDiffRow = refSa && rowDiff(refSa.spatial_character, item, null);
+    return `<div class="spatial-zone ${isDiffRow ? 'diff-row' : ''}">
+      <div class="spatial-zone-header">
+        <span class="zone-pill">${esc(item.zone)}</span>
+        ${isDiffRow ? '<span class="diff-badge">≠ diff</span>' : ''}
+      </div>
+      <div class="spatial-badges">
+        <span class="spat-badge highlight">${esc(item.width)}</span>
+        <span class="spat-badge">${esc(item.enclosure)}</span>
+        <span class="spat-badge">${esc(item.passability)}</span>
+        <span class="spat-badge">${esc(item.lane_type)}</span>
+        <span class="spat-badge">${esc(item.crossing)}</span>
+      </div>
+      <div class="arch-line">
+        Arch: <span class="arch-style">${esc(item.architectural_style)}</span>
+        · ${esc(item.building_condition)}
+        · ${esc(item.storefront_type)}
+      </div>
+      ${item.architectural_details ? `<span class="arch-detail">"${esc(item.architectural_details)}"</span>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderCrowdedness(sa, refSa) {
+  const items = sa.crowdedness || [];
+  if (!items.length) return `<div class="empty-note">No crowdedness data</div>`;
+  return items.map(item => {
+    const isDiffRow = refSa && rowDiff(refSa.crowdedness, item, 'density_level');
+    return `<div class="crowd-row ${isDiffRow ? 'diff-row' : ''}">
+      <span class="zone-pill">${esc(item.zone)}</span>
+      <span class="density-pill ${densityClass(item.density_level)}">${esc(item.density_level)}</span>
+      ${isDiffRow ? '<span class="diff-badge">≠</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderGreenery(sa, refSa) {
+  const items = sa.greenery || [];
+  if (!items.length) return `<div class="empty-note">No greenery data</div>`;
+  return items.map(item => {
+    const isDiffRow = refSa && rowDiff(refSa.greenery, item, 'coverage');
+    return `<div class="green-row ${isDiffRow ? 'diff-row' : ''}">
+      <span class="zone-pill">${esc(item.zone)}</span>
+      <span style="flex:1;font-size:0.8rem;color:var(--text);">${esc(item.element)}</span>
+      <span class="cover-pill ${coverageClass(item.coverage)}">${esc(item.coverage)}</span>
+      ${isDiffRow ? '<span class="diff-badge">≠</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderAmenities(sa, refSa) {
+  const items = sa.street_amenities || [];
+  if (!items.length) return `<div class="empty-note">No amenity data</div>`;
+  return items.map(item => {
+    const isDiffRow = refSa && rowDiff(refSa.street_amenities, item, 'element');
+    const mat = item.material_and_colour || item['material_and Colour'] || '';
+    return `<div class="amenity-row ${isDiffRow ? 'diff-row' : ''}">
+      <span class="amenity-tag zone-tag">${esc(item.zone)}</span>
+      <span class="amenity-tag element-tag">${esc(item.element)}</span>
+      ${mat ? `<span class="amenity-tag">${esc(mat)}</span>` : ''}
+      <span class="amenity-tag">${esc(item.presence)}</span>
+      ${isDiffRow ? '<span class="diff-badge">≠</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderVisibleText(sa, refSa) {
+  const items = sa.visible_text || [];
+  if (!items.length) return `<div class="empty-note">No visible text detected</div>`;
+  return `<div class="text-entries">${items.map(item => {
+    const isDiffRow = refSa && !(refSa.visible_text || []).some(r => r.text === item.text && r.zone === item.zone);
+    return `<div class="text-entry ${isDiffRow ? 'diff-row' : ''}">
+      <span class="text-quote">"${esc(item.text)}"</span>
+      <span class="text-tag text-tag-zone">${esc(item.zone)}</span>
+      <span class="text-tag text-tag-type">${esc(item.type)}</span>
+      ${isDiffRow ? '<span class="diff-badge">≠</span>' : ''}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  SECTION CARD BUILDER
+// ═══════════════════════════════════════════════════════════════════
+const SECTIONS = [
+  { key: 'scene',             icon: '🏙️', label: 'Scene Overview',   render: renderScene },
+  { key: 'lighting',          icon: '💡', label: 'Lighting',          render: renderLighting },
+  { key: 'spatial_character', icon: '🏢', label: 'Spatial Character', render: renderSpatial },
+  { key: 'crowdedness',       icon: '👥', label: 'Crowdedness',       render: renderCrowdedness },
+  { key: 'greenery',          icon: '🌳', label: 'Greenery',          render: renderGreenery },
+  { key: 'street_amenities',  icon: '🪑', label: 'Street Amenities',  render: renderAmenities },
+  { key: 'visible_text',      icon: '🪧', label: 'Visible Text',      render: renderVisibleText },
+];
+
+function buildSectionCard(sec, sa, refSa, isRef) {
+  const html = sec.render(sa, isRef ? null : refSa);
+  return `
+    <div class="section-card" data-sec="${sec.key}">
+      <div class="section-header">
+        <span class="section-icon">${sec.icon}</span>
+        <span class="section-title">${sec.label}</span>
+        <span class="section-chevron">▾</span>
+      </div>
+      <div class="section-body">${html}</div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  COLUMN BUILDER
+// ═══════════════════════════════════════════════════════════════════
+function buildColumn(key, isRef) {
+  const m = MODEL_DATA[key];
+  const meta = m.data.metadata;
+  const sa = m.data.scene_analysis;
+  const refKey = getRefKey();
+  const refSa = (refKey && !isRef) ? MODEL_DATA[refKey].data.scene_analysis : null;
+
+  const sectionsHtml = SECTIONS.map(sec => buildSectionCard(sec, sa, refSa, isRef)).join('');
+
+  return `
+    <div class="model-column" data-col="${key}">
+      <!-- Header Card -->
+      <div class="col-header">
+        <div class="col-header-top">
+          <div class="col-logo">${LOGOS_LARGE[key]}</div>
+          <div class="col-model-info">
+            <div class="col-model-name" style="color:${m.brandColor}">${esc(m.displayName)}</div>
+            <div class="col-model-id">${esc(m.org)}</div>
+            <div class="col-model-id" style="margin-top:2px;">${esc(meta.model)}</div>
+          </div>
+        </div>
+        <div class="col-header-badges">
+          <span class="badge badge-latency">⏱ ${fmtLatency(meta.latency_ms)}</span>
+          <span class="badge badge-device">${esc(meta.device.replace('cuda:0','CUDA'))}</span>
+          <span class="badge badge-status"><span class="status-dot"></span>${esc(meta.status)}</span>
+          ${isRef ? '<span class="badge" style="background:rgba(108,138,255,0.1);border:1px solid rgba(108,138,255,0.25);color:var(--accent)">ref</span>' : ''}
+        </div>
+      </div>
+
+      <!-- Section Cards -->
+      ${sectionsHtml}
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  RENDER COLUMNS
+// ═══════════════════════════════════════════════════════════════════
+function renderColumns() {
+  const wrap = document.getElementById('columnsWrap');
+  const active = ORDER.filter(k => activeModels.has(k));
+
+  if (!active.length) {
+    wrap.innerHTML = `<div class="no-models">
+      <div class="no-models-icon">🤖</div>
+      <div class="no-models-title">No models selected</div>
+      <div class="no-models-sub">Toggle at least one model above</div>
+    </div>`;
+    return;
+  }
+
+  const refKey = active[0];
+  wrap.innerHTML = active.map((k, i) => buildColumn(k, i === 0)).join('');
+
+  // Attach collapse toggles
+  wrap.querySelectorAll('.section-header').forEach(hdr => {
+    hdr.addEventListener('click', () => {
+      const card = hdr.closest('.section-card');
+      card.classList.toggle('collapsed');
+      // Sync heights
+      const body = card.querySelector('.section-body');
+      if (!card.classList.contains('collapsed')) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+    // Init height
+    const body = hdr.nextElementSibling;
+    body.style.maxHeight = body.scrollHeight + 'px';
+  });
+
+  updateSelCount();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════════
+buildLeftPanel();
+buildPills();
+renderColumns();
+
+// Animate latency bars after paint
+requestAnimationFrame(() => {
+  document.querySelectorAll('.lat-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0';
+    setTimeout(() => { el.style.width = w; }, 100);
+  });
+});
+</script>
+</body>
+</html>

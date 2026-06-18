@@ -1,34 +1,139 @@
 {
   "metadata": {
-    "timestamp": "20260311_231631",
-    "latitude": 41.395412999999984,
-    "longitude": 2.1543480000000006,
-    "heading": 135.78757624360043,
+    "timestamp": "20260613_174432",
+    "latitude": 41.395413,
+    "longitude": 2.154348,
+    "heading": 127.0,
     "street_name": "Avinguda Diagonal",
     "highway_type": "road",
-    "edge_id": "dcd6a58f-faff-4142-b998-29c62f2d1bab",
-    "dist_along_edge_m": 47.2,
-    "source_image": "sv_41.395413_2.154348_h135.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "f599597a-7bcf-49c6-b481-becdbaecf686",
+    "source_image": "sv_41.395413_2.154348_h127.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 85926.1,
+    "latency_ms": 307624.9,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A city street scene with tall buildings, palm trees, and cars driving by. The scene has a blue sky with white clouds. The street is paved with asphalt and has a median strip with plants and a tree. There are several cars parked along the side of the street, and a few pedestrians can be seen walking on the sidewalk. The buildings in the background have a mix of modern and traditional architecture, with some having balconies and others having ornate facades. The overall atmosphere is lively and bustling, with a sense of activity and energy.",
-    "buildings": "The buildings in the image are primarily made of stone and glass, with some having balconies and others having ornate facades. Some of the buildings appear to be older, while others look more modern. The tallest building in the image is a sleek, glass skyscraper with a flat roof.",
-    "materials": "The materials used in the construction of the buildings include stone, glass, and metal. The street is paved with asphalt, and there are several types of pavement materials visible, including concrete, brick, and stone.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few bicycles parked near the curb. A few people can be seen walking or riding bicycles along the sidewalk.",
-    "vegetation": "The street is lined with palm trees and other greenery, adding a touch of natural beauty to the urban landscape. There are also several flowerbeds and planters filled with colorful flowers and shrubs.",
-    "signage": "There are several signs visible in the image, including street signs, directional signs, and advertisements. Some of the signs are large and prominent, while others are smaller and more subtle.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "A local resident might comment on the street as a pleasant place to live, with its mix of old and new architecture, and its vibrant atmosphere. They might appreciate the presence of greenery and public art installations.",
-    "as_commuter": "A commuter might comment on the street as a convenient and accessible location for daily commutes, with easy access to public transportation and a wide range of amenities. They might appreciate the convenience of being close to work and school.",
-    "as_tourist": "A tourist might comment on the street as a great place to relax and unwind, with its beautiful scenery and tranquil atmosphere. They might appreciate the unique architecture and scenic views.",
-    "as_student": "A student might comment on the street as a great place to study, with its quiet and peaceful atmosphere. They might appreciate the academic environment and opportunities for collaboration."
-  }
+    "scene": "Modernist city street with moderate pedestrian activity and parked vehicles.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "clear blue sky with scattered clouds",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large glass windows"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large glass windows"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large glass windows"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large glass windows"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large glass windows"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "palm trees with thick trunks",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small shrubs along the curb",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "palm trees with thick trunks",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Sabadell",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

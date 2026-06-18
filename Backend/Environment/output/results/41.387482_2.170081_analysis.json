@@ -1,34 +1,127 @@
 {
   "metadata": {
-    "timestamp": "20260311_182942",
-    "latitude": 41.38748179999999,
-    "longitude": 2.1700806000000004,
-    "heading": 108.66551654361444,
+    "timestamp": "20260613_151731",
+    "latitude": 41.387482,
+    "longitude": 2.170081,
+    "heading": 126.0,
     "street_name": "",
     "highway_type": "road",
-    "edge_id": "4cd3f758-0c5a-47c0-939c-bb66fe46dd90",
-    "dist_along_edge_m": 72.1,
-    "source_image": "sv_41.387482_2.170081_h108.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "b2b16b64-72fe-4831-ad01-33c3b818173b",
+    "source_image": "sv_41.387482_2.170081_h126.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 64439.9,
+    "latency_ms": 291422.3,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide view of a city street with a statue of a man riding a horse on the left side of the street. The street is lined with tall trees and buildings on both sides. There are people walking and riding bicycles along the sidewalk. The sky is clear and blue.",
-    "buildings": "The buildings are white and have multiple stories. They are made of stone and concrete. Some have balconies.",
-    "materials": "The statue is made of dark metal and is placed on a large stone pedestal. It depicts a man riding a horse.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans along the sidewalk.",
-    "vegetation": "The trees are tall and leafy.",
-    "signage": "There are several signs posted along the street.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "People are walking and riding bicycles along the sidewalk.",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The area appears to be residential.",
-    "as_commuter": "unknown",
-    "as_tourist": "unknown",
-    "as_student": "The area is popular with students."
-  }
+    "scene": "Tree-lined public square with moderate pedestrian activity and some urban furniture.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "small shrubs and bushes along the sidewalk",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "small shrubs and bushes along the sidewalk",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron street lamp posts",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollards",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

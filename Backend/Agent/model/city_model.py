@@ -26,6 +26,7 @@ from rule_based_movement import make_decision as rule_based_move
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
+PERCEPTION_DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "perception.duckdb"
 
 # Pedestrian-class edges included in footway-only routing mode
 _PED_CLASSES = frozenset({
@@ -96,15 +97,62 @@ class CityModel(mesa.Model):
             print(f"[WARN] Failed to initialize agent tracker: {e}")
             self.tracker = None
 
+        self.edges = {}
+        self.node_to_edges = defaultdict(list)
+        self.node_to_ped_edges = defaultdict(list)
+        self.main_component_nodes = set()
+        self.main_ped_component_nodes = set()
+        self.ped_nodes = frozenset()
+        self._nx_graph = nx.Graph()
+        self._nx_ped_graph = nx.Graph()
+
+        self.con = None
+        self.perception_con = None
         print(f"Connecting to DB at: {DB_PATH}")
+        import time as _time
+        for _attempt in range(8):
+            try:
+                self.con = duckdb.connect(str(DB_PATH))
+                self.con.install_extension("spatial")
+                self.con.load_extension("spatial")
+                print("[OK] Database connected")
+                break
+            except Exception as e:
+                if _attempt < 7:
+                    print(f"[WARN] DB connect attempt {_attempt + 1}/8 failed, retrying in 2 s: {e}")
+                    _time.sleep(2)
+                else:
+                    for _fb_label, _fb_fn in [
+                        ("read-only", lambda: duckdb.connect(str(DB_PATH), read_only=True)),
+                        ("backup",   lambda: duckdb.connect(str(DB_PATH.with_suffix(".backup.duckdb")))),
+                        ("backup read-only", lambda: duckdb.connect(str(DB_PATH.with_suffix(".backup.duckdb")), read_only=True)),
+                    ]:
+                        try:
+                            self.con = _fb_fn()
+                            self.con.install_extension("spatial")
+                            self.con.load_extension("spatial")
+                            print(f"[OK] Database connected ({_fb_label} — original locked by another process)")
+                            break
+                        except Exception:
+                            continue
+                    else:
+                        print(f"[ERROR] Database connection failed after 8 attempts (all fallbacks exhausted): {e}")
+                        return
+                    break
+
+        # Open separate perception DB (different file — no Windows lock conflict with main DB)
         try:
-            self.con = duckdb.connect(str(DB_PATH), read_only=True)
-            self.con.install_extension("spatial")
-            self.con.load_extension("spatial")
-            print("[OK] Database connected")
-        except Exception as e:
-            print(f"[ERROR] Database connection failed: {e}")
-            return
+            self.perception_con = duckdb.connect(str(PERCEPTION_DB_PATH))
+            self.perception_con.install_extension("spatial")
+            self.perception_con.load_extension("spatial")
+            _env_path = str(PROJECT_ROOT / "Backend" / "Environment")
+            if _env_path not in sys.path:
+                sys.path.insert(0, _env_path)
+            from ingestion.perception import load_streetview_perception
+            load_streetview_perception(self.perception_con)
+            print("[OK] Perception DB ready")
+        except Exception as _pe:
+            print(f"[WARN] Perception DB failed to initialize: {_pe}")
 
         print("Loading walk_edges network...")
         _ROAD_WEIGHT = {
@@ -555,23 +603,24 @@ class CityModel(mesa.Model):
 
     def get_nearby_perception(self, point_geom, heading: float | None = None):
         result = None
-        try:
-            buffer_deg = 0.0015
-            query = f"""
-            SELECT
-                scene_overview, buildings, materials, building_condition,
-                street_furniture, vegetation_text, signage, ground_surfaces,
-                spatial_impression, pedestrian_activity, lighting_atmosphere,
-                as_resident, as_commuter, as_tourist, as_student,
-                latitude, longitude
-            FROM streetview_perception
-            WHERE ST_DWithin(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'), {buffer_deg})
-            ORDER BY ST_Distance(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'))
-            LIMIT 1
-            """
-            result = self.con.execute(query).fetchone()
-        except Exception as e:
-            print(f"Perception DB query error: {e}")
+        if self.perception_con is not None:
+            try:
+                buffer_deg = 0.0015
+                query = f"""
+                SELECT
+                    scene_overview, buildings, materials, building_condition,
+                    street_furniture, vegetation_text, signage, ground_surfaces,
+                    spatial_impression, pedestrian_activity, lighting_atmosphere,
+                    as_resident, as_commuter, as_tourist, as_student,
+                    latitude, longitude
+                FROM streetview_perception
+                WHERE ST_DWithin(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'), {buffer_deg})
+                ORDER BY ST_Distance(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'))
+                LIMIT 1
+                """
+                result = self.perception_con.execute(query).fetchone()
+            except Exception as e:
+                print(f"Perception DB query error: {e}")
 
         _TRACEBACK_MARKERS = ("Cell In[", "Traceback (most", "SyntaxError", "Error:", "[Request interrupted", "line ", "File \"")
         if result:
@@ -742,13 +791,18 @@ class CityModel(mesa.Model):
         agent_snapshot = [(a.unique_id, a.geometry, a.get_archetype()) for a in self.city_agents]
 
         recorder = self._recorder
-        if recorder and recorder.is_recording():
-            for agent in self.city_agents:
+        if recorder and recorder.is_recording:
+            import logging as _log
+
+            async def _step_and_collect(agent):
                 try:
                     await agent._async_step(agent_snapshot)
                 except Exception:
-                    import logging as _log
                     _log.getLogger(__name__).error(f"Agent {agent.unique_id} step failed (recording):", exc_info=True)
+                    try:
+                        agent._simple_move()
+                    except Exception:
+                        pass
                 decision_reason = None
                 is_fallback = False
                 if hasattr(agent, 'memory') and hasattr(agent.memory, 'stream'):
@@ -761,6 +815,17 @@ class CityModel(mesa.Model):
                             is_fallback = meta.get('fallback', False)
                     except Exception:
                         pass
+                return agent, decision_reason, is_fallback
+
+            step_results = await asyncio.gather(
+                *[_step_and_collect(a) for a in self.city_agents],
+                return_exceptions=True,
+            )
+            for res in step_results:
+                if isinstance(res, Exception):
+                    _log.getLogger(__name__).error(f"Agent step failed (recording): {res}")
+                    continue
+                agent, decision_reason, is_fallback = res
                 recorder.record_agent_state(
                     agent=agent,
                     step=self.steps,
@@ -776,6 +841,12 @@ class CityModel(mesa.Model):
                 if isinstance(res, Exception):
                     import logging as _log
                     _log.getLogger(__name__).error(f"Agent {agent.unique_id} step failed: {res}")
+                    try:
+                        agent._simple_move()
+                    except Exception as move_err:
+                        _log.getLogger(__name__).error(
+                            f"Agent {agent.unique_id} fallback _simple_move also failed: {move_err}"
+                        )
 
         if self.tracker and self.steps % 10 == 0:
             self.tracker.flush()
@@ -787,7 +858,13 @@ class CityModel(mesa.Model):
         except Exception:
             pass
         try:
-            self.con.close()
+            if self.con:
+                self.con.close()
+        except Exception:
+            pass
+        try:
+            if self.perception_con:
+                self.perception_con.close()
         except Exception:
             pass
 

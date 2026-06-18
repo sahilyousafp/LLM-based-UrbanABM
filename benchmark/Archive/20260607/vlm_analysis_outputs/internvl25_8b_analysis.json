@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "timestamp": "20260606_213820",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "OpenGVLab/InternVL2_5-8B",
+    "device": "cuda:0",
+    "latency_ms": 43723.6764399986,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A bustling urban street with pedestrians and vehicles, featuring a mix of architectural styles and greenery.",
+    "egocentric_corridor": {
+      "far_left": {
+        "type": "main_roadway",
+        "width": "wide",
+        "passability": "clear",
+        "lighting_condition": "adequate",
+        "crowd_density": "sparse",
+        "greenery_coverage": "sparse",
+        "assets": [],
+        "hazards": [],
+        "built_context": {
+          "enclosure": "open",
+          "architectural_style": "art_deco",
+          "building_condition": "excellent",
+          "storefront_type": "unknown"
+        }
+      },
+      "left": {
+        "type": "sidewalk",
+        "width": "narrow",
+        "passability": "clear",
+        "lighting_condition": "adequate",
+        "crowd_density": "moderate",
+        "greenery_coverage": "moderate",
+        "assets": [],
+        "hazards": [],
+        "built_context": {
+          "enclosure": "open",
+          "architectural_style": "art_deco",
+          "building_condition": "excellent",
+          "storefront_type": "unknown"
+        }
+      },
+      "center": {
+        "type": "sidewalk",
+        "width": "narrow",
+        "passability": "clear",
+        "lighting_condition": "adequate",
+        "crowd_density": "moderate",
+        "greenery_coverage": "moderate",
+        "assets": [],
+        "hazards": [],
+        "built_context": {
+          "enclosure": "open",
+          "architectural_style": "art_deco",
+          "building_condition": "excellent",
+          "storefront_type": "unknown"
+        }
+      },
+      "right": {
+        "type": "sidewalk",
+        "width": "narrow",
+        "passability": "clear",
+        "lighting_condition": "adequate",
+        "crowd_density": "moderate",
+        "greenery_coverage": "moderate",
+        "assets": [],
+        "hazards": [],
+        "built_context": {
+          "enclosure": "open",
+          "architectural_style": "art_deco",
+          "building_condition": "excellent",
+          "storefront_type": "unknown"
+        }
+      },
+      "far_right": {
+        "type": "sidewalk",
+        "width": "narrow",
+        "passability": "clear",
+        "lighting_condition": "adequate",
+        "crowd_density": "moderate",
+        "greenery_coverage": "moderate",
+        "assets": [],
+        "hazards": [],
+        "built_context": {
+          "enclosure": "open",
+          "architectural_style": "art_deco",
+          "building_condition": "excellent",
+          "storefront_type": "unknown"
+        }
+      }
+    },
+    "visible_traffic_controls": [
+      {
+        "text": "No entry",
+        "type": "sign",
+        "applies_to": "far_right"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

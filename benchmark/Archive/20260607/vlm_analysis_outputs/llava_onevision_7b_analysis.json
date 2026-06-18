@@ -1,0 +1,198 @@
+{
+  "metadata": {
+    "timestamp": "20260606_141855",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "llava-hf/llava-onevision-qwen2-7b-ov-hf",
+    "device": "cuda:0",
+    "latency_ms": 60550.57460500029,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A bustling city street with pedestrians and buildings lining both sides.",
+    "lighting": [
+      {
+        "zone": "far_left",
+        "element": "traffic light",
+        "condition": "bright"
+      },
+      {
+        "zone": "left",
+        "element": "street lamp",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "shop windows",
+        "condition": "bright"
+      },
+      {
+        "zone": "right",
+        "element": "street lamp",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudí's iconic style"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudí's iconic style"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudí's iconic style"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudí's iconic style"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudí's iconic style"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "far_left",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "left",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "far_right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "left",
+        "element": "trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "far_right",
+        "element": "trees",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "far_left",
+        "element": "bicycle lane",
+        "material_and Colour": "white",
+        "presence": "several"
+      },
+      {
+        "zone": "left",
+        "element": "bicycle lane",
+        "material_and Colour": "white",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "bicycle lane",
+        "material_and Colour": "white",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "bicycle lane",
+        "material_and Colour": "white",
+        "presence": "several"
+      },
+      {
+        "zone": "far_right",
+        "element": "bicycle lane",
+        "material_and Colour": "white",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Calle de la Boqueria",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "Calle de la Llibertat",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

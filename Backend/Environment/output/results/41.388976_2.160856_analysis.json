@@ -1,34 +1,26 @@
 {
   "metadata": {
-    "timestamp": "20260311_172826",
-    "latitude": 41.3889764,
-    "longitude": 2.1608556,
-    "heading": 138.4992171322699,
+    "timestamp": "20260613_154953",
+    "latitude": 41.388976,
+    "longitude": 2.160856,
+    "heading": 130.0,
     "street_name": "",
     "highway_type": "road",
     "edge_id": "2ab7cd1d-0da3-44ab-8537-5a831a7fa4cc",
-    "dist_along_edge_m": 40.9,
-    "source_image": "sv_41.388976_2.160856_h138.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "source_image": "sv_41.388976_2.160856_h130.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 21824.7,
+    "latency_ms": 1186032.2,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide view of a city street with buildings on both sides, featuring a mix of modern and older structures, with a few pedestrians strolling along the sidewalk and a few cars parked along the street. The sky is overcast with clouds, casting a soft, diffused light over the scene. The street is lined with trees and has a median strip in the middle, adding some greenery to the urban landscape. The buildings have a mix of architectural styles, with some having balconies and others being more minimalist in design. The street itself is paved with asphalt and has white markings indicating pedestrian crossings and traffic lanes. A few streetlights are visible, providing illumination for the area. In the distance, there are more buildings and trees, creating a sense of depth and context.",
-    "buildings": "Left building: This structure has a cream-colored facade with stone quoins at the corners. It appears to be several stories tall, with windows and balconies on each floor. The building seems to be well-maintained, with no visible signs of damage or neglect. Right: Exposed red brick upper floors above a polished granite shopfront. The building has a more rustic appearance, with visible mortar between the bricks and a rough texture to the exterior. The top floor has a flat roof, while the bottom floor has a pitched roof. Both floors appear to be in good condition, with no visible signs of wear or damage.",
-    "materials": "Left building: The building's facade is made of a combination of materials, including stone, brick, and possibly metal. The stone quoins add a touch of elegance to the building's design, while the brick adds warmth and texture. The granite shopfront suggests a more modern aesthetic, with clean lines and minimal ornamentation. The building's overall material palette is diverse, reflecting its mixed-use purpose.",
-    "building_condition": "unknown",
-    "street_furniture": "Left building: There are two benches placed along the sidewalk, one near the front of the building and another further down the street. These benches provide a place for people to sit and rest, taking in the surroundings. There are also several streetlights installed along the sidewalk, providing illumination for nighttime use. A few trash cans are scattered throughout the area, helping to keep the streets clean.",
-    "vegetation": "Left building: The trees lining the street are lush and green, with a mix of deciduous and evergreen species. Some of the trees have leaves that are starting to change color, suggesting the onset of autumn. The trees provide shade and beauty to the area, making it a pleasant spot for pedestrians to stroll through.",
-    "signage": "Left building: A sign is mounted on a pole near the front of the building, although the text is not legible. The sign may indicate the name of the business or the location of the building. A yellow sign is visible further down the street, but the text is not clear.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "Left building: The lighting is soft and diffused, with a gentle glow emanating from the streetlights. The sky above is overcast, casting a warm, golden light over the scene. The trees and vegetation add a sense of depth and atmosphere to the image.",
-    "as_resident": "Left building: The building appears to be a residential unit, with a small balcony on the second floor. The interior is not visible, but the exterior suggests a cozy and intimate space. The building's age and character suggest a long history, with worn woodwork and ornate details.",
-    "as_commuter": "Left building: The building appears to be a residential unit, with a small balcony on the second floor. The interior is not visible, but the exterior suggests a cozy and intimate space. The building's age and character suggest a long history, with visible signs of wear and tear.",
-    "as_tourist": "Left building: The building's architecture is a mix of old and new, with a modern addition on the top floor. The exterior is well-maintained, with a clean and polished finish. The building's age and character suggest a rich history, with visible signs of wear and tear.",
-    "as_student": "Left building: The building's facade is made of a combination of materials, including stone, brick, and possibly metal. The stone quoins add a touch of elegance to the building's design, while the brick work suggests a more rustic aesthetic. The building's overall material palette is diverse, reflecting its mixed-use purpose."
-  }
+    "scene": "unknown",
+    "lighting": [],
+    "spatial_character": [],
+    "crowdedness": [],
+    "greenery": [],
+    "street_amenities": [],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

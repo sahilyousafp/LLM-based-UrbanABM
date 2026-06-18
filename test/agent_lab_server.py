@@ -361,12 +361,6 @@ async def configure_single_agent(payload: dict = Body(...)):
     except (TypeError, ValueError) as e:
         return {"error": f"Invalid payload types: {e}"}
 
-    if archetype not in CityAgent.ARCHETYPES:
-        return {
-            "error": f"Unknown archetype '{archetype}'",
-            "allowed": list(CityAgent.ARCHETYPES),
-        }
-
     # Reset agent and diary
     city_model.city_agents = []
     city_model.steps = 0

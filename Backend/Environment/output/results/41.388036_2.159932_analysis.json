@@ -1,34 +1,149 @@
 {
   "metadata": {
-    "timestamp": "20260311_215037",
-    "latitude": 41.3880363,
+    "timestamp": "20260613_152427",
+    "latitude": 41.388036,
     "longitude": 2.159932,
-    "heading": 313.72227181720035,
-    "street_name": "Carrer d'Aragó",
+    "heading": 36.0,
+    "street_name": "Carrer d'Aribau",
     "highway_type": "road",
-    "edge_id": "175fc035-e791-4554-810a-31c1ff52f407",
-    "dist_along_edge_m": 81.3,
-    "source_image": "sv_41.388036_2.159932_h313.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "83755e91-be0d-4b58-8a08-f19814c36963",
+    "source_image": "sv_41.388036_2.159932_h36.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 43606.1,
+    "latency_ms": 318019.0,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide city street with buildings on both sides, lined with trees and featuring various vehicles and pedestrians. The street is relatively empty, with only a few cars and a motorcycle present. The sky is clear and blue, suggesting a sunny day.",
-    "buildings": "Left building: A large, multi-story structure with a cream-colored facade and brown accents. It has a flat roof and numerous windows.",
-    "materials": "Left building condition",
-    "building_condition": "unknown",
-    "street_furniture": "Benches",
-    "vegetation": "unknown",
-    "signage": "unknown",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "unknown",
-    "as_commuter": "unknown",
-    "as_tourist": "unknown",
-    "as_student": "unknown"
-  }
+    "scene": "Urban street with modernist buildings, mature trees lining the sidewalks, and moderate pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "clear blue sky",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "far_right",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "ornate cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "black painted double-arm street lamp",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "L'EIXAMPLE",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

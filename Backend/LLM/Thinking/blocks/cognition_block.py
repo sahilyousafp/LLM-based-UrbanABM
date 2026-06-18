@@ -28,6 +28,15 @@ ARCHETYPE_MEMORY_CONFIG: dict = {
 }
 
 
+def _safe_float(value, default: float) -> float:
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except (ValueError, TypeError):
+        return default
+
+
 class CognitionBlock(Block):
     """Updates agent's mood, curiosity, and fatigue based on recent experiences."""
 
@@ -87,6 +96,7 @@ class CognitionBlock(Block):
 
         messages = cognition_update_prompt(
             archetype=archetype,
+            agent_profile=profile,
             current_cognition=current_cognition,
             current_needs=current_needs,
             recent_history=history_text,
@@ -102,8 +112,8 @@ class CognitionBlock(Block):
         if response and "mood" in response:
             new_cognition = {
                 "mood": response.get("mood", current_cognition.get("mood", "neutral")),
-                "curiosity": max(0.0, min(1.0, float(response.get("curiosity", 0.7)))),
-                "fatigue": max(0.0, min(1.0, float(response.get("fatigue", 0.0)))),
+                "curiosity": max(0.0, min(1.0, _safe_float(response.get("curiosity"), 0.7))),
+                "fatigue": max(0.0, min(1.0, _safe_float(response.get("fatigue"), 0.0))),
             }
             summary = response.get("summary", "")
         else:

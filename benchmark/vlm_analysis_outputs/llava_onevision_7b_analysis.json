@@ -1,0 +1,156 @@
+{
+  "metadata": {
+    "timestamp": "20260607_093206",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "llava-hf/llava-onevision-qwen2-7b-ov-hf",
+    "device": "cuda:0",
+    "latency_ms": 60373.401803999965,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A bustling city street with pedestrians walking alongside ornate buildings under an overcast sky.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "Overcast sky diffusing sunlight",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "Street lamps off during daytime",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "caution",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudian-style facades with ornamental details"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "caution",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudian-style facades with ornamental details"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "caution",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudian-style facades with ornamental details"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "caution",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "Gaudian-style facades with ornamental details"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "far_right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "Lush green trees lining the sidewalk",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "Potted plants along the sidewalk",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "Lush green trees lining the sidewalk",
+        "coverage": "dense"
+      },
+      {
+        "zone": "far_right",
+        "element": "Lush green trees lining the sidewalk",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "Bollards separating sidewalks and streets",
+        "material_and_colour": "",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "Bollards separating sidewalks and streets",
+        "material_and_colour": "",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "Bollards separating sidewalks and streets",
+        "material_and_colour": "",
+        "presence": "several"
+      },
+      {
+        "zone": "far_right",
+        "element": "Bollards separating sidewalks and streets",
+        "material_and_colour": "",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "MERCAT",
+        "zone": "far_left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

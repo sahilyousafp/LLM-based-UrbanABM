@@ -122,11 +122,16 @@ DEFAULT_OUTPUT_DIR = (
     Path(__file__).parent.parent.parent.parent
     / "Backend" / "Environment" / "output"
 )
+# Safety check: if parent-4 goes above project root (e.g. script copied outside
+# the repo), fall back to CWD + "output" so it never tries /Backend/...
+if not (DEFAULT_OUTPUT_DIR.parent.parent.exists()):
+    DEFAULT_OUTPUT_DIR = Path.cwd() / "output"
+    log.warning("Computed output dir not under repo root — fallback to %s", DEFAULT_OUTPUT_DIR)
 MODEL_IDS = {
     "3b": "Qwen/Qwen2.5-VL-3B-Instruct",
     "7b": "Qwen/Qwen2.5-VL-7B-Instruct",
 }
-MAX_NEW_TOKENS = 900
+MAX_NEW_TOKENS = 1200
 TEMPERATURE    = 0.3
 TOP_P          = 0.95
 REP_PENALTY    = 1.1
@@ -239,17 +244,18 @@ SYSTEM_PROMPT = (
 )
 
 USER_PROMPT = """\
-Analyse this street-level image. Output a JSON object with these keys:
-- scene: one sentence overall description
-- lighting: [{zone, element, condition: dark|dim|adequate|bright}]
-- spatial_character: [{zone, width: narrow|moderate|wide, enclosure: open|semi|enclosed, \
-passability: clear|obstructed, lane_type: sidewalk|road|shared|plaza, crossing: none|zebra|signalised}]
-- crowdedness: [{zone, density_level: empty|sparse|moderate|dense}]
-- greenery: [{zone, element, coverage: none|sparse|moderate|dense}]
-- street_amenities: [{zone, element, material_and_colour, presence: none|few|several|many}]
-- visible_text: [{text, zone, type: sign|label|graffiti}]
-
-Output ONLY valid JSON. Begin with {"lighting":[{"""
+Analyse this street-level image. Return a single JSON object with ALL of these keys filled in:
+{
+  "scene": "<one sentence overall description>",
+  "lighting": [{"zone": "...", "element": "...", "condition": "dark|dim|adequate|bright"}, ...],
+  "spatial_character": [{"zone": "...", "width": "narrow|moderate|wide", "enclosure": "open|semi|enclosed", "passability": "clear|obstructed", "lane_type": "sidewalk|road|shared|plaza", "crossing": "none|zebra|signalised", "architectural_style": "neo_gothic|modernist|contemporary|neoclassical|vernacular|eclectic|art_deco|other", "building_condition": "excellent|good|fair|poor|under_construction", "storefront_type": "retail|restaurant|cafe|office|residential|hotel|vacant|cultural|industrial|other", "architectural_details": "..."}, ...],
+  "crowdedness": [{"zone": "...", "density_level": "empty|sparse|moderate|dense"}, ...],
+  "greenery": [{"zone": "...", "element": "...", "coverage": "none|sparse|moderate|dense"}, ...],
+  "street_amenities": [{"zone": "...", "element": "...", "material_and_colour": "...", "presence": "none|few|several|many"}, ...],
+  "visible_text": [{"text": "...", "zone": "...", "type": "sign|label|graffiti"}, ...]
+}
+Zone values: far_left | left | center | right | far_right.
+Output ONLY the JSON object. No markdown, no explanation."""
 
 
 def _parse_json(raw: str) -> dict:
@@ -310,64 +316,32 @@ def _normalise(raw_dict: dict) -> dict:
     return out
 
 
-def _auto_batch_size(vram_gb: float) -> int:
-    """Recommend batch size based on available VRAM.
-    7B @ 4-bit NF4 uses ~4.5 GB base; each extra image in batch adds ~1-1.5 GB.
-    """
-    if vram_gb >= 24:
-        return 4
-    elif vram_gb >= 16:
-        return 2
-    else:
-        return 1
-
-
-def _build_inputs(images: list, greedy: bool):
-    """Build batched processor inputs for a list of PIL images."""
+def _build_input(image, greedy: bool):
+    """Build processor inputs for a single PIL image."""
     from qwen_vl_utils import process_vision_info
 
-    all_texts        = []
-    all_image_inputs = []
-
-    for image in images:
-        messages = [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": [
-                {"type": "image", "image": image},
-                {"type": "text",  "text": USER_PROMPT},
-            ]},
-        ]
-        text = _processor.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True
-        )
-        text += '{"lighting":[{'
-        all_texts.append(text)
-
-        img_inputs, _ = process_vision_info(messages)
-        all_image_inputs.extend(img_inputs)
-
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": [
+            {"type": "image", "image": image},
+            {"type": "text",  "text": USER_PROMPT},
+        ]},
+    ]
+    text = _processor.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
+    img_inputs, _ = process_vision_info(messages)
     inputs = _processor(
-        text=all_texts,
-        images=all_image_inputs,
-        padding=True,
+        text=[text],
+        images=img_inputs,
         return_tensors="pt",
     ).to(_model.device)
-
     return inputs
 
 
-def infer_scene_batch(
-    images: list,
-    greedy: bool = False,
-) -> list[tuple[dict, float]]:
-    """Run Qwen2.5-VL on a batch of PIL images in a single forward pass.
-
-    Quality is identical to single-image inference — each image attends
-    only to its own tokens. Throughput scales with batch size.
-
-    Returns a list of (result_dict, latency_ms) — one per image.
-    """
-    inputs   = _build_inputs(images, greedy)
+def infer_scene(image, greedy: bool = False) -> tuple[dict, float]:
+    """Run Qwen2.5-VL on a single PIL image. Returns (result_dict, latency_ms)."""
+    inputs    = _build_input(image, greedy)
     input_len = inputs["input_ids"].shape[1]
 
     gen_kwargs: dict = dict(max_new_tokens=MAX_NEW_TOKENS, repetition_penalty=REP_PENALTY)
@@ -379,19 +353,13 @@ def infer_scene_batch(
     t0 = time.time()
     with torch.no_grad():
         out_ids = _model.generate(**inputs, **gen_kwargs)
-    batch_latency_ms = (time.time() - t0) * 1000
-    per_img_ms = batch_latency_ms / len(images)
+    latency_ms = (time.time() - t0) * 1000
 
-    results = []
-    for i in range(len(images)):
-        new_ids  = out_ids[i, input_len:]
-        raw_text = _processor.decode(new_ids, skip_special_tokens=True)
-        raw_text = '{"lighting":[{' + raw_text
-        raw_dict = _parse_json(raw_text)
-        result   = _normalise(raw_dict)
-        results.append((result, per_img_ms))
-
-    return results
+    new_ids  = out_ids[0, input_len:]
+    raw_text = _processor.decode(new_ids, skip_special_tokens=True)
+    raw_dict = _parse_json(raw_text)
+    result   = _normalise(raw_dict)
+    return result, latency_ms
 
 
 def _count_populated(result: dict) -> int:
@@ -401,47 +369,24 @@ def _count_populated(result: dict) -> int:
     )
 
 
-def analyse_batch(
-    image_paths: list,
-) -> list[tuple[dict, float]]:
-    """Process a batch of images with retry for any that fail quality check.
+def analyse(image_path) -> tuple[dict, float]:
+    """Analyse a single image with retry on low-quality output."""
+    image = PILImage.open(image_path).convert("RGB")
 
-    Strategy:
-      1. Run full batch through the model
-      2. Any image with < MIN_FIELDS_OK populated fields is retried individually
-         (up to MAX_RETRIES - 1 more times, greedy on the last attempt)
-    Quality is preserved: failed images get the same retry logic as single-image mode.
-    """
-    images = [PILImage.open(p).convert("RGB") for p in image_paths]
+    result, latency_ms = infer_scene(image, greedy=False)
 
-    # First pass — full batch
-    batch_results = infer_scene_batch(images, greedy=False)
-
-    final: list[tuple[dict, float]] = list(batch_results)
-
-    # Retry any image that didn't meet the quality threshold
-    for idx, (result, latency_ms) in enumerate(batch_results):
+    for attempt in range(2, MAX_RETRIES + 1):
         if _count_populated(result) >= MIN_FIELDS_OK:
-            continue
-        log.debug("Batch item %d: only %d fields — retrying individually", idx, _count_populated(result))
-        for attempt in range(2, MAX_RETRIES + 1):
-            greedy = (attempt == MAX_RETRIES)
-            retry_results = infer_scene_batch([images[idx]], greedy=greedy)
-            r, lms = retry_results[0]
-            if _count_populated(r) >= MIN_FIELDS_OK or attempt == MAX_RETRIES:
-                final[idx] = (r, lms)
-                break
+            break
+        log.debug("Only %d fields populated — retry %d/%d", _count_populated(result), attempt, MAX_RETRIES)
+        greedy = (attempt == MAX_RETRIES)
+        result, latency_ms = infer_scene(image, greedy=greedy)
 
-    # Validate via Pydantic
-    validated = []
-    for result, latency_ms in final:
-        try:
-            v = StreetSceneAnalysis(**result).model_dump()
-        except Exception:
-            v = result
-        validated.append((v, latency_ms))
-
-    return validated
+    try:
+        validated = StreetSceneAnalysis(**result).model_dump()
+    except Exception:
+        validated = result
+    return validated, latency_ms
 
 
 # ---------------------------------------------------------------------------
@@ -453,8 +398,6 @@ def main():
     parser.add_argument("--output-dir",   default=str(DEFAULT_OUTPUT_DIR))
     parser.add_argument("--model-size",   choices=["3b", "7b"], default="7b",
                         help="Qwen2.5-VL model size (default: 7b)")
-    parser.add_argument("--batch-size",   type=int, default=0,
-                        help="Images per GPU batch (0 = auto from VRAM: 1/2/4)")
     parser.add_argument("--limit",        type=int, default=0,
                         help="Process at most N images (0 = all)")
     parser.add_argument("--reanalyse",    action="store_true",
@@ -517,16 +460,15 @@ def main():
         return
 
     # ── Load model ────────────────────────────────────────────────────────────
-    model_id             = MODEL_IDS[args.model_size]
-    _, _, vram_gb        = load_model(model_id)
-    batch_size = args.batch_size if args.batch_size > 0 else _auto_batch_size(vram_gb)
-    log.info("Batch size: %d  (VRAM: %.1f GB)", batch_size, vram_gb)
+    model_id      = MODEL_IDS[args.model_size]
+    _, _, vram_gb = load_model(model_id)
+    log.info("VRAM: %.1f GB", vram_gb)
 
     # ── Run inference ─────────────────────────────────────────────────────────
     run_ts   = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     ok, fail = 0, 0
 
-    # Parse filenames upfront — skip unparseable before batching
+    # Parse filenames upfront — skip unparseable
     valid_pending = []
     for img_path in pending:
         stem = img_path.stem
@@ -540,61 +482,55 @@ def main():
             log.warning("Cannot parse lat/lon from filename: %s — skipping", img_path.name)
             fail += 1
 
-    # Process in batches
-    chunks = [valid_pending[i:i + batch_size] for i in range(0, len(valid_pending), batch_size)]
-
     with tqdm(total=len(valid_pending), unit="img", desc="VLM") as bar:
-        for chunk in chunks:
+        for img_path in valid_pending:
             try:
-                batch_results = analyse_batch(chunk)
+                scene_analysis, latency_ms = analyse(img_path)
             except Exception as exc:
-                log.warning("Batch error: %s — skipping %d images", exc, len(chunk))
-                fail += len(chunk)
-                bar.update(len(chunk))
+                log.warning("Error on %s: %s — skipping", img_path.name, exc)
+                fail += 1
+                bar.update(1)
                 continue
 
-            for img_path, (scene_analysis, latency_ms) in zip(chunk, batch_results):
-                stem          = img_path.stem
-                body          = stem[3:]
-                lat_lon, h    = body.rsplit("_h", 1)
-                lat_s, lon_s  = lat_lon.split("_", 1)
-                lat, lon, hdg = float(lat_s), float(lon_s), float(h)
-                result_path   = results_dir / f"{lat_s}_{lon_s}_analysis.json"
-                pt_meta       = point_lookup.get(f"sv_{lat:.6f}_{lon:.6f}", {})
+            stem          = img_path.stem
+            body          = stem[3:]
+            lat_lon, h    = body.rsplit("_h", 1)
+            lat_s, lon_s  = lat_lon.split("_", 1)
+            lat, lon, hdg = float(lat_s), float(lon_s), float(h)
+            result_path   = results_dir / f"{lat_s}_{lon_s}_analysis.json"
+            pt_meta       = point_lookup.get(f"sv_{lat:.6f}_{lon:.6f}", {})
 
-                output = {
-                    "metadata": {
-                        "timestamp"        : run_ts,
-                        "latitude"         : lat,
-                        "longitude"        : lon,
-                        "heading"          : hdg,
-                        "street_name"      : pt_meta.get("street_name", ""),
-                        "highway_type"     : pt_meta.get("highway_type", ""),
-                        "edge_id"          : pt_meta.get("edge_id", ""),
-                        "dist_along_edge_m": pt_meta.get("dist_along_edge_m"),
-                        "source_image"     : img_path.name,
-                        "model"            : model_id,
-                        "device"           : str(next(_model.parameters()).device),
-                        "latency_ms"       : latency_ms,
-                        "status"           : "ok",
-                    },
-                    "scene_analysis"  : scene_analysis,
-                    "nearby_landmarks": [],
-                }
-                result_path.write_text(
-                    json.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8"
-                )
-                ok += 1
-                bar.update(1)
+            output = {
+                "metadata": {
+                    "timestamp"        : run_ts,
+                    "latitude"         : lat,
+                    "longitude"        : lon,
+                    "heading"          : hdg,
+                    "street_name"      : pt_meta.get("street_name", ""),
+                    "highway_type"     : pt_meta.get("highway_type", ""),
+                    "edge_id"          : pt_meta.get("edge_id", ""),
+                    "dist_along_edge_m": pt_meta.get("dist_along_edge_m"),
+                    "source_image"     : img_path.name,
+                    "model"            : model_id,
+                    "device"           : str(next(_model.parameters()).device),
+                    "latency_ms"       : latency_ms,
+                    "status"           : "ok",
+                },
+                "scene_analysis"  : scene_analysis,
+                "nearby_landmarks": [],
+            }
+            result_path.write_text(
+                json.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8"
+            )
+            ok += 1
+            bar.update(1)
 
-            # Free GPU cache after each batch
             gc.collect()
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
 
     # ── Summary ───────────────────────────────────────────────────────────────
     log.info("─" * 60)
-    log.info("Batch size: %d", batch_size)
     log.info("Analysed  : %d images", ok)
     log.info("Failed    : %d images", fail)
     log.info("Results   → %s", results_dir)

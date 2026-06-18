@@ -13,7 +13,7 @@ in the LLM-Based UrbanABM system, evaluated against two primary metrics:
 | `01_database_comparison.ipynb` | DuckDB vs SQLite+SpatiaLite vs PostgreSQL+PostGIS | Query latency, throughput, completeness |
 | `02_llm_provider_comparison.ipynb` | vLLM vs Ollama vs GPT-4o-mini vs GPT-4o | Decision latency, archetype accuracy, token cost |
 | `03_map_data_comparison.ipynb` | Overture Maps vs OpenStreetMap | POI coverage, network completeness, query speed |
-| `04_vlm_perception_comparison.ipynb` | PerceptionLM vs LLaVA vs GPT-4o-Vision vs MiniCPM-V | Street image understanding, environment classification |
+| `04_vlm_perception_comparison.ipynb` | Qwen2.5-VL-7B vs Qwen3-VL-8B-Instruct | JSON schema compliance, OCR IoU, object detection IoU, keypoint distance |
 | `05_system_integration_benchmark.ipynb` | LLM-driven vs rule-based agents | End-to-end latency, humanistic scoring |
 
 ## Setup

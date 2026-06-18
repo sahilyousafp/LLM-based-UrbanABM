@@ -1,34 +1,106 @@
 {
   "metadata": {
-    "timestamp": "20260311_173430",
-    "latitude": 41.386540700000005,
-    "longitude": 2.1702256000000006,
-    "heading": 341.011588214425,
+    "timestamp": "20260613_145252",
+    "latitude": 41.386541,
+    "longitude": 2.170226,
+    "heading": 335.0,
     "street_name": "",
     "highway_type": "road",
-    "edge_id": "7eeab251-30c6-48ed-a704-dbd6324dd97d",
-    "dist_along_edge_m": 21.2,
-    "source_image": "sv_41.386541_2.170226_h341.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "6b1757c8-4924-496d-b4ad-9380a5738116",
+    "source_image": "sv_41.386541_2.170226_h335.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 21875.8,
+    "latency_ms": 40100.6,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide view of a large white building with a flat roof and symmetrical facade, surrounded by trees and a paved area with a few people walking around. The building has a central entrance flanked by two smaller wings, with a row of windows on the top floor. The ground floor has a large window display and a sign reading 'Casa de la Cultura' in bold letters. The surrounding area is mostly empty, with a few benches and a small garden bed with some plants and a lamppost. The sky is overcast with a few clouds.",
-    "buildings": "unknown",
-    "materials": "unknown",
-    "building_condition": "unknown",
-    "street_furniture": "unknown",
-    "vegetation": "unknown",
-    "signage": "unknown",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "unknown",
-    "as_commuter": "unknown",
-    "as_tourist": "unknown",
-    "as_student": "unknown"
-  }
+    "scene": "Open plaza with wide main roadways, surrounded by large trees and a distant white building.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overhead diffused sunlight through tree canopy",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "center",
+        "density_level": "empty"
+      },
+      {
+        "zone": "right",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "large mature trees with dark green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants with green leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "black painted cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "black painted cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

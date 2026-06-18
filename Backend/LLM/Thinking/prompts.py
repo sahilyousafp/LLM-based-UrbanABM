@@ -42,6 +42,8 @@ def mobility_decision_prompt(
     next_waypoint: dict | None = None,
     nearby_agents: list | None = None,
     nearby_transit: list | None = None,
+    memory_context: str = "",
+    time_of_day: str = "",
 ) -> list[dict]:
     """
     Prompt asking the LLM to choose the next movement destination.
@@ -108,7 +110,7 @@ def mobility_decision_prompt(
         lines = []
         for key, label in scene_fields:
             val = street_perception.get(key, "")
-            if val and val.strip().lower() != "unknown":
+            if val and str(val).strip().lower() != "unknown":
                 lines.append(f"  {label}: {val}")
         # Add camera facing direction if available (from StreetPLM metadata)
         heading = street_perception.get("heading")
@@ -307,11 +309,14 @@ def mobility_decision_prompt(
             stop_parts.append(f"'{name}'{routes_str} {dist}m")
         nearby_transit_text = f"\n  Transit stops: {', '.join(stop_parts)}"
 
+    memory_section = f"\n\nLong-term Memory:\n{memory_context}" if memory_context else ""
+    time_section = f"\n  Time of day: {time_of_day}" if time_of_day else ""
+
     user_content = f"""Agent Profile:
-  Archetype: {archetype}
+  Archetype: {archetype}{time_section}
   Needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
   Mood: {cognition.get('mood', 'neutral')}, Curiosity: {cognition.get('curiosity', 0.7):.2f}, Fatigue: {cognition.get('fatigue', 0.0):.2f}
-  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{nearby_agents_text}{nearby_transit_text}{perception_text}{destination_text}{deviation_context}{plan_text}
+  Current Position: lon={current_position.get('lon', 0):.6f}, lat={current_position.get('lat', 0):.6f}{nearby_agents_text}{nearby_transit_text}{perception_text}{destination_text}{deviation_context}{plan_text}{memory_section}
 
 Recent Movement History:
 {recent_history}
@@ -347,6 +352,7 @@ def visual_satisfaction_prompt(
     needs: dict,
     cognition: dict,
     street_perception: dict,
+    time_of_day: str = "",
 ) -> list[dict]:
     """
     Prompt to evaluate how the visual street environment affects the agent's 3 needs.
@@ -364,12 +370,14 @@ def visual_satisfaction_prompt(
     lines = []
     for key, label in scene_fields:
         val = street_perception.get(key, "")
-        if val and val.strip().lower() not in ("unknown", ""):
+        if val and str(val).strip().lower() not in ("unknown", ""):
             lines.append(f"  {label}: {val}")
     
     perception_text = "\n".join(lines) if lines else "  No detailed visual data available"
     
-    user_content = f"""Agent archetype: {archetype}
+    time_line = f"\nTime of day: {time_of_day}" if time_of_day else ""
+
+    user_content = f"""Agent archetype: {archetype}{time_line}
 Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
 Current mental state: mood={cognition.get('mood', 'neutral')}, curiosity={cognition.get('curiosity', 0.7):.2f}, fatigue={cognition.get('fatigue', 0.0):.2f}
 
@@ -403,6 +411,7 @@ def needs_evaluation_prompt(
     amenity_name: str,
     amenity_type: str,
     street_perception: Optional[dict] = None,
+    time_of_day: str = "",
 ) -> list[dict]:
     """
     Prompt to evaluate how much visiting this amenity satisfies agent needs.
@@ -422,12 +431,14 @@ def needs_evaluation_prompt(
         lines = []
         for key, label in scene_fields:
             val = street_perception.get(key, "")
-            if val and val.strip().lower() not in ("unknown", ""):
+            if val and str(val).strip().lower() not in ("unknown", ""):
                 lines.append(f"  {label}: {val}")
         if lines:
             perception_text = "\n\nSurrounding street scene:\n" + "\n".join(lines)
 
-    user_content = f"""Agent archetype: {archetype}
+    time_line = f"\nTime of day: {time_of_day}" if time_of_day else ""
+
+    user_content = f"""Agent archetype: {archetype}{time_line}
 Current needs: hunger={needs.get('hunger', 0.5):.2f}, energy={needs.get('energy', 1.0):.2f}, social={needs.get('social', 0.5):.2f}, comfort={needs.get('comfort', 0.7):.2f}
 Current mental state: mood={cognition.get('mood', 'neutral')}, curiosity={cognition.get('curiosity', 0.7):.2f}, fatigue={cognition.get('fatigue', 0.0):.2f}
 Visited amenity: "{amenity_name}" (type: {amenity_type}){perception_text}
@@ -450,8 +461,18 @@ Respond with JSON:
 # COGNITION BLOCK prompts
 # ---------------------------------------------------------------------------
 
-COGNITION_SYSTEM = """You are updating the internal mental state of a pedestrian agent based on their recent experiences.
+COGNITION_SYSTEM = """You are writing the inner life of a pedestrian agent navigating Barcelona's Eixample district.
+Your task: update their emotional state and produce a vivid first-person reflection grounded in the SPECIFIC events and places in their recent history.
+
+Rules:
+- Reference actual events, streets, amenities, or encounters from the Recent experiences list — not abstract archetypes.
+- Never open with time of day. Time is context, not the story.
+- Never use filler phrases like "as the day progresses", "given the time of day", "the urban environment", "I find myself", "I feel a sense of".
+- The summary must read like a thought, not a status report. It should have texture: a detail noticed, a feeling provoked, a small decision made.
+- Vary mood meaningfully — don't default to neutral. If hunger is rising, the agent is irritable. If they just reached a destination, they feel relief. If they've been circling the same block, they feel frustrated.
+- Curiosity and fatigue must react to events — not drift slowly by default.
 Respond with valid JSON only."""
+
 
 def cognition_update_prompt(
     archetype: str,
@@ -459,51 +480,114 @@ def cognition_update_prompt(
     current_needs: dict,
     recent_history: str,
     step: int,
+    agent_profile: dict | None = None,
     streetview_perception: str = "",
+    memory_context: str = "",
+    time_of_day: str = "",
 ) -> list[dict]:
     """
     Prompt to update agent's cognitive/emotional state based on recent experiences.
-    Now includes current needs state to model need-mood interactions.
+    Includes full agent profile and anti-cliché instructions for richer output.
     """
     perception_section = ""
     if streetview_perception:
-        perception_section = f"""
-Scene description at current location (from visual analysis):
-{streetview_perception}
-"""
+        perception_section = f"\nCurrent scene (from visual analysis):\n{streetview_perception}\n"
 
-    user_content = f"""Agent archetype: {archetype}
-Simulation step: {step}
-Current needs: hunger={current_needs.get('hunger', 0.5):.2f}, energy={current_needs.get('energy', 1.0):.2f}, social={current_needs.get('social', 0.5):.2f}, comfort={current_needs.get('comfort', 0.7):.2f}
-Current mental state:
-  mood: {current_cognition.get('mood', 'neutral')}
-  curiosity: {current_cognition.get('curiosity', 0.7):.2f}
-  fatigue: {current_cognition.get('fatigue', 0.0):.2f}
-{perception_section}
-Recent experiences:
+    memory_section = f"\nLong-term Memory:\n{memory_context}\n" if memory_context else ""
+    time_line = f"  Time: {time_of_day}" if time_of_day else ""
+
+    # Build a richer agent identity line from the full profile
+    profile = agent_profile or {}
+    age = profile.get("age", "")
+    preferences = profile.get("preferences", [])
+    prefs_line = ""
+    if preferences:
+        prefs_line = f"\n  Preferences: {', '.join(str(p) for p in preferences[:5])}"
+    age_line = f", age {age}" if age else ""
+
+    user_content = f"""Agent: {archetype}{age_line}{time_line}{prefs_line}
+Needs: hunger={current_needs.get('hunger', 0.5):.2f}, energy={current_needs.get('energy', 1.0):.2f}, social={current_needs.get('social', 0.5):.2f}, comfort={current_needs.get('comfort', 0.7):.2f}
+Mental state going in: mood={current_cognition.get('mood', 'neutral')}, curiosity={current_cognition.get('curiosity', 0.7):.2f}, fatigue={current_cognition.get('fatigue', 0.0):.2f}
+{perception_section}{memory_section}
+Recent experiences (ground your update in these specific events):
 {recent_history}
 
-Update the agent's mental state based on these experiences, physical needs, and the surrounding environment.
-Consider how physical needs affect psychology:
-  - High hunger can cause irritability (worse mood, higher fatigue)
-  - Low energy increases fatigue and reduces curiosity
-  - High social need with no outlet causes frustration
-  - Well-satisfied needs improve mood and curiosity
-Environmental effects:
-  - A lively, green, well-maintained scene may improve mood and curiosity
-  - An empty, run-down, or monotonous environment may increase boredom or fatigue
-  - Beautiful architecture energizes curious agents
-  - Green spaces restore energy and improve mood
-  - Lively pedestrian areas satisfy social needs
-Archetype responses:
-  - Tourists are energised by interesting architecture and activity
-  - Residents find comfort in familiar, quiet streets
-  - Students seek social, lively areas
-  - Commuters value efficient, pleasant routes
-Mood options: happy, neutral, tired, curious, bored, energised, social, focused
-Curiosity and fatigue are floats 0.0-1.0.
+Needs → mood mapping (apply these to the numeric values above before reading the events):
+  hunger > 0.7 → irritable, shortened patience, hard to enjoy surroundings
+  hunger < 0.3 → satisfied, one less distraction, slightly more content
+  energy < 0.3 → tired/exhausted, curiosity drops sharply, fatigue rises fast
+  energy > 0.8 → alert, curiosity boosted, fatigue recovers slightly each step
+  social > 0.7 (unmet, no recent social space visit) → restless, lonely undertone, craves contact
+  social < 0.3 (recently satisfied) → warm, social mood, slight energy boost
+  comfort < 0.3 → anxious, uneasy, difficulty concentrating on surroundings
+  comfort > 0.8 → content, relaxed curiosity, absorbs environment better
+
+Events → mood mapping (check the recent history):
+  - Reached a goal or destination → relief, satisfaction, brief energy burst
+  - Revisited the same street 2+ times → frustration, restlessness, rising fatigue
+  - Discovered a new street or place → curiosity spike, mood lift
+  - Visited an amenity that matched a need → satisfaction proportional to how pressing the need was
+  - Nothing notable for many steps → boredom, low curiosity, slow fatigue accumulation
+  - Scene mentions striking greenery, architecture, or lively activity → reflect it specifically and concretely
+
+Mood options: happy, neutral, tired, curious, bored, energised, social, focused, irritable, content, restless, anxious, relieved, absorbed
+Curiosity and fatigue: floats 0.0–1.0. Both must change meaningfully when events warrant it.
+
+The "summary" field is 2–3 sentences in first person. Make it specific: name a place, a decision, a sensation. Do NOT start with "I feel" or time of day. Think of it as a thought the agent has while walking.
 
 Respond with JSON:
-{{"mood": "<mood>", "curiosity": <float>, "fatigue": <float>, "summary": "<one sentence narrative>"}}"""
+{{"mood": "<mood>", "curiosity": <float>, "fatigue": <float>, "summary": "<2-3 sentence first-person thought>"}}"""
 
     return [_system(COGNITION_SYSTEM), _user(user_content)]
+
+
+# ---------------------------------------------------------------------------
+# MEMORY SUMMARY prompts
+# ---------------------------------------------------------------------------
+
+_MEMORY_SUMMARY_SYSTEM = (
+    "You are a memory consolidation assistant for a pedestrian simulation agent. "
+    "Write a concise 2-3 sentence first-person narrative summary of recent experiences, "
+    "matching the agent's archetype and focus. Be specific about places and patterns, not generic."
+)
+
+_MEMORY_CONSOLIDATION_SYSTEM = (
+    "You are consolidating a resident agent's episodic memory summaries into a rich, "
+    "integrated long-term memory. Merge new summaries with existing long-term knowledge, "
+    "noting recurring patterns and evolving familiarity. Write in first person. "
+    "Be detailed but structured — this memory persists indefinitely."
+)
+
+
+def memory_summary_prompt(
+    archetype: str,
+    recent_events_text: str,
+    previous_summaries: list[str],
+    focus: str,
+) -> list[dict]:
+    prev_block = ""
+    if previous_summaries:
+        joined = "\n".join(previous_summaries[-2:])
+        prev_block = f"\nExisting memory (integrate or contrast):\n{joined}\n"
+
+    user_content = (
+        f"Archetype: {archetype}\n"
+        f"Memory focus: {focus}\n"
+        f"{prev_block}\n"
+        f"Recent events to consolidate:\n{recent_events_text}\n\n"
+        f'Respond with JSON: {{"summary": "<2-3 sentence first-person narrative>"}}'
+    )
+    return [_system(_MEMORY_SUMMARY_SYSTEM), _user(user_content)]
+
+
+def memory_consolidation_prompt(
+    summaries_to_merge: list[str],
+    existing_unified: str,
+) -> list[dict]:
+    prev_block = f"Existing long-term memory:\n{existing_unified}\n\n" if existing_unified else ""
+    new_block = "New summaries to integrate:\n" + "\n".join(summaries_to_merge)
+    user_content = (
+        f"{prev_block}{new_block}\n\n"
+        'Respond with JSON: {"unified_summary": "<integrated first-person narrative, up to 200 words>"}'
+    )
+    return [_system(_MEMORY_CONSOLIDATION_SYSTEM), _user(user_content)]

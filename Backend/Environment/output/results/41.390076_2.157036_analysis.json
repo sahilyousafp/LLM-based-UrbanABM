@@ -1,34 +1,144 @@
 {
   "metadata": {
-    "timestamp": "20260311_225614",
-    "latitude": 41.390076099999995,
-    "longitude": 2.1570357,
-    "heading": 58.112387937902895,
+    "timestamp": "20260613_155635",
+    "latitude": 41.390076,
+    "longitude": 2.157036,
+    "heading": 60.0,
     "street_name": "Carrer d'Aribau",
     "highway_type": "road",
-    "edge_id": "ef5eeae2-9048-4449-ab6d-64f079482972",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.390076_2.157036_h58.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "f30274d5-52db-4b0a-accb-0057233ac6db",
+    "source_image": "sv_41.390076_2.157036_h60.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 43442.9,
+    "latency_ms": 308331.0,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A sunny day in a city street with a mix of old and new buildings, pedestrians, and parked scooters. The scene has a lively atmosphere with people going about their daily business. The street is lined with tall buildings, some with balconies and others with large windows. A yellow post stands out against the backdrop of the cityscape. Trees line the sidewalk, adding shade and greenery to the urban landscape. The street is bustling with activity as people walk along the sidewalk, some stopping to admire the architecture or chat with friends. The sun casts long shadows across the street, indicating a late morning or early afternoon setting. The overall mood is one of vibrancy and energy, capturing the essence of city life.",
-    "buildings": "The buildings in the image are primarily made of stone and feature ornate facades with intricate details such as arches, columns, and decorative carvings. Some have balconies with wrought iron railings, while others have large windows that allow natural light to pour in. The buildings appear well-maintained, with clean facades and no visible signs of decay or neglect. The stone construction gives them a sense of history and permanence.",
-    "materials": "The materials used in the construction of the buildings include stone, brick, and possibly concrete. The stone facades are adorned with various textures and patterns, including carved details and ornate carvings. The brickwork is uniform and well-maintained, with no visible signs of wear or damage. The concrete elements are smooth and modern, providing a contrast to the more traditional materials used in the rest of the buildings.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and tables scattered throughout the area, providing a place for people to sit and rest. Some are placed under the trees, while others are situated near the street edge. There are also several trash cans and recycling bins, indicating a focus on waste management and sustainability.",
-    "vegetation": "The vegetation in the area includes trees, bushes, and other plants that add color and texture to the scene. The trees are mostly deciduous, with some displaying vibrant green leaves. The bushes are neatly trimmed and well-maintained, adding a touch of nature to the urban environment. The plants are sparse but effective in enhancing the aesthetic appeal of the area.",
-    "signage": "There are several signs visible in the image, including storefront signs, directional signs, and informational signs. Some of the signs are brightly colored and eye-catching, while others are more subdued. The signs provide important information about the businesses and services available in the area, helping visitors navigate the streets and find what they need.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "unknown",
-    "as_commuter": "unknown",
-    "as_tourist": "unknown",
-    "as_student": "unknown"
-  }
+    "scene": "Tree-lined street with moderate pedestrian activity and a mix of retail and residential buildings.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "small potted plants on window ledges",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "white outdoor table and chairs",
+        "material_and_colour": "white plastic",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Autoescola",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "4",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "ISLA",
+        "zone": "center",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

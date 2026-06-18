@@ -1,0 +1,129 @@
+{
+  "metadata": {
+    "timestamp": "20260607_093308",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "OpenGVLab/InternVL2_5-8B",
+    "device": "cuda:0",
+    "latency_ms": 45927.79060800013,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Pedestrian street with moderate activity on Passeig de Gracia, featuring ornate buildings and greenery.",
+    "lighting": [
+      {
+        "zone": "left",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "center",
+        "element": "mature trees with dense foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "center",
+        "element": "bicycle lane",
+        "material_and_colour": "grey asphalt",
+        "presence": "several"
+      },
+      {
+        "zone": "far_right",
+        "element": "metal barricades",
+        "material_and_colour": "grey metal",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "Passeig de Gracia",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "NO ENTRY",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

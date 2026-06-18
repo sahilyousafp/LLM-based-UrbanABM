@@ -1,34 +1,129 @@
 {
   "metadata": {
-    "timestamp": "20260312_000226",
-    "latitude": 41.399465600000006,
-    "longitude": 2.1673334,
-    "heading": 223.78150283403545,
+    "timestamp": "20260613_192354",
+    "latitude": 41.399466,
+    "longitude": 2.167333,
+    "heading": 231.0,
     "street_name": "Carrer de Bailèn",
     "highway_type": "road",
-    "edge_id": "fade6246-6f21-4b08-90a2-35778dc41cd2",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.399466_2.167333_h223.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "7c78e681-73c4-4207-b78a-c55e970714f1",
+    "source_image": "sv_41.399466_2.167333_h231.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 7619.8,
+    "latency_ms": 542149.7,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A city street with a mix of commercial and residential buildings, featuring a large tree in the middle of the road, a gray trash bin, and a scooter parked near the curb. The street has a few cars parked along the side, and there are several pedestrians walking around. The buildings have balconies and windows, with some having graffiti on them. There are also some streetlights and signs along the sidewalk. The street is paved with asphalt and has white lines painted on it. The overall atmosphere is calm and quiet, with a sense of urban activity.",
-    "buildings": "unknown",
-    "materials": "unknown",
-    "building_condition": "unknown",
-    "street_furniture": "unknown",
-    "vegetation": "unknown",
-    "signage": "unknown",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "unknown",
-    "as_commuter": "unknown",
-    "as_tourist": "unknown",
-    "as_student": "unknown"
-  }
+    "scene": "Urban street with mixed-use buildings, moderate pedestrian activity, and parked vehicles.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overhead midday sun",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "vacant",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "vacant",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "retail",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature deciduous trees with green foliage",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "center",
+        "element": "red traffic signal",
+        "material_and_colour": "red",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "XSGO",
+        "zone": "center",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

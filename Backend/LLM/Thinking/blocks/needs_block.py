@@ -48,10 +48,33 @@ class NeedsBlock(Block):
             street_perception: dict with scene_overview, buildings, vegetation, etc. from visual analysis
             nearby_agents: list of {"id", "archetype", "dist_m"} agents within ~55m
         """
+        time_of_day = kwargs.get("time_of_day", "")
         needs = await self.memory.status.get("needs", {})
         profile = await self.memory.status.get("agent_profile", {})
         archetype = profile.get("archetype", "resident")
         cognition = await self.memory.status.get("cognition_state", {})
+
+        # Log perception to stream whenever the agent enters a new scene.
+        # Uses _last_scene_key for deduplication — identical scenes are not re-logged,
+        # preventing the 100-entry stream buffer from filling with duplicate data.
+        if street_perception:
+            scene_key = (street_perception.get("scene_overview") or "")[:80]
+            last_key = await self.memory.status.get("_last_scene_key", "")
+            if scene_key and scene_key != last_key:
+                await self.memory.stream.add(
+                    topic="perception",
+                    step=step,
+                    description=street_perception.get("scene_overview", ""),
+                    metadata={
+                        "buildings":           street_perception.get("buildings", ""),
+                        "vegetation":          street_perception.get("vegetation", ""),
+                        "pedestrian_activity": street_perception.get("pedestrian_activity", ""),
+                        "lighting_atmosphere": street_perception.get("lighting_atmosphere", ""),
+                        "spatial_enclosure":   street_perception.get("spatial_enclosure", ""),
+                        f"as_{archetype}":     street_perception.get(f"as_{archetype}", ""),
+                    },
+                )
+                await self.memory.status.update("_last_scene_key", scene_key)
 
         # Weather multipliers from ext_weather snapshot (loaded at model init)
         weather = self.context.get("current_weather", {})
@@ -59,11 +82,24 @@ class NeedsBlock(Block):
         _heat_mult = 1.3 if weather.get("temp_c", 20) > 30 else 1.0
         _wind_mult = 1.2 if weather.get("wind_ms", 0) > 8 else 1.0
 
-        # Decay needs each step (weather modulates comfort and energy decay)
-        needs["hunger"] = min(1.0, needs.get("hunger", 0.5) + DECAY_RATES["hunger"])
-        needs["energy"] = max(0.0, needs.get("energy", 1.0) - DECAY_RATES["energy"] * _heat_mult)
+        # Cross-need coupling multipliers (computed before decay so they use pre-step values)
+        _cur_hunger  = needs.get("hunger", 0.5)
+        _cur_energy  = needs.get("energy", 1.0)
+        _cur_comfort = needs.get("comfort", 0.7)
+        # hunger > 0.5 → up to ×1.3 faster energy drain (starving = less fuel for walking)
+        _hunger_energy_mult = 1.0 + 0.3 * max(0.0, (_cur_hunger - 0.5) / 0.5)
+        # comfort < 0.5 → up to ×1.2 faster energy drain (discomfort is tiring)
+        _comfort_energy_mult = 1.0 + 0.2 * max(0.0, (0.5 - _cur_comfort) / 0.5)
+        # energy < 0.3 → up to ×1.2 faster hunger rise (exhaustion amplifies hunger signals)
+        _energy_hunger_mult = 1.0 + 0.2 * max(0.0, (0.3 - _cur_energy) / 0.3)
+        # energy < 0.3 → crowd social bonus scales down to zero (too tired to engage)
+        _social_energy_scale = min(1.0, _cur_energy / 0.3) if _cur_energy < 0.3 else 1.0
+
+        # Decay needs each step (weather + cross-need coupling)
+        needs["hunger"] = min(1.0, _cur_hunger + DECAY_RATES["hunger"] * _energy_hunger_mult)
+        needs["energy"] = max(0.0, _cur_energy - DECAY_RATES["energy"] * _heat_mult * _hunger_energy_mult * _comfort_energy_mult)
         needs["social"] = min(1.0, needs.get("social", 0.5) + DECAY_RATES["social"])
-        needs["comfort"] = max(0.0, needs.get("comfort", 0.7) - DECAY_RATES["comfort"] * _rain_mult * _wind_mult)
+        needs["comfort"] = max(0.0, _cur_comfort - DECAY_RATES["comfort"] * _rain_mult * _wind_mult)
 
         visited_amenity = None
         llm_used = False
@@ -72,7 +108,7 @@ class NeedsBlock(Block):
 
         # 0. Crowd social bonus — proximity to other agents reduces social need (rule-based)
         if nearby_agents:
-            crowd_bonus = min(0.05, len(nearby_agents) * 0.01)
+            crowd_bonus = min(0.05, len(nearby_agents) * 0.01) * _social_energy_scale
             needs["social"] = max(0.0, needs["social"] - crowd_bonus)
             sources.append("crowd")
             satisfaction_reasoning = f"crowd nearby ({len(nearby_agents)} agents), social -{crowd_bonus:.2f}"
@@ -90,12 +126,19 @@ class NeedsBlock(Block):
                 needs=needs,
                 cognition=cognition,
                 street_perception=street_perception,
+                time_of_day=time_of_day,
             )
             if visual_result:
                 needs = visual_result["needs"]
                 sources.append("visual")
                 satisfaction_reasoning = visual_result.get("reasoning", "Visual environment affected needs")
                 llm_used = visual_result.get("llm_used", False)
+                await self.memory.stream.add(
+                    topic="perception",
+                    step=step,
+                    description=f"Visual environment affected needs: {satisfaction_reasoning}",
+                    metadata={"source": "visual_satisfaction", "llm_used": llm_used},
+                )
 
         # 2. Amenity satisfaction evaluation (only if agent is physically at the amenity)
         # nearby_amenities is sorted by dist; require the closest to be within
@@ -113,6 +156,7 @@ class NeedsBlock(Block):
                     amenity_name=amenity_name,
                     amenity_type=amenity_type,
                     street_perception=street_perception,
+                    time_of_day=time_of_day,
                 )
                 if amenity_result:
                     needs = amenity_result["needs"]
@@ -160,6 +204,7 @@ class NeedsBlock(Block):
         needs: dict,
         cognition: dict,
         street_perception: dict,
+        time_of_day: str = "",
     ) -> Optional[dict]:
         """
         Evaluate how the visual street environment affects agent needs.
@@ -171,19 +216,23 @@ class NeedsBlock(Block):
             needs=needs,
             cognition=cognition,
             street_perception=street_perception,
+            time_of_day=time_of_day,
         )
         response = await self.llm.chat_json(messages)
 
         if response and all(k in response for k in ("hunger_delta", "energy_delta", "social_delta")):
-            needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - response["hunger_delta"]))
-            needs["energy"] = max(0.0, min(1.0, needs["energy"] + response["energy_delta"]))
-            needs["social"] = max(0.0, min(1.0, needs["social"] - response["social_delta"]))
-            needs["comfort"] = max(0.0, min(1.0, needs.get("comfort", 0.7) + response.get("comfort_delta", 0.0)))
-            return {
-                "needs": needs,
-                "reasoning": response.get("reasoning", "Visual environment evaluated"),
-                "llm_used": True,
-            }
+            try:
+                needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - float(response["hunger_delta"])))
+                needs["energy"] = max(0.0, min(1.0, needs["energy"] + float(response["energy_delta"])))
+                needs["social"] = max(0.0, min(1.0, needs["social"] - float(response["social_delta"])))
+                needs["comfort"] = max(0.0, min(1.0, needs.get("comfort", 0.7) + float(response.get("comfort_delta", 0.0))))
+                return {
+                    "needs": needs,
+                    "reasoning": response.get("reasoning", "Visual environment evaluated"),
+                    "llm_used": True,
+                }
+            except (ValueError, TypeError):
+                pass
         return None
 
     async def _evaluate_amenity_satisfaction(
@@ -194,6 +243,7 @@ class NeedsBlock(Block):
         amenity_name: str,
         amenity_type: str,
         street_perception: Optional[dict] = None,
+        time_of_day: str = "",
     ) -> Optional[dict]:
         """
         Evaluate how visiting this amenity affects agent needs.
@@ -207,20 +257,24 @@ class NeedsBlock(Block):
             amenity_name=amenity_name,
             amenity_type=amenity_type,
             street_perception=street_perception,
+            time_of_day=time_of_day,
         )
         response = await self.llm.chat_json(messages)
 
         if response and all(k in response for k in ("hunger_delta", "energy_delta", "social_delta")):
-            needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - response["hunger_delta"]))
-            needs["energy"] = max(0.0, min(1.0, needs["energy"] + response["energy_delta"]))
-            needs["social"] = max(0.0, min(1.0, needs["social"] - response["social_delta"]))
-            needs["comfort"] = max(0.0, min(1.0, needs.get("comfort", 0.7) + response.get("comfort_delta", 0.0)))
-            return {
-                "needs": needs,
-                "reasoning": response.get("activity", f"Visited {amenity_name}"),
-                "activity": response.get("activity", f"Visited {amenity_name}"),
-                "llm_used": True,
-            }
+            try:
+                needs["hunger"] = max(0.0, min(1.0, needs["hunger"] - float(response["hunger_delta"])))
+                needs["energy"] = max(0.0, min(1.0, needs["energy"] + float(response["energy_delta"])))
+                needs["social"] = max(0.0, min(1.0, needs["social"] - float(response["social_delta"])))
+                needs["comfort"] = max(0.0, min(1.0, needs.get("comfort", 0.7) + float(response.get("comfort_delta", 0.0))))
+                return {
+                    "needs": needs,
+                    "reasoning": response.get("activity", f"Visited {amenity_name}"),
+                    "activity": response.get("activity", f"Visited {amenity_name}"),
+                    "llm_used": True,
+                }
+            except (ValueError, TypeError):
+                pass
         else:
             # Rule-based fallback
             deltas = AMENITY_NEED_MAP.get(amenity_type, {})

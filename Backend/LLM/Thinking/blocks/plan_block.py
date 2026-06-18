@@ -22,7 +22,6 @@ Plan memory structure:
     "status": "active"            # active | completed | blocked
 }
 """
-import asyncio
 import json
 import logging
 from pathlib import Path
@@ -322,8 +321,7 @@ class PlanBlock(Block):
                     ORDER BY dist
                     LIMIT 1
                 """
-                row = await asyncio.to_thread(model.con.execute, query)
-                row = row.fetchone()
+                row = model.con.execute(query).fetchone()
                 if row:
                     return {
                         "name": row[0] or "Unknown",

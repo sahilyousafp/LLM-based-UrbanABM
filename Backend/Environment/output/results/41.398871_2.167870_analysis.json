@@ -1,34 +1,155 @@
 {
   "metadata": {
-    "timestamp": "20260311_223341",
-    "latitude": 41.3988711,
-    "longitude": 2.1678698,
-    "heading": 140.229902098308,
-    "street_name": "Avinguda Diagonal",
-    "highway_type": "road",
-    "edge_id": "1d06611e-9a7f-4f1b-bb3d-0aca3899cb9f",
-    "dist_along_edge_m": 55.0,
-    "source_image": "sv_41.398871_2.167870_h140.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "timestamp": "20260613_191230",
+    "latitude": 41.398871,
+    "longitude": 2.16787,
+    "heading": 129.0,
+    "street_name": "synthetic_bridge",
+    "highway_type": "bridge",
+    "edge_id": "bridge_5c372554",
+    "source_image": "sv_41.398871_2.167870_h129.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 85565.1,
+    "latency_ms": 871305.3,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide view of a city street with tall buildings lining both sides, featuring a tree growing out of the sidewalk and a black trashcan on the curb. The street has a crosswalk and a pedestrian crossing signal. A person is seen walking down the street in the distance. The sky is overcast.",
-    "buildings": "The buildings are multi-story structures with balconies and windows. They have a mix of beige and white facades.",
-    "materials": "The tree has a thick trunk and branches that extend upwards.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and lampposts along the sidewalk.",
-    "vegetation": "The tree has green leaves and a few scattered leaves on the ground.",
-    "signage": "There are several signs posted along the street, including a yellow sign with a red figure of a person.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The area appears quiet and peaceful.",
-    "as_commuter": "unknown",
-    "as_tourist": "The area is scenic and picturesque.",
-    "as_student": "The area is clean and well-maintained."
-  }
+    "scene": "Urban street with modernist buildings, wide sidewalks, and mature London plane trees lining both sides.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "far_right",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "far_left",
+        "element": "ornate cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "left",
+        "element": "ornate cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "far_right",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

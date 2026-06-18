@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Road Class Network — Eixample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+<style>
+:root {
+  --bg:         #0f1117;
+  --card:       #1a1d27;
+  --card2:      #1f2333;
+  --border:     #2a2d3a;
+  --border2:    #363a4f;
+  --text:       #e4e6f0;
+  --muted:      #8b8fa3;
+  --mono:       'DM Mono', 'SF Mono', monospace;
+  --display:    'Syne', 'Inter', sans-serif;
+  --body:       'Inter', -apple-system, sans-serif;
+  --sidebar-w:  320px;
+  --header-h:   60px;
+
+  /* road class colours */
+  --c-pedestrian:   #5b8fff;
+  --c-footway:      #22c55e;
+  --c-path:         #a855f7;
+  --c-steps:        #f97316;
+  --c-living-street:#eab308;
+  --c-residential:  #ef4444;
+  --c-service:      #ec4899;
+  --c-connector:    #94a3b8;
+  --c-unknown:      #4b5563;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; font-family: var(--body); background: var(--bg); color: var(--text); font-size: 13px; }
+
+/* ─── layout ─────────────────────────────────────────────────────── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: var(--header-h);
+  background: rgba(15,17,23,.96); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 20px; gap: 14px;
+}
+.header-title { font-family: var(--display); font-size: 1rem; font-weight: 700; white-space: nowrap; }
+.header-chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+.chip {
+  background: rgba(91,143,255,.08); border: 1px solid rgba(91,143,255,.22);
+  color: var(--muted); padding: 2px 10px; border-radius: 20px;
+  font-size: .7rem; font-family: var(--mono); white-space: nowrap;
+}
+.chip.ok   { background: rgba(34,197,94,.08); border-color: rgba(34,197,94,.22); color: #22c55e; }
+.chip.err  { background: rgba(239,68,68,.08);  border-color: rgba(239,68,68,.22);  color: #ef4444; }
+#edge-count-chip { margin-left: auto; }
+
+.layout { display: flex; height: 100vh; padding-top: var(--header-h); }
+
+/* ─── sidebar ────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w); min-width: var(--sidebar-w);
+  height: 100%; overflow-y: auto; overflow-x: hidden;
+  background: var(--card); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.section { padding: 16px 16px 0; }
+.section-title {
+  font-family: var(--display); font-size: .7rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+
+/* ─── legend rows ─────────────────────────────────────────────────── */
+.legend { display: flex; flex-direction: column; gap: 4px; padding-bottom: 16px; }
+.legend-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: 7px; cursor: pointer;
+  border: 1px solid transparent; transition: background .15s, border-color .15s;
+  user-select: none;
+}
+.legend-row:hover { background: var(--card2); border-color: var(--border); }
+.legend-row.hidden-class { opacity: .35; }
+.swatch { width: 28px; height: 5px; border-radius: 3px; flex-shrink: 0; transition: width .15s; }
+.legend-label { flex: 1; font-family: var(--mono); font-size: .78rem; color: var(--text); }
+.legend-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.legend-count { font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+.legend-weight { font-family: var(--mono); font-size: .66rem; color: var(--muted); opacity: .7; }
+.legend-weight.highlight { color: #ef4444; opacity: 1; }
+
+/* ─── stats panel ─────────────────────────────────────────────────── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding-bottom: 16px; }
+.stat-card {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 12px;
+}
+.stat-val { font-family: var(--mono); font-size: 1.1rem; font-weight: 500; color: var(--text); }
+.stat-lbl { font-size: .7rem; color: var(--muted); margin-top: 2px; }
+
+/* ─── info note ───────────────────────────────────────────────────── */
+.info-note {
+  margin: 0 16px 16px; padding: 10px 12px;
+  background: rgba(239,68,68,.07); border: 1px solid rgba(239,68,68,.2);
+  border-radius: 8px; font-size: .74rem; line-height: 1.55; color: var(--muted);
+}
+.info-note strong { color: var(--text); }
+
+/* ─── map ────────────────────────────────────────────────────────── */
+#map { flex: 1; height: 100%; }
+
+/* ─── tooltip ────────────────────────────────────────────────────── */
+.map-tooltip {
+  position: absolute; pointer-events: none; z-index: 100;
+  background: var(--card); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 9px 12px;
+  font-family: var(--mono); font-size: .76rem; line-height: 1.6;
+  color: var(--text); white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,.5);
+  display: none;
+}
+.tooltip-class { font-size: .9rem; font-weight: 500; margin-bottom: 2px; }
+.tooltip-row { color: var(--muted); }
+.tooltip-row span { color: var(--text); }
+
+/* ─── loading overlay ─────────────────────────────────────────────── */
+#loading {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--bg); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+}
+.spinner {
+  width: 36px; height: 36px; border: 3px solid var(--border2);
+  border-top-color: #5b8fff; border-radius: 50%; animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#loading-msg { font-family: var(--mono); font-size: .85rem; color: var(--muted); }
+
+/* ─── error state ─────────────────────────────────────────────────── */
+#error-msg {
+  display: none; position: fixed; inset: 0; z-index: 998;
+  background: var(--bg); flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+}
+.error-title { font-family: var(--display); font-size: 1.2rem; color: #ef4444; }
+.error-body { font-family: var(--mono); font-size: .82rem; color: var(--muted); max-width: 420px; text-align: center; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <div id="loading-msg">Starting up…</div>
+</div>
+
+<div id="error-msg">
+  <div class="error-title">Server not reachable</div>
+  <div class="error-body" id="error-body">
+    Start the standalone server first:<br>
+    <code style="color:#5b8fff;">python benchmark/road_classes_server.py</code><br><br>
+    Then reload this page.
+  </div>
+</div>
+
+<header>
+  <div class="header-title">Road Class Network</div>
+  <div class="header-chips">
+    <span class="chip" id="region-chip">Eixample · Barcelona</span>
+    <span class="chip" id="status-chip">loading…</span>
+    <span class="chip" id="edge-count-chip">— edges</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+
+    <div class="section" style="padding-top:16px;">
+      <div class="section-title">Road Classes</div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Network Stats</div>
+      <div class="stats-grid" id="stats-grid"></div>
+    </div>
+
+    <div class="info-note">
+      <strong>Dijkstra weight</strong> shown per class. A weight of <strong style="color:#ef4444;">2.0×</strong>
+      caused Dijkstra to prefer longer physical routes via footways over shorter residential streets.
+      Weights were reduced to <strong>1.2–1.4×</strong> — click any road on the map to inspect its class.
+    </div>
+
+    <div class="section" style="padding-bottom:16px;">
+      <div class="section-title">Controls</div>
+      <div style="display:flex; flex-direction:column; gap:6px; padding-bottom:16px;">
+        <button id="btn-show-all" style="
+          background:rgba(91,143,255,.1); border:1px solid rgba(91,143,255,.3);
+          color:#5b8fff; border-radius:7px; padding:7px 12px;
+          font-family:var(--mono); font-size:.78rem; cursor:pointer; text-align:left;
+        ">Show all classes</button>
+        <button id="btn-hide-car" style="
+          background:rgba(239,68,68,.07); border:1px solid rgba(239,68,68,.2);
+          color:#ef4444; border-radius:7px; padding:7px 12px;
+          font-family:var(--mono); font-size:.78rem; cursor:pointer; text-align:left;
+        ">Hide car-priority roads</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <div id="map"></div>
+</div>
+
+<div class="map-tooltip" id="tooltip">
+  <div class="tooltip-class" id="tt-class"></div>
+  <div class="tooltip-row">edge id: <span id="tt-id"></span></div>
+  <div class="tooltip-row">weight:  <span id="tt-weight"></span></div>
+</div>
+
+<script>
+const API = 'http://localhost:8002';
+
+/* ── road-class config ───────────────────────────────────────────── */
+// Weights mirror _ROAD_WEIGHT in model.py
+// Priority: footway(1.0) > living_street(1.1) > pedestrian(1.2) > residential(1.3) > connector(1.4) > steps(1.5)
+const CLASS_CONFIG = {
+  footway:       { color: '#22c55e', weight: 1.0,  width: 2.5, label: 'footway',        desc: '1st — dedicated foot paths' },
+  path:          { color: '#a855f7', weight: 1.0,  width: 2.0, label: 'path',           desc: '1st — informal / generic paths' },
+  living_street: { color: '#eab308', weight: 1.1,  width: 2.5, label: 'living street',  desc: '2nd — shared / pedestrianised street' },
+  pedestrian:    { color: '#5b8fff', weight: 1.2,  width: 3.5, label: 'pedestrian',     desc: '3rd — pedestrian zones/plazas' },
+  residential:   { color: '#ef4444', weight: 1.3,  width: 2.0, label: 'residential',    desc: '4th — residential road (walkable)' },
+  connector:     { color: '#94a3b8', weight: 1.4,  width: 1.5, label: 'connector',      desc: '5th — synthetic bridge edge' },
+  steps:         { color: '#f97316', weight: 1.5,  width: 2.5, label: 'steps',          desc: '6th — stairs / stairways' },
+  service:       { color: '#ec4899', weight: 1.8,  width: 1.5, label: 'service',        desc: 'Service roads / alleys' },
+  unknown:       { color: '#4b5563', weight: 1.6,  width: 1.0, label: 'unknown',        desc: 'Null / unclassified' },
+};
+
+const CAR_PRIORITY = new Set(['residential', 'service']);
+const hiddenClasses = new Set();
+
+/* ── helpers ─────────────────────────────────────────────────────── */
+function classColor(rc)  { return (CLASS_CONFIG[rc] || CLASS_CONFIG.unknown).color; }
+function classWeight(rc) { return (CLASS_CONFIG[rc] || CLASS_CONFIG.unknown).weight; }
+function classWidth(rc)  { return (CLASS_CONFIG[rc] || CLASS_CONFIG.unknown).width; }
+
+function setLoading(msg) {
+  document.getElementById('loading-msg').textContent = msg;
+}
+function hideLoading() {
+  document.getElementById('loading').style.display = 'none';
+}
+function showError(msg) {
+  document.getElementById('error-body').innerHTML = msg;
+  document.getElementById('error-msg').style.display = 'flex';
+  hideLoading();
+}
+
+/* ── fetch token + data ──────────────────────────────────────────── */
+async function init() {
+  // 1. Get Mapbox token
+  setLoading('Fetching Mapbox token…');
+  let token;
+  try {
+    const cfg = await fetch(`${API}/api/config`).then(r => r.json());
+    token = cfg.mapbox_token;
+    if (!token || token.startsWith('your-')) throw new Error('Token not configured in .env');
+  } catch (e) {
+    showError(`Could not reach the standalone server.<br><br>
+      Start it with:<br>
+      <code style="color:#5b8fff;">python benchmark/road_classes_server.py</code><br><br>
+      Then reload.<br><br>
+      <small style="color:#4b5563;">${e.message}</small>`);
+    return;
+  }
+
+  // 2. Fetch road network from DuckDB via standalone server
+  setLoading('Loading walk_edges from DuckDB… (first load may take a few seconds)');
+  let geojson;
+  try {
+    geojson = await fetch(`${API}/api/road_classes`).then(r => r.json());
+    if (geojson.error) throw new Error(geojson.error);
+  } catch (e) {
+    showError(`Failed to load road_classes from DuckDB.<br><small>${e.message}</small>`);
+    return;
+  }
+
+  const counts = geojson.counts || {};
+  const features = geojson.features || [];
+  const total = features.length;
+
+  // Update header chip
+  document.getElementById('edge-count-chip').textContent = `${total.toLocaleString()} edges`;
+  document.getElementById('status-chip').textContent = 'loaded';
+  document.getElementById('status-chip').classList.add('ok');
+
+  // 3. Build map
+  setLoading('Rendering map…');
+  mapboxgl.accessToken = token;
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v11',
+    center: [2.1647, 41.3925],
+    zoom: 14.5,
+    antialias: true,
+  });
+
+  map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
+  map.addControl(new mapboxgl.ScaleControl({ unit: 'metric' }), 'bottom-right');
+
+  map.on('load', () => {
+    hideLoading();
+
+    // One source, one layer per class for independent visibility toggling
+    const byClass = {};
+    for (const f of features) {
+      const rc = f.properties.road_class || 'unknown';
+      if (!byClass[rc]) byClass[rc] = [];
+      byClass[rc].push(f);
+    }
+
+    const orderedClasses = Object.keys(CLASS_CONFIG).filter(rc => byClass[rc]);
+
+    for (const rc of orderedClasses) {
+      const srcId = `roads-${rc}`;
+      const lyrId = `roads-layer-${rc}`;
+      map.addSource(srcId, {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: byClass[rc] },
+      });
+      map.addLayer({
+        id: lyrId,
+        type: 'line',
+        source: srcId,
+        paint: {
+          'line-color': classColor(rc),
+          'line-width': classWidth(rc),
+          'line-opacity': rc === 'connector' ? 0.45 : 0.85,
+        },
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+      });
+    }
+
+    // ── legend ────────────────────────────────────────────────────────
+    const legendEl = document.getElementById('legend');
+    for (const rc of orderedClasses) {
+      const cfg   = CLASS_CONFIG[rc] || CLASS_CONFIG.unknown;
+      const count = counts[rc] || byClass[rc]?.length || 0;
+      const pct   = total ? ((count / total) * 100).toFixed(1) : '0';
+      const isOld = CAR_PRIORITY.has(rc);
+
+      const row = document.createElement('div');
+      row.className = 'legend-row';
+      row.dataset.rc = rc;
+      row.title = cfg.desc;
+      row.innerHTML = `
+        <div class="swatch" style="background:${cfg.color};"></div>
+        <div class="legend-label">${cfg.label}</div>
+        <div class="legend-meta">
+          <div class="legend-count">${count.toLocaleString()} <span style="opacity:.5;">${pct}%</span></div>
+          <div class="legend-weight ${isOld ? 'highlight' : ''}">×${cfg.weight.toFixed(1)}</div>
+        </div>`;
+      row.addEventListener('click', () => toggleClass(rc, row, map));
+      legendEl.appendChild(row);
+    }
+
+    // ── stats ──────────────────────────────────────────────────────────
+    const statsEl = document.getElementById('stats-grid');
+    const pedCount  = (counts.pedestrian || 0) + (counts.footway || 0) + (counts.path || 0) + (counts.steps || 0) + (counts.living_street || 0);
+    const carCount  = (counts.residential || 0) + (counts.service || 0);
+    const connCount = counts.connector || 0;
+    const dedPct    = total ? Math.round(pedCount / total * 100) : 0;
+
+    const statItems = [
+      { val: total.toLocaleString(),            lbl: 'Total edges' },
+      { val: `${dedPct}%`,                      lbl: 'Pedestrian-first' },
+      { val: pedCount.toLocaleString(),         lbl: 'Ped-dedicated' },
+      { val: carCount.toLocaleString(),         lbl: 'Car-priority' },
+      { val: connCount.toLocaleString(),        lbl: 'Connectors' },
+      { val: Object.keys(byClass).length,       lbl: 'Distinct classes' },
+    ];
+    for (const { val, lbl } of statItems) {
+      statsEl.insertAdjacentHTML('beforeend', `
+        <div class="stat-card">
+          <div class="stat-val">${val}</div>
+          <div class="stat-lbl">${lbl}</div>
+        </div>`);
+    }
+
+    // ── tooltip ────────────────────────────────────────────────────────
+    const tooltip = document.getElementById('tooltip');
+    const ttClass = document.getElementById('tt-class');
+    const ttId    = document.getElementById('tt-id');
+    const ttWeight= document.getElementById('tt-weight');
+
+    for (const rc of orderedClasses) {
+      const lyrId = `roads-layer-${rc}`;
+      map.on('mouseenter', lyrId, (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+        const f   = e.features?.[0];
+        const rc2 = f?.properties?.road_class || 'unknown';
+        const cfg = CLASS_CONFIG[rc2] || CLASS_CONFIG.unknown;
+        ttClass.textContent  = cfg.label;
+        ttClass.style.color  = cfg.color;
+        ttId.textContent     = f?.properties?.edge_id ?? '—';
+        ttWeight.textContent = `×${cfg.weight.toFixed(1)}`;
+        tooltip.style.display = 'block';
+      });
+      map.on('mousemove', lyrId, (e) => {
+        tooltip.style.left = (e.originalEvent.clientX + 14) + 'px';
+        tooltip.style.top  = (e.originalEvent.clientY - 10) + 'px';
+      });
+      map.on('mouseleave', lyrId, () => {
+        map.getCanvas().style.cursor = '';
+        tooltip.style.display = 'none';
+      });
+    }
+
+    // ── controls ───────────────────────────────────────────────────────
+    document.getElementById('btn-show-all').addEventListener('click', () => {
+      hiddenClasses.clear();
+      for (const rc of orderedClasses) {
+        map.setLayoutProperty(`roads-layer-${rc}`, 'visibility', 'visible');
+        const row = legendEl.querySelector(`[data-rc="${rc}"]`);
+        row?.classList.remove('hidden-class');
+      }
+    });
+
+    document.getElementById('btn-hide-car').addEventListener('click', () => {
+      for (const rc of CAR_PRIORITY) {
+        if (!orderedClasses.includes(rc)) continue;
+        hiddenClasses.add(rc);
+        map.setLayoutProperty(`roads-layer-${rc}`, 'visibility', 'none');
+        const row = legendEl.querySelector(`[data-rc="${rc}"]`);
+        row?.classList.add('hidden-class');
+      }
+    });
+  });
+
+  map.on('error', (e) => console.warn('[map]', e));
+}
+
+function toggleClass(rc, rowEl, map) {
+  const lyrId = `roads-layer-${rc}`;
+  if (hiddenClasses.has(rc)) {
+    hiddenClasses.delete(rc);
+    map.setLayoutProperty(lyrId, 'visibility', 'visible');
+    rowEl.classList.remove('hidden-class');
+  } else {
+    hiddenClasses.add(rc);
+    map.setLayoutProperty(lyrId, 'visibility', 'none');
+    rowEl.classList.add('hidden-class');
+  }
+}
+
+init();
+</script>
+</body>
+</html>

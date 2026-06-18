@@ -1,34 +1,121 @@
 {
   "metadata": {
-    "timestamp": "20260311_173545",
-    "latitude": 41.4004975,
-    "longitude": 2.1647160000000003,
-    "heading": 133.66792925816605,
-    "street_name": "",
+    "timestamp": "20260613_194302",
+    "latitude": 41.400498,
+    "longitude": 2.164716,
+    "heading": 125.0,
+    "street_name": "Carrer de Còrsega",
     "highway_type": "road",
-    "edge_id": "2279166f-64d2-4ccf-9111-a3826ef3c9be",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.400498_2.164716_h133.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "58145599-b506-4bac-901d-b1c32d7ee28a",
+    "source_image": "sv_41.400498_2.164716_h125.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 21518.0,
+    "latency_ms": 287575.8,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A city street with buildings on both sides, featuring a mix of old and new architecture, including a large beige building with a balcony and a smaller brown building with a sign reading 'Caixa d'Engle', as well as a black metal gate blocking off the street,",
-    "buildings": "unknown",
-    "materials": "The beige building's facade is constructed from a combination of stone and brick, while the brown building's exterior is made entirely of brick, giving it a warm, earthy tone.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans scattered throughout the area, providing a place for pedestrians to rest and dispose of waste.",
-    "vegetation": "The street is lined with small trees and shrubs, adding a touch of greenery to the urban landscape.",
-    "signage": "A few signs are visible, including a blue sign with white lettering that reads 'Caixa d'Engle' and a white sign with black lettering that says 'Casa de la Vida.'",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "People are walking along the sidewalk, some stopping to admire the architecture or take photos, while others hurry by, going about their daily business.",
-    "lighting_atmosphere": "The sun shines brightly overhead, casting long shadows across the street and illuminating the buildings and pavement.",
-    "as_resident": "A few locals can be seen going about their daily routines, enjoying the quiet morning hours and taking advantage of the pleasant weather.",
-    "as_commuter": "Commuters are hurrying to get to work or school, with some stopping to grab a coffee or snack.",
-    "as_tourist": "Tourists are taking photos and exploring the area, with some stopping to admire the architecture and history.",
-    "as_student": "Students are studying or working on their assignments, with some typing away on their laptops or chatting with classmates."
-  }
+    "scene": "Urban street with narrow sidewalks and buildings, leading to a gated area at the end.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "direct overhead sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [],
+    "street_amenities": [
+      {
+        "zone": "center",
+        "element": "black painted metal gate",
+        "material_and_colour": "black painted metal",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "10",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "GECA",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "XINS",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

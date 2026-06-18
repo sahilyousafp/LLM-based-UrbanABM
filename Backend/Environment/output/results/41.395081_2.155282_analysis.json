@@ -1,34 +1,128 @@
 {
   "metadata": {
-    "timestamp": "20260311_233920",
-    "latitude": 41.39508119999999,
-    "longitude": 2.1552815,
-    "heading": 317.34493473346765,
+    "timestamp": "20260613_173924",
+    "latitude": 41.395081,
+    "longitude": 2.155282,
+    "heading": 309.0,
     "street_name": "Avinguda Diagonal",
     "highway_type": "road",
-    "edge_id": "e7a0aadc-3db0-4d35-870e-b2f1c0959425",
-    "dist_along_edge_m": 67.3,
-    "source_image": "sv_41.395081_2.155282_h317.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "2446fd81-0acd-48f3-b866-a041f5748f57",
+    "source_image": "sv_41.395081_2.155282_h309.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 85509.6,
+    "latency_ms": 301220.4,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A sunny day in a city street with a white convertible BMW driving down the road. The car has two people inside and is driving towards the camera. There are tall buildings on both sides of the street, including a large white building on the left with balconies and a smaller white building on the right with a rounded top. The sky is blue with a few clouds. The street is wide and empty except for the car and a few pedestrians. The sun is shining brightly.",
-    "buildings": "The large white building on the left has a cream-colored facade with stone quoins at the corners. It has three stories and many windows. The smaller white building on the right has a rounded top and a flat roof. It also has three stories and many windows. Both have a similar style but different heights.",
-    "materials": "The street is paved with asphalt and has white lines painted on it. The sidewalk is made of concrete and has a few trees planted along it. The cars parked on the side of the street include a silver sedan and a black SUV. The streetlights are tall and slender with round globes at the top.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans placed along the sidewalk. A few bicycles are parked near the curb.",
-    "vegetation": "There are a few trees planted along the sidewalk, some of which are bare and others that have leaves. They add a touch of greenery to the otherwise urban landscape.",
-    "signage": "There are several signs posted along the street, including a blue sign with white lettering that reads 'One Way' and a red sign with white lettering that says 'No Parking'. There are also several other signs that are not legible.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "This street is likely a popular spot for locals and tourists alike. People seem to be enjoying the pleasant weather and taking in the sights.",
-    "as_commuter": "The street is a convenient location for commuters, with several bus stops and train stations nearby. The area is also home to several restaurants and bars.",
-    "as_tourist": "The street is a vibrant and eclectic neighborhood, with a mix of old and new buildings and a lively atmosphere. It's a great place to explore and experience the local culture.",
-    "as_student": "This street is a great place to study abroad, with its mix of old and new buildings and diverse student population."
-  }
+    "scene": "Urban street with modernist architecture, moderate pedestrian traffic, and parked vehicles.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "clear blue sky",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large windows with glass panes"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large windows with glass panes"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large windows with glass panes"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large windows with glass panes"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "bare winter trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "palm trees",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron double-arm street lamp",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollards",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "VOLKSWAGEN",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

@@ -1,34 +1,128 @@
 {
   "metadata": {
-    "timestamp": "20260311_190224",
-    "latitude": 41.3884209,
-    "longitude": 2.1506844,
-    "heading": 234.61405854595642,
+    "timestamp": "20260613_153056",
+    "latitude": 41.388421,
+    "longitude": 2.150684,
+    "heading": 241.0,
     "street_name": "",
     "highway_type": "road",
     "edge_id": "ade3f0a3-dd26-48d8-8dd5-59f47fa7a684",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.388421_2.150684_h234.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "source_image": "sv_41.388421_2.150684_h241.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 63276.0,
+    "latency_ms": 287660.0,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide city street with buildings on both sides, lined with trees and cars parked along the curb. The sun shines down on the street, casting shadows across the asphalt. A person walks down the sidewalk on the right side of the street, while others stand near the parked cars. The sky is blue with wispy white clouds.",
-    "buildings": "The buildings on the left are tall and feature a mix of windows and balconies, while those on the right have a more uniform facade with fewer windows. The buildings appear to be made of stone or concrete.",
-    "materials": "The street is paved with asphalt and has yellow lines painted on it, indicating parking spaces. The sidewalk is made of concrete and has a few cracks.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans scattered along the sidewalk, as well as a few bicycles parked against the curb.",
-    "vegetation": "The trees lining the street are mostly bare, with only a few leaves still clinging to their branches. There are also some small bushes and shrubs planted along the sidewalk.",
-    "signage": "There are several signs posted along the street, including a large sign reading 'One Way' and a smaller sign indicating a pedestrian crossing.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "This street is likely a popular spot for locals and tourists alike, with its central location and lively atmosphere. It may be a hub for shopping, dining, or entertainment.",
-    "as_commuter": "The street is a convenient spot for commuters who need to get around the city. It's a great place to meet new people and try out new places to eat and drink.",
-    "as_tourist": "The street is a great spot for taking photos, with its unique architecture and scenic views. It's a popular tourist destination, with plenty of opportunities to learn about the local culture and history.",
-    "as_student": "The street is a great place to study urban planning and design, with plenty of opportunities to observe how different cultures interact with their environment."
-  }
+    "scene": "Urban street with modernist buildings, wide roadways, and moderate pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": "geometric facade with large windows"
+      },
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": "geometric facade with large windows"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "good",
+        "storefront_type": "unknown",
+        "architectural_details": "large columns and symmetrical design"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "unknown",
+        "architectural_details": "geometric facade with large windows"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "unknown",
+        "architectural_details": "geometric facade with large windows"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "bare deciduous trees without leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron street lamp posts",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "yellow painted concrete bollards",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "ESPECIALISTES EN",
+        "zone": "right",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

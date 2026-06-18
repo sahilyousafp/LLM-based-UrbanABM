@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "timestamp": "20260607_090309",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "microsoft/Phi-3.5-vision-instruct",
+    "device": "cuda:0",
+    "latency_ms": 39779.20858700009,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Tree-lined residential street with moderate pedestrian activity and parked vehicles.",
+    "lighting": [
+      {
+        "zone": "far_left",
+        "element": "dappled shade from dense tree canopy",
+        "condition": "dim"
+      },
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "zebra",
+        "architectural_style": "contemporary",
+        "building_condition": "fair",
+        "storefront_type": "restaurant",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "far_left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      },
+      {
+        "zone": "right",
+        "element": "terracotta-potted rosemary shrubs on window ledges",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "far_left",
+        "element": "ornate cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "MERCAT",
+        "zone": "far_left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

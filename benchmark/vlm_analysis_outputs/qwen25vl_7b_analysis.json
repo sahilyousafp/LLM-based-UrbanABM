@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "timestamp": "20260607_093058",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "device": "cuda:0",
+    "latency_ms": 40604.60843200008,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "Crowded modernist street with ornate architecture, mature trees, and busy pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overhead diffused sunlight through tree canopies",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "ornate balconies with wrought-iron railings"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "dense"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron street lamps with frosted globes",
+        "material_and_colour": "black painted cast iron",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollards",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "potted plants on window ledges",
+        "material_and_colour": "various",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
+}

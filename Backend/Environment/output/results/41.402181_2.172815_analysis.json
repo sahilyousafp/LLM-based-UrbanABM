@@ -1,34 +1,122 @@
 {
   "metadata": {
-    "timestamp": "20260311_173213",
-    "latitude": 41.4021807,
-    "longitude": 2.1728149,
-    "heading": 49.44868620968509,
-    "street_name": "",
-    "highway_type": "road",
-    "edge_id": "b458d6a0-de27-498f-b55c-13acc470966f",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.402181_2.172815_h49.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "timestamp": "20260613_203645",
+    "latitude": 41.402181,
+    "longitude": 2.172815,
+    "heading": 57.0,
+    "street_name": "synthetic_bridge",
+    "highway_type": "bridge",
+    "edge_id": "bridge_c45d93e0",
+    "source_image": "sv_41.402181_2.172815_h57.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 21876.9,
+    "latency_ms": 841568.2,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A sunny day in a park with a car parked next to a tree and another car parked across the street. The sun shines through the leaves of the trees, casting dappled shadows on the ground. A woman walks down the sidewalk behind the cars, wearing a white tank top and black pants. The street is lined with tall trees and has a metal fence along the edge. There are several buildings in the distance, including a large white building with a flat roof.",
-    "buildings": "The building on the left has a modern, sleek design with a flat roof and large windows. It appears to be made of concrete or stone. The building on the right has a more traditional design with a pitched roof and smaller windows. It looks like a residential building.",
-    "materials": "The building on the left has a smooth, gray exterior with a few decorative elements such as a small balcony and a few potted plants. The building on the right has a rougher, more rustic appearance with exposed brickwork and wooden beams.",
-    "building_condition": "unknown",
-    "street_furniture": "There are two benches placed along the sidewalk, one near the building on the left and one near the building on the right. They are both made of wood and have a simple, minimalist design.",
-    "vegetation": "The trees surrounding the buildings are tall and leafy, providing shade for pedestrians and adding to the park-like atmosphere.",
-    "signage": "There are several signs posted along the sidewalk, including a blue sign with a white",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The area appears to be quiet and peaceful, with only a few people visible.",
-    "as_commuter": "unknown",
-    "as_tourist": "The area is popular with tourists, with many people taking photos and admiring the architecture.",
-    "as_student": "The area is also home to several students, who are studying or working in the nearby buildings."
-  }
+    "scene": "Tree-lined street with parked cars and moderate pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "dappled shade from dense tree canopy",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "unknown",
+        "storefront_type": "unknown",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature deciduous trees with green foliage",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "small shrubs and bushes",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "lamppost with parking sign",
+        "material_and_colour": "metallic grey",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "P",
+        "zone": "far_right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

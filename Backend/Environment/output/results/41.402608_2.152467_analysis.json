@@ -1,34 +1,143 @@
 {
   "metadata": {
-    "timestamp": "20260311_212853",
-    "latitude": 41.402607999999994,
-    "longitude": 2.1524674000000004,
-    "heading": 153.348625928361,
-    "street_name": "Carrer Gran de Gràcia",
+    "timestamp": "20260613_203515",
+    "latitude": 41.402608,
+    "longitude": 2.152467,
+    "heading": 145.0,
+    "street_name": "Carrer de Bretón de los Herreros",
     "highway_type": "road",
-    "edge_id": "3ec87250-cb42-469e-8926-0ac2b6a25081",
-    "dist_along_edge_m": 70.8,
-    "source_image": "sv_41.402608_2.152467_h153.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "f6cb9414-4c5d-4cb4-bdb1-bfd3ead4874d",
+    "source_image": "sv_41.402608_2.152467_h145.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 43869.3,
+    "latency_ms": 279131.2,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A city street with buildings on both sides, featuring a mix of old and new architecture, including a tall yellow building on the left and a beige building on the right with a black garage door covered in graffiti. The street is paved with cobblestones and has a few pedestrians walking along the sidewalk. A man stands on the corner, waiting to cross the street, while another person walks down the sidewalk. The sky is blue with white clouds.",
-    "buildings": "The beige building on the right has a large window on the second floor and a smaller one on the first floor, both covered in graffiti. The yellow building on the left has balconies on each floor.",
-    "materials": "The beige building has a stone facade with a decorative metal lamp post attached to its side. The yellow building has a smooth concrete facade.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans along the sidewalk, as well as a few potted plants.",
-    "vegetation": "The street is lined with trees and bushes, adding a touch of greenery to the urban landscape.",
-    "signage": "There are several signs posted along the street, including a stop sign, a pedestrian crossing signal, and a directional sign.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The area appears to be residential, with a few shops and cafes nearby.",
-    "as_commuter": "The area is a great place to grab a bite to eat.",
-    "as_tourist": "The area is a great place to visit.",
-    "as_student": "The area is a great place to hang out with friends."
-  }
+    "scene": "Urban street with modernist architecture, mixed-use buildings, and moderate pedestrian activity.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast sky with scattered clouds",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "wrought-iron balconies"
+      },
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large windows"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large windows"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "vacant",
+        "architectural_details": "graffiti on closed shutter"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "vacant",
+        "architectural_details": "graffiti on closed shutter"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "palm trees along the road",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "small leafy trees near the sidewalk",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "yellow traffic lights",
+        "material_and_colour": "yellow",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollards",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "black painted cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "SxAMP",
+        "zone": "right",
+        "type": "graffiti"
+      },
+      {
+        "text": "NAD",
+        "zone": "right",
+        "type": "graffiti"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

@@ -1,34 +1,117 @@
 {
   "metadata": {
-    "timestamp": "20260311_235647",
-    "latitude": 41.3864832,
-    "longitude": 2.1731772,
-    "heading": 317.73618238528377,
+    "timestamp": "20260613_150359",
+    "latitude": 41.386483,
+    "longitude": 2.173177,
+    "heading": 309.0,
     "street_name": "Carrer d'Estruc",
     "highway_type": "road",
     "edge_id": "f232bc58-74c6-460e-8ac6-9bd7808b156f",
-    "dist_along_edge_m": 146.4,
-    "source_image": "sv_41.386483_2.173177_h317.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "source_image": "sv_41.386483_2.173177_h309.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 37804.1,
+    "latency_ms": 707039.7,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A narrow street in a city with tall buildings on both sides,",
-    "buildings": "The buildings are made of stone and have a mix of old and new features such as windows, balconies, and doors.",
-    "materials": "The street has a mix of concrete, brick, and stone walls.",
-    "building_condition": "unknown",
-    "street_furniture": "There are no visible street furniture such as benches, trash cans, or bike racks.",
-    "vegetation": "There are some small plants and trees along the sidewalk.",
-    "signage": "There are several signs posted on the buildings, including a sign that reads 'REBELLARTE'.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "There are no pedestrians visible.",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The area appears to be quiet and peaceful.",
-    "as_commuter": "unknown",
-    "as_tourist": "The area may be worth visiting due to its historic architecture and cultural significance.",
-    "as_student": "The area is also home to many shops and restaurants."
-  }
+    "scene": "Narrow street with sidewalks and buildings, featuring a sign reading \"REBELARTE\".",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "green signage above entrance"
+      },
+      {
+        "zone": "left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "green signage above entrance"
+      },
+      {
+        "zone": "center",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "green signage above entrance"
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "green signage above entrance"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "green signage above entrance"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "empty"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "green leafy plants above doorway",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "REBELARTE",
+        "zone": "left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

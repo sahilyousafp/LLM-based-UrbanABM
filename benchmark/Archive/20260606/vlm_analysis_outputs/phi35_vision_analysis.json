@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "timestamp": "20260606_142122",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "microsoft/Phi-3.5-vision-instruct",
+    "device": "cuda:0",
+    "latency_ms": 52339.17741700043,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A bustling city street scene with pedestrians, cyclists, and vehicles.",
+    "lighting": [
+      {
+        "zone": "far_left",
+        "element": "trees",
+        "condition": "adequate"
+      },
+      {
+        "zone": "left",
+        "element": "buildings",
+        "condition": "adequate"
+      },
+      {
+        "zone": "center",
+        "element": "street",
+        "condition": "adequate"
+      },
+      {
+        "zone": "right",
+        "element": "buildings",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "neo_gothic",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "ornate facades with intricate detailing"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "obstructed",
+        "lane_type": "shared",
+        "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "restaurant",
+        "architectural_details": "clean lines and minimalistic design"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "signalised",
+        "architectural_style": "contemporary",
+        "building_condition": "fair",
+        "storefront_type": "office",
+        "architectural_details": "modern structures with glass facades"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "shared",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": "classical columns and symmetry"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "far_left",
+        "density_level": "empty"
+      },
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      },
+      {
+        "zone": "right",
+        "density_level": "dense"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "left",
+        "element": "trees",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "center",
+        "element": "trees",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "trees",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "far_left",
+        "element": "trash_bins",
+        "material_and_colour": "metal",
+        "presence": "few"
+      },
+      {
+        "zone": "left",
+        "element": "trash_bins",
+        "material_and_colour": "metal",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "trash_bins",
+        "material_and_colour": "metal",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "trash_bins",
+        "material_and_colour": "metal",
+        "presence": "many"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "no_entry",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "no_entry",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

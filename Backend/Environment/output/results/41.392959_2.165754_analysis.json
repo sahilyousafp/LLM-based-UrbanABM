@@ -1,34 +1,123 @@
 {
   "metadata": {
-    "timestamp": "20260311_205527",
-    "latitude": 41.39295920000001,
+    "timestamp": "20260613_165009",
+    "latitude": 41.392959,
     "longitude": 2.165754,
-    "heading": 229.27497683271514,
-    "street_name": "",
-    "highway_type": "road",
-    "edge_id": "da2bda91-bc0a-4701-9508-9c8d52c3e6a1",
-    "dist_along_edge_m": 3.3,
-    "source_image": "sv_41.392959_2.165754_h229.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "heading": 237.0,
+    "street_name": "synthetic_bridge",
+    "highway_type": "bridge",
+    "edge_id": "bridge_bb788c07",
+    "source_image": "sv_41.392959_2.165754_h237.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 85377.7,
+    "latency_ms": 308134.9,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide city street with tall buildings on both sides, lined with parked motorcycles and cars, and featuring various businesses along the sidewalk. The street has a mix of pedestrians and vehicles moving in both directions, with some people walking and others riding scooters. The sky is overcast with clouds covering most of the sun.",
-    "buildings": "The buildings are primarily beige-colored with ornate facades, featuring balconies and decorative elements such as columns and arches. Some have signs indicating they are commercial establishments, while others appear residential. The street is paved with asphalt and has white lines marking lanes and parking spots.",
-    "materials": "The street is paved with asphalt and has white lines marking lanes and parking spots. There are also concrete sidewalks and planters with plants and flowers along the street.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans placed along the sidewalk, but there are no other notable pieces of furniture.",
-    "vegetation": "There are small trees and bushes planted in the median strip between the two lanes of traffic.",
-    "signage": "There are several signs posted along the street, including directional signs, business names, and advertisements. Some signs are illuminated, while others are not.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "People are scattered throughout the area, with some walking alone and others in groups. There are also a few cyclists and motorcyclists.",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "The street seems quiet and peaceful, with only a few people visible. There are no notable landmarks or attractions.",
-    "as_commuter": "The street is a convenient location for commuting, with easy access to public transportation and nearby shopping and dining options.",
-    "as_tourist": "The street is a unique and fascinating area, with a rich history and culture. There are many interesting landmarks and attractions to explore.",
-    "as_student": "The street is a great place to study and learn about the local economy and industry. There are many young people working hard to make a living."
-  }
+    "scene": "Neoclassical boulevard with moderate traffic and mixed commercial buildings.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "columns and pilasters"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "columns and pilasters"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "columns and pilasters"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "columns and pilasters"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "large windows and balconies"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "small potted plants along the sidewalk",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "far_left",
+        "element": "cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "MERCAT",
+        "zone": "far_left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

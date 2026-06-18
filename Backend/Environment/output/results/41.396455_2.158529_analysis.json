@@ -1,34 +1,26 @@
 {
   "metadata": {
-    "timestamp": "20260311_224942",
-    "latitude": 41.3964547,
-    "longitude": 2.1585286,
-    "heading": 251.93835784770906,
-    "street_name": "Avinguda Diagonal",
+    "timestamp": "20260613_182847",
+    "latitude": 41.396455,
+    "longitude": 2.158529,
+    "heading": 324.0,
+    "street_name": "Passeig de Gràcia",
     "highway_type": "road",
-    "edge_id": "ff426b43-912c-409d-b8e5-3bca85ef01be",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.396455_2.158529_h251.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "32431f32-af55-4706-9d02-dc17a18213e6",
+    "source_image": "sv_41.396455_2.158529_h324.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 18914.0,
+    "latency_ms": 1175104.0,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide city street with tall buildings on both sides, lined with trees and featuring a bike lane and sidewalk,",
-    "buildings": "unknown",
-    "materials": "Concrete, brick, glass, metal, and wood",
-    "building_condition": "Good condition with some wear and tear",
-    "street_furniture": "Benches, trash cans, bike racks, and outdoor seating areas",
-    "vegetation": "Greenery including trees, shrubs, and flowers",
-    "signage": "Signs indicating business names, directions, and parking restrictions",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "Local residents appreciate the area's mix of commercial and residential uses",
-    "as_commuter": "unknown",
-    "as_tourist": "The street is popular with tourists due to its unique architecture and lively atmosphere",
-    "as_student": "The street is also used by commuters and locals alike for daily errands and socializing."
-  }
+    "scene": "unknown",
+    "lighting": [],
+    "spatial_character": [],
+    "crowdedness": [],
+    "greenery": [],
+    "street_amenities": [],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

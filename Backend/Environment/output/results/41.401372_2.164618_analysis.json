@@ -1,34 +1,26 @@
 {
   "metadata": {
-    "timestamp": "20260312_000445",
-    "latitude": 41.401371999999995,
-    "longitude": 2.1646184000000006,
-    "heading": 136.3383412254525,
-    "street_name": "Carrer de Bailèn",
+    "timestamp": "20260613_202156",
+    "latitude": 41.401372,
+    "longitude": 2.164618,
+    "heading": 127.0,
+    "street_name": "Carrer de Camprodon",
     "highway_type": "road",
-    "edge_id": "2c5c343f-44ee-493e-9b04-a38f9c120d06",
-    "dist_along_edge_m": 40.7,
-    "source_image": "sv_41.401372_2.164618_h136.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "edge_id": "5b02ee5e-bb13-4b1b-a9eb-2d0f6b3f2ffa",
+    "source_image": "sv_41.401372_2.164618_h127.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 44127.0,
+    "latency_ms": 1233561.3,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide city street lined with tall buildings and trees, with cars parked along both sides and a few pedestrians strolling along the sidewalk. The street is relatively empty, with only a few vehicles passing by. The buildings have a mix of modern and traditional architectural styles, with some featuring balconies and others having large windows. The trees provide shade and add a touch of greenery to the urban landscape. The street is well-maintained, with clean sidewalks and a smooth road surface. The atmosphere is calm and peaceful, with a sense of community and activity in the distance.",
-    "buildings": "The buildings are primarily residential, with some commercial establishments on the ground floor. They vary in height and style, ranging from sleek glass towers to more ornate facades. Some have balconies, while others feature large windows that offer stunning views of the surrounding area. The buildings appear well-maintained, with some showing signs of wear and tear but still exuding a sense of elegance and sophistication.",
-    "materials": "The street is paved with asphalt, with white lines marking the lanes and pedestrian crossings. The buildings' facades are made of a combination of materials, including concrete, brick, and glass. The trees are planted in large planters, adding a pop of color and texture to the scene.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and tables scattered throughout the street, offering a place for people to rest and take in the surroundings. A few umbrellas provide shade for outdoor seating areas, while a bike rack holds bicycles securely.",
-    "vegetation": "The trees are tall and leafy, providing a natural canopy over the street. They are spaced at regular intervals, creating a sense of rhythm and harmony.",
-    "signage": "There are several signs posted along the street, advertising local businesses and services. Some are mounted on poles, while others are attached to the buildings themselves.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "This street is likely a popular spot for locals and tourists alike, offering a pleasant place to relax and enjoy the sights and sounds of the city. It's a great place to take a stroll or grab a coffee at one of the many cafes and restaurants.",
-    "as_commuter": "unknown",
-    "as_tourist": "The street has a lively and vibrant atmosphere, with a mix of shops, cafes, and restaurants catering to visitors. There are also several street performers and artists adding to the lively ambiance.",
-    "as_student": "This street is a hub of activity, with students and young professionals going about their daily business. The area is bustling with energy and excitement, making it a great place to explore and discover new things."
-  }
+    "scene": "unknown",
+    "lighting": [],
+    "spatial_character": [],
+    "crowdedness": [],
+    "greenery": [],
+    "street_amenities": [],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

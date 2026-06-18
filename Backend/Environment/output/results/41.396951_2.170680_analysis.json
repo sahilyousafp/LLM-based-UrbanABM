@@ -1,34 +1,26 @@
 {
   "metadata": {
-    "timestamp": "20260311_222338",
-    "latitude": 41.3969513,
-    "longitude": 2.1706796,
-    "heading": 134.79990946841843,
+    "timestamp": "20260613_184000",
+    "latitude": 41.396951,
+    "longitude": 2.17068,
+    "heading": 60.0,
     "street_name": "Carrer d'Aragó",
     "highway_type": "road",
     "edge_id": "59f003c5-d8bf-467b-ac30-0bdc3d85f3df",
-    "dist_along_edge_m": 128.5,
-    "source_image": "sv_41.396951_2.170680_h134.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "source_image": "sv_41.396951_2.170680_h60.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 43646.5,
+    "latency_ms": 1189274.3,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A wide view of a city street with tall buildings on both sides, featuring a mix of residential and commercial properties, including apartments, shops, and restaurants. The street is lined with trees and has a few cars parked along the curb. A white van and a motorcycle are parked on the left side of the street, while a car drives down the middle of the road. The sky is partly cloudy with some blue patches visible through the gaps in the clouds.",
-    "buildings": "The buildings on the left side of the street are multi-story apartment complexes with balconies and windows, while those on the right side appear to be older, more historic structures with ornate facades and decorative details. Some of the buildings have awnings or shutters, adding a pop of color to the otherwise neutral-toned street.",
-    "materials": "The street itself is paved with asphalt and has yellow lines painted on it to guide traffic flow. The sidewalk is made of concrete and has a slight incline, making it easier for pedestrians to navigate the area.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and trash cans scattered throughout the area, providing a place for people to rest and dispose of waste.",
-    "vegetation": "The trees lining the street are lush and green, with leaves rustling gently in the breeze. They add a touch of nature to the urban landscape.",
-    "signage": "There are several signs posted along the street, including directional signs and advertisements for local businesses.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "unknown",
-    "as_resident": "Local residents seem to appreciate the area, with some people stopping to chat or take photos. Others are busy working or running errands.",
-    "as_commuter": "Commuters are moving quickly through the area, some carrying bags or briefcases. Others are taking a break or waiting for someone.",
-    "as_tourist": "Tourists are drawn to the area's unique architecture and lively atmosphere. Some are taking photos or admiring the views, while others are simply enjoying the scenery.",
-    "as_student": "Students are present in the area, often studying or working on projects. Some are sitting on benches or walking around, while others are focused on their work."
-  }
+    "scene": "unknown",
+    "lighting": [],
+    "spatial_character": [],
+    "crowdedness": [],
+    "greenery": [],
+    "street_amenities": [],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

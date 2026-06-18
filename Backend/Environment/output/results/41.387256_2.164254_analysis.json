@@ -1,34 +1,26 @@
 {
   "metadata": {
-    "timestamp": "20260311_193320",
-    "latitude": 41.3872558,
-    "longitude": 2.1642544000000004,
-    "heading": 313.1289058854682,
+    "timestamp": "20260613_152647",
+    "latitude": 41.387256,
+    "longitude": 2.164254,
+    "heading": 304.0,
     "street_name": "",
     "highway_type": "road",
     "edge_id": "95452d86-7faf-451a-ad29-db946333e076",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.387256_2.164254_h313.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "source_image": "sv_41.387256_2.164254_h304.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 64299.1,
+    "latency_ms": 1183873.9,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A view of a city street with tall buildings and a blue sky in the background. The street has a mix of old and new architecture, with some buildings having a more modern design while others have a traditional look. There are several trees and greenery along the sidewalk, adding a touch of nature to the urban landscape. The street is relatively quiet, with only a few pedestrians walking by. The sun is shining down, casting shadows on the ground and highlighting the textures of the buildings and pavement. The overall atmosphere is calm and peaceful, with a sense of history and character.",
-    "buildings": "The buildings in the background are mostly made of stone and brick, with some having ornate facades and intricate carvings. Some of the buildings appear to be older, with worn and weathered exteriors, while others seem newer and more modern. The tallest building in the distance has a sleek, glass façade that reflects the surrounding environment. The buildings vary in height, with some being much taller than others. The street is lined with trees and other greenery, which adds a touch of natural beauty to the urban landscape.",
-    "materials": "The street is paved with cobblestone, which gives it a historic feel. The pavement is well-maintained, but there are some cracks and unevenness here and there. The street is also lined with large planters filled with flowers and shrubs, which add color and vibrancy to the scene. The pavement is clean and free of litter, giving it a sense of pride and care.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and tables scattered throughout the street, providing a place for people to sit and rest. There are also several bike racks and trash cans, which suggest that the area is popular with locals and visitors alike. The street is relatively empty, with only a few people walking by. The benches and tables are all made of wood, which adds a warm and inviting touch to the scene.",
-    "vegetation": "The street is lined with trees and other greenery, which adds a touch of natural beauty to the urban landscape. The trees are tall and leafy, with branches that stretch up towards the sky. The greenery is lush and vibrant, with a variety of plants and flowers adding color and texture to the scene. The street is relatively quiet, with only a few people walking by. The vegetation is well-maintained, with no signs of neglect or decay.",
-    "signage": "There are several signs posted along the street, including street signs, directional signs, and informational signs. The signs are clear and easy to read, with bold lettering and bright colors. The signs provide important information about the area, such as street names, directions, and warnings. The signs are placed in prominent locations, making them easily visible to passersby.",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "unknown",
-    "lighting_atmosphere": "The lighting in the street is bright and cheerful, with plenty of natural light coming from the sun. The lighting is soft and warm, with a gentle glow. The lighting is also artificial, with streetlights casting a warm, yellowish light over the area. The lighting is evenly distributed, with no harsh shadows or bright spots. The lighting is consistent, with a sense of continuity throughout the scene.",
-    "as_resident": "As a local resident, I would describe the street as a pleasant and welcoming place to live. The street is clean and well-maintained, with a sense of community and connection to the surrounding neighborhood. The street is safe and secure, with no signs of crime or disorder. The street is a hub of activity, with people going about their daily lives. The street is a great place to relax and unwind, with plenty of opportunities to connect with others.",
-    "as_commuter": "As a commuter, I would describe the street as a convenient and efficient place to travel. The street is well-connected to public transportation, with buses and trains passing through the area regularly. The street is a great place to get around, with plenty of options for getting to work, school, and other destinations. The street is a great place to walk or bike, with plenty of bike lanes and bike paths. The street is a great place to grab a coffee or snack before heading out into the city.",
-    "as_tourist": "As a tourist, I would describe the street as a charming and historic area. The street is lined with beautiful architecture, with unique and interesting buildings that reflect the local culture and history. The street is bustling with activity, with plenty of sights and sounds to explore. The street is a great place to take photos, with plenty of opportunities to capture the beauty of the surroundings. The street is a popular spot for locals and tourists alike, with plenty of amenities and attractions to enjoy.",
-    "as_student": "As a student, I would describe the street as a great place to study and learn. The street is a quiet and peaceful area, with plenty of opportunities to focus and concentrate. The street is a great place to get exercise and fresh air, with plenty of parks and green spaces to enjoy. The street is a great place to meet new people and make friends, with plenty of opportunities to collaborate and share ideas."
-  }
+    "scene": "unknown",
+    "lighting": [],
+    "spatial_character": [],
+    "crowdedness": [],
+    "greenery": [],
+    "street_amenities": [],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

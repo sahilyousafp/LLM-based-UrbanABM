@@ -40,6 +40,8 @@ DEFAULT_SCHEMA: dict[str, Any] = {
     },
     "cognition_state": {"mood": "neutral", "curiosity": 0.7, "fatigue": 0.0},
     "destination": {"name": None, "amenity_type": None, "lon": None, "lat": None, "target_node": None},
+    "memory_summaries": [],       # list[str] — working set of recent LLM narratives
+    "memory_summary_unified": "", # str — resident-only consolidated long-term memory (never pruned)
 }
 
 

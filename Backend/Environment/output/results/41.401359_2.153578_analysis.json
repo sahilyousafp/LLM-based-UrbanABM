@@ -1,34 +1,128 @@
 {
   "metadata": {
-    "timestamp": "20260311_213330",
-    "latitude": 41.4013588,
-    "longitude": 2.1535784,
-    "heading": 319.3665581327887,
-    "street_name": "Carrer Gran de Gràcia",
-    "highway_type": "road",
-    "edge_id": "57287700-b2dd-40c6-a449-7df0ad1972ea",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.401359_2.153578_h319.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "timestamp": "20260613_200531",
+    "latitude": 41.401359,
+    "longitude": 2.153578,
+    "heading": 125.0,
+    "street_name": "synthetic_bridge",
+    "highway_type": "bridge",
+    "edge_id": "bridge_0a45a151",
+    "source_image": "sv_41.401359_2.153578_h125.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 16428.8,
+    "latency_ms": 289056.9,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A street view of a McDonald's restaurant in a city, with a modern glass frontage and a curved roofline,",
-    "buildings": "The building has a cream-colored facade with a flat roof and a large windowed frontage,",
-    "materials": "The exterior walls are made of dark green metal and glass, while the floor is tiled in beige,",
-    "building_condition": "unknown",
-    "street_furniture": "There are no outdoor furniture visible in the image,",
-    "vegetation": "There are tall trees and bushes along the sidewalk,",
-    "signage": "A yellow sign with black text reading 'McDonald's' is mounted on the wall next to the entrance,",
-    "ground_surfaces": "The ground is paved with gray concrete pavers,",
-    "spatial_enclosure": "The street is relatively narrow and has a slight incline,",
-    "pedestrian_activity": "People are walking along the sidewalk, some carrying bags or backpacks,",
-    "lighting_atmosphere": "The lighting is bright and well-lit,",
-    "as_resident": "This area is likely a busy commercial district with a mix of residential and retail properties,",
-    "as_commuter": "unknown",
-    "as_tourist": "The area is lined with shops and restaurants, including a McDonald's,",
-    "as_student": "The area is popular with students and young professionals."
-  }
+    "scene": "Urban street with a bakery storefront, moderate pedestrian activity, and overcast weather.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast sky",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "signalised",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "far_left",
+        "element": "small tree with sparse foliage",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "traffic light",
+        "material_and_colour": "black",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow traffic light",
+        "material_and_colour": "yellow",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "CARRER DE SANT MARC",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "BOSCH",
+        "zone": "center",
+        "type": "label"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

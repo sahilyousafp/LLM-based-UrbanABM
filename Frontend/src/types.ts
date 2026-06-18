@@ -16,7 +16,6 @@ export interface LLMSelection {
   mode: LLMMode;
   providerId: string;
   model: string;
-  apiKey: string;
 }
 
 export interface SingleAgentState {
@@ -30,11 +29,13 @@ export interface SingleAgentState {
   moodHistory: string[];
   positionHistory: [number, number][];
   playing: boolean;
+  speed: number;
 }
 
 export interface MultiAgentState {
   count: number;
   spawnMode: SpawnMode;
+  pinMode: 'home' | 'work';
   spawnPoints: LngLat[];
   homePoints: LngLat[];
   workPoints: LngLat[];
@@ -164,6 +165,7 @@ export interface MapboxMap {
   ): { properties: Record<string, unknown> }[];
   flyTo(options: { center: [number, number]; zoom?: number; duration?: number; pitch?: number; bearing?: number }): void;
   dragPan: { disable(): void; enable(): void };
+  scrollZoom: { disable(): void; enable(): void };
 }
 export interface MapboxSource {
   setData(data: unknown): void;
@@ -177,6 +179,7 @@ export interface MapboxMapEvent {
 }
 export interface MapboxMarker {
   setLngLat(coords: [number, number]): MapboxMarker;
+  setPopup(popup: MapboxPopup): MapboxMarker;
   addTo(map: MapboxMap): MapboxMarker;
   remove(): void;
 }

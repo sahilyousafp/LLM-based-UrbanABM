@@ -1,34 +1,123 @@
 {
   "metadata": {
-    "timestamp": "20260311_175309",
-    "latitude": 41.3964742,
-    "longitude": 2.1503315,
-    "heading": 139.81362045748966,
+    "timestamp": "20260613_181519",
+    "latitude": 41.396474,
+    "longitude": 2.150332,
+    "heading": 132.0,
     "street_name": "",
     "highway_type": "road",
     "edge_id": "b9beedde-b887-4b25-b102-8bc8d0303d86",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.396474_2.150332_h139.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "source_image": "sv_41.396474_2.150332_h132.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 4540.8,
+    "latency_ms": 314644.8,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A sunny day in a city street with a row of large gray trash cans lined up along the curb,",
-    "buildings": "The buildings are tall and modern, with many windows and balconies,",
-    "materials": "The buildings have a mix of concrete, glass, and metal exteriors,",
-    "building_condition": "The buildings appear well-maintained but show some signs of wear and tear,",
-    "street_furniture": "There are no benches or other outdoor furniture visible,",
-    "vegetation": "There are a few small trees and bushes along the sidewalk,",
-    "signage": "There are several signs posted on the buildings, including a sign that says 'BOPAN' and another that says 'COVID'",
-    "ground_surfaces": "The ground is paved with asphalt and has white lines painted on it,",
-    "spatial_enclosure": "The street is relatively narrow and has a slight incline,",
-    "pedestrian_activity": "There are no pedestrians visible,",
-    "lighting_atmosphere": "The lighting is bright and sunny,",
-    "as_resident": "This area appears to be a quiet neighborhood with a mix of residential and commercial properties,",
-    "as_commuter": "unknown",
-    "as_tourist": "There are no tourists visible.",
-    "as_student": "There are no students visible,"
-  }
+    "scene": "Urban street with moderate pedestrian activity, parked vehicles, and mature trees lining the sidewalk.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "direct overhead midday sun",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "unknown",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature London plane trees with mottled grey-green bark",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron double-arm street lamp with frosted globe",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollard",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "BOPAN",
+        "zone": "center",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }

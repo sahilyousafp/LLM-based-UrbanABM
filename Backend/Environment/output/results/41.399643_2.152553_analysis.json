@@ -1,34 +1,121 @@
 {
   "metadata": {
-    "timestamp": "20260311_170631",
-    "latitude": 41.3996431,
-    "longitude": 2.1525532000000003,
-    "heading": 53.66368052779501,
-    "street_name": "",
-    "highway_type": "road",
-    "edge_id": "97f33e6b-f505-4783-9381-6f80afb1cd50",
-    "dist_along_edge_m": 0,
-    "source_image": "sv_41.399643_2.152553_h53.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "timestamp": "20260613_192306",
+    "latitude": 41.399643,
+    "longitude": 2.152553,
+    "heading": 274.0,
+    "street_name": "synthetic_bridge",
+    "highway_type": "bridge",
+    "edge_id": "bridge_852b318b",
+    "source_image": "sv_41.399643_2.152553_h274.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 21970.0,
+    "latency_ms": 273055.1,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A city street with buildings on both sides, paved with gray bricks, and lined with trees,",
-    "buildings": "unknown",
-    "materials": "unknown",
-    "building_condition": "unknown",
-    "street_furniture": "unknown",
-    "vegetation": "unknown",
-    "signage": "unknown",
-    "ground_surfaces": "unknown",
-    "spatial_enclosure": "unknown",
-    "pedestrian_activity": "none",
-    "lighting_atmosphere": "bright and clear",
-    "as_resident": "no people or vehicles",
-    "as_commuter": "no people or vehicles",
-    "as_tourist": "no people or vehicles",
-    "as_student": "no people or vehicles"
-  }
+    "scene": "Modern urban street with mixed residential and office buildings, featuring moderate pedestrian activity and contemporary architecture.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast sky with diffused light",
+        "condition": "dim"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": "balconies with glass panels"
+      },
+      {
+        "zone": "left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": "large windows and balconies"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "contemporary",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": "glass facade with vertical lines"
+      },
+      {
+        "zone": "right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "contemporary",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": "glass facade with horizontal lines"
+      },
+      {
+        "zone": "far_right",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "contemporary",
+        "building_condition": "excellent",
+        "storefront_type": "office",
+        "architectural_details": "glass facade with diagonal lines"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "small shrubs and flowering plants",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "cast-iron street lamps",
+        "material_and_colour": "black painted cast iron",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollards",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      }
+    ],
+    "visible_text": []
+  },
+  "nearby_landmarks": []
 }

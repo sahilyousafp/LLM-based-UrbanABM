@@ -1,34 +1,134 @@
 {
   "metadata": {
-    "timestamp": "20260311_232434",
-    "latitude": 41.4029942,
-    "longitude": 2.1537413000000005,
-    "heading": 235.66232486096078,
+    "timestamp": "20260613_204502",
+    "latitude": 41.402994,
+    "longitude": 2.153741,
+    "heading": 242.0,
     "street_name": "Carrer d'Astúries",
     "highway_type": "road",
     "edge_id": "6932dd80-93b6-42bf-a3c7-e87517c77c7b",
-    "dist_along_edge_m": 110.7,
-    "source_image": "sv_41.402994_2.153741_h235.jpg",
-    "model": "facebook/Perception-LM-1B",
+    "source_image": "sv_41.402994_2.153741_h242.jpg",
+    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
     "device": "cuda",
-    "latency_ms": 43970.3,
+    "latency_ms": 287557.4,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene_overview": "A street view of a city street with buildings on both sides, lined with trees and benches, featuring a mix of commercial and residential properties. The street is paved with large square stones and has a few people walking along it. There are several shops and restaurants along the street, including a bakery and a clothing store. A bicycle is parked against a pole near the center of the image.",
-    "buildings": "The buildings on either side of the street are tall and imposing, with a mix of old and new architecture.",
-    "materials": "The buildings are made of a combination of stone, brick, and glass.",
-    "building_condition": "unknown",
-    "street_furniture": "There are several benches and planters along the sidewalk, providing shade and seating for pedestrians.",
-    "vegetation": "The trees and plants add a touch of greenery to the urban landscape.",
-    "signage": "There are several signs posted on the buildings, including a sign for a bakery and a sign for a clothing store.",
-    "ground_surfaces": "The ground is paved with large square stones.",
-    "spatial_enclosure": "The street feels relatively open and airy, with plenty of space between buildings.",
-    "pedestrian_activity": "People are walking along the street, some of whom are carrying bags or backpacks.",
-    "lighting_atmosphere": "The lighting is bright and sunny, with a clear blue sky overhead.",
-    "as_resident": "The street is bustling with activity, but it also has a relaxed and casual vibe.",
-    "as_commuter": "unknown",
-    "as_tourist": "The street is lined with interesting architectural details, such as ornate facades and decorative ironwork.",
-    "as_student": "The street is a popular spot for students, with many young people walking around and studying."
-  }
+    "scene": "Urban street with modernist architecture, moderate pedestrian activity, and produce stalls.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "clear blue sky with scattered clouds",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "balconies with wrought-iron railings"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "balconies with wrought-iron railings"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "balconies with wrought-iron railings"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "balconies with wrought-iron railings"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "balconies with wrought-iron railings"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "deciduous trees with sparse leaves",
+        "coverage": "sparse"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "orange awnings over storefronts",
+        "material_and_colour": "orange fabric",
+        "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "yellow painted concrete bollards",
+        "material_and_colour": "yellow concrete",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "blue plastic crates with produce",
+        "material_and_colour": "blue plastic",
+        "presence": "many"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "comTres",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "123",
+        "zone": "far_left",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
 }
