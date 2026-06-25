@@ -105,6 +105,13 @@ async def save_archetype_nav(body: dict = Body(...)):
     with open(local_path, "w", encoding="utf-8") as f:
         json.dump(plans, f, indent=2)
 
+    if sim.city_model and hasattr(sim.city_model, "nav_config"):
+        sim.city_model.nav_config[arch] = {
+            "nav_mode": nav_mode,
+            "gps_dist": gps_dist,
+            "compass_dist": compass_dist,
+        }
+
     logger.info(f"Saved nav config for '{arch}': nav_mode={nav_mode}, gps={gps_dist}m, compass={compass_dist}m")
     return {"ok": True, "archetype": arch, "nav_mode": nav_mode,
             "gps_dist": gps_dist, "compass_dist": compass_dist}

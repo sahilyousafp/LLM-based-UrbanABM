@@ -102,38 +102,31 @@ async def get_walk_network_classes():
         con.close()
 
 
-@router.get("/api/walk_network/candidates")
-async def get_walk_network_candidates(
-    bbox: str = Query(..., description="west,south,east,north in WGS84"),
-    spacing: int = Query(200, ge=50, le=500, description="Sample spacing in metres"),
-):
-    try:
-        w, s, e, n = [float(x) for x in bbox.split(",")]
-    except Exception:
-        return {"error": "bbox must be 'west,south,east,north'"}
+_UTM31N = "EPSG:32631"
 
-    UTM31N = "EPSG:32631"
-    try:
-        to_utm = pyproj.Transformer.from_crs("EPSG:4326", UTM31N, always_xy=True)
-        to_wgs = pyproj.Transformer.from_crs(UTM31N, "EPSG:4326", always_xy=True)
-    except Exception as exc:
-        return {"error": f"Projection setup failed: {exc}"}
 
-    try:
-        con = get_db_connection()
-        rows = con.execute("""
-            SELECT id, ST_AsText(geometry), name, road_type
-            FROM walk_edges
-            WHERE ST_Intersects(geometry, ST_MakeEnvelope(?, ?, ?, ?))
-        """, [w, s, e, n]).fetchall()
-        con.close()
-    except Exception as exc:
-        logger.warning(f"Candidates walk_edges query failed: {exc}")
-        return {"type": "FeatureCollection", "features": []}
+def generate_walk_candidates(
+    bbox: tuple[float, float, float, float],
+    spacing: int,
+) -> list[dict]:
+    """Interpolate along walk_edges at *spacing*-metre intervals, thin, clip to bbox.
 
-    raw_candidates: list[tuple[float, float, dict]] = []
-    for row in rows:
-        edge_id, wkt_str, name, road_type = row
+    Returns list of dicts with lat, lon, heading, street_name, highway_type, edge_id.
+    """
+    w, s, e, n = bbox
+    to_utm = pyproj.Transformer.from_crs("EPSG:4326", _UTM31N, always_xy=True)
+    to_wgs = pyproj.Transformer.from_crs(_UTM31N, "EPSG:4326", always_xy=True)
+
+    con = get_db_connection()
+    rows = con.execute("""
+        SELECT id, ST_AsText(geometry), name, road_type
+        FROM walk_edges
+        WHERE ST_Intersects(geometry, ST_MakeEnvelope(?, ?, ?, ?))
+    """, [w, s, e, n]).fetchall()
+    con.close()
+
+    raw: list[tuple[float, float, dict]] = []
+    for edge_id, wkt_str, name, road_type in rows:
         if not wkt_str:
             continue
         try:
@@ -156,27 +149,49 @@ async def get_walk_network_candidates(
             lon, lat = to_wgs.transform(p.x, p.y)
             if not (w <= lon <= e and s <= lat <= n):
                 continue
-            raw_candidates.append((p.x, p.y, {
-                "type": "Feature",
-                "geometry": {"type": "Point", "coordinates": [round(lon, 6), round(lat, 6)]},
-                "properties": {
-                    "lat": round(lat, 6), "lon": round(lon, 6),
-                    "heading": round(heading, 1),
-                    "street_name": name or "",
-                    "highway_type": road_type or "unknown",
-                    "edge_id": edge_id or "",
-                    "dist_along_edge_m": round(float(dist), 1),
-                },
+            raw.append((p.x, p.y, {
+                "lat": round(lat, 6), "lon": round(lon, 6),
+                "heading": round(heading, 1),
+                "street_name": name or "",
+                "highway_type": road_type or "unknown",
+                "edge_id": edge_id or "",
+                "dist_along_edge_m": round(float(dist), 1),
             }))
 
     threshold_sq = float(spacing * spacing)
     accepted_utm: list[tuple[float, float]] = []
-    features = []
-    for ux, uy, feat in raw_candidates:
+    candidates: list[dict] = []
+    for ux, uy, cand in raw:
         if not any((ux - ax) ** 2 + (uy - ay) ** 2 < threshold_sq for ax, ay in accepted_utm):
             accepted_utm.append((ux, uy))
-            features.append(feat)
+            candidates.append(cand)
+    return candidates
 
+
+@router.get("/api/walk_network/candidates")
+async def get_walk_network_candidates(
+    bbox: str = Query(..., description="west,south,east,north in WGS84"),
+    spacing: int = Query(200, ge=50, le=500, description="Sample spacing in metres"),
+):
+    try:
+        w, s, e, n = [float(x) for x in bbox.split(",")]
+    except Exception:
+        return {"error": "bbox must be 'west,south,east,north'"}
+
+    try:
+        candidates = generate_walk_candidates((w, s, e, n), spacing)
+    except Exception as exc:
+        logger.warning(f"Candidates walk_edges query failed: {exc}")
+        return {"type": "FeatureCollection", "features": []}
+
+    features = [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [c["lon"], c["lat"]]},
+            "properties": c,
+        }
+        for c in candidates
+    ]
     return {"type": "FeatureCollection", "features": features}
 
 

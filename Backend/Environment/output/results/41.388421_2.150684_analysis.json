@@ -1,51 +1,51 @@
 {
   "metadata": {
-    "timestamp": "20260613_153056",
+    "timestamp": "20260620_110915",
     "latitude": 41.388421,
     "longitude": 2.150684,
-    "heading": 241.0,
+    "heading": 234.6,
     "street_name": "",
     "highway_type": "road",
     "edge_id": "ade3f0a3-dd26-48d8-8dd5-59f47fa7a684",
-    "source_image": "sv_41.388421_2.150684_h241.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "source_image": "sv_41.388421_2.150684_h234.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 287660.0,
+    "latency_ms": 163589.7,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Urban street with modernist buildings, wide roadways, and moderate pedestrian activity.",
+    "scene": "A wide, sunlit urban street with a modernist building on the left, a historic neo-gothic structure on the right, sparse pedestrian traffic, and parked vehicles under a clear sky.",
     "lighting": [
       {
         "zone": "center",
-        "element": "direct overhead midday sun",
+        "element": "bright overhead sunlight",
         "condition": "bright"
       }
     ],
     "spatial_character": [
       {
         "zone": "far_left",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "narrow",
+        "enclosure": "enclosed",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "sidewalk",
         "crossing": "none",
         "architectural_style": "modernist",
         "building_condition": "good",
-        "storefront_type": "residential",
-        "architectural_details": "geometric facade with large windows"
+        "storefront_type": "retail",
+        "architectural_details": "geometric facade with repeating window patterns"
       },
       {
         "zone": "left",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "road",
         "crossing": "none",
         "architectural_style": "modernist",
         "building_condition": "good",
-        "storefront_type": "residential",
-        "architectural_details": "geometric facade with large windows"
+        "storefront_type": "retail",
+        "architectural_details": "ground-floor commercial units with glass storefronts"
       },
       {
         "zone": "center",
@@ -54,75 +54,76 @@
         "passability": "clear",
         "lane_type": "main_roadway",
         "crossing": "none",
-        "architectural_style": "neoclassical",
-        "building_condition": "good",
-        "storefront_type": "unknown",
-        "architectural_details": "large columns and symmetrical design"
+        "architectural_style": "other",
+        "building_condition": "unknown",
+        "storefront_type": "other",
+        "architectural_details": null
       },
       {
         "zone": "right",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "road",
         "crossing": "none",
-        "architectural_style": "modernist",
+        "architectural_style": "neo_gothic",
         "building_condition": "good",
-        "storefront_type": "unknown",
-        "architectural_details": "geometric facade with large windows"
+        "storefront_type": "other",
+        "architectural_details": "stone facade with towers and arched windows"
       },
       {
         "zone": "far_right",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "narrow",
+        "enclosure": "enclosed",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "modernist",
-        "building_condition": "good",
-        "storefront_type": "unknown",
-        "architectural_details": "geometric facade with large windows"
+        "architectural_style": "other",
+        "building_condition": "unknown",
+        "storefront_type": "other",
+        "architectural_details": null
       }
     ],
     "crowdedness": [
       {
         "zone": "center",
-        "density_level": "moderate"
+        "density_level": "sparse"
       }
     ],
     "greenery": [
       {
-        "zone": "left",
-        "element": "mature London plane trees with mottled grey-green bark",
-        "coverage": "dense"
-      },
-      {
-        "zone": "right",
-        "element": "bare deciduous trees without leaves",
+        "zone": "center",
+        "element": "deciduous trees with bare branches",
         "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron street lamp posts",
-        "material_and_colour": "black painted cast iron",
+        "element": "traffic cone",
+        "material_and_colour": "orange plastic",
         "presence": "few"
       },
       {
+        "zone": "center",
+        "element": "road marking",
+        "material_and_colour": "white paint",
+        "presence": "many"
+      },
+      {
         "zone": "right",
-        "element": "yellow painted concrete bollards",
-        "material_and_colour": "yellow concrete",
-        "presence": "several"
+        "element": "parked car",
+        "material_and_colour": "silver metal",
+        "presence": "many"
+      },
+      {
+        "zone": "right",
+        "element": "parked scooter",
+        "material_and_colour": "black metal",
+        "presence": "few"
       }
     ],
-    "visible_text": [
-      {
-        "text": "ESPECIALISTES EN",
-        "zone": "right",
-        "type": "label"
-      }
-    ]
+    "visible_text": []
   },
   "nearby_landmarks": []
 }

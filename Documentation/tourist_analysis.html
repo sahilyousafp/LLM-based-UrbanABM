@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recording Analysis — Urban ABM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ── Design Tokens (matching main frontend) ── */
+:root {
+  --bg-base: #07090c;
+  --panel-bg: rgba(22, 26, 32, 0.55);
+  --panel-bg-strong: rgba(22, 26, 32, 0.75);
+  --panel-bg-hover: rgba(28, 32, 38, 0.72);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --panel-border-strong: rgba(255, 255, 255, 0.16);
+  --panel-hl: rgba(255, 255, 255, 0.06);
+  --accent: #0a84ff;
+  --accent-2: #5e5ce6;
+  --accent-3: #64d2ff;
+  --success: #30d158;
+  --warning: #ff9f0a;
+  --danger: #ff453a;
+  --pink: #ff375f;
+  --text: #f5f5f7;
+  --text-2: rgba(245, 245, 247, 0.78);
+  --text-muted: rgba(245, 245, 247, 0.55);
+  --text-dim: rgba(245, 245, 247, 0.32);
+  --radius-card: 18px;
+  --radius-pill: 999px;
+  --shadow-elev: 0 24px 56px -16px rgba(0,0,0,.65), 0 6px 16px rgba(0,0,0,.35);
+  --shadow-pop: 0 10px 24px -10px rgba(0,0,0,.55);
+  --blur: blur(28px) saturate(180%);
+  --ease: cubic-bezier(.4,0,.2,1);
+  --spring: cubic-bezier(.2,.9,.25,1.2);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-base); color: var(--text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 400; font-feature-settings: "ss01","cv11","tnum";
+  letter-spacing: -0.001em; -webkit-font-smoothing: antialiased;
+}
+h1,h2,h3,h4 { font-family: "Inter Tight","Inter",system-ui,sans-serif; font-weight: 700; letter-spacing: -0.022em; margin: 0; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 4px; }
+
+/* ── Panel glass ── */
+.panel {
+  background: var(--panel-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--panel-border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-elev), inset 0 1px 0 var(--panel-hl);
+}
+
+/* ── Header ── */
+.header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(7,9,12,0.82); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border-bottom: 1px solid var(--panel-border);
+  padding: 12px 24px; display: flex; align-items: center; gap: 16px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand .logo {
+  width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+  background: conic-gradient(from 210deg, #0a84ff, #5e5ce6, #ff375f, #ff9f0a, #30d158, #0a84ff);
+  position: relative;
+}
+.brand .logo::after { content:''; position: absolute; inset: 5px; border-radius: 4px; background: var(--bg-base); }
+.brand .t1 { font-family: "Inter Tight",system-ui; font-weight: 800; font-size: 14px; letter-spacing: -0.02em; }
+.brand .t2 { font-size: 10.5px; color: var(--text-muted); letter-spacing: 0.02em; display: block; margin-top: 1px; }
+
+.header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; padding: 3px 12px;
+  border-radius: var(--radius-pill); background: rgba(255,255,255,0.06);
+  border: 1px solid var(--panel-border); font-size: 11px; font-weight: 600; color: var(--text-2);
+}
+.pill b { color: var(--accent); font-weight: 700; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 9px 18px; border-radius: var(--radius-pill); border: 1px solid var(--panel-border);
+  background: rgba(255,255,255,0.08); font-family: "Inter Tight",system-ui; font-weight: 600;
+  font-size: 13px; color: var(--text); cursor: pointer; transition: all 200ms var(--ease);
+}
+.btn:hover { background: rgba(255,255,255,0.14); border-color: var(--panel-border-strong); }
+.btn:active { transform: scale(0.97); }
+.btn.primary {
+  background: linear-gradient(180deg, var(--accent) 0%, #0770e0 100%);
+  border-color: rgba(10,132,255,0.6); color: white;
+  box-shadow: 0 6px 20px -6px rgba(10,132,255,0.55), inset 0 1px 0 rgba(255,255,255,0.22);
+}
+.btn.primary:hover { filter: brightness(1.08); }
+.btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── Empty state ── */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 60vh; gap: 20px; text-align: center; padding: 40px;
+}
+.empty-state .icon { width: 64px; height: 64px; opacity: 0.3; }
+.empty-state h2 { font-size: 22px; color: var(--text-2); }
+.empty-state p { font-size: 13px; color: var(--text-muted); max-width: 420px; line-height: 1.6; }
+.drop-zone {
+  width: 100%; max-width: 480px; padding: 40px; border: 2px dashed rgba(255,255,255,0.12);
+  border-radius: var(--radius-card); cursor: pointer; transition: all 200ms var(--ease);
+}
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: rgba(10,132,255,0.06); }
+.drop-zone p { pointer-events: none; }
+
+/* ── Map ── */
+.map-section { position: relative; width: 100%; height: 70vh; min-height: 480px; display: none; }
+#map { width: 100%; height: 100%; }
+
+.layer-panel {
+  position: absolute; top: 16px; left: 16px; z-index: 10;
+  background: var(--panel-bg-strong); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--panel-border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-pop); padding: 14px 18px; min-width: 220px;
+}
+.layer-panel h3 {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.layer-row {
+  display: flex; align-items: center; gap: 10px; padding: 5px 0; cursor: pointer;
+  font-size: 12.5px; font-weight: 500; color: var(--text-2);
+}
+.layer-row input[type=checkbox] { accent-color: var(--accent); width: 14px; height: 14px; flex-shrink: 0; }
+.layer-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.layer-sep { height: 1px; background: var(--panel-border); margin: 6px 0; }
+
+.step-bar {
+  position: absolute; bottom: 16px; left: 16px; right: 16px; z-index: 10;
+  background: var(--panel-bg-strong); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--panel-border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-pop); padding: 12px 20px;
+  display: flex; align-items: center; gap: 14px;
+}
+.step-bar label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); white-space: nowrap; }
+.step-bar input[type=range] {
+  flex: 1; -webkit-appearance: none; appearance: none; height: 3px;
+  background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; cursor: pointer;
+}
+.step-bar input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
+  background: white; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,.45), 0 0 0 2px rgba(255,255,255,0.15);
+}
+.step-bar .val {
+  font-family: "JetBrains Mono","Inter",monospace; font-size: 12px; font-weight: 600;
+  min-width: 100px; text-align: center; color: var(--text-2);
+}
+
+/* ── Section ── */
+.section { padding: 28px 24px; display: none; }
+.section-head {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--text-dim); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--panel-border);
+}
+
+/* ── Charts grid ── */
+.charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 1200px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 800px) { .charts-grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--panel-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--panel-border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-pop), inset 0 1px 0 var(--panel-hl);
+  padding: 18px; transition: border-color 200ms var(--ease);
+}
+.card:hover { border-color: var(--panel-border-strong); }
+.card h3 { font-size: 13px; font-weight: 700; color: var(--text-2); margin-bottom: 14px; }
+.card canvas { width: 100% !important; height: 190px !important; }
+
+/* ── Findings grid ── */
+.findings-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 1200px) { .findings-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 800px) { .findings-grid { grid-template-columns: 1fr; } }
+
+.info-card {
+  background: var(--panel-bg); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--panel-border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-pop), inset 0 1px 0 var(--panel-hl); padding: 18px;
+}
+.info-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+.info-card h3.accent { color: var(--accent); }
+.info-card h3.warn { color: var(--warning); }
+.info-row {
+  display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0;
+  border-bottom: 1px solid var(--panel-border);
+}
+.info-row .lbl { color: var(--text-muted); }
+.info-row .val { font-weight: 700; font-variant-numeric: tabular-nums; }
+.info-sample {
+  font-size: 11px; color: var(--text-dim); line-height: 1.6; padding: 5px 0;
+  font-style: italic; border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.finding-text { font-size: 12.5px; line-height: 1.7; color: var(--text-muted); margin-bottom: 8px; }
+.finding-text strong { color: var(--text); }
+
+/* ── Mapbox popup ── */
+.mapboxgl-popup-content {
+  background: rgba(22,26,32,0.92) !important; backdrop-filter: var(--blur);
+  color: var(--text) !important; border: 1px solid var(--panel-border) !important;
+  border-radius: 14px !important; box-shadow: var(--shadow-elev) !important;
+  padding: 14px 18px !important; font-family: "Inter",system-ui,sans-serif !important; font-size: 12px !important;
+}
+.mapboxgl-popup-tip { border-top-color: rgba(22,26,32,0.92) !important; }
+.mapboxgl-popup-close-button { color: var(--text-muted) !important; font-size: 18px !important; right: 6px !important; top: 4px !important; }
+.popup-badge { display: inline-block; font-weight: 700; padding: 2px 10px; border-radius: 6px; font-size: 11px; }
+
+/* ── Loading ── */
+.loading-overlay {
+  position: fixed; inset: 0; z-index: 200; background: rgba(7,9,12,0.85);
+  display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+}
+.loading-overlay.active { display: flex; }
+.spinner { width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-overlay p { font-size: 13px; color: var(--text-muted); }
+
+.footer { padding: 20px 24px; text-align: center; font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--panel-border); display: none; }
+</style>
+</head>
+<body>
+
+<input type="file" id="file-input" accept=".parquet" style="display:none">
+
+<div class="loading-overlay" id="loader">
+  <div class="spinner"></div>
+  <p id="loader-msg">Analyzing recording...</p>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="brand">
+    <div class="logo"></div>
+    <div><span class="t1">Recording Analysis</span><span class="t2" id="session-name">Import a .parquet recording</span></div>
+  </div>
+  <div class="header-actions">
+    <div class="pills" id="stats-pills" style="display:none">
+      <div class="pill"><b id="st-agents">—</b>&nbsp;agents</div>
+      <div class="pill"><b id="st-steps">—</b>&nbsp;steps</div>
+      <div class="pill"><b id="st-fb">—</b>&nbsp;fallback</div>
+      <div class="pill"><b id="st-perc">—</b>&nbsp;perception</div>
+    </div>
+    <button class="btn primary" id="import-btn">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Import
+    </button>
+  </div>
+</div>
+
+<!-- Empty state -->
+<div class="empty-state" id="empty-state">
+  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+  <h2>No Recording Loaded</h2>
+  <p>Import a <code>.parquet</code> simulation recording to visualize agent trajectories, emotional heatmaps, and behavioral analytics.</p>
+  <div class="drop-zone" id="drop-zone">
+    <p style="font-size:13px;color:var(--text-muted)">Drop <code>.parquet</code> file here or click to browse</p>
+  </div>
+  <div id="existing-list" style="margin-top:12px;display:flex;flex-direction:column;gap:6px;width:100%;max-width:480px"></div>
+</div>
+
+<!-- Map -->
+<div class="map-section" id="map-section">
+  <div id="map"></div>
+  <div class="layer-panel panel">
+    <h3>Heatmap Layers</h3>
+    <label class="layer-row"><input type="checkbox" data-layer="density" checked><span class="layer-dot" style="background:var(--accent)"></span>All Positions</label>
+    <label class="layer-row"><input type="checkbox" data-layer="relaxed"><span class="layer-dot" style="background:var(--success)"></span>Relaxed</label>
+    <label class="layer-row"><input type="checkbox" data-layer="stressed"><span class="layer-dot" style="background:var(--danger)"></span>Stressed</label>
+    <label class="layer-row"><input type="checkbox" data-layer="excited"><span class="layer-dot" style="background:var(--warning)"></span>Excited</label>
+    <label class="layer-row"><input type="checkbox" data-layer="bored"><span class="layer-dot" style="background:#8e8e93"></span>Bored</label>
+    <div class="layer-sep"></div>
+    <label class="layer-row"><input type="checkbox" data-layer="trails"><span class="layer-dot" style="background:var(--accent-2)"></span>Agent Trails</label>
+  </div>
+  <div class="step-bar panel">
+    <label>Step Range</label>
+    <input type="range" id="step-min" min="1" max="100" value="1" step="50">
+    <span class="val" id="step-label">1 — 100</span>
+    <input type="range" id="step-max" min="1" max="100" value="100" step="50">
+  </div>
+</div>
+
+<!-- Charts -->
+<div class="section" id="charts-section">
+  <div class="section-head">Emotional & Cognitive Trajectories</div>
+  <div class="charts-grid">
+    <div class="card"><h3>Mood Evolution</h3><canvas id="chart-mood"></canvas></div>
+    <div class="card"><h3>Curiosity & Fatigue</h3><canvas id="chart-cog"></canvas></div>
+    <div class="card"><h3>Needs Decay</h3><canvas id="chart-needs"></canvas></div>
+    <div class="card"><h3>Satisfaction Themes</h3><canvas id="chart-sat"></canvas></div>
+    <div class="card"><h3>Satisfaction Source</h3><canvas id="chart-src"></canvas></div>
+    <div class="card"><h3>Mood Distribution</h3><canvas id="chart-pie"></canvas></div>
+  </div>
+</div>
+
+<!-- Findings -->
+<div class="section" id="findings-section">
+  <div class="section-head">Analysis Breakdown</div>
+  <div class="findings-grid">
+    <div class="info-card" id="card-summary"><h3 class="warn">Summary</h3><div id="summary-content"></div></div>
+    <div class="info-card" id="card-themes"><h3 class="accent">Satisfaction Themes</h3></div>
+    <div class="info-card" id="card-amenities"><h3 class="accent">Target Amenity Types</h3></div>
+    <div class="info-card" id="card-archetypes"><h3 class="accent">Archetypes</h3></div>
+  </div>
+</div>
+
+<div class="footer" id="footer">LLM-Based Urban ABM &middot; Recording Analysis Dashboard &middot; 2026</div>
+
+<script>
+const API = 'http://localhost:8000';
+const MC = { relaxed:'#30d158', stressed:'#ff453a', excited:'#ff9f0a', bored:'#8e8e93', neutral:'#636366' };
+const TRAIL_C = ['#bf5af2','#64d2ff','#ff375f','#30d158','#ff9f0a','#ffd60a','#0a84ff','#ff453a',
+  '#ac8e68','#5e5ce6','#ff6482','#50c878','#da70d6','#87ceeb','#ffa07a','#98fb98',
+  '#dda0dd','#f0e68c','#bc8f8f','#66cdaa','#ba55d3','#cd853f','#4682b4','#d2691e','#8fbc8f'];
+
+let map, D, charts = [], stepMin = 1, stepMax = 100, mapToken = '';
+
+// ── Init ──
+async function init() {
+  try {
+    const cfg = await (await fetch(API + '/api/config/frontend')).json();
+    mapToken = cfg.mapbox_token || '';
+  } catch(e) { console.warn('Backend not reachable:', e); }
+
+  if (!mapToken) {
+    mapToken = prompt('Mapbox token not found from backend. Paste your Mapbox public token:') || '';
+  }
+
+  loadExistingRecordings();
+  bindUI();
+}
+
+async function loadExistingRecordings() {
+  try {
+    const res = await (await fetch(API + '/api/recording/list')).json();
+    const list = document.getElementById('existing-list');
+    if (!res.files || res.files.length === 0) return;
+    const heading = document.createElement('div');
+    heading.style.cssText = 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(245,245,247,0.32);margin-bottom:4px;text-align:left';
+    heading.textContent = 'Or load an existing recording';
+    list.appendChild(heading);
+    res.files.slice(0, 8).forEach(f => {
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.style.cssText = 'width:100%;justify-content:space-between;font-size:12px;padding:8px 16px';
+      btn.innerHTML = `<span>${f.rel_path}</span><span style="color:var(--text-dim);font-size:11px">${f.size_kb} KB</span>`;
+      btn.onclick = () => loadExisting(f.rel_path);
+      list.appendChild(btn);
+    });
+  } catch(e) { /* backend not running */ }
+}
+
+function bindUI() {
+  const fi = document.getElementById('file-input');
+  const dz = document.getElementById('drop-zone');
+  document.getElementById('import-btn').onclick = () => fi.click();
+  dz.onclick = () => fi.click();
+  fi.onchange = () => { if (fi.files[0]) uploadFile(fi.files[0]); };
+  dz.ondragover = e => { e.preventDefault(); dz.classList.add('drag-over'); };
+  dz.ondragleave = () => dz.classList.remove('drag-over');
+  dz.ondrop = e => { e.preventDefault(); dz.classList.remove('drag-over'); if (e.dataTransfer.files[0]) uploadFile(e.dataTransfer.files[0]); };
+
+  document.querySelectorAll('.layer-row input').forEach(cb => {
+    cb.addEventListener('change', () => toggleLayer(cb.dataset.layer, cb.checked));
+  });
+  const sMin = document.getElementById('step-min'), sMax = document.getElementById('step-max');
+  let deb;
+  function onSlide() {
+    stepMin = +sMin.value; stepMax = +sMax.value;
+    if (stepMin > stepMax) [stepMin, stepMax] = [stepMax, stepMin];
+    document.getElementById('step-label').textContent = stepMin + ' — ' + stepMax;
+    clearTimeout(deb); deb = setTimeout(updateFilters, 300);
+  }
+  sMin.addEventListener('input', onSlide);
+  sMax.addEventListener('input', onSlide);
+}
+
+// ── Upload & Load ──
+function showLoader(msg) { document.getElementById('loader-msg').textContent = msg || 'Analyzing...'; document.getElementById('loader').classList.add('active'); }
+function hideLoader() { document.getElementById('loader').classList.remove('active'); }
+
+async function uploadFile(file) {
+  if (!file.name.endsWith('.parquet')) return alert('Only .parquet files');
+  showLoader('Analyzing ' + file.name + '...');
+  const fd = new FormData(); fd.append('file', file);
+  try {
+    const res = await fetch(API + '/api/recording/analyze', { method: 'POST', body: fd });
+    D = await res.json();
+    if (D.error) { alert('Error: ' + D.error); hideLoader(); return; }
+    render();
+  } catch(e) { alert('Upload failed. Is the backend running on localhost:8000?'); }
+  hideLoader();
+}
+
+async function loadExisting(relPath) {
+  const name = relPath.split('/').pop();
+  showLoader('Analyzing ' + name + '...');
+  try {
+    const res = await fetch(API + '/api/recording/analyze?filename=' + encodeURIComponent(name));
+    D = await res.json();
+    if (D.error) { alert('Error: ' + D.error); hideLoader(); return; }
+    render();
+  } catch(e) { alert('Load failed: ' + e.message); }
+  hideLoader();
+}
+
+// ── Render everything ──
+function render() {
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('map-section').style.display = 'block';
+  document.getElementById('charts-section').style.display = 'block';
+  document.getElementById('findings-section').style.display = 'block';
+  document.getElementById('footer').style.display = 'block';
+  document.getElementById('stats-pills').style.display = 'flex';
+
+  document.getElementById('session-name').textContent = D.session || 'Recording';
+  document.getElementById('st-agents').textContent = D.stats.totalAgents;
+  document.getElementById('st-steps').textContent = D.stats.totalSteps.toLocaleString();
+  document.getElementById('st-fb').textContent = D.stats.fallbackRate + '%';
+  document.getElementById('st-perc').textContent = D.stats.perceptionRate + '%';
+
+  stepMax = D.stats.totalSteps;
+  stepMin = 1;
+  const sMin = document.getElementById('step-min'), sMax = document.getElementById('step-max');
+  sMin.max = stepMax; sMax.max = stepMax; sMin.value = 1; sMax.value = stepMax;
+  sMin.step = Math.max(1, Math.round(stepMax / 100));
+  sMax.step = sMin.step;
+  document.getElementById('step-label').textContent = '1 — ' + stepMax;
+
+  initMap();
+  renderCharts();
+  renderCards();
+}
+
+// ── Map ──
+function initMap() {
+  if (map) { map.remove(); map = null; }
+  if (!mapToken) return;
+  mapboxgl.accessToken = mapToken;
+  const bb = D.stats.bbox;
+  map = new mapboxgl.Map({
+    container: 'map', style: 'mapbox://styles/mapbox/dark-v11',
+    center: [(bb.minLon + bb.maxLon) / 2, (bb.minLat + bb.maxLat) / 2],
+    zoom: 14.5, attributionControl: false,
+  });
+  map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+  map.on('load', () => {
+    addHeatSources();
+    addTrailSource();
+    addClickHandler();
+  });
+}
+
+function positionsToGeoJSON(pts) {
+  return {
+    type: 'FeatureCollection',
+    features: pts.map(p => ({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [p[1], p[0]] },
+      properties: { mood: p[2], step: p[3], aid: p[4], curiosity: p[5], fatigue: p[6], needs: p[7] }
+    }))
+  };
+}
+
+function addHeatSources() {
+  const all = D.positions;
+
+  map.addSource('heat-all', { type: 'geojson', data: positionsToGeoJSON(all) });
+  map.addLayer({
+    id: 'layer-density', type: 'heatmap', source: 'heat-all',
+    layout: { visibility: 'visible' },
+    paint: {
+      'heatmap-weight': 0.5, 'heatmap-intensity': 1.5, 'heatmap-radius': 15, 'heatmap-opacity': 0.5,
+      'heatmap-color': ['interpolate',['linear'],['heatmap-density'],
+        0.05,'rgba(0,0,0,0)', 0.15,'rgba(0,0,255,0.35)', 0.35,'rgba(0,200,255,0.55)',
+        0.5,'rgba(0,228,0,0.65)', 0.65,'rgba(255,255,0,0.75)', 0.8,'rgba(255,160,0,0.85)', 1,'rgba(255,0,0,1)']
+    }
+  });
+
+  const moods = { relaxed: '#30d158', stressed: '#ff453a', excited: '#ff9f0a', bored: '#8e8e93' };
+  for (const [mood, color] of Object.entries(moods)) {
+    const pts = all.filter(p => p[2] === mood);
+    map.addSource('heat-' + mood, { type: 'geojson', data: positionsToGeoJSON(pts) });
+    const r = parseInt(color.slice(1,3),16), g = parseInt(color.slice(3,5),16), b = parseInt(color.slice(5,7),16);
+    map.addLayer({
+      id: 'layer-' + mood, type: 'heatmap', source: 'heat-' + mood,
+      layout: { visibility: 'none' },
+      paint: {
+        'heatmap-weight': 0.8, 'heatmap-intensity': 1.5, 'heatmap-radius': 22, 'heatmap-opacity': 0.8,
+        'heatmap-color': ['interpolate',['linear'],['heatmap-density'],
+          0,`rgba(${r},${g},${b},0)`, 0.3,`rgba(${r},${g},${b},0.3)`, 0.6,`rgba(${r},${g},${b},0.6)`, 1, color]
+      }
+    });
+  }
+}
+
+function addTrailSource() {
+  const features = [];
+  const ids = Object.keys(D.trails);
+  ids.forEach((id, i) => {
+    const coords = D.trails[id];
+    if (coords.length < 2) return;
+    features.push({
+      type: 'Feature',
+      geometry: { type: 'LineString', coordinates: coords.map(c => [c[1], c[0]]) },
+      properties: { aid: +id, color: TRAIL_C[i % TRAIL_C.length] }
+    });
+  });
+  map.addSource('trails', { type: 'geojson', data: { type: 'FeatureCollection', features } });
+  map.addLayer({
+    id: 'layer-trails', type: 'line', source: 'trails',
+    layout: { visibility: 'none', 'line-join': 'round', 'line-cap': 'round' },
+    paint: { 'line-color': ['get', 'color'], 'line-width': 2, 'line-opacity': 0.55 }
+  });
+}
+
+function addClickHandler() {
+  map.on('click', e => {
+    const pts = D.positions;
+    let best = Infinity, hit = null;
+    const lng = e.lngLat.lng, lat = e.lngLat.lat;
+    for (const p of pts) {
+      if (p[3] < stepMin || p[3] > stepMax) continue;
+      const d = (p[0]-lat)**2 + (p[1]-lng)**2;
+      if (d < best) { best = d; hit = p; }
+    }
+    if (!hit || best > 0.00002) return;
+    const [lt,ln,mood,step,aid,cur,fat,needs] = hit;
+    const mc = MC[mood] || '#636366';
+    const bars = Object.entries(needs).map(([k,v]) => {
+      const pct = Math.round(v*100), c = v<0.3?'#ff453a':v<0.6?'#ff9f0a':'#30d158';
+      return `<div style="display:flex;align-items:center;gap:6px;font-size:11px;margin:2px 0">
+        <span style="width:52px;color:rgba(245,245,247,0.55)">${k}</span>
+        <div style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+          <div style="width:${pct}%;height:100%;background:${c};border-radius:3px"></div>
+        </div><span style="width:28px;text-align:right;font-variant-numeric:tabular-nums">${pct}%</span></div>`;
+    }).join('');
+    new mapboxgl.Popup({ maxWidth: '260px' })
+      .setLngLat([ln, lt])
+      .setHTML(`<div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-weight:700;font-size:13px">Agent ${aid}</span>
+          <span style="font-size:11px;color:rgba(245,245,247,0.55)">Step ${step}</span>
+        </div>
+        <div style="margin-bottom:10px">
+          <span class="popup-badge" style="background:${mc}18;color:${mc};border:1px solid ${mc}33">${mood}</span>
+        </div>
+        <div style="display:flex;gap:14px;font-size:11px;margin-bottom:10px;color:rgba(245,245,247,0.55)">
+          <span>Curiosity <b style="color:#f5f5f7">${Math.round(cur*100)}%</b></span>
+          <span>Fatigue <b style="color:#f5f5f7">${Math.round(fat*100)}%</b></span>
+        </div>${bars}</div>`)
+      .addTo(map);
+  });
+}
+
+function toggleLayer(key, visible) {
+  if (!map) return;
+  const id = key === 'trails' ? 'layer-trails' : 'layer-' + key;
+  try { map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none'); } catch(e) {}
+}
+
+function updateFilters() {
+  if (!map) return;
+  const filter = ['all', ['>=', ['get', 'step'], stepMin], ['<=', ['get', 'step'], stepMax]];
+  try {
+    map.setFilter('layer-density', filter);
+    ['relaxed','stressed','excited','bored'].forEach(m => map.setFilter('layer-' + m, filter));
+  } catch(e) {}
+}
+
+// ── Charts ──
+function cDef() {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color:'rgba(245,245,247,0.55)', font:{family:'Inter',size:11}, boxWidth:12, padding:10 } } },
+    scales: {
+      x: { ticks:{color:'rgba(245,245,247,0.32)',font:{size:10}}, grid:{color:'rgba(255,255,255,0.04)'} },
+      y: { ticks:{color:'rgba(245,245,247,0.32)',font:{size:10}}, grid:{color:'rgba(255,255,255,0.04)'} }
+    }
+  };
+}
+
+function renderCharts() {
+  charts.forEach(c => c.destroy()); charts = [];
+  document.querySelectorAll('.card canvas').forEach(c => { c.width = c.width; });
+
+  const ts = D.emotionTimeSeries, steps = ts.map(t=>t.step), d = cDef();
+
+  charts.push(new Chart(document.getElementById('chart-mood'), { type:'line', data:{ labels:steps,
+    datasets:['relaxed','stressed','excited','bored'].map(m=>({
+      label:m, data:ts.map(t=>(t.moods[m]||0)*100), borderColor:MC[m], backgroundColor:MC[m]+'15',
+      fill:true, tension:0.35, pointRadius:0, borderWidth:1.5
+    }))}, options:{...d, scales:{...d.scales,
+      y:{...d.scales.y, max:Math.min(100,Math.max(50,...['relaxed','stressed','excited','bored'].map(m=>Math.max(...ts.map(t=>(t.moods[m]||0)*100))))+10),
+        title:{display:true,text:'%',color:'rgba(245,245,247,0.32)'}},
+      x:{...d.scales.x, title:{display:true,text:'Step',color:'rgba(245,245,247,0.32)'}}}}
+  }));
+
+  charts.push(new Chart(document.getElementById('chart-cog'), { type:'line', data:{ labels:steps,
+    datasets:[
+      {label:'Curiosity', data:ts.map(t=>t.curiosity), borderColor:'#64d2ff', backgroundColor:'#64d2ff15', fill:true, tension:0.35, pointRadius:0, borderWidth:1.5},
+      {label:'Fatigue', data:ts.map(t=>t.fatigue), borderColor:'#ff453a', backgroundColor:'#ff453a15', fill:true, tension:0.35, pointRadius:0, borderWidth:1.5},
+    ]}, options:{...d, scales:{...d.scales, y:{...d.scales.y, min:0, max:1.05}}} }));
+
+  const nk=['comfort','energy','hunger','social'], nc={comfort:'#bf5af2',energy:'#ffd60a',hunger:'#ff9f0a',social:'#30d158'};
+  charts.push(new Chart(document.getElementById('chart-needs'), { type:'line', data:{ labels:steps,
+    datasets:nk.map(k=>({label:k, data:ts.map(t=>t.needs[k]??0), borderColor:nc[k], tension:0.35, pointRadius:0, borderWidth:1.5, fill:false}))
+  }, options:{...d, scales:{...d.scales, y:{...d.scales.y, min:0, max:1.05}}} }));
+
+  const th=D.satisfactionThemes||{}, tl=Object.keys(th), tv=Object.values(th).map(v=>Math.round(v/D.totalSatisfaction*1000)/10);
+  if (tl.length) {
+    charts.push(new Chart(document.getElementById('chart-sat'), { type:'bar', data:{ labels:tl,
+      datasets:[{data:tv, backgroundColor:'rgba(10,132,255,0.2)', borderColor:'#0a84ff', borderWidth:1, borderRadius:4}]
+    }, options:{...d, indexAxis:'y', plugins:{...d.plugins, legend:{display:false}},
+      scales:{x:{...d.scales.x, title:{display:true,text:'%',color:'rgba(245,245,247,0.32)'}}, y:{...d.scales.y}}} }));
+  }
+
+  const sl=Object.keys(D.satisfactionSource||{}), sv=Object.values(D.satisfactionSource||{});
+  const sc=['#30d158','#0a84ff','#ff9f0a','#64d2ff','#8e8e93','#bf5af2','#ff375f','#ffd60a'];
+  if (sl.length) {
+    charts.push(new Chart(document.getElementById('chart-src'), { type:'doughnut', data:{ labels:sl,
+      datasets:[{data:sv, backgroundColor:sc.slice(0,sl.length), borderWidth:0}]
+    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right',labels:{color:'rgba(245,245,247,0.55)',font:{size:10},padding:8}}}} }));
+  }
+
+  const ml=Object.keys(D.moodCounts||{}), mv=Object.values(D.moodCounts||{});
+  if (ml.length) {
+    charts.push(new Chart(document.getElementById('chart-pie'), { type:'doughnut', data:{ labels:ml,
+      datasets:[{data:mv, backgroundColor:ml.map(m=>MC[m]||'#636366'), borderWidth:0}]
+    }, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right',labels:{color:'rgba(245,245,247,0.55)',font:{size:11},padding:8}}}} }));
+  }
+}
+
+// ── Cards ──
+function renderCards() {
+  // Summary
+  const sc = document.getElementById('summary-content');
+  sc.innerHTML = '';
+  const s = D.stats;
+  const topMood = Object.entries(D.moodCounts||{}).sort((a,b)=>b[1]-a[1])[0];
+  const topPct = topMood ? Math.round(topMood[1] / s.totalRows * 100) : 0;
+  const html = [
+    `<p class="finding-text"><strong>${s.totalAgents} agents</strong> recorded over <strong>${s.totalSteps.toLocaleString()} steps</strong> (${s.totalRows.toLocaleString()} data points).</p>`,
+    topMood ? `<p class="finding-text">Dominant mood: <strong style="color:${MC[topMood[0]]||'#fff'}">${topMood[0]}</strong> (${topPct}% of steps).</p>` : '',
+    s.fallbackRate ? `<p class="finding-text">Fallback rate: <strong>${s.fallbackRate}%</strong> — ${100-s.fallbackRate}% of movement decisions used LLM reasoning.</p>` : '',
+    s.perceptionRate ? `<p class="finding-text">Perception available: <strong>${s.perceptionRate}%</strong> of steps had street-view perception data.</p>` : '',
+  ].join('');
+  sc.innerHTML = html;
+
+  // Themes
+  const tc = document.getElementById('card-themes');
+  tc.innerHTML = '<h3 class="accent">Satisfaction Themes</h3>';
+  const themes = D.satisfactionThemes || {};
+  for (const [t,c] of Object.entries(themes).sort((a,b)=>b[1]-a[1])) {
+    const pct = (c/D.totalSatisfaction*100).toFixed(1);
+    tc.insertAdjacentHTML('beforeend', `<div class="info-row"><span class="lbl">${t}</span><span class="val">${pct}%</span></div>`);
+    (D.satisfactionSamples[t]||[]).forEach(s => {
+      tc.insertAdjacentHTML('beforeend', `<div class="info-sample">“${s}”</div>`);
+    });
+  }
+
+  // Amenities
+  const ac = document.getElementById('card-amenities');
+  ac.innerHTML = '<h3 class="accent">Target Amenity Types</h3>';
+  const types = D.targetTypes || {};
+  const total = Object.values(types).reduce((a,b)=>a+b,0) || 1;
+  for (const [t,c] of Object.entries(types).sort((a,b)=>b[1]-a[1])) {
+    ac.insertAdjacentHTML('beforeend', `<div class="info-row"><span class="lbl">${t}</span><span class="val">${(c/total*100).toFixed(1)}%</span></div>`);
+  }
+  if (!Object.keys(types).length) ac.insertAdjacentHTML('beforeend', '<div class="info-sample">No target type data available in this recording.</div>');
+
+  // Archetypes
+  const arc = document.getElementById('card-archetypes');
+  arc.innerHTML = '<h3 class="accent">Archetypes</h3>';
+  const archetypes = D.archetypeCounts || {};
+  const arcTotal = Object.values(archetypes).reduce((a,b)=>a+b,0) || 1;
+  for (const [t,c] of Object.entries(archetypes).sort((a,b)=>b[1]-a[1])) {
+    arc.insertAdjacentHTML('beforeend', `<div class="info-row"><span class="lbl">${t}</span><span class="val">${c.toLocaleString()} (${(c/arcTotal*100).toFixed(0)}%)</span></div>`);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

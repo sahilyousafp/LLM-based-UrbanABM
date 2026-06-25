@@ -1,0 +1,18 @@
+services:
+  postgis-bench:
+    image: postgis/postgis:16-3.4
+    container_name: abm-postgis-bench
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: eixample_bench
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  pgdata-bench:

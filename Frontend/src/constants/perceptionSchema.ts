@@ -29,13 +29,9 @@ export const FIELD_DEFAULT_SUBFIELDS: Record<string, PerceptionSubField[]> = {
 };
 
 export const VLM_CARDS: VLMCardSpec[] = [
-  { id: 'qwen25vl-3b',  name: 'Qwen2.5-VL 3B',         active: true,
-    pros: 'Best speed/quality balance. Already cached for all 300+ points.',
-    cons: 'Smaller context window than 7B variant.',
-    props: { Latency: '~2.5s', Memory: '6 GB', License: 'Tongyi' } },
-  { id: 'qwen25vl-7b',  name: 'Qwen2.5-VL 7B',
-    pros: 'Stronger spatial reasoning and richer captions.',
-    cons: 'Needs 12 GB VRAM; slower.',
+  { id: 'qwen3vl-8b',   name: 'Qwen3-VL 8B',            active: true,
+    pros: 'Best spatial reasoning, 32-language OCR, DeepStack feature fusion.',
+    cons: 'Needs 12 GB VRAM; slower than 2B variant.',
     props: { Latency: '~6.0s', Memory: '12 GB', License: 'Tongyi' } },
   { id: 'llava-1.6-7b', name: 'LLaVA-1.6 7B',
     pros: 'Robust general-purpose VLM, well documented.',

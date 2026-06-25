@@ -1,36 +1,36 @@
 {
   "metadata": {
-    "timestamp": "20260613_203645",
+    "timestamp": "20260621_003911",
     "latitude": 41.402181,
     "longitude": 2.172815,
-    "heading": 57.0,
-    "street_name": "synthetic_bridge",
-    "highway_type": "bridge",
-    "edge_id": "bridge_c45d93e0",
-    "source_image": "sv_41.402181_2.172815_h57.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "heading": 49.4,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "b458d6a0-de27-498f-b55c-13acc470966f",
+    "source_image": "sv_41.402181_2.172815_h49.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 841568.2,
+    "latency_ms": 100268.7,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Tree-lined street with parked cars and moderate pedestrian activity.",
+    "scene": "A quiet, tree-lined sidewalk with parked cars and a black metal fence, under dappled sunlight.",
     "lighting": [
       {
         "zone": "center",
-        "element": "dappled shade from dense tree canopy",
-        "condition": "dim"
+        "element": "dappled sunlight filtering through tree canopy",
+        "condition": "adequate"
       }
     ],
     "spatial_character": [
       {
         "zone": "far_left",
         "width": "narrow",
-        "enclosure": "open",
+        "enclosure": "semi",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "other",
         "building_condition": "unknown",
         "storefront_type": "unknown",
         "architectural_details": null
@@ -38,35 +38,35 @@
       {
         "zone": "left",
         "width": "moderate",
-        "enclosure": "open",
+        "enclosure": "semi",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "other",
         "building_condition": "unknown",
         "storefront_type": "unknown",
         "architectural_details": null
       },
       {
         "zone": "center",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "road",
+        "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "other",
         "building_condition": "unknown",
         "storefront_type": "unknown",
         "architectural_details": null
       },
       {
         "zone": "right",
-        "width": "narrow",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "other",
         "building_condition": "unknown",
         "storefront_type": "unknown",
         "architectural_details": null
@@ -74,11 +74,11 @@
       {
         "zone": "far_right",
         "width": "narrow",
-        "enclosure": "open",
+        "enclosure": "semi",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "other",
         "building_condition": "unknown",
         "storefront_type": "unknown",
         "architectural_details": null
@@ -87,36 +87,25 @@
     "crowdedness": [
       {
         "zone": "center",
-        "density_level": "moderate"
+        "density_level": "sparse"
       }
     ],
     "greenery": [
       {
-        "zone": "left",
-        "element": "mature deciduous trees with green foliage",
-        "coverage": "dense"
-      },
-      {
         "zone": "center",
-        "element": "small shrubs and bushes",
-        "coverage": "sparse"
+        "element": "large mature trees with dense green foliage",
+        "coverage": "dense"
       }
     ],
     "street_amenities": [
       {
-        "zone": "left",
-        "element": "lamppost with parking sign",
-        "material_and_colour": "metallic grey",
+        "zone": "center",
+        "element": "black metal fence",
+        "material_and_colour": "black metal",
         "presence": "few"
       }
     ],
-    "visible_text": [
-      {
-        "text": "P",
-        "zone": "far_right",
-        "type": "sign"
-      }
-    ]
+    "visible_text": []
   },
   "nearby_landmarks": []
 }

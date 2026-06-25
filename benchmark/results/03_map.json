@@ -1,0 +1,214 @@
+{
+  "overture_pois": [
+    {
+      "amenity": "professional_services",
+      "count": 519
+    },
+    {
+      "amenity": "hotel",
+      "count": 355
+    },
+    {
+      "amenity": "lawyer",
+      "count": 336
+    },
+    {
+      "amenity": "restaurant",
+      "count": 311
+    },
+    {
+      "amenity": "clothing_store",
+      "count": 310
+    },
+    {
+      "amenity": "beauty_salon",
+      "count": 255
+    },
+    {
+      "amenity": "tapas_bar",
+      "count": 239
+    },
+    {
+      "amenity": "bar",
+      "count": 235
+    },
+    {
+      "amenity": "advertising_agency",
+      "count": 217
+    },
+    {
+      "amenity": "community_services_non_profits",
+      "count": 215
+    },
+    {
+      "amenity": "real_estate",
+      "count": 207
+    },
+    {
+      "amenity": "event_planning",
+      "count": 198
+    },
+    {
+      "amenity": "jewelry_store",
+      "count": 185
+    },
+    {
+      "amenity": "psychologist",
+      "count": 157
+    },
+    {
+      "amenity": "bakery",
+      "count": 155
+    },
+    {
+      "amenity": "real_estate_agent",
+      "count": 155
+    },
+    {
+      "amenity": "travel_services",
+      "count": 154
+    },
+    {
+      "amenity": "spanish_restaurant",
+      "count": 151
+    },
+    {
+      "amenity": "womens_clothing_store",
+      "count": 150
+    },
+    {
+      "amenity": "hair_salon",
+      "count": 147
+    }
+  ],
+  "osm_pois": [
+    {
+      "amenity": "nan",
+      "count": 4506
+    },
+    {
+      "amenity": "restaurant",
+      "count": 1263
+    },
+    {
+      "amenity": "bicycle_parking",
+      "count": 790
+    },
+    {
+      "amenity": "bench",
+      "count": 651
+    },
+    {
+      "amenity": "cafe",
+      "count": 489
+    },
+    {
+      "amenity": "recycling",
+      "count": 399
+    },
+    {
+      "amenity": "waste_basket",
+      "count": 257
+    },
+    {
+      "amenity": "bar",
+      "count": 256
+    },
+    {
+      "amenity": "drinking_water",
+      "count": 217
+    },
+    {
+      "amenity": "pharmacy",
+      "count": 191
+    },
+    {
+      "amenity": "parking",
+      "count": 160
+    },
+    {
+      "amenity": "fast_food",
+      "count": 152
+    },
+    {
+      "amenity": "vending_machine",
+      "count": 135
+    },
+    {
+      "amenity": "bicycle_rental",
+      "count": 122
+    },
+    {
+      "amenity": "bank",
+      "count": 109
+    },
+    {
+      "amenity": "parking_entrance",
+      "count": 90
+    },
+    {
+      "amenity": "taxi",
+      "count": 81
+    },
+    {
+      "amenity": "pub",
+      "count": 68
+    },
+    {
+      "amenity": "school",
+      "count": 66
+    },
+    {
+      "amenity": "post_box",
+      "count": 62
+    }
+  ],
+  "overture_edges": 3349,
+  "osm_edges": 24112,
+  "overture_times": [
+    2.9808999970555305,
+    2.345799992326647,
+    2.719299984164536,
+    2.5619000080041587,
+    2.321199979633093,
+    2.187000005505979,
+    2.170699997805059,
+    2.129299973603338,
+    2.1517000277526677,
+    2.117800002451986,
+    2.2622999968007207,
+    2.0878000068478286,
+    2.346399996895343,
+    2.2690999903716147,
+    2.2820999729447067,
+    2.3083999985828996,
+    2.4058999842964113,
+    2.427999977953732,
+    2.1708999993279576,
+    2.2143999813124537
+  ],
+  "osm_times": [
+    4.4439000193960965,
+    3.178599989041686,
+    3.0228999676182866,
+    2.9463000246323645,
+    2.9753000126220286,
+    3.29810002585873,
+    2.904399996623397,
+    2.6704000192694366,
+    2.7113999822176993,
+    2.5510999839752913,
+    2.6824999949894845,
+    2.6302000042051077,
+    2.605999994557351,
+    2.5901999906636775,
+    2.5747999898158014,
+    2.639499958604574,
+    3.0255999881774187,
+    3.0966000049374998,
+    2.8492999845184386,
+    2.9098999802954495
+  ],
+  "overture_median_ms": 2.2755999816581607,
+  "osm_median_ms": 2.8768499905709177
+}

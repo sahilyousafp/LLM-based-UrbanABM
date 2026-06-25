@@ -15,7 +15,7 @@ export function AnalyseModal() {
             <select className="select" id="p1-vlm-model-select-modal" style={{ width: '100%' }}></select>
             <div id="p1-vlm-hf-row-modal" style={{ display: 'none', flexDirection: 'column', gap: '4px', marginTop: '8px' }}>
               <span className="meta" style={{ fontSize: '11px' }}>HuggingFace repo ID</span>
-              <input type="text" className="input" id="p1-vlm-hf-model-modal" placeholder="e.g. Qwen/Qwen2.5-VL-7B-Instruct" style={{ fontSize: '12px', width: '100%', boxSizing: 'border-box' }} />
+              <input type="text" className="input" id="p1-vlm-hf-model-modal" placeholder="e.g. Qwen/Qwen3-VL-8B-Instruct" style={{ fontSize: '12px', width: '100%', boxSizing: 'border-box' }} />
             </div>
           </div>
           <div className="analyse-modal-right">

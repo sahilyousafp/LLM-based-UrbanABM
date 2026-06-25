@@ -1,24 +1,24 @@
 {
   "metadata": {
-    "timestamp": "20260613_192306",
+    "timestamp": "20260620_220136",
     "latitude": 41.399643,
     "longitude": 2.152553,
-    "heading": 274.0,
-    "street_name": "synthetic_bridge",
-    "highway_type": "bridge",
-    "edge_id": "bridge_852b318b",
-    "source_image": "sv_41.399643_2.152553_h274.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "heading": 53.7,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "97f33e6b-f505-4783-9381-6f80afb1cd50",
+    "source_image": "sv_41.399643_2.152553_h53.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 273055.1,
+    "latency_ms": 194513.0,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Modern urban street with mixed residential and office buildings, featuring moderate pedestrian activity and contemporary architecture.",
+    "scene": "A narrow, tree-lined urban street with sparse pedestrian activity, featuring a mix of neoclassical and contemporary buildings with retail storefronts under dim, overcast lighting.",
     "lighting": [
       {
         "zone": "center",
-        "element": "overcast sky with diffused light",
+        "element": "overcast sky diffusing ambient light",
         "condition": "dim"
       }
     ],
@@ -26,96 +26,125 @@
       {
         "zone": "far_left",
         "width": "narrow",
-        "enclosure": "open",
+        "enclosure": "enclosed",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "modernist",
+        "architectural_style": "neoclassical",
         "building_condition": "good",
-        "storefront_type": "residential",
-        "architectural_details": "balconies with glass panels"
+        "storefront_type": "retail",
+        "architectural_details": "ornate stone facade with balcony and wrought-iron railings"
       },
       {
         "zone": "left",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "narrow",
+        "enclosure": "enclosed",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "modernist",
+        "architectural_style": "vernacular",
         "building_condition": "good",
-        "storefront_type": "residential",
-        "architectural_details": "large windows and balconies"
+        "storefront_type": "retail",
+        "architectural_details": "ground-floor shop with red signage"
       },
       {
         "zone": "center",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "sidewalk",
         "crossing": "none",
         "architectural_style": "contemporary",
-        "building_condition": "excellent",
-        "storefront_type": "office",
-        "architectural_details": "glass facade with vertical lines"
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "brick facade with large glass storefronts"
       },
       {
         "zone": "right",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "narrow",
+        "enclosure": "enclosed",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "sidewalk",
         "crossing": "none",
         "architectural_style": "contemporary",
-        "building_condition": "excellent",
-        "storefront_type": "office",
-        "architectural_details": "glass facade with horizontal lines"
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "brick facade with large glass storefronts"
       },
       {
         "zone": "far_right",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "narrow",
+        "enclosure": "enclosed",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "sidewalk",
         "crossing": "none",
         "architectural_style": "contemporary",
-        "building_condition": "excellent",
-        "storefront_type": "office",
-        "architectural_details": "glass facade with diagonal lines"
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "brick facade with large glass storefronts"
       }
     ],
     "crowdedness": [
       {
-        "zone": "left",
-        "density_level": "sparse"
-      },
-      {
         "zone": "center",
-        "density_level": "moderate"
+        "density_level": "sparse"
       }
     ],
     "greenery": [
       {
         "zone": "left",
-        "element": "small shrubs and flowering plants",
+        "element": "leafless plane tree with mottled grey bark",
+        "coverage": "sparse"
+      },
+      {
+        "zone": "right",
+        "element": "leafless plane tree with mottled grey bark",
         "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron street lamps",
-        "material_and_colour": "black painted cast iron",
+        "element": "grey plastic wheeled trash bin",
+        "material_and_colour": "grey plastic",
+        "presence": "few"
+      },
+      {
+        "zone": "left",
+        "element": "red circular traffic sign with white horizontal bar",
+        "material_and_colour": "metallic red and white",
         "presence": "few"
       },
       {
         "zone": "center",
-        "element": "yellow painted concrete bollards",
-        "material_and_colour": "yellow concrete",
+        "element": "grey concrete pavement tiles",
+        "material_and_colour": "grey concrete",
+        "presence": "many"
+      },
+      {
+        "zone": "center",
+        "element": "black metal bollard",
+        "material_and_colour": "black metal",
         "presence": "several"
       }
     ],
-    "visible_text": []
+    "visible_text": [
+      {
+        "text": "G. TAL",
+        "zone": "far_left",
+        "type": "sign"
+      },
+      {
+        "text": "170",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
+        "text": "FACIL model",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
   },
   "nearby_landmarks": []
 }

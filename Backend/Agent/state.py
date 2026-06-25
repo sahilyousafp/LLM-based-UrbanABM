@@ -16,6 +16,7 @@ class SimState:
         self.analyze_jobs: dict = {}     # VLM analysis jobs
         self.overture_jobs: dict = {}    # Overture pipeline jobs
         self.ext_jobs: dict = {}         # external plugin jobs
+        self.benchmark_jobs: dict = {}   # EQ-Bench benchmark jobs
 
         self._current_zone_bbox: list | None = None  # [west, south, east, north]
 

@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "timestamp": "20260620_081514",
+    "latitude": 41.391694,
+    "longitude": 2.164944,
+    "heading": 139.0,
+    "street_name": "Passeig de Gracia",
+    "highway_type": "primary",
+    "edge_id": "benchmark",
+    "dist_along_edge_m": null,
+    "source_image": "barcelona_streetview.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
+    "device": "cuda:0",
+    "latency_ms": 57595.82315500029,
+    "status": "ok"
+  },
+  "scene_analysis": {
+    "scene": "A bustling modernist boulevard in Barcelona lined with ornate buildings and mature trees, featuring heavy pedestrian traffic under overcast skies.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast sky diffusing daylight",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "facade with ornate stone carvings and arched windows"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "curved facade with decorative tilework and sculptural elements"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "excellent",
+        "storefront_type": "retail",
+        "architectural_details": "tiled facade with stylized floral motifs and projecting balconies"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "center",
+        "density_level": "dense"
+      },
+      {
+        "zone": "right",
+        "density_level": "moderate"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "mature plane trees with broad canopies",
+        "coverage": "dense"
+      },
+      {
+        "zone": "center",
+        "element": "line of tall trees shading the street",
+        "coverage": "dense"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "center",
+        "element": "metal barricades",
+        "material_and_colour": "silver metal",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "large terracotta pots with plants",
+        "material_and_colour": "terracotta pot, green foliage",
+        "presence": "several"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "PASSEIG DE GRACIA",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "NO PARKING",
+        "zone": "right",
+        "type": "sign"
+      }
+    ]
+  },
+  "nearby_landmarks": []
+}

@@ -1,25 +1,25 @@
 {
   "metadata": {
-    "timestamp": "20260613_181519",
+    "timestamp": "20260620_184229",
     "latitude": 41.396474,
     "longitude": 2.150332,
-    "heading": 132.0,
+    "heading": 139.8,
     "street_name": "",
     "highway_type": "road",
     "edge_id": "b9beedde-b887-4b25-b102-8bc8d0303d86",
-    "source_image": "sv_41.396474_2.150332_h132.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "source_image": "sv_41.396474_2.150332_h139.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 314644.8,
+    "latency_ms": 201433.9,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Urban street with moderate pedestrian activity, parked vehicles, and mature trees lining the sidewalk.",
+    "scene": "A sun-dappled urban street with a mix of neoclassical and contemporary buildings, featuring sparse pedestrian activity, parked scooters, and large waste bins lining the road.",
     "lighting": [
       {
         "zone": "center",
-        "element": "direct overhead midday sun",
-        "condition": "bright"
+        "element": "dappled sunlight filtering through tree canopy",
+        "condition": "adequate"
       }
     ],
     "spatial_character": [
@@ -30,46 +30,46 @@
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "neoclassical",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "white stucco facade with pilasters and decorative cornice"
       },
       {
         "zone": "left",
         "width": "moderate",
         "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "sidewalk",
+        "lane_type": "road",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "neoclassical",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "black metal security gate at entrance"
       },
       {
         "zone": "center",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
         "lane_type": "road",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "contemporary",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "glass curtain wall with vertical mullions"
       },
       {
         "zone": "right",
         "width": "narrow",
-        "enclosure": "open",
+        "enclosure": "enclosed",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "contemporary",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "black metal security gate and recessed entrance"
       },
       {
         "zone": "far_right",
@@ -78,42 +78,70 @@
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "contemporary",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "black metal security gate and recessed entrance"
       }
     ],
     "crowdedness": [
       {
         "zone": "center",
-        "density_level": "moderate"
+        "density_level": "sparse"
       }
     ],
     "greenery": [
       {
-        "zone": "left",
-        "element": "mature London plane trees with mottled grey-green bark",
-        "coverage": "dense"
+        "zone": "center",
+        "element": "young deciduous tree with green leaves",
+        "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
-        "zone": "left",
-        "element": "cast-iron double-arm street lamp with frosted globe",
-        "material_and_colour": "black painted cast iron",
+        "zone": "center",
+        "element": "motor scooter",
+        "material_and_colour": "black and silver",
         "presence": "few"
       },
       {
         "zone": "center",
-        "element": "yellow painted concrete bollard",
-        "material_and_colour": "yellow concrete",
+        "element": "large grey plastic waste bin",
+        "material_and_colour": "grey plastic",
         "presence": "several"
+      },
+      {
+        "zone": "center",
+        "element": "blue and white parking sign",
+        "material_and_colour": "metal with blue and white paint",
+        "presence": "few"
+      },
+      {
+        "zone": "left",
+        "element": "traffic sign post",
+        "material_and_colour": "metallic grey",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "white painted parking lines",
+        "material_and_colour": "white paint on asphalt",
+        "presence": "many"
       }
     ],
     "visible_text": [
       {
+        "text": "P",
+        "zone": "left",
+        "type": "sign"
+      },
+      {
         "text": "BOPAN",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "FORRERES ARTICULATS",
         "zone": "center",
         "type": "sign"
       }

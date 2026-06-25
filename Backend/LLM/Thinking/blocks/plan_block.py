@@ -31,12 +31,11 @@ from LLM.Thinking.block import Block, BlockResult
 
 logger = logging.getLogger(__name__)
 
-# Valid perception field keys that can appear in perception_preferences/perception_avoid
+# Valid perception field keys that can appear in perception_preferences/perception_avoid.
+# These are the 7 scene_analysis categories returned by get_nearby_perception.
 VALID_PERCEPTION_KEYS = {
-    "scene_overview", "buildings", "materials", "building_condition",
-    "street_furniture", "vegetation", "signage", "ground_surfaces",
-    "spatial_enclosure", "pedestrian_activity", "lighting_atmosphere",
-    "as_resident", "as_commuter", "as_tourist", "as_student",
+    "scene", "lighting", "spatial_character", "crowdedness",
+    "greenery", "street_amenities", "visible_text",
 }
 
 
@@ -88,6 +87,7 @@ class PlanBlock(Block):
             street_perception: perception dict at current location
             candidate_edges: edges available for movement (for filtering)
         """
+        time_of_day = kwargs.get("time_of_day", "")
         profile = await self.memory.status.get("agent_profile", {})
         archetype = profile.get("archetype", "resident")
         needs = await self.memory.status.get("needs", {})
@@ -98,13 +98,13 @@ class PlanBlock(Block):
             plan = self._init_plan(archetype)
             await self.memory.status.update("plan", plan)
 
+        # Cycle daily plans: when all phases done, reset for next day
         if plan.get("status") == "completed":
-            return BlockResult(
-                action="plan_completed",
-                params={"plan": plan},
-                reasoning="All plan phases completed",
-                fallback=False,
-            )
+            plan["current_phase_index"] = 0
+            plan["current_phase"] = None
+            plan["completed_phases"] = []
+            plan["status"] = "active"
+            plan["day_count"] = plan.get("day_count", 0) + 1
 
         # Record encountered perception qualities at current location
         if street_perception:
@@ -127,7 +127,7 @@ class PlanBlock(Block):
                 await self.memory.stream.add(
                     topic="plan", step=step,
                     description=f"Completed en-route stop: {completed_stop_id} ({plan['current_phase']['goal']})",
-                    metadata={"stop_id": completed_stop_id},
+                    metadata={"stop_id": completed_stop_id, "time_of_day": time_of_day},
                 )
                 plan["current_phase"] = plan.get("interrupted_phase")
                 plan["interrupted_phase"] = None
@@ -147,47 +147,78 @@ class PlanBlock(Block):
                         topic="plan",
                         step=step,
                         description=f"Completed phase: {current_phase['id']} ({current_phase['goal']})",
-                        metadata={"phase_id": current_phase["id"]},
+                        metadata={"phase_id": current_phase["id"], "time_of_day": time_of_day},
                     )
+
+            # Time-based phase advancement: if the next phase's time matches
+            # current time_of_day and the current phase's time does not, advance
+            current_phase = plan.get("current_phase")
+            if current_phase and time_of_day:
+                phase_time = current_phase.get("time", "")
+                if phase_time and phase_time != time_of_day:
+                    next_idx = plan.get("current_phase_index", 0) + 1
+                    phases = plan.get("phases", [])
+                    if next_idx < len(phases) and phases[next_idx].get("time") == time_of_day:
+                        plan["completed_phases"].append(current_phase["id"])
+                        plan["current_phase"] = None
+                        await self.memory.stream.add(
+                            topic="plan", step=step,
+                            description=f"Time changed to {time_of_day}, advancing from {current_phase['id']}",
+                            metadata={"phase_id": current_phase["id"], "time_of_day": time_of_day},
+                        )
 
             # Advance to next phase if needed
             if plan.get("current_phase") is None:
                 next_phase = self._advance_phase(plan)
                 if next_phase:
-                    plan["current_phase"] = next_phase
-                    plan.setdefault("phase_start_steps", {})[next_phase["id"]] = step
-                    model = self.context.get("model")
-                    if model and next_phase.get("target_types"):
-                        position = await self.memory.status.get("position", {})
-                        active_target = await self._resolve_target(
-                            model, position, next_phase["target_types"]
+                    # For time-triggered phases, wait until the right time
+                    phase_time = next_phase.get("time", "")
+                    if phase_time and time_of_day and phase_time != time_of_day:
+                        plan["current_phase_index"] = max(0, plan.get("current_phase_index", 1) - 1)
+                    else:
+                        plan["current_phase"] = next_phase
+                        plan.setdefault("phase_start_steps", {})[next_phase["id"]] = step
+                        model = self.context.get("model")
+                        if next_phase.get("goal") == "return_home":
+                            await self._activate_home_destination()
+                        elif next_phase.get("goal") == "reach_destination":
+                            await self._activate_work_destination()
+                        elif model and next_phase.get("target_types"):
+                            position = await self.memory.status.get("position", {})
+                            active_target = await self._resolve_target(
+                                model, position, next_phase["target_types"]
+                            )
+                            if active_target:
+                                plan["current_phase"]["active_target"] = active_target
+                                await self._sync_plan_target_to_destination(active_target)
+                        await self.memory.stream.add(
+                            topic="plan",
+                            step=step,
+                            description=f"Started phase: {next_phase['id']} ({next_phase['goal']})",
+                            metadata={"phase_id": next_phase["id"], "time_of_day": time_of_day},
                         )
-                        if active_target:
-                            plan["current_phase"]["active_target"] = active_target
-                            await self._sync_plan_target_to_destination(active_target)
-                    await self.memory.stream.add(
-                        topic="plan",
-                        step=step,
-                        description=f"Started phase: {next_phase['id']} ({next_phase['goal']})",
-                        metadata={"phase_id": next_phase["id"]},
-                    )
 
         # Resolve active_target for pre-initialized phase if not yet set
         current_phase = plan.get("current_phase")
-        if current_phase and not current_phase.get("active_target") and current_phase.get("target_types"):
-            model = self.context.get("model")
-            if model:
-                position = await self.memory.status.get("position", {})
-                active_target = await self._resolve_target(
-                    model, position, current_phase["target_types"]
-                )
-                if active_target:
-                    current_phase["active_target"] = active_target
+        if current_phase and not current_phase.get("active_target"):
+            if current_phase.get("goal") == "return_home":
+                await self._activate_home_destination()
+            elif current_phase.get("goal") == "reach_destination":
+                await self._activate_work_destination()
+            elif current_phase.get("target_types"):
+                model = self.context.get("model")
+                if model:
+                    position = await self.memory.status.get("position", {})
+                    active_target = await self._resolve_target(
+                        model, position, current_phase["target_types"]
+                    )
+                    if active_target:
+                        current_phase["active_target"] = active_target
                     await self._sync_plan_target_to_destination(active_target)
 
         # --- En-route stop: check triggers (only when main phase is active, no stop running) ---
         if plan.get("current_phase") and not plan.get("en_route_stop_active"):
-            await self._check_and_trigger_en_route_stop(plan, needs, step)
+            await self._check_and_trigger_en_route_stop(plan, needs, step, time_of_day)
 
         # Apply perception_avoid hard filter only for rule_based mode
         # LLM modes: perception_avoid is passed as soft guidance via plan_context
@@ -366,8 +397,52 @@ class PlanBlock(Block):
         except Exception as e:
             logger.warning(f"Failed to sync plan target to destination: {e}")
 
+    async def _activate_work_destination(self) -> None:
+        """Set the agent's work/activity location as the current destination."""
+        try:
+            work = await self.memory.status.get("work", {})
+            if not work or not work.get("lon"):
+                return
+            existing = await self.memory.status.get("destination", {}) or {}
+            if existing.get("source") == "user_configured":
+                return
+            await self.memory.status.update("destination", {
+                **existing,
+                "name": work.get("name", "work"),
+                "amenity_type": work.get("amenity_type", ""),
+                "lon": work["lon"],
+                "lat": work["lat"],
+                "target_node": work.get("target_node"),
+                "source": "plan",
+                "visited": False,
+            })
+        except Exception as e:
+            logger.warning(f"Failed to activate work destination: {e}")
+
+    async def _activate_home_destination(self) -> None:
+        """Set the agent's home location as the current destination."""
+        try:
+            home = await self.memory.status.get("home", {})
+            if not home or not home.get("lon"):
+                return
+            existing = await self.memory.status.get("destination", {}) or {}
+            if existing.get("source") == "user_configured":
+                return
+            await self.memory.status.update("destination", {
+                **existing,
+                "name": home.get("name", "home"),
+                "amenity_type": home.get("amenity_type", "residential"),
+                "lon": home["lon"],
+                "lat": home["lat"],
+                "target_node": home.get("target_node"),
+                "source": "plan",
+                "visited": False,
+            })
+        except Exception as e:
+            logger.warning(f"Failed to activate home destination: {e}")
+
     async def _check_and_trigger_en_route_stop(
-        self, plan: dict, needs: dict, step: int
+        self, plan: dict, needs: dict, step: int, time_of_day: str = ""
     ) -> None:
         """Check if any en_route_stop trigger fires for the current main phase.
 
@@ -435,7 +510,7 @@ class PlanBlock(Block):
                     f"En-route stop triggered: {stop_phase['id']} — {stop['goal']} "
                     f"({need_key}={needs.get(need_key, 0):.2f} ≥ {threshold})"
                 ),
-                metadata={"stop_id": stop_phase["id"]},
+                metadata={"stop_id": stop_phase["id"], "time_of_day": time_of_day},
             )
             break  # only one stop at a time
 

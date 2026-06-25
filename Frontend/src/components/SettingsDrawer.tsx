@@ -22,6 +22,10 @@ export function SettingsDrawer() {
             </div>
           </div>
           <div className="col" style={{ gap: '8px' }}>
+            <div className="field-label">Map layers</div>
+            <label className="row" style={{ fontSize: '12px' }}><input type="checkbox" id="s-layer-buildings3d" /> 3D Buildings</label>
+          </div>
+          <div className="col" style={{ gap: '8px' }}>
             <div className="field-label">Backend URLs</div>
             <input className="input" id="s-map-url" defaultValue="http://127.0.0.1:8000" />
             <input className="input" id="s-lab-url" defaultValue="http://127.0.0.1:8100" />

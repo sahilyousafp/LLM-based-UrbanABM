@@ -67,7 +67,7 @@ def bq_buildings(bq_client, mem_con, bbox: dict, log_fn) -> bool:
         """)
         os.unlink(tmp_path)
         count = mem_con.execute("SELECT COUNT(*) FROM buildings").fetchone()[0]
-        log_fn(f"  ✓ {count:,} buildings (BigQuery)")
+        log_fn(f"  [OK] {count:,} buildings (BigQuery)")
         return True
     except Exception as exc:
         log_fn(f"  ✗ BQ buildings error: {exc}")
@@ -99,7 +99,7 @@ def bq_amenities(bq_client, mem_con, bbox: dict, log_fn) -> bool:
         """)
         os.unlink(tmp_path)
         count = mem_con.execute("SELECT COUNT(*) FROM amenities").fetchone()[0]
-        log_fn(f"  ✓ {count:,} amenities (BigQuery)")
+        log_fn(f"  [OK] {count:,} amenities (BigQuery)")
         return True
     except Exception as exc:
         log_fn(f"  ✗ BQ amenities error: {exc}")
@@ -133,7 +133,7 @@ def bq_transport(bq_client, mem_con, bbox: dict, log_fn) -> bool:
         """)
         os.unlink(tmp_path)
         count = mem_con.execute("SELECT COUNT(*) FROM walk_edges").fetchone()[0]
-        log_fn(f"  ✓ {count:,} walk edges (BigQuery)")
+        log_fn(f"  [OK] {count:,} walk edges (BigQuery)")
         return True
     except Exception as exc:
         log_fn(f"  ✗ BQ transport error: {exc}")

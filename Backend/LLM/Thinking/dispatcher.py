@@ -85,6 +85,7 @@ class BlockDispatcher:
                 nearby_amenities=nearby_amenities,
                 street_perception=street_perception,
                 candidate_edges=candidate_edges,
+                time_of_day=time_of_day,
             ),
             return_exceptions=True,
         )

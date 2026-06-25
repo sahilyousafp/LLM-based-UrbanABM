@@ -1,7 +1,7 @@
 """
 02_run_vlm_analysis.py
 =======================
-Step 2 of 2 — Run Qwen2.5-VL on downloaded Street View images.
+Step 2 of 2 — Run Qwen3-VL on downloaded Street View images.
 
 Reads:
   {output_dir}/images/          — JPEGs from 01_fetch_streetview_images.py
@@ -60,14 +60,14 @@ except ImportError:
 
 try:
     from transformers import (
-        Qwen2_5_VLForConditionalGeneration,
+        Qwen3VLForConditionalGeneration,
         AutoProcessor,
         BitsAndBytesConfig,
     )
 except ImportError:
     _pip_install("transformers>=4.45")
     from transformers import (
-        Qwen2_5_VLForConditionalGeneration,
+        Qwen3VLForConditionalGeneration,
         AutoProcessor,
         BitsAndBytesConfig,
     )
@@ -128,12 +128,13 @@ if not (DEFAULT_OUTPUT_DIR.parent.parent.exists()):
     DEFAULT_OUTPUT_DIR = Path.cwd() / "output"
     log.warning("Computed output dir not under repo root — fallback to %s", DEFAULT_OUTPUT_DIR)
 MODEL_IDS = {
-    "3b": "Qwen/Qwen2.5-VL-3B-Instruct",
-    "7b": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "3b": "Qwen/Qwen3-VL-2B-Instruct",
+    "7b": "Qwen/Qwen3-VL-8B-Instruct",
 }
 MAX_NEW_TOKENS = 1200
-TEMPERATURE    = 0.3
-TOP_P          = 0.95
+TEMPERATURE    = 0.7
+TOP_P          = 0.8
+TOP_K          = 20
 REP_PENALTY    = 1.1
 MIN_FIELDS_OK  = 3     # retry if fewer than this many fields are populated
 MAX_RETRIES    = 4
@@ -218,7 +219,7 @@ def load_model(model_id: str) -> tuple:
     )
 
     log.info("Loading model …")
-    _model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+    _model = Qwen3VLForConditionalGeneration.from_pretrained(
         model_id,
         quantization_config=bnb_cfg,
         device_map="auto",
@@ -318,8 +319,6 @@ def _normalise(raw_dict: dict) -> dict:
 
 def _build_input(image, greedy: bool):
     """Build processor inputs for a single PIL image."""
-    from qwen_vl_utils import process_vision_info
-
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": [
@@ -327,20 +326,15 @@ def _build_input(image, greedy: bool):
             {"type": "text",  "text": USER_PROMPT},
         ]},
     ]
-    text = _processor.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
-    )
-    img_inputs, _ = process_vision_info(messages)
-    inputs = _processor(
-        text=[text],
-        images=img_inputs,
-        return_tensors="pt",
+    inputs = _processor.apply_chat_template(
+        messages, tokenize=True, add_generation_prompt=True,
+        return_dict=True, return_tensors="pt",
     ).to(_model.device)
     return inputs
 
 
 def infer_scene(image, greedy: bool = False) -> tuple[dict, float]:
-    """Run Qwen2.5-VL on a single PIL image. Returns (result_dict, latency_ms)."""
+    """Run Qwen3-VL on a single PIL image. Returns (result_dict, latency_ms)."""
     inputs    = _build_input(image, greedy)
     input_len = inputs["input_ids"].shape[1]
 
@@ -348,7 +342,7 @@ def infer_scene(image, greedy: bool = False) -> tuple[dict, float]:
     if greedy:
         gen_kwargs["do_sample"] = False
     else:
-        gen_kwargs.update(do_sample=True, temperature=TEMPERATURE, top_p=TOP_P)
+        gen_kwargs.update(do_sample=True, temperature=TEMPERATURE, top_p=TOP_P, top_k=TOP_K)
 
     t0 = time.time()
     with torch.no_grad():
@@ -397,7 +391,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run VLM analysis on downloaded Street View images.")
     parser.add_argument("--output-dir",   default=str(DEFAULT_OUTPUT_DIR))
     parser.add_argument("--model-size",   choices=["3b", "7b"], default="7b",
-                        help="Qwen2.5-VL model size (default: 7b)")
+                        help="Qwen3-VL model size (default: 7b)")
     parser.add_argument("--limit",        type=int, default=0,
                         help="Process at most N images (0 = all)")
     parser.add_argument("--reanalyse",    action="store_true",

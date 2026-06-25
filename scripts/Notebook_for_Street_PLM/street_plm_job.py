@@ -1,7 +1,7 @@
 """
 street_plm_job.py
 =================
-StreetPLM inference using Qwen2.5-VL-7B-Instruct via transformers.
+StreetPLM inference using Qwen3-VL-8B-Instruct via transformers.
 Loads in bfloat16 with device_map="auto". Supports parallel workers.
 
 Usage:
@@ -54,7 +54,7 @@ from shapely.geometry import LineString
 import geopandas as gpd
 from tqdm.auto import tqdm
 from dotenv import load_dotenv
-from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
+from transformers import AutoProcessor, Qwen3VLForConditionalGeneration
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 log = logging.getLogger(__name__)
@@ -68,8 +68,8 @@ DEFAULT_BBOX = {"min_lon": 2.1500, "min_lat": 41.3862, "max_lon": 2.1740, "max_l
 SAMPLE_DISTANCE_M = 200
 GRID_SPACING_M    = 50
 SV_SIZE, SV_FOV, SV_PITCH, SV_RADIUS = "640x640", 90, 0, 50
-MODEL_ID = "Qwen/Qwen2.5-VL-7B-Instruct"
-MAX_NEW_TOKENS, TEMPERATURE, TOP_P, REP_PENALTY = 1800, 0.3, 0.95, 1.15
+MODEL_ID = "Qwen/Qwen3-VL-8B-Instruct"
+MAX_NEW_TOKENS, TEMPERATURE, TOP_P, TOP_K, REP_PENALTY = 1800, 0.7, 0.8, 20, 1.15
 MIN_FIELDS_OK, MAX_RETRIES = 3, 4
 UTM31N = "EPSG:32631"
 
@@ -363,7 +363,7 @@ def load_model():
 
     log.info("Loading %s (bfloat16, device_map=auto) …", MODEL_ID)
     _processor = AutoProcessor.from_pretrained(MODEL_ID, token=HF_TOKEN)
-    _model = Qwen2_5_VLForConditionalGeneration.from_pretrained(MODEL_ID, **kwargs)
+    _model = Qwen3VLForConditionalGeneration.from_pretrained(MODEL_ID, **kwargs)
     _model.eval()
     if _device == "cuda":
         torch.cuda.empty_cache()
@@ -380,26 +380,14 @@ def _infer(image, greedy=False):
             {"type": "text", "text": FULL_PROMPT},
         ],
     }]
-    text = _processor.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
-    )
-    inputs = _processor(
-        text=[text],
-        images=[image],
-        padding=True,
-        return_tensors="pt",
-    )
-    for k in list(inputs.keys()):
-        v = inputs[k]
-        if hasattr(v, "to"):
-            if v.is_floating_point():
-                inputs[k] = v.to(_device, dtype=torch.bfloat16 if _device == "cuda" else torch.float32)
-            else:
-                inputs[k] = v.to(_device)
+    inputs = _processor.apply_chat_template(
+        messages, tokenize=True, add_generation_prompt=True,
+        return_dict=True, return_tensors="pt",
+    ).to(_model.device)
     input_len = inputs["input_ids"].shape[1]
     gen_kw = dict(max_new_tokens=MAX_NEW_TOKENS)
     if not greedy:
-        gen_kw.update(do_sample=True, temperature=TEMPERATURE, top_p=TOP_P)
+        gen_kw.update(do_sample=True, temperature=TEMPERATURE, top_p=TOP_P, top_k=TOP_K)
     t0 = time.time()
     with _gpu_lock, torch.no_grad():
         out_ids = _model.generate(**inputs, **gen_kw)
@@ -663,7 +651,7 @@ def print_summary(results_dir):
     log.info("Results: %d  OK: %d  NoSV: %d  Errors: %d", len(files), ok, ns, err)
 
 def _parse_args():
-    p = argparse.ArgumentParser(description="StreetPLM — HuggingFaceM4/Idefics3-8B-Llama3")
+    p = argparse.ArgumentParser(description="StreetPLM — Qwen3-VL-8B-Instruct")
     p.add_argument("--output-dir", default=os.environ.get("OUTPUT_DIR", "/teamspace/studios/this_studio/StreetPLM"))
     p.add_argument("--bbox", nargs=4, type=float, metavar=("MIN_LON", "MIN_LAT", "MAX_LON", "MAX_LAT"))
     p.add_argument("--spacing", type=int, default=SAMPLE_DISTANCE_M,

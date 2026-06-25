@@ -67,14 +67,27 @@ export function Panel4() {
                 <div className="meta" id="p4-rec-status">Idle</div>
               </div>
               <div id="p4-rec-tab-replay" className="col" style={{ gap: '8px', display: 'none' }}>
-                <div className="row" style={{ gap: '6px', alignItems: 'center' }}>
-                  <select className="input" id="p4-playback-select" style={{ flex: 1, minWidth: 0 }}>
-                    <option value="">— select a session —</option>
-                  </select>
-                  <button className="btn ghost tiny" id="p4-playback-refresh" title="Refresh list">&#8635;</button>
-                </div>
-                <button className="btn primary" id="p4-playback-load" disabled>Load on Map</button>
+                <input type="file" id="p4-import-file" accept=".parquet" style={{ display: 'none' }} />
+                <button className="btn primary" id="p4-import-btn" style={{ justifyContent: 'center' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  &nbsp;Import Recording
+                </button>
                 <div className="meta" id="p4-playback-status">No recording loaded.</div>
+                <div id="p4-playback-overlays" style={{ display: 'none', flexDirection: 'column', gap: '6px', marginTop: '2px' }}>
+                  <div id="p4-dataset-list" className="dataset-list"></div>
+                  <div id="p4-playback-filters" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}></div>
+                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', paddingTop: '2px' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                      <input type="checkbox" id="p4-rec-rl-heatmap" defaultChecked /> Heatmap
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                      <input type="checkbox" id="p4-rec-rl-trails" defaultChecked /> Trails
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                      <input type="checkbox" id="p4-rec-rl-decision-pts" defaultChecked /> Decision Pts
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

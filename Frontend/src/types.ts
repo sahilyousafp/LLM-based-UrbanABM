@@ -30,6 +30,7 @@ export interface SingleAgentState {
   positionHistory: [number, number][];
   playing: boolean;
   speed: number;
+  timeOverride: string | null;
 }
 
 export interface MultiAgentState {
@@ -111,7 +112,7 @@ export interface UABMState {
   mapServerUrl: string;
   labServerUrl: string;
   perceptionMode: PerceptionMode;
-  layers: { buildings: boolean; walk: boolean; amenities: boolean; streetview: boolean };
+  layers: { buildings: boolean; buildings3d: boolean; walk: boolean; amenities: boolean; streetview: boolean };
   zone: { bbox: [number, number, number, number] | null; spacing: number };
   selectedPoint: { lat: number; lon: number; image_url?: string } | null;
   vlm: VLMState;
@@ -121,6 +122,7 @@ export interface UABMState {
   singleAgent: SingleAgentState;
   multiAgent: MultiAgentState;
   recordingSession: string | null;
+  recordingBase: string | null;
   availableProviders?: { id: string; name: string; description?: string }[];
 }
 
@@ -164,6 +166,7 @@ export interface MapboxMap {
     options?: { layers?: string[]; filter?: unknown[] },
   ): { properties: Record<string, unknown> }[];
   flyTo(options: { center: [number, number]; zoom?: number; duration?: number; pitch?: number; bearing?: number }): void;
+  easeTo(options: { pitch?: number; bearing?: number; duration?: number; center?: [number, number]; zoom?: number }): void;
   dragPan: { disable(): void; enable(): void };
   scrollZoom: { disable(): void; enable(): void };
 }

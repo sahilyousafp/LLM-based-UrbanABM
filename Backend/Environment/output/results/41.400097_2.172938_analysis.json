@@ -1,47 +1,47 @@
 {
   "metadata": {
-    "timestamp": "20260613_193237",
+    "timestamp": "20260620_223330",
     "latitude": 41.400097,
     "longitude": 2.172938,
-    "heading": 127.0,
-    "street_name": "synthetic_bridge",
-    "highway_type": "bridge",
-    "edge_id": "bridge_c0cf0ac4",
-    "source_image": "sv_41.400097_2.172938_h127.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "heading": 136.6,
+    "street_name": "",
+    "highway_type": "road",
+    "edge_id": "bae2eebc-aeca-485e-a2b1-b52f39033090",
+    "source_image": "sv_41.400097_2.172938_h136.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 292940.1,
+    "latency_ms": 168445.4,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Urban residential area with modernist buildings, wide streets, and moderate pedestrian activity.",
+    "scene": "A sunlit urban street intersection with a dedicated bicycle lane, surrounded by residential buildings and mature trees, featuring sparse pedestrian and cyclist activity.",
     "lighting": [
       {
         "zone": "center",
-        "element": "direct overhead midday sun",
+        "element": "bright direct sunlight",
         "condition": "bright"
       }
     ],
     "spatial_character": [
       {
         "zone": "far_left",
-        "width": "wide",
-        "enclosure": "open",
-        "passability": "clear",
-        "lane_type": "sidewalk",
-        "crossing": "none",
-        "architectural_style": "modernist",
-        "building_condition": "good",
-        "storefront_type": "residential",
-        "architectural_details": "balconies with green plants"
-      },
-      {
-        "zone": "left",
-        "width": "wide",
+        "width": "moderate",
         "enclosure": "open",
         "passability": "clear",
         "lane_type": "main_roadway",
         "crossing": "zebra",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "residential",
+        "architectural_details": null
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "shared_bus_lane",
+        "crossing": "none",
         "architectural_style": "modernist",
         "building_condition": "good",
         "storefront_type": "residential",
@@ -49,36 +49,36 @@
       },
       {
         "zone": "center",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "bicycle_lane",
         "crossing": "zebra",
-        "architectural_style": "modernist",
+        "architectural_style": "other",
         "building_condition": "good",
         "storefront_type": "residential",
         "architectural_details": null
       },
       {
         "zone": "right",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "main_roadway",
-        "crossing": "zebra",
-        "architectural_style": "modernist",
+        "lane_type": "road",
+        "crossing": "none",
+        "architectural_style": "other",
         "building_condition": "good",
         "storefront_type": "residential",
         "architectural_details": null
       },
       {
         "zone": "far_right",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "narrow",
+        "enclosure": "enclosed",
         "passability": "clear",
-        "lane_type": "main_roadway",
-        "crossing": "zebra",
-        "architectural_style": "modernist",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "other",
         "building_condition": "good",
         "storefront_type": "residential",
         "architectural_details": null
@@ -87,33 +87,46 @@
     "crowdedness": [
       {
         "zone": "center",
-        "density_level": "moderate"
+        "density_level": "sparse"
       }
     ],
     "greenery": [
       {
-        "zone": "left",
-        "element": "mature London plane trees with mottled grey-green bark",
+        "zone": "center",
+        "element": "large mature plane trees with broad green canopy",
         "coverage": "dense"
-      },
-      {
-        "zone": "right",
-        "element": "small potted plants on window ledges",
-        "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
-        "zone": "left",
-        "element": "cast-iron street lamp posts",
-        "material_and_colour": "black painted cast iron",
-        "presence": "few"
+        "zone": "center",
+        "element": "white painted bicycle lane markings",
+        "material_and_colour": "white paint on asphalt",
+        "presence": "many"
       },
       {
         "zone": "center",
-        "element": "yellow painted concrete bollards",
-        "material_and_colour": "yellow concrete",
-        "presence": "several"
+        "element": "white painted zebra crossing",
+        "material_and_colour": "white paint on asphalt",
+        "presence": "many"
+      },
+      {
+        "zone": "center",
+        "element": "white painted rectangular road markings",
+        "material_and_colour": "white paint on asphalt",
+        "presence": "many"
+      },
+      {
+        "zone": "center",
+        "element": "metallic fence with horizontal bars",
+        "material_and_colour": "silver metal",
+        "presence": "many"
+      },
+      {
+        "zone": "center",
+        "element": "traffic light pole",
+        "material_and_colour": "metallic grey",
+        "presence": "few"
       }
     ],
     "visible_text": []

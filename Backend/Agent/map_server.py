@@ -3,6 +3,14 @@ import os
 import sys
 from pathlib import Path
 
+# Force UTF-8 stdout/stderr so console prints with non-ASCII characters (→, ✓, etc.)
+# don't crash on Windows' default cp1252 console encoding.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 from dotenv import load_dotenv
 
 # Load .env from project root before any local imports
@@ -55,7 +63,7 @@ _state.sim.initial_spawn_seed = spawn_seed
 _state.sim.reset_model(num_agents=num_agents, spawn_seed=spawn_seed)
 
 # Register all routers
-from routers import spatial, agents, simulation, recording, streetview, llm_config, overture, vlm, monitoring
+from routers import spatial, agents, simulation, recording, streetview, llm_config, overture, vlm, monitoring, benchmark
 
 app.include_router(spatial.router)
 app.include_router(agents.router)
@@ -66,6 +74,7 @@ app.include_router(llm_config.router)
 app.include_router(overture.router)
 app.include_router(vlm.router)
 app.include_router(monitoring.router)
+app.include_router(benchmark.router)
 
 
 @app.get("/")

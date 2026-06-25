@@ -15,6 +15,7 @@ from LLM.Thinking.prompts import (
 logger = logging.getLogger(__name__)
 
 COGNITION_INTERVAL = 10   # Run LLM cognition update every this many steps
+_VALID_MOODS = frozenset({"excited", "stressed", "bored", "relaxed", "neutral"})
 
 ARCHETYPE_MEMORY_CONFIG: dict = {
     "tourist":  {"interval": 30, "max_summaries": 1,
@@ -78,18 +79,18 @@ class CognitionBlock(Block):
         perception_text = ""
         if street_perception:
             scene_fields = [
-                ("scene_overview",      "Scene"),
-                ("buildings",           "Buildings"),
-                ("vegetation",          "Vegetation"),
-                ("pedestrian_activity", "Pedestrian activity"),
-                ("lighting_atmosphere", "Lighting/atmosphere"),
-                ("as_resident",         "Resident perspective"),
-                ("as_tourist",          "Tourist perspective"),
+                ("scene",             "Scene"),
+                ("spatial_character", "Spatial character"),
+                ("greenery",          "Greenery"),
+                ("crowdedness",       "Crowdedness"),
+                ("lighting",          "Lighting"),
+                ("street_amenities",  "Street amenities"),
+                ("visible_text",      "Signage/text"),
             ]
             lines = []
             for key, label in scene_fields:
                 val = street_perception.get(key, "")
-                if val and val.strip().lower() != "unknown":
+                if val and str(val).strip().lower() != "unknown":
                     lines.append(f"  {label}: {val}")
             if lines:
                 perception_text = "\n".join(lines)
@@ -110,8 +111,9 @@ class CognitionBlock(Block):
         fallback = False
 
         if response and "mood" in response:
+            raw_mood = response.get("mood", "neutral")
             new_cognition = {
-                "mood": response.get("mood", current_cognition.get("mood", "neutral")),
+                "mood": raw_mood if raw_mood in _VALID_MOODS else "neutral",
                 "curiosity": max(0.0, min(1.0, _safe_float(response.get("curiosity"), 0.7))),
                 "fatigue": max(0.0, min(1.0, _safe_float(response.get("fatigue"), 0.0))),
             }
@@ -132,7 +134,7 @@ class CognitionBlock(Block):
             description=summary or f"Mood: {new_cognition['mood']}, "
                         f"curiosity: {new_cognition['curiosity']:.2f}, "
                         f"fatigue: {new_cognition['fatigue']:.2f}",
-            metadata={"cognition": new_cognition, "llm_used": not fallback},
+            metadata={"cognition": new_cognition, "llm_used": not fallback, "time_of_day": time_of_day},
         )
 
         # Memory summary — archetype-specific interval
@@ -192,7 +194,7 @@ class CognitionBlock(Block):
             await self.memory.stream.add(
                 topic="cognition", step=step,
                 description=f"Long-term memory consolidated: {new_unified[:80]}…",
-                metadata={"memory_consolidated": True},
+                metadata={"memory_consolidated": True, "time_of_day": time_of_day},
             )
         else:
             # Tourist: always replace (max=1); commuter/student: prune oldest
@@ -201,5 +203,5 @@ class CognitionBlock(Block):
             await self.memory.stream.add(
                 topic="cognition", step=step,
                 description=f"Memory updated: {new_summary[:80]}…",
-                metadata={"memory_summary": True},
+                metadata={"memory_summary": True, "time_of_day": time_of_day},
             )

@@ -66,7 +66,8 @@ class MobilityBlock(Block):
         if destination and not destination.get("visited") and destination.get("lon"):
             import math as _math
             _default = {"tourist": 60, "resident": 40, "student": 50}.get(archetype, 50)
-            _ALMOST_THERE = getattr(model, "nav_compass_dist", _default)
+            _nav_cfg = getattr(model, "nav_config", {}).get(archetype, {}) if model else {}
+            _ALMOST_THERE = _nav_cfg.get("compass_dist", _default)
             dlon = (destination["lon"] - position.get("lon", 0)) * 111320 * _math.cos(_math.radians(position.get("lat", 0)))
             dlat = (destination["lat"] - position.get("lat", 0)) * 110540
             dist_to_dest = _math.sqrt(dlon ** 2 + dlat ** 2)
@@ -90,6 +91,7 @@ class MobilityBlock(Block):
                 await self.memory.stream.add(
                     topic="mobility", step=step,
                     description="Reached destination — stopping.",
+                    metadata={"time_of_day": time_of_day},
                 )
                 return BlockResult(action="stay", params={}, reasoning="Reached destination")
 
@@ -161,6 +163,7 @@ class MobilityBlock(Block):
                     "edge_id": chosen_edge_id,
                     "fallback": False,
                     "on_path": True,
+                    "time_of_day": time_of_day,
                     "perception_available": street_perception is not None,
                     "data_sources": "[forced-dijkstra]",
                 },
@@ -192,33 +195,44 @@ class MobilityBlock(Block):
             self.context.get("model") if self.context else None,
             "perception_mode", "both"
         )
-        nav_mode = getattr(
-            self.context.get("model") if self.context else None,
-            "nav_mode", "both"
-        )
+        _nav_cfg2 = getattr(model, "nav_config", {}).get(archetype, {}) if model else {}
+        nav_mode = _nav_cfg2.get("nav_mode", "both")
         plan_context = None
+        # Street View images are always daytime — lighting data is misleading at evening/night
+        _night_time = time_of_day in ("evening", "night")
         if current_phase:
+            prefs = (current_phase.get("perception_preferences", [])
+                     if perc_mode in ("perception", "both") else [])
+            avoid = (current_phase.get("perception_avoid", [])
+                     if perc_mode in ("perception", "both") else [])
+            if _night_time:
+                prefs = [p for p in prefs if p != "lighting"]
+                avoid = [a for a in avoid if a != "lighting"]
             plan_context = {
                 "goal": current_phase.get("goal", ""),
                 "time_of_day": time_of_day or current_phase.get("time_of_day", ""),
                 "active_target": current_phase.get("active_target"),
-                "perception_preferences": (
-                    current_phase.get("perception_preferences", [])
-                    if perc_mode in ("perception", "both") else []
-                ),
-                "perception_avoid": (
-                    current_phase.get("perception_avoid", [])
-                    if perc_mode in ("perception", "both") else []
-                ),
+                "perception_preferences": prefs,
+                "perception_avoid": avoid,
             }
 
         prompt_candidates = candidate_edges[:8]
+
+        def _filter_perception(perc_text: str) -> str:
+            if not _night_time or not perc_text:
+                return perc_text
+            # Remove lighting lines from perception text at evening/night
+            return "\n".join(
+                ln for ln in perc_text.split("\n")
+                if "lighting" not in ln.lower()
+            )
+
         prompt_cands = [
             {
                 "edge_id": c["edge_id"],
                 "direction": c.get("direction", "forward"),
                 "amenities": [a.get("type", "") for a in c.get("amenities", [])],
-                "perception": c.get("perception", ""),
+                "perception": _filter_perception(c.get("perception", "")),
                 "description": c.get("description", ""),
             }
             for c in prompt_candidates
@@ -252,6 +266,7 @@ class MobilityBlock(Block):
                 metadata={
                     "edge_id": chosen_edge_id, "fallback": True, "on_path": is_on_path,
                     "perception_available": False, "data_sources": "[no-data]",
+                    "time_of_day": time_of_day,
                 },
             )
             return BlockResult(
@@ -368,6 +383,7 @@ class MobilityBlock(Block):
                 "on_path": is_on_path,
                 "perception_available": street_perception is not None,
                 "data_sources": perception_tag,
+                "time_of_day": time_of_day,
             },
         )
 

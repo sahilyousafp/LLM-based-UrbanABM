@@ -57,7 +57,7 @@ export function MapSlotLeft() {
           </div>
           <div id="p1-vlm-hf-row" style={{ display: 'none', flexDirection: 'column', gap: '4px' }}>
             <span className="meta" style={{ fontSize: '11px' }}>HuggingFace repo ID</span>
-            <input type="text" className="input" id="p1-vlm-hf-model" placeholder="e.g. Qwen/Qwen2.5-VL-7B-Instruct" style={{ fontSize: '12px', width: '100%', boxSizing: 'border-box' }} />
+            <input type="text" className="input" id="p1-vlm-hf-model" placeholder="e.g. Qwen/Qwen3-VL-8B-Instruct" style={{ fontSize: '12px', width: '100%', boxSizing: 'border-box' }} />
           </div>
           <label className="row" style={{ gap: '8px', alignItems: 'center', cursor: 'pointer', fontSize: '12px' }}>
             <input type="checkbox" id="p1-reanalyse-toggle" style={{ accentColor: 'var(--accent)' }} />

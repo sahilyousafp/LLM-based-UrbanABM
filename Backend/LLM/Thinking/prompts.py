@@ -97,15 +97,13 @@ def mobility_decision_prompt(
     perception_text = ""
     if street_perception:
         scene_fields = [
-            ("scene_overview",      "Scene"),
-            ("buildings",           "Buildings"),
-            ("vegetation",          "Vegetation"),
-            ("pedestrian_activity", "Pedestrian activity"),
-            ("lighting_atmosphere", "Lighting/atmosphere"),
-            ("as_resident",         "Resident perspective"),
-            ("as_commuter",         "Commuter perspective"),
-            ("as_tourist",          "Tourist perspective"),
-            ("as_student",          "Student perspective"),
+            ("scene",             "Scene"),
+            ("spatial_character", "Spatial character"),
+            ("greenery",          "Greenery"),
+            ("crowdedness",       "Crowdedness"),
+            ("lighting",          "Lighting"),
+            ("street_amenities",  "Street amenities"),
+            ("visible_text",      "Signage/text"),
         ]
         lines = []
         for key, label in scene_fields:
@@ -361,11 +359,11 @@ def visual_satisfaction_prompt(
     """
     # Build scene description from street perception fields
     scene_fields = [
-        ("scene_overview",      "Scene"),
-        ("buildings",           "Buildings"),
-        ("vegetation",          "Vegetation"),
-        ("pedestrian_activity", "Pedestrian activity"),
-        ("lighting_atmosphere", "Lighting/atmosphere"),
+        ("scene",             "Scene"),
+        ("spatial_character", "Spatial character"),
+        ("greenery",          "Greenery"),
+        ("crowdedness",       "Crowdedness"),
+        ("lighting",          "Lighting"),
     ]
     lines = []
     for key, label in scene_fields:
@@ -421,12 +419,12 @@ def needs_evaluation_prompt(
     perception_text = ""
     if street_perception:
         scene_fields = [
-            ("scene_overview",      "Scene"),
-            ("buildings",           "Buildings"),
-            ("vegetation",          "Vegetation"),
-            ("street_furniture",    "Street furniture"),
-            ("signage",             "Signage"),
-            ("pedestrian_activity", "Pedestrian activity"),
+            ("scene",             "Scene"),
+            ("spatial_character", "Spatial character"),
+            ("greenery",          "Greenery"),
+            ("street_amenities",  "Street amenities"),
+            ("visible_text",      "Signage/text"),
+            ("crowdedness",       "Crowdedness"),
         ]
         lines = []
         for key, label in scene_fields:
@@ -512,25 +510,27 @@ Mental state going in: mood={current_cognition.get('mood', 'neutral')}, curiosit
 Recent experiences (ground your update in these specific events):
 {recent_history}
 
-Needs → mood mapping (apply these to the numeric values above before reading the events):
-  hunger > 0.7 → irritable, shortened patience, hard to enjoy surroundings
-  hunger < 0.3 → satisfied, one less distraction, slightly more content
-  energy < 0.3 → tired/exhausted, curiosity drops sharply, fatigue rises fast
-  energy > 0.8 → alert, curiosity boosted, fatigue recovers slightly each step
-  social > 0.7 (unmet, no recent social space visit) → restless, lonely undertone, craves contact
-  social < 0.3 (recently satisfied) → warm, social mood, slight energy boost
-  comfort < 0.3 → anxious, uneasy, difficulty concentrating on surroundings
-  comfort > 0.8 → content, relaxed curiosity, absorbs environment better
+Needs → mood mapping (apply the MOST EXTREME need first, then temper with others):
+  hunger > 0.7 → stressed, irritable, hard to enjoy surroundings (hangry effect)
+  hunger < 0.3 → relaxed, one less distraction
+  energy < 0.3 → bored, low engagement, fatigue dominates
+  energy > 0.8 → excited, curiosity boosted, fatigue recovers
+  social > 0.7 (unmet) → bored, disengaged, low-arousal loneliness
+  social < 0.3 (satisfied) → relaxed, slight energy boost
+  comfort < 0.3 → stressed, physical discomfort dominates attention
+  comfort > 0.8 → relaxed, absorbs environment better
+
+When multiple needs conflict, pick the mood for the SINGLE most extreme need (furthest from 0.5). Do not default to stressed unless hunger > 0.7 or comfort < 0.3.
 
 Events → mood mapping (check the recent history):
-  - Reached a goal or destination → relief, satisfaction, brief energy burst
-  - Revisited the same street 2+ times → frustration, restlessness, rising fatigue
-  - Discovered a new street or place → curiosity spike, mood lift
-  - Visited an amenity that matched a need → satisfaction proportional to how pressing the need was
-  - Nothing notable for many steps → boredom, low curiosity, slow fatigue accumulation
-  - Scene mentions striking greenery, architecture, or lively activity → reflect it specifically and concretely
+  - Reached a goal or destination → relaxed, brief energy burst
+  - Revisited the same street 2+ times → bored or stressed, rising fatigue
+  - Discovered a new street or place → excited, curiosity spike
+  - Visited an amenity that matched a need → relaxed proportional to how pressing the need was
+  - Nothing notable for many steps → bored, low curiosity, slow fatigue accumulation
+  - Scene mentions striking greenery, architecture, or lively activity → excited, reflect it specifically
 
-Mood options: happy, neutral, tired, curious, bored, energised, social, focused, irritable, content, restless, anxious, relieved, absorbed
+Mood options (circumplex model — pick exactly one): excited, stressed, bored, relaxed, neutral
 Curiosity and fatigue: floats 0.0–1.0. Both must change meaningfully when events warrant it.
 
 The "summary" field is 2–3 sentences in first person. Make it specific: name a place, a decision, a sensation. Do NOT start with "I feel" or time of day. Think of it as a thought the agent has while walking.

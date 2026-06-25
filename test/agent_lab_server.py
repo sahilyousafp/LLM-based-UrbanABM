@@ -29,7 +29,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "Backend" / "Agent"))
 from spatial_memory import PerceptionDiary
 
 # ── 4. Backend imports (unchanged source) ──────────────────────────────────
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 import duckdb
@@ -79,8 +79,10 @@ logger = logging.getLogger(__name__)
 
 # ── 5. Paths ───────────────────────────────────────────────────────────────
 DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
-SV_RESULTS_DIR = TEST_DIR / "StreetPLM" / "results"
-SV_IMAGES_DIR  = TEST_DIR / "StreetPLM" / "images"
+# Single source of truth: read perception JSONs + images from the main pipeline
+# output (Backend/Environment/output) — the same data that populates perception.duckdb.
+SV_RESULTS_DIR = PROJECT_ROOT / "Backend" / "Environment" / "output" / "results"
+SV_IMAGES_DIR  = PROJECT_ROOT / "Backend" / "Environment" / "output" / "images"
 
 TEST_TRACKER_DB = TEST_DIR / "tracking_data" / "agent_lab.duckdb"
 TEST_RECORDING_DIR = TEST_DIR / "tracking_data"
@@ -318,16 +320,16 @@ async def get_streetview_grid():
             data = json_lib.loads(json_file.read_text(encoding="utf-8"))
         except Exception:
             continue
-        scene = data.get("scene_analysis") or {}
+        cats = _flatten_streetplm(data.get("scene_analysis") or {})
         features.append({
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [lon, lat]},
             "properties": {
                 "lat": lat,
                 "lon": lon,
-                "scene_overview": scene.get("scene_overview", ""),
-                "pedestrian_activity": scene.get("pedestrian_activity", ""),
-                "vegetation": scene.get("vegetation", ""),
+                "scene": cats.get("scene", ""),
+                "crowdedness": cats.get("crowdedness", ""),
+                "greenery": cats.get("greenery", ""),
             },
         })
     return {"type": "FeatureCollection", "features": features}
@@ -535,6 +537,20 @@ async def reset_single_agent():
     return {"status": "reset"}
 
 
+# ── 10b. Time-of-day override ─────────────────────────────────────────────
+@app.post("/api/time_override")
+async def set_time_override(payload: dict = Body(...)):
+    phase = payload.get("phase")
+    try:
+        city_model.set_time_override(phase)
+    except ValueError as e:
+        return {"error": str(e)}
+    return {
+        "time_of_day": city_model.time_of_day,
+        "locked": city_model.time_is_locked,
+    }
+
+
 # ── 11. Stepping (with diary recording) ────────────────────────────────────
 @app.post("/api/step_continuous")
 async def step_continuous():
@@ -600,12 +616,14 @@ async def step_continuous():
             cognition = await agent.memory.status.get("cognition_state", {})
             profile   = await agent.memory.status.get("agent_profile", {})
             dest      = await agent.memory.status.get("destination", {})
+            proposed  = await agent.memory.status.get("proposed_path", {})
             stream_nodes = await agent.memory.stream.get_recent_all(n=10000)
             agent_state = {
                 "cognition_state": cognition,
                 "needs": needs,
                 "archetype": profile.get("archetype", "unknown"),
                 "destination": dest,
+                "proposed_path": proposed,
                 "location": {"lon": agent.geometry.x, "lat": agent.geometry.y},
                 "stream_events": [
                     {"step": nd.step, "topic": nd.topic,
@@ -736,98 +754,26 @@ def _resolve_streetplm_perception(agent) -> dict | None:
 
 
 def _flatten_streetplm(scene_analysis: dict) -> dict:
-    """Translate StreetPLM nested-array scene_analysis into flat perception strings."""
-    def join_zones(items, *keys):
-        parts = []
-        for item in items:
-            vals = [str(item.get(k, "")) for k in keys if item.get(k)]
-            if vals:
-                parts.append(", ".join(vals))
-        return "; ".join(parts)
+    """Render nested scene_analysis into the 7-category strings (canonical renderer).
 
-    return {
-        "scene_overview":     scene_analysis.get("scene", ""),
-        "vegetation":         join_zones(scene_analysis.get("greenery", []), "element", "coverage"),
-        "lighting_atmosphere":join_zones(scene_analysis.get("lighting", []), "element", "condition"),
-        "pedestrian_activity":join_zones(scene_analysis.get("crowdedness", []), "zone", "density_level"),
-        "spatial_enclosure":  join_zones(scene_analysis.get("spatial_character", []), "enclosure", "width"),
-        "street_furniture":   join_zones(scene_analysis.get("street_amenities", []), "element"),
-        "signage":            ", ".join(v.get("text", "") for v in scene_analysis.get("visible_text", [])),
-    }
-
-
-def _load_test_streetplm_cache():
+    Thin alias over ingestion.perception.render_scene_analysis so the lab and the
+    main pipeline share one flattening implementation. Returns keys: scene, lighting,
+    spatial_character, crowdedness, greenery, street_amenities, visible_text.
     """
-    Override city_model._sv_cache with test StreetPLM JSON files.
-    Data is pre-flattened so get_nearby_perception() returns LLM-compatible strings.
-    Also monkey-patches get_nearby_perception to bypass DuckDB entirely in the test.
-    """
-    import json as _j, re as _r
-
-    city_model._sv_cache = []
-    if not SV_RESULTS_DIR.is_dir():
-        print("[WARN] test/StreetPLM/results not found — street perception disabled")
-        return
-
-    for jf in sorted(SV_RESULTS_DIR.glob("*_analysis.json")):
-        m = _r.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", jf.name)
-        if not m:
-            continue
-        try:
-            data = _j.loads(jf.read_text(encoding="utf-8"))
-            sa = data.get("scene_analysis", {})
-            city_model._sv_cache.append({
-                "lat": float(m.group(1)),
-                "lon": float(m.group(2)),
-                "heading": data.get("metadata", {}).get("heading"),
-                "scene_analysis": _flatten_streetplm(sa),
-            })
-        except Exception:
-            continue
-
-    _THRESHOLD_DEG = 0.0015
-
-    def _angle_diff(a, b):
-        d = abs(a - b) % 360
-        return d if d <= 180 else 360 - d
-
-    def _test_get_nearby_perception(point_geom, heading=None):
-        """Use pre-flattened test StreetPLM cache; skip DuckDB.
-        When heading is provided, prefer SV entries whose camera faces the same
-        direction as the candidate edge (score = dist * (1 + 0.4 * angular_penalty)).
-        Falls back to nearest-by-distance when heading is absent or unrecorded.
-        """
-        best = None
-        best_score = _THRESHOLD_DEG * 2  # sentinel > any real score
-        for entry in city_model._sv_cache:
-            dx = entry["lon"] - point_geom.x
-            dy = entry["lat"] - point_geom.y
-            dist = (dx * dx + dy * dy) ** 0.5
-            if dist > _THRESHOLD_DEG:
-                continue
-            if heading is not None and entry.get("heading") is not None:
-                ang_penalty = _angle_diff(heading, entry["heading"]) / 180.0
-                score = dist * (1.0 + 0.4 * ang_penalty)
-            else:
-                score = dist
-            if score < best_score:
-                best_score = score
-                best = entry
-        if best is None:
-            return None
-        result = dict(best["scene_analysis"])
-        if best.get("heading") is not None:
-            result["heading"] = best["heading"]
-        return result
-
-    # Replace instance method — callers do model.get_nearby_perception(geom),
-    # so a plain function (no self) is correct for an instance attribute override.
-    city_model.get_nearby_perception = _test_get_nearby_perception
-
-    print(f"[TEST] StreetPLM cache: {len(city_model._sv_cache)} points loaded from {SV_RESULTS_DIR}")
+    from ingestion.perception import render_scene_analysis
+    return render_scene_analysis(scene_analysis or {})
 
 
-_load_test_streetplm_cache()
+# The lab uses city_model.get_nearby_perception, which loads perception.duckdb into
+# memory at startup and releases the file (no StreetPLM monkey-patch). Display endpoints
+# read JSONs/images from Backend/Environment/output (see SV_RESULTS_DIR / SV_IMAGES_DIR),
+# the same data that populates perception.duckdb. Holding no DB handle means a map_server
+# reimport can rewrite perception.duckdb while the lab is running.
+_n_perc = len(getattr(city_model, "_perception_points", []))
+if _n_perc:
+    print(f"[OK] Perception source: perception.duckdb -> {_n_perc} points in memory (DB released)")
+else:
+    print("[WARN] perception.duckdb empty/unavailable — street perception disabled in lab")
 
 
 @app.get("/api/agent/{agent_id}/perception-text")
@@ -886,11 +832,11 @@ async def get_agent_perception_text(agent_id: int):
                     if hm:
                         heading = float(hm.group(1))
 
-    # Fall back to DuckDB-sourced perception if no StreetPLM JSON found
+    # Fall back to DB-sourced perception (the 7-category contract) if no JSON found
     if not perception and agent.street_perception:
         perception = {k: agent.street_perception.get(k, "") for k in (
-            "scene_overview", "vegetation", "lighting_atmosphere",
-            "pedestrian_activity", "spatial_enclosure", "street_furniture", "signage",
+            "scene", "lighting", "spatial_character", "crowdedness",
+            "greenery", "street_amenities", "visible_text",
         )}
 
     # Compute compass label for heading
@@ -1161,8 +1107,8 @@ async def get_agent_narrative(agent_id: int, include_history: bool = True):
             sp = agent.street_perception
             scene_parts = [
                 sp.get(k, "")
-                for k in ("scene_overview", "vegetation", "pedestrian_activity", "lighting_atmosphere")
-                if sp.get(k, "") and sp.get(k, "").strip().lower() != "unknown"
+                for k in ("scene", "greenery", "crowdedness", "lighting")
+                if sp.get(k, "") and str(sp.get(k, "")).strip().lower() != "unknown"
             ]
             if scene_parts:
                 perception_ctx = " Street scene: " + " ".join(scene_parts[:2])
@@ -1174,7 +1120,7 @@ async def get_agent_narrative(agent_id: int, include_history: bool = True):
             visited_amenities = perception_diary.get_visited_amenities()
             visited_str = ", ".join(f"{a.get('name')} ({a.get('type')})" for a in visited_amenities[:5]) or "none yet"
 
-            current_scene = (agent.street_perception or {}).get('scene_overview', 'none')
+            current_scene = (agent.street_perception or {}).get('scene', 'none')
             user_msg = (
                 f"Agent {agent_id} is a {profile.get('archetype', 'pedestrian')}. "
                 f"\n\nJOURNEY SO FAR:\n{history_text}\n\n"
@@ -1237,6 +1183,55 @@ async def get_narrative_comparison(agent_id: int):
     except Exception as e:
         logger.error(f"Narrative comparison error: {e}")
         return {"agent_id": agent_id, "error": str(e)}
+
+
+@app.get("/api/agent/{agent_id}/results-summary")
+async def get_results_summary(agent_id: int):
+    import asyncio as _asyncio
+    agent = _find_agent(agent_id)
+    if not agent:
+        return {"error": "Agent not found"}
+    events = await agent.memory.stream.get_recent_all(n=10000)
+    profile = await agent.memory.status.get("agent_profile", {})
+    visited = await agent.memory.status.get("visited_amenities", [])
+    archetype = profile.get("archetype", "unknown")
+    visited_str = ", ".join(a.get("name", "?") for a in (visited or [])[:10]) if visited else "none"
+
+    def msgs_for(topic_events, instruction):
+        if not topic_events:
+            return None
+        lines = "\n".join(f"[step {e.step}] {e.description}" for e in topic_events[-80:])
+        return [{"role": "user", "content": (
+            f"Agent archetype: {archetype}.\n{instruction}\n\nEvents:\n{lines}\n\n"
+            f"Write a 2-3 sentence summary. Be specific and concise."
+        )}]
+
+    perc = [e for e in events if e.topic == "perception" and e.metadata.get("source") != "visual_satisfaction"]
+    mob = [e for e in events if e.topic == "mobility"]
+    amenity = [e for e in events if e.topic == "amenity_visit"]
+    cogn = [e for e in events if e.topic == "cognition"]
+    needs_ev = [e for e in events if e.topic == "needs"]
+
+    tasks = {
+        "vision": msgs_for(perc, "Summarise what this agent observed visually in the urban environment."),
+        "all": msgs_for(events[-100:], f"Summarise this agent's overall journey. Places visited: {visited_str}."),
+        "mobility": msgs_for(mob, "Summarise this agent's movement and navigation behaviour."),
+        "amenity_visit": msgs_for(amenity, "Summarise the places this agent visited and which needs were satisfied."),
+        "cognition": msgs_for(cogn, "Summarise this agent's mental state changes and mood shifts over time."),
+        "needs": msgs_for(needs_ev, "Summarise how this agent's needs evolved and were satisfied."),
+    }
+
+    async def call_one(key, msgs):
+        if msgs is None:
+            return key, None
+        try:
+            return key, await city_model.llm_client.chat(msgs)
+        except Exception as exc:
+            logger.warning(f"results-summary LLM error [{key}]: {exc}")
+            return key, None
+
+    pairs = await _asyncio.gather(*[call_one(k, v) for k, v in tasks.items()])
+    return dict(pairs)
 
 
 @app.get("/api/agent/{agent_id}/path-adherence")
@@ -1551,6 +1546,87 @@ async def load_recording_data(filename: str):
         }
     except Exception as e:
         return {"error": str(e), "filename": filename}
+
+
+def _safe_json(val):
+    if val is None or (isinstance(val, float) and val != val):
+        return None
+    if isinstance(val, (dict, list)):
+        return val
+    try:
+        import json as _json
+        return _json.loads(str(val))
+    except Exception:
+        return None
+
+
+@app.post("/api/recording/upload")
+async def upload_recording(file: UploadFile = File(...)):
+    if not file.filename or not file.filename.endswith(".parquet"):
+        return {"error": "Only .parquet files are supported"}
+    try:
+        import tempfile as _tmp
+        with _tmp.NamedTemporaryFile(suffix=".parquet", delete=False) as tmp:
+            content = await file.read()
+            tmp.write(content)
+            tmp_path = Path(tmp.name)
+        import pandas as pd
+        df = pd.read_parquet(str(tmp_path))
+        agents = []
+        for agent_id, group in df.groupby("agent_id"):
+            group = group.sort_values("step")
+            row0 = group.iloc[0]
+            last_row = group.iloc[-1]
+            positions = [[float(r["longitude"]), float(r["latitude"])] for _, r in group.iterrows()]
+            start = None
+            if "start_lon" in df.columns and row0.get("start_lon") is not None:
+                try:
+                    start = [float(row0["start_lon"]), float(row0["start_lat"])]
+                except Exception:
+                    pass
+            target = None
+            if "target_lon" in df.columns and row0.get("target_lon") is not None:
+                try:
+                    target = [float(row0["target_lon"]), float(row0["target_lat"])]
+                except Exception:
+                    pass
+            mood_history = []
+            cognition_history = []
+            needs_history = []
+            if "cognition_state_json" in df.columns:
+                for _, r in group.iterrows():
+                    cog = _safe_json(r.get("cognition_state_json"))
+                    if isinstance(cog, dict):
+                        mood_history.append(cog.get("mood", "neutral"))
+                        cognition_history.append(cog)
+                    else:
+                        mood_history.append("neutral")
+                        cognition_history.append({"mood": "neutral", "curiosity": 0.7, "fatigue": 0.0})
+            if "needs_json" in df.columns:
+                for _, r in group.iterrows():
+                    n = _safe_json(r.get("needs_json"))
+                    needs_history.append(n if isinstance(n, dict) else {})
+            stream_events = []
+            if "thought_stream_json" in df.columns:
+                raw = _safe_json(last_row.get("thought_stream_json"))
+                if isinstance(raw, list):
+                    stream_events = raw
+            agents.append({
+                "id": int(agent_id),
+                "archetype": str(row0.get("archetype", "unknown")),
+                "positions": positions,
+                "start": start,
+                "target": target,
+                "moodHistory": mood_history,
+                "cognitionHistory": cognition_history,
+                "needsHistory": needs_history,
+                "streamEvents": stream_events,
+            })
+        total_steps = int(df["step"].max()) if len(df) else 0
+        tmp_path.unlink(missing_ok=True)
+        return {"session": Path(file.filename).stem, "total_steps": total_steps, "agents": agents}
+    except Exception as e:
+        return {"error": str(e)}
 
 
 @app.get("/api/recording/status")

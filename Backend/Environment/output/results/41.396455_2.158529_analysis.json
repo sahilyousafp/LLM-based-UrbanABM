@@ -1,25 +1,138 @@
 {
   "metadata": {
-    "timestamp": "20260613_182847",
+    "timestamp": "20260620_184122",
     "latitude": 41.396455,
     "longitude": 2.158529,
-    "heading": 324.0,
-    "street_name": "Passeig de Gràcia",
+    "heading": 251.9,
+    "street_name": "Avinguda Diagonal",
     "highway_type": "road",
-    "edge_id": "32431f32-af55-4706-9d02-dc17a18213e6",
-    "source_image": "sv_41.396455_2.158529_h324.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "edge_id": "ff426b43-912c-409d-b8e5-3bca85ef01be",
+    "source_image": "sv_41.396455_2.158529_h251.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 1175104.0,
+    "latency_ms": 174200.9,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "unknown",
-    "lighting": [],
-    "spatial_character": [],
-    "crowdedness": [],
-    "greenery": [],
-    "street_amenities": [],
+    "scene": "Tree-lined urban street with a dedicated bicycle lane, sidewalks, parked scooters, and a mix of neoclassical, modernist, and neo-gothic architecture under overcast lighting.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "overcast daylight",
+        "condition": "adequate"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "neoclassical",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "symmetrical facade with arched windows and balconies"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "bicycle_lane",
+        "crossing": "none",
+        "architectural_style": "modernist",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "curved facade with large windows"
+      },
+      {
+        "zone": "center",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "bicycle_lane",
+        "crossing": "none",
+        "architectural_style": "other",
+        "building_condition": "good",
+        "storefront_type": "other",
+        "architectural_details": null
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "neo_gothic",
+        "building_condition": "good",
+        "storefront_type": "other",
+        "architectural_details": "red brick facade with arched windows and a blue door"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "other",
+        "building_condition": "good",
+        "storefront_type": "other",
+        "architectural_details": null
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "right",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "young plane trees with light green leaves",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "young plane trees with light green leaves",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "right",
+        "element": "young plane trees with light green leaves",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "metallic bike rack",
+        "material_and_colour": "grey metal",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "bicycle",
+        "material_and_colour": "black frame",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "motor scooter",
+        "material_and_colour": "silver and black",
+        "presence": "many"
+      },
+      {
+        "zone": "right",
+        "element": "street lamp",
+        "material_and_colour": "metallic grey",
+        "presence": "few"
+      }
+    ],
     "visible_text": []
   },
   "nearby_landmarks": []

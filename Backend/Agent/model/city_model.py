@@ -19,6 +19,12 @@ _BACKEND_ROOT = Path(__file__).parent.parent.parent
 if str(_BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(_BACKEND_ROOT))
 
+# Add Environment dir so `ingestion.perception` (render_scene_analysis, reimport) is
+# importable from any host that builds a CityModel (map_server, agent_lab, scripts).
+_ENV_DIR = _BACKEND_ROOT / "Environment"
+if str(_ENV_DIR) not in sys.path:
+    sys.path.insert(0, str(_ENV_DIR))
+
 from LLM.llm_config import LLMConfig
 from LLM.llm_client import LLMClient
 from agent_tracker import AgentTracker
@@ -28,6 +34,39 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "eixample_overture.duckdb"
 PERCEPTION_DB_PATH = PROJECT_ROOT / "Backend" / "Environment" / "perception.duckdb"
 
+
+def _open_duckdb_readonly(path):
+    """Open a DuckDB file read-only with the spatial extension loaded.
+
+    The server only ever SELECTs from the spatial and perception DBs, so a
+    read-only handle is sufficient. Read-only opens coexist across processes,
+    so a leftover/zombie server or a second server (agent_lab) no longer blocks
+    startup on a file lock. Returns the connection, or None if it cannot open.
+
+    Read-only mode cannot replay a pending WAL, so first make a best-effort
+    attempt to grab a brief read-write handle and CHECKPOINT (flush the WAL).
+    If another process holds the file, that process will checkpoint on its own.
+    """
+    import time as _time
+    try:
+        _tmp = duckdb.connect(str(path))
+        _tmp.execute("CHECKPOINT")
+        _tmp.close()
+    except Exception:
+        pass
+    for _ in range(5):
+        try:
+            con = duckdb.connect(str(path), read_only=True)
+            try:
+                con.load_extension("spatial")
+            except Exception:
+                con.install_extension("spatial")
+                con.load_extension("spatial")
+            return con
+        except Exception:
+            _time.sleep(1)
+    return None
+
 # Pedestrian-class edges included in footway-only routing mode
 _PED_CLASSES = frozenset({
     'footway', 'path', 'cycleway', 'living_street',
@@ -36,7 +75,7 @@ _PED_CLASSES = frozenset({
 })
 
 _TIME_PHASES = ["morning", "afternoon", "evening", "night"]
-_STEPS_PER_PHASE = 24
+_STEPS_PER_PHASE = 100
 
 
 class CityModel(mesa.Model):
@@ -63,9 +102,22 @@ class CityModel(mesa.Model):
         self._agent_gender = agent_gender
         self._agent_age = agent_age
         self.steps = 0
+        self._time_override: str | None = None
         self.perception_mode = os.getenv("PERCEPTION_MODE", "both")
         self.routing_mode = os.getenv("ROUTING_MODE", "all")
         self.llm_fallback = True
+        self.perception_con = None
+
+        from LLM.Thinking.blocks.plan_block import load_plans_json
+        _plans = load_plans_json()
+        self.nav_config = {}
+        for _arch in ("resident", "commuter", "tourist", "student"):
+            _cfg = _plans.get(_arch, {})
+            self.nav_config[_arch] = {
+                "nav_mode": _cfg.get("nav_mode", "both"),
+                "gps_dist": _cfg.get("gps_dist", 120),
+                "compass_dist": _cfg.get("compass_dist", 60),
+            }
         self.spawn_seed = spawn_seed
 
         if spawn_seed is not None:
@@ -108,51 +160,29 @@ class CityModel(mesa.Model):
 
         self.con = None
         self.perception_con = None
+        # Open the spatial DB read-only. The server only SELECTs from it at runtime
+        # (Overture ingestion writes a separate pending DB and swaps files), so a
+        # read-only handle is sufficient and lets multiple processes — a second
+        # server or a leftover zombie — share the file without a lock conflict.
         print(f"Connecting to DB at: {DB_PATH}")
-        import time as _time
-        for _attempt in range(8):
-            try:
-                self.con = duckdb.connect(str(DB_PATH))
-                self.con.install_extension("spatial")
-                self.con.load_extension("spatial")
-                print("[OK] Database connected")
-                break
-            except Exception as e:
-                if _attempt < 7:
-                    print(f"[WARN] DB connect attempt {_attempt + 1}/8 failed, retrying in 2 s: {e}")
-                    _time.sleep(2)
-                else:
-                    for _fb_label, _fb_fn in [
-                        ("read-only", lambda: duckdb.connect(str(DB_PATH), read_only=True)),
-                        ("backup",   lambda: duckdb.connect(str(DB_PATH.with_suffix(".backup.duckdb")))),
-                        ("backup read-only", lambda: duckdb.connect(str(DB_PATH.with_suffix(".backup.duckdb")), read_only=True)),
-                    ]:
-                        try:
-                            self.con = _fb_fn()
-                            self.con.install_extension("spatial")
-                            self.con.load_extension("spatial")
-                            print(f"[OK] Database connected ({_fb_label} — original locked by another process)")
-                            break
-                        except Exception:
-                            continue
-                    else:
-                        print(f"[ERROR] Database connection failed after 8 attempts (all fallbacks exhausted): {e}")
-                        return
-                    break
+        self.con = _open_duckdb_readonly(DB_PATH)
+        if self.con is None:
+            # Last resort: a stale .backup.duckdb sibling, read-only
+            self.con = _open_duckdb_readonly(DB_PATH.with_suffix(".backup.duckdb"))
+            if self.con is None:
+                print("[ERROR] Database connection failed (file locked or missing)")
+                return
+            print("[OK] Database connected (backup, read-only)")
+        else:
+            print("[OK] Database connected (read-only)")
 
-        # Open separate perception DB (different file — no Windows lock conflict with main DB)
-        try:
-            self.perception_con = duckdb.connect(str(PERCEPTION_DB_PATH))
-            self.perception_con.install_extension("spatial")
-            self.perception_con.load_extension("spatial")
-            _env_path = str(PROJECT_ROOT / "Backend" / "Environment")
-            if _env_path not in sys.path:
-                sys.path.insert(0, _env_path)
-            from ingestion.perception import load_streetview_perception
-            load_streetview_perception(self.perception_con)
-            print("[OK] Perception DB ready")
-        except Exception as _pe:
-            print(f"[WARN] Perception DB failed to initialize: {_pe}")
+        # Load perception into memory and RELEASE the DB file. Holding no persistent
+        # handle means the reimport endpoint can rewrite perception.duckdb at any time
+        # (even while this server AND the agent-lab are running — DuckDB allows only one
+        # writer and a writer is blocked by any open reader). Agent lookups then hit RAM:
+        # fast and fully parallel. perception_con stays None — there is no live handle.
+        self.perception_con = None
+        self._load_perception_points()
 
         print("Loading walk_edges network...")
         _ROAD_WEIGHT = {
@@ -431,28 +461,6 @@ class CityModel(mesa.Model):
 
         print(f"Spawning {num_agents} agents on network...")
 
-        _sv_results = PROJECT_ROOT / "Backend" / "Environment" / "output" / "results"
-        self._sv_cache = []
-        if _sv_results.is_dir():
-            for _jf in sorted(_sv_results.glob("*_analysis.json")):
-                _m = _re_mod.match(r"^(-?\d+\.\d+)_(-?\d+\.\d+)_analysis\.json$", _jf.name)
-                if not _m:
-                    continue
-                try:
-                    _data = _json_mod.loads(_jf.read_text(encoding="utf-8"))
-                    _heading = _data.get("metadata", {}).get("heading")
-                    self._sv_cache.append({
-                        "lat": float(_m.group(1)),
-                        "lon": float(_m.group(2)),
-                        "scene_analysis": _data.get("scene_analysis", {}),
-                        "heading": float(_heading) if _heading is not None else None,
-                    })
-                except Exception:
-                    continue
-            print(f"[OK] Loaded {len(self._sv_cache)} street view scene analysis points")
-        else:
-            print("[WARN] Street view results directory not found; scene perception disabled")
-
         edge_ids = list(self.edges.keys())
         if not edge_ids:
             print("[ERROR] No edges available for spawning!")
@@ -470,13 +478,16 @@ class CityModel(mesa.Model):
                 spawn_edge_geom = self.edges[spawn_edge_id]
                 spawn_start_point = Point(spawn_edge_geom.coords[0])
 
+                # Every archetype gets a home node
+                home_key = random.choice(list(self.main_component_nodes))
+                home_info = {
+                    "name": "home", "amenity_type": "residential",
+                    "lon": home_key[0], "lat": home_key[1],
+                    "target_node": home_key,
+                }
+
                 if archetype == "resident":
-                    home_key = random.choice(list(self.main_component_nodes))
-                    target_info = {
-                        "name": "home", "amenity_type": "residential",
-                        "lon": home_key[0], "lat": home_key[1],
-                        "target_node": home_key,
-                    }
+                    target_info = home_info
                 else:
                     target_info = self._pick_target_for_archetype(archetype)
                     if target_info:
@@ -503,6 +514,7 @@ class CityModel(mesa.Model):
                     edge_geom=spawn_edge_geom,
                     archetype=archetype,
                     target_info=target_info,
+                    home_info=home_info,
                     gender=self._agent_gender,
                     age=self._agent_age,
                 )
@@ -556,25 +568,18 @@ class CityModel(mesa.Model):
         if not scene:
             return ""
         field_labels = [
-            ("scene_overview",      "Scene"),
-            ("buildings",           "Buildings"),
-            ("materials",           "Materials"),
-            ("vegetation",          "Vegetation"),
-            ("street_furniture",    "Street furniture"),
-            ("signage",             "Signage"),
-            ("ground_surfaces",     "Ground"),
-            ("spatial_enclosure",   "Spatial enclosure"),
-            ("pedestrian_activity", "Pedestrian activity"),
-            ("lighting_atmosphere", "Lighting"),
-            ("as_resident",         "For residents"),
-            ("as_commuter",         "For commuters"),
-            ("as_tourist",          "For tourists"),
-            ("as_student",          "For students"),
+            ("scene",            "Scene"),
+            ("spatial_character", "Spatial character"),
+            ("greenery",         "Greenery"),
+            ("crowdedness",      "Crowdedness"),
+            ("lighting",         "Lighting"),
+            ("street_amenities", "Street amenities"),
+            ("visible_text",     "Signage/text"),
         ]
         parts = []
         for key, label in field_labels:
             val = scene.get(key, "")
-            if val and val.strip().lower() != "unknown":
+            if val and str(val).strip().lower() != "unknown":
                 parts.append(f"{label}: {val}")
         return " | ".join(parts) if parts else ""
 
@@ -601,51 +606,56 @@ class CityModel(mesa.Model):
             print(f"Query Error: {e}")
             return []
 
-    def get_nearby_perception(self, point_geom, heading: float | None = None):
-        result = None
-        if self.perception_con is not None:
-            try:
-                buffer_deg = 0.0015
-                query = f"""
-                SELECT
-                    scene_overview, buildings, materials, building_condition,
-                    street_furniture, vegetation_text, signage, ground_surfaces,
-                    spatial_impression, pedestrian_activity, lighting_atmosphere,
-                    as_resident, as_commuter, as_tourist, as_student,
-                    latitude, longitude
+    def _load_perception_points(self) -> int:
+        """Load all perception rows from perception.duckdb into memory, then release the DB.
+
+        The 7-category cat_* strings are pre-rendered at ingestion, so this is a plain
+        SELECT into a list of dicts. The connection is opened read-only and closed
+        immediately — no persistent handle — so the reimport endpoint can rewrite the
+        file at any time. Called at startup and after a reimport to refresh live.
+        """
+        self._perception_points = []
+        con = _open_duckdb_readonly(PERCEPTION_DB_PATH)
+        if con is None:
+            print("[WARN] Perception DB unavailable; scene perception disabled")
+            return 0
+        try:
+            rows = con.execute("""
+                SELECT latitude, longitude, heading,
+                       cat_scene, cat_lighting, cat_spatial_character, cat_crowdedness,
+                       cat_greenery, cat_street_amenities, cat_visible_text
                 FROM streetview_perception
-                WHERE ST_DWithin(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'), {buffer_deg})
-                ORDER BY ST_Distance(geometry, ST_GeomFromText('POINT ({point_geom.x} {point_geom.y})'))
-                LIMIT 1
-                """
-                result = self.perception_con.execute(query).fetchone()
-            except Exception as e:
-                print(f"Perception DB query error: {e}")
+            """).fetchall()
+            for r in rows:
+                self._perception_points.append({
+                    "lat": r[0], "lon": r[1], "heading": r[2],
+                    "perception": {
+                        "scene": r[3] or "", "lighting": r[4] or "",
+                        "spatial_character": r[5] or "", "crowdedness": r[6] or "",
+                        "greenery": r[7] or "", "street_amenities": r[8] or "",
+                        "visible_text": r[9] or "",
+                    },
+                })
+        except Exception as e:
+            print(f"[WARN] Failed to load perception points: {e}")
+        finally:
+            try:
+                con.close()
+            except Exception:
+                pass
+        self.perception_con = None  # no live handle — keeps the file writable for reimport
+        print(f"[OK] Perception: {len(self._perception_points)} points loaded into memory (DB released)")
+        return len(self._perception_points)
 
+    def get_nearby_perception(self, point_geom, heading: float | None = None):
+        """Nearest Street View perception as the 7-category contract.
+
+        Returns a dict with keys: scene, lighting, spatial_character, crowdedness,
+        greenery, street_amenities, visible_text (readable strings) + heading.
+        Pure in-memory nearest-neighbour scan over points loaded from perception.duckdb
+        at startup — fast, fully parallel, and holds no file lock.
+        """
         _TRACEBACK_MARKERS = ("Cell In[", "Traceback (most", "SyntaxError", "Error:", "[Request interrupted", "line ", "File \"")
-        if result:
-            scene_ov = result[0] or ""
-            if any(m in scene_ov for m in _TRACEBACK_MARKERS):
-                result = None
-            else:
-                return {
-                    "scene_overview": scene_ov,
-                    "buildings": result[1] or "",
-                    "materials": result[2] or "",
-                    "building_condition": result[3] or "",
-                    "street_furniture": result[4] or "",
-                    "vegetation": result[5] or "",
-                    "signage": result[6] or "",
-                    "ground_surfaces": result[7] or "",
-                    "spatial_enclosure": result[8] or "",
-                    "pedestrian_activity": result[9] or "",
-                    "lighting_atmosphere": result[10] or "",
-                    "as_resident": result[11] or "",
-                    "as_commuter": result[12] or "",
-                    "as_tourist": result[13] or "",
-                    "as_student": result[14] or "",
-                }
-
         _THRESHOLD_DEG = 0.0015
         best = None
         best_score = _THRESHOLD_DEG * 2
@@ -654,7 +664,7 @@ class CityModel(mesa.Model):
             d = abs(a - b) % 360
             return d if d <= 180 else 360 - d
 
-        for entry in self._sv_cache:
+        for entry in getattr(self, "_perception_points", []):
             dx = entry["lon"] - point_geom.x
             dy = entry["lat"] - point_geom.y
             dist = (dx * dx + dy * dy) ** 0.5
@@ -671,15 +681,11 @@ class CityModel(mesa.Model):
 
         if best is None:
             return None
-        result = dict(best["scene_analysis"])
-        if not result.get("scene_overview") and result.get("scene"):
-            result["scene_overview"] = result["scene"]
-        scene_ov = result.get("scene_overview", "")
-        if any(m in scene_ov for m in _TRACEBACK_MARKERS):
+        perc = dict(best["perception"])
+        if any(m in perc["scene"] for m in _TRACEBACK_MARKERS):
             return None
-        if best.get("heading") is not None:
-            result["heading"] = best["heading"]
-        return result
+        perc["heading"] = best.get("heading")
+        return perc
 
     def _pick_target_for_archetype(self, archetype: str) -> dict | None:
         amenity_types = self.ARCHETYPE_AMENITY_TYPES.get(archetype, [])
@@ -761,8 +767,19 @@ class CityModel(mesa.Model):
 
     @property
     def time_of_day(self) -> str:
+        if self._time_override is not None:
+            return self._time_override
         idx = (self.steps // _STEPS_PER_PHASE) % len(_TIME_PHASES)
         return _TIME_PHASES[idx]
+
+    def set_time_override(self, phase: str | None) -> None:
+        if phase is not None and phase not in _TIME_PHASES:
+            raise ValueError(f"Invalid phase: {phase!r}. Must be one of {_TIME_PHASES}")
+        self._time_override = phase
+
+    @property
+    def time_is_locked(self) -> bool:
+        return self._time_override is not None
 
     def step(self):
         self.steps += 1

@@ -1,6 +1,6 @@
+import duckdb
 import json as _json
 import logging
-import math
 import os
 import re
 import threading
@@ -8,12 +8,12 @@ import time
 import uuid
 from pathlib import Path
 
-import duckdb
 from fastapi import APIRouter, Body
 from fastapi.responses import FileResponse
 
 from paths import (
-    DB_PATH, FRONTEND_DIR,
+    FRONTEND_DIR,
+    PERCEPTION_DB_PATH,
     SV_OUTPUT_DIR, SV_IMAGES_DIR, SV_RESULTS_DIR,
 )
 from state import sim
@@ -22,12 +22,60 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+def _open_perception_ro():
+    """Open a transient read-only perception DB connection (caller MUST close it).
+
+    Nothing holds perception.duckdb persistently — the model loads it into memory at
+    startup and releases the file — so display queries open a fresh short-lived
+    read-only handle and close it promptly, keeping the file writable for reimport.
+    """
+    try:
+        con = duckdb.connect(str(PERCEPTION_DB_PATH), read_only=True)
+        con.load_extension("spatial")
+        return con
+    except Exception as exc:
+        logger.error("Failed to open perception DB (read-only): %s", exc)
+        return None
+
+
+def _write_perception_rows_rw(write_fn, rows):
+    """Write perception rows via a short-lived read-write connection.
+
+    Nothing holds perception.duckdb persistently (the model loads to memory and
+    releases the file), so this opens read-write directly, writes, checkpoints and
+    closes. It then refreshes the model's in-memory perception points so the new data
+    is live without a restart. Returns the row count, or None on failure.
+    """
+    try:
+        rw = duckdb.connect(str(PERCEPTION_DB_PATH))
+        rw.install_extension("spatial")
+        rw.load_extension("spatial")
+        count = write_fn(rw, rows)
+        try:
+            rw.execute("CHECKPOINT")
+        except Exception:
+            pass
+        rw.close()
+    except Exception as exc:
+        logger.error("Perception write (read-write) failed: %s", exc)
+        return None
+    # Refresh in-memory perception so the reimport takes effect live (no restart).
+    try:
+        if sim.city_model is not None:
+            sim.city_model._load_perception_points()
+    except Exception as exc:
+        logger.error("Failed to reload perception points after reimport: %s", exc)
+    return count
+
+
 @router.post("/api/streetview/download")
 async def download_streetview(payload: dict = Body(...)):
     import requests as _requests
+    import pyproj as _pyproj
 
     bbox = payload.get("bbox") or []
     spacing = max(40, min(int(payload.get("spacing", 200)), 600))
+    frontend_candidates: list[dict] | None = payload.get("candidates")
     if len(bbox) != 4:
         return {"error": "bbox must be [west, south, east, north]"}
     sim.set_zone_bbox(bbox)
@@ -40,184 +88,85 @@ async def download_streetview(payload: dict = Body(...)):
     if east < west or north < south:
         return {"error": "bbox bounds inverted"}
 
+    if frontend_candidates and isinstance(frontend_candidates, list) and len(frontend_candidates) > 0:
+        candidate_list = [
+            {
+                "lat": float(c.get("lat", 0)),
+                "lon": float(c.get("lon", 0)),
+                "heading": float(c.get("heading", 0)),
+                "street_name": c.get("street_name", ""),
+                "highway_type": c.get("highway_type", "unknown"),
+                "edge_id": c.get("edge_id", ""),
+            }
+            for c in frontend_candidates
+            if c.get("lat") is not None and c.get("lon") is not None
+        ]
+    else:
+        candidate_list = None
+
     job_id = str(uuid.uuid4())[:8]
     progress = {"status": "running", "pct": 0.0, "downloaded": 0, "skipped": 0,
                 "total": 0, "existing": 0, "log": [], "cancelled": False}
     sim.sv_jobs[job_id] = progress
 
     def _run():
-        import numpy as _np
-        deg_per_m_lat = 1.0 / 110540.0
-        ref_cos = math.cos(math.radians((north + south) / 2.0)) or 1e-9
-        deg_per_m_lon = 1.0 / (111320.0 * ref_cos)
-        near_threshold_sq = (5.0 * deg_per_m_lat) ** 2
-
-        def _dist_sq(lat1, lon1, lat2, lon2):
-            dlat = lat1 - lat2
-            dlon = (lon1 - lon2) * ref_cos
-            return dlat * dlat + dlon * dlon
-
-        candidates: list[tuple[float, float, float]] = []
-        all_candidates: list[dict] = []
-        _db_ok = False
+        _UTM31N = "EPSG:32631"
         try:
-            from db import get_db_connection
-            from shapely import wkt as _wkt
-            from collections import defaultdict
+            _to_utm = _pyproj.Transformer.from_crs("EPSG:4326", _UTM31N, always_xy=True)
+        except Exception as _proj_exc:
+            progress["status"] = "error"
+            progress["log"].append(f"Projection setup failed: {_proj_exc}")
+            return
 
-            _con = get_db_connection()
-
-            _visited_edges: set[str] = set()
-            if sim.city_model and sim.city_model.city_agents:
-                for agent in sim.city_model.city_agents:
-                    try:
-                        ve = agent.memory.status.get("visited_edges", {})
-                        if isinstance(ve, dict):
-                            _visited_edges.update(str(k) for k in ve.keys())
-                    except Exception:
-                        pass
-                if _visited_edges:
-                    progress["log"].append(f"Collecting agent-visited edges ({len(_visited_edges)} visited edges)")
-
-            if _visited_edges:
-                _placeholders = ",".join(["?"] * len(_visited_edges))
-                _rows = _con.execute(f"""
-                    SELECT id, ST_AsText(geometry), name, road_type
-                    FROM walk_edges
-                    WHERE id IN ({_placeholders})
-                """, list(_visited_edges)).fetchall()
-            else:
-                _rows = _con.execute("""
-                    SELECT id, ST_AsText(geometry), name, road_type
-                    FROM walk_edges
-                    WHERE ST_Intersects(geometry, ST_MakeEnvelope(?,?,?,?))
-                """, [west, south, east, north]).fetchall()
-            _con.close()
-
-            _node_edges: dict[tuple[float, float], list[tuple[str, float, str, str]]] = defaultdict(list)
-            for (edge_id, wkt_str, street_name, road_type) in _rows:
-                if not wkt_str:
-                    continue
-                try:
-                    line = _wkt.loads(wkt_str)
-                    if line.geom_type != 'LineString' or len(line.coords) < 2:
-                        continue
-                    coords = list(line.coords)
-                    start = (round(coords[0][0], 5), round(coords[0][1], 5))
-                    end   = (round(coords[-1][0], 5), round(coords[-1][1], 5))
-                    dx = coords[1][0] - coords[0][0]
-                    dy = coords[1][1] - coords[0][1]
-                    heading = float((_np.degrees(_np.arctan2(dx, dy)) + 360) % 360)
-                    _node_edges[start].append((edge_id, heading, street_name or "", road_type or "unknown"))
-                    if start != end:
-                        dx = coords[-1][0] - coords[-2][0]
-                        dy = coords[-1][1] - coords[-2][1]
-                        heading = float((_np.degrees(_np.arctan2(dx, dy)) + 360) % 360)
-                        _node_edges[end].append((edge_id, heading, street_name or "", road_type or "unknown"))
-                except Exception:
-                    continue
-
-            for (lon, lat), edges in _node_edges.items():
-                degree = len(set(e[0] for e in edges))
-                if degree < 2:
-                    continue
-                if not (west <= lon <= east and south <= lat <= north):
-                    continue
-                heading = edges[0][1]
-                street_name = edges[0][2]
-                road_type = edges[0][3]
-                all_candidates.append({
-                    "lat": lat, "lon": lon,
-                    "heading": round(heading, 1),
-                    "street_name": street_name,
-                    "highway_type": road_type,
-                    "edge_id": edges[0][0],
-                })
-                candidates.append((lat, lon, heading))
-
-            progress["log"].append(f"DuckDB walk intersections: {len(candidates)} candidates (from {len(_rows)} edges)")
-            _db_ok = True
-        except Exception as _exc:
-            progress["log"].append(f"DuckDB unavailable ({_exc}) — falling back to OSMnx nodes")
-
-        if not _db_ok:
+        if candidate_list is not None:
+            candidates = candidate_list
+            progress["log"].append(f"Using {len(candidates)} candidates from frontend")
+        else:
             try:
-                import osmnx as ox
-                import pyproj
-                from shapely.geometry import box as _shapely_box
-                bbox_poly = _shapely_box(west, south, east, north)
-                G = ox.graph_from_polygon(bbox_poly, network_type="walk", retain_all=False)
-                gdf_nodes, _ = ox.graph_to_gdfs(G, nodes=True, edges=True)
-                gdf_nodes = gdf_nodes.to_crs("EPSG:4326")
-                seen_cells: set[tuple] = set()
-                for node_id, node_row in gdf_nodes.iterrows():
-                    lat_n = float(node_row.geometry.y)
-                    lon_n = float(node_row.geometry.x)
-                    cell = (round(lat_n, 4), round(lon_n, 4))
-                    if cell in seen_cells:
-                        continue
-                    seen_cells.add(cell)
-                    nbrs = list(G.successors(node_id)) + list(G.predecessors(node_id))
-                    if nbrs:
-                        nb = G.nodes[nbrs[0]]
-                        dx, dy = nb["x"] - lon_n, nb["y"] - lat_n
-                        heading = (_np.degrees(_np.arctan2(dx, dy)) + 360) % 360
-                    else:
-                        heading = 0.0
-                    candidates.append((round(lat_n, 6), round(lon_n, 6), round(heading, 1)))
-                progress["log"].append(f"OSMnx nodes: {len(candidates)} raw candidates")
-            except Exception as exc2:
-                progress["log"].append(f"OSMnx also unavailable ({exc2}) — falling back to grid")
-                step_lat = spacing * deg_per_m_lat
-                step_lon = spacing * deg_per_m_lon
-                _lat = south
-                while _lat <= north:
-                    _lon = west
-                    while _lon <= east:
-                        candidates.append((round(_lat, 6), round(_lon, 6), 0.0))
-                        _lon += step_lon
-                    _lat += step_lat
+                from routers.spatial import generate_walk_candidates
+                candidates = generate_walk_candidates((west, south, east, north), spacing)
+                progress["log"].append(f"Generated {len(candidates)} candidates ({spacing}m spacing)")
+            except Exception as _exc:
+                progress["status"] = "error"
+                progress["log"].append(f"Candidate generation failed: {_exc}")
+                return
 
-        if candidates:
-            _accepted: list[tuple[float, float, float]] = []
-            for _c in candidates:
-                if not any(_dist_sq(_c[0], _c[1], _a[0], _a[1]) < near_threshold_sq
-                           for _a in _accepted):
-                    _accepted.append(_c)
-            progress["log"].append(f"After {spacing}m thinning: {len(_accepted)} candidates (from {len(candidates)})")
-            candidates = _accepted
-
-        existing: set[tuple[float, float]] = set()
+        existing_utm: list[tuple[float, float]] = []
         if SV_IMAGES_DIR.is_dir():
             for jp in SV_IMAGES_DIR.glob("sv_*.jpg"):
                 m = re.match(r"^sv_(-?\d+\.\d+)_(-?\d+\.\d+)_h\d+\.jpg$", jp.name)
                 if m:
-                    existing.add((float(m.group(1)), float(m.group(2))))
+                    elat, elon = float(m.group(1)), float(m.group(2))
+                    ux, uy = _to_utm.transform(elon, elat)
+                    existing_utm.append((ux, uy))
         _pano_map_path = SV_IMAGES_DIR / "sv_pano_map.json"
         _pano_map: dict = {}
         if _pano_map_path.exists():
             try:
                 _pano_map = _json.loads(_pano_map_path.read_text(encoding="utf-8"))
                 for _k, _v in _pano_map.items():
-                    existing.add((_v[0], _v[1]))
+                    ux, uy = _to_utm.transform(_v[1], _v[0])
+                    existing_utm.append((ux, uy))
             except Exception:
                 pass
         SV_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 
         progress["total"] = len(candidates)
-        progress["existing"] = len(existing)
-        existing_list = list(existing)
+        progress["existing"] = len(existing_utm)
+
+        half_spacing_sq = (spacing * 0.5) ** 2
 
         def _near(lat, lon):
-            return any(_dist_sq(lat, lon, elat, elon) <= near_threshold_sq
-                       for (elat, elon) in existing_list)
+            ux, uy = _to_utm.transform(lon, lat)
+            return any((ux - ex) ** 2 + (uy - ey) ** 2 <= half_spacing_sq
+                       for (ex, ey) in existing_utm)
 
-        for i, candidate in enumerate(candidates):
+        for i, cand in enumerate(candidates):
             if progress.get("cancelled"):
                 progress["status"] = "cancelled"
                 progress["log"].append("Download cancelled by user.")
                 return
-            lat, lon, heading = candidate
+            lat, lon, heading = cand["lat"], cand["lon"], cand["heading"]
             progress["pct"] = round(i / max(len(candidates), 1) * 100, 1)
             if _near(lat, lon):
                 progress["skipped"] += 1
@@ -260,13 +209,15 @@ async def download_streetview(payload: dict = Body(...)):
                 )
                 if img.status_code == 200 and img.content[:3] == b"\xff\xd8\xff":
                     fpath.write_bytes(img.content)
-                    existing_list.append((lat, lon))
-                    existing_list.append((pano_lat, pano_lon))
+                    ux, uy = _to_utm.transform(lon, lat)
+                    existing_utm.append((ux, uy))
+                    ux, uy = _to_utm.transform(pano_lon, pano_lat)
+                    existing_utm.append((ux, uy))
                     _key = f"{lat:.6f},{lon:.6f}"
                     _pano_map[_key] = [pano_lat, pano_lon]
                     progress["downloaded"] += 1
                     progress["existing"] += 1
-                    progress["log"].append(f"✓ {lat:.5f},{lon:.5f}")
+                    progress["log"].append(f"[OK] {lat:.5f},{lon:.5f}")
                 else:
                     progress["skipped"] += 1
                     progress["log"].append(f"~ {lat:.5f},{lon:.5f}  (image HTTP {img.status_code})")
@@ -284,32 +235,18 @@ async def download_streetview(payload: dict = Body(...)):
         except Exception:
             pass
 
-        if all_candidates:
-            _sample_points = [
-                {
-                    "id": f"{c['lat']}_{c['lon']}",
-                    "lat": c["lat"],
-                    "lon": c["lon"],
-                    "heading": c["heading"],
-                    "street_name": c.get("street_name", ""),
-                    "highway_type": c.get("highway_type", "unknown"),
-                    "edge_id": c.get("edge_id", ""),
-                }
-                for c in all_candidates
-            ]
-        else:
-            _sample_points = [
-                {
-                    "id": f"{lat}_{lon}",
-                    "lat": lat,
-                    "lon": lon,
-                    "heading": hdg,
-                    "street_name": "",
-                    "highway_type": "unknown",
-                    "edge_id": "",
-                }
-                for lat, lon, hdg in candidates
-            ]
+        _sample_points = [
+            {
+                "id": f"{c['lat']}_{c['lon']}",
+                "lat": c["lat"],
+                "lon": c["lon"],
+                "heading": c["heading"],
+                "street_name": c.get("street_name", ""),
+                "highway_type": c.get("highway_type", "unknown"),
+                "edge_id": c.get("edge_id", ""),
+            }
+            for c in candidates
+        ]
         SV_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
         _json_path = SV_OUTPUT_DIR / "sample_points.json"
         try:
@@ -319,7 +256,73 @@ async def download_streetview(payload: dict = Body(...)):
             progress["log"].append(f"ERROR writing sample_points.json: {_jex}")
 
     threading.Thread(target=_run, daemon=True).start()
-    return {"job_id": job_id, "total_candidates": 0}
+    return {"job_id": job_id, "total_candidates": len(candidate_list) if candidate_list else 0}
+
+
+def _rebuild_sample_points_json(
+    new_candidates: list[dict] | None = None,
+    progress: dict | None = None,
+) -> None:
+    """Rebuild sample_points.json from existing file + new candidates + images on disk."""
+    _json_path = SV_OUTPUT_DIR / "sample_points.json"
+    seen: dict[str, dict] = {}
+
+    if _json_path.exists():
+        try:
+            for pt in _json.loads(_json_path.read_text(encoding="utf-8")):
+                key = f"{pt['lat']}_{pt['lon']}"
+                seen[key] = pt
+        except Exception:
+            pass
+
+    if new_candidates:
+        for c in new_candidates:
+            key = f"{c['lat']}_{c['lon']}"
+            if key not in seen:
+                seen[key] = {
+                    "id": key,
+                    "lat": c["lat"],
+                    "lon": c["lon"],
+                    "heading": c["heading"],
+                    "street_name": c.get("street_name", ""),
+                    "highway_type": c.get("highway_type", "unknown"),
+                    "edge_id": c.get("edge_id", ""),
+                }
+
+    if SV_IMAGES_DIR.is_dir():
+        for jpg in SV_IMAGES_DIR.glob("sv_*.jpg"):
+            m = re.match(r"^sv_(-?\d+\.\d+)_(-?\d+\.\d+)_h(\d+)\.jpg$", jpg.name)
+            if not m:
+                continue
+            lat, lon, heading = float(m.group(1)), float(m.group(2)), int(m.group(3))
+            key = f"{lat}_{lon}"
+            if key not in seen:
+                seen[key] = {
+                    "id": key,
+                    "lat": lat,
+                    "lon": lon,
+                    "heading": heading,
+                    "street_name": "",
+                    "highway_type": "unknown",
+                    "edge_id": "",
+                }
+
+    points = sorted(seen.values(), key=lambda p: (p["lat"], p["lon"]))
+    SV_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        _json_path.write_text(
+            _json.dumps(points, indent=2, ensure_ascii=False, allow_nan=False),
+            encoding="utf-8",
+        )
+        msg = f"Wrote {len(points)} sample points to {_json_path}"
+        if progress:
+            progress["log"].append(msg)
+        logger.info(msg)
+    except Exception as exc:
+        msg = f"ERROR writing sample_points.json: {exc}"
+        if progress:
+            progress["log"].append(msg)
+        logger.error(msg)
 
 
 @router.get("/api/streetview/download/status/{job_id}")
@@ -335,6 +338,16 @@ async def cancel_sv_download(job_id: str):
         return {"error": "Unknown job"}
     sim.sv_jobs[job_id]["cancelled"] = True
     return {"ok": True}
+
+
+@router.post("/api/streetview/rebuild-sample-points")
+async def rebuild_sample_points():
+    _rebuild_sample_points_json()
+    json_path = SV_OUTPUT_DIR / "sample_points.json"
+    if json_path.exists():
+        points = _json.loads(json_path.read_text(encoding="utf-8"))
+        return {"ok": True, "count": len(points)}
+    return {"ok": False, "error": "Failed to write sample_points.json"}
 
 
 @router.get("/api/streetview/stats")
@@ -388,13 +401,13 @@ async def reimport_perception():
         if not rows:
             return {"ok": False, "error": "No valid *_analysis.json files found in output/results/"}
 
-        # Step 2: write via the dedicated perception DB connection.
-        # perception_con targets perception.duckdb — a separate file from the main
-        # eixample_overture.duckdb — so there is zero Windows file-lock conflict.
-        con = getattr(sim.city_model, "perception_con", None) if sim.city_model else None
-        if con is None:
-            return {"ok": False, "error": "Perception DB connection not available — restart the backend"}
-        count = write_perception_rows(con, rows)
+        # Step 2: write via a short-lived read-write connection, then refresh the
+        # model's in-memory perception. Nothing holds perception.duckdb persistently
+        # (the model loads it into RAM at startup and releases the file), so this can
+        # take the write lock even while the simulation and the agent-lab are running.
+        count = await loop.run_in_executor(None, _write_perception_rows_rw, write_perception_rows, rows)
+        if count is None:
+            return {"ok": False, "error": "Perception write failed — check logs (is another process writing the DB?)"}
 
         logger.info(f"Perception reimport: {count} records loaded")
         return {"ok": True, "records_in_table": count}
@@ -460,7 +473,7 @@ async def start_streetview_analyze(payload: dict = Body(...)):
                 }
                 result_path.write_text(_j.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8")
                 progress["done"] += 1
-                progress["log"].append(f"✓ {lat_s},{lon_s}")
+                progress["log"].append(f"[OK] {lat_s},{lon_s}")
             except Exception as exc:
                 progress["log"].append(f"✗ {key}: {exc}")
 
@@ -566,18 +579,18 @@ async def get_streetview_json(filename: str):
 
 @router.get("/api/streetview_grid/analysis/{lat}_{lon}")
 async def get_streetview_analysis(lat: str, lon: str):
+    # Transient read-only handle — opened and closed per request so it never holds a
+    # lock that would block a reimport. perception.duckdb is a separate file from the
+    # main spatial DB, so this also never conflicts with city_model.con on Windows.
+    pcon = _open_perception_ro()
+    if pcon is None:
+        return {"error": "Perception DB not available — check logs for details"}
     try:
-        # Use the shared perception_con — perception.duckdb is a separate file from the
-        # main spatial DB, so this never conflicts with city_model.con on Windows.
-        pcon = getattr(sim.city_model, "perception_con", None) if sim.city_model else None
-        if pcon is None:
-            return {"error": "Perception DB not available — restart the backend"}
         row = pcon.execute("""
             SELECT latitude, longitude, walkability, has_vegetation,
                    pedestrian_activity, architectural_style,
                    building_condition, source_image,
-                   scene_narrative, materials, street_furniture,
-                   spatial_impression, heading, timestamp_str, model_name,
+                   scene_narrative, heading, timestamp_str, model_name,
                    scene_overview, street_name, highway_type, edge_id,
                    device, latency_ms, scene_text,
                    lighting_json, spatial_character_json,
@@ -591,6 +604,11 @@ async def get_streetview_analysis(lat: str, lon: str):
         """, [lat, lon]).fetchone()
     except Exception as e:
         return {"error": str(e)}
+    finally:
+        try:
+            pcon.close()
+        except Exception:
+            pass
 
     if not row:
         return {"error": "Analysis not found"}
@@ -608,18 +626,17 @@ async def get_streetview_analysis(lat: str, lon: str):
         "has_vegetation": row[3], "pedestrian_activity": row[4],
         "architectural_style": row[5], "building_condition": row[6],
         "source_image": row[7], "scene_narrative": row[8],
-        "materials": row[9], "street_furniture": row[10],
-        "spatial_impression": row[11], "heading": row[12],
-        "timestamp": row[13], "model": row[14], "scene_overview": row[15],
-        "street_name": row[16], "highway_type": row[17], "edge_id": row[18],
-        "device": row[19], "latency_ms": row[20], "scene_text": row[21],
-        "lighting": _parse_json_col(row[22]),
-        "spatial_character": _parse_json_col(row[23]),
-        "crowdedness": _parse_json_col(row[24]),
-        "greenery": _parse_json_col(row[25]),
-        "street_amenities": _parse_json_col(row[26]),
-        "visible_text": _parse_json_col(row[27]),
-        "nearby_landmarks": _parse_json_col(row[28]),
+        "heading": row[9], "timestamp": row[10], "model": row[11],
+        "scene_overview": row[12], "street_name": row[13], "highway_type": row[14],
+        "edge_id": row[15], "device": row[16], "latency_ms": row[17],
+        "scene_text": row[18],
+        "lighting": _parse_json_col(row[19]),
+        "spatial_character": _parse_json_col(row[20]),
+        "crowdedness": _parse_json_col(row[21]),
+        "greenery": _parse_json_col(row[22]),
+        "street_amenities": _parse_json_col(row[23]),
+        "visible_text": _parse_json_col(row[24]),
+        "nearby_landmarks": _parse_json_col(row[25]),
     }
 
 

@@ -1,84 +1,84 @@
 {
   "metadata": {
-    "timestamp": "20260613_173102",
+    "timestamp": "20260620_170816",
     "latitude": 41.394847,
     "longitude": 2.170761,
-    "heading": 102.0,
-    "street_name": "Carrer del Consell de Cent",
+    "heading": 121.9,
+    "street_name": "",
     "highway_type": "road",
-    "edge_id": "a2f400ce-9e33-4ec3-96d5-2e8e04587138",
-    "source_image": "sv_41.394847_2.170761_h102.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "edge_id": "d291401d-483f-4ca2-a4f0-c96aefd53f26",
+    "source_image": "sv_41.394847_2.170761_h121.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 292231.4,
+    "latency_ms": 203736.6,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Neoclassical street scene with moderate pedestrian activity and a mix of retail and residential buildings.",
+    "scene": "A quiet urban sidewalk scene with a bakery storefront, a metro entrance escalator, and bare trees, under bright daylight.",
     "lighting": [
       {
         "zone": "center",
-        "element": "overhead diffused sunlight through clouds",
-        "condition": "adequate"
+        "element": "bright daylight with clear sky",
+        "condition": "bright"
       }
     ],
     "spatial_character": [
       {
         "zone": "far_left",
-        "width": "wide",
+        "width": "narrow",
         "enclosure": "open",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "neoclassical",
+        "architectural_style": "vernacular",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": "ornate balconies with wrought-iron railings"
+        "architectural_details": null
       },
       {
         "zone": "left",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "neoclassical",
+        "architectural_style": "vernacular",
         "building_condition": "good",
         "storefront_type": "retail",
         "architectural_details": null
       },
       {
         "zone": "center",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
-        "lane_type": "main_roadway",
+        "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "neoclassical",
+        "architectural_style": "vernacular",
         "building_condition": "good",
         "storefront_type": "retail",
         "architectural_details": null
       },
       {
         "zone": "right",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "moderate",
+        "enclosure": "semi",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "neoclassical",
+        "architectural_style": "vernacular",
         "building_condition": "good",
         "storefront_type": "retail",
         "architectural_details": null
       },
       {
         "zone": "far_right",
-        "width": "wide",
-        "enclosure": "open",
+        "width": "narrow",
+        "enclosure": "semi",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "neoclassical",
+        "architectural_style": "vernacular",
         "building_condition": "good",
         "storefront_type": "retail",
         "architectural_details": null
@@ -87,43 +87,61 @@
     "crowdedness": [
       {
         "zone": "center",
-        "density_level": "moderate"
+        "density_level": "sparse"
       }
     ],
     "greenery": [
       {
         "zone": "left",
-        "element": "bare winter trees without leaves",
-        "coverage": "sparse"
-      },
-      {
-        "zone": "right",
-        "element": "terracotta-potted plants on window ledges",
+        "element": "bare deciduous trees with thin branches",
         "coverage": "sparse"
       }
     ],
     "street_amenities": [
       {
         "zone": "left",
-        "element": "cast-iron double-arm street lamp with frosted globe",
-        "material_and_colour": "black painted cast iron",
+        "element": "metal bench",
+        "material_and_colour": "dark grey metal frame with brown wooden slats",
         "presence": "few"
       },
       {
         "zone": "center",
-        "element": "yellow painted concrete bollard",
-        "material_and_colour": "yellow concrete",
-        "presence": "several"
+        "element": "escalator",
+        "material_and_colour": "metal and glass",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "traffic sign",
+        "material_and_colour": "white circular sign with red border and black arrow",
+        "presence": "few"
+      },
+      {
+        "zone": "center",
+        "element": "street light pole",
+        "material_and_colour": "metallic grey",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "shopfront display window",
+        "material_and_colour": "glass and white frame",
+        "presence": "few"
       }
     ],
     "visible_text": [
       {
-        "text": "FORN DE",
+        "text": "FORN DE PASTISSERIA",
         "zone": "right",
         "type": "sign"
       },
       {
-        "text": "PASTISSERIA",
+        "text": "ESPAN'S",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "CAFE",
         "zone": "right",
         "type": "sign"
       }

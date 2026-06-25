@@ -24,7 +24,8 @@ class CityAgent(mg.GeoAgent):
     ARCHETYPES = ["resident", "commuter", "tourist", "student"]
 
     def __init__(self, model, geometry, crs="EPSG:4326", edge_id=None, edge_geom=None,
-                 archetype="resident", target_info=None, gender="unknown", age=None):
+                 archetype="resident", target_info=None, home_info=None,
+                 gender="unknown", age=None):
         super().__init__(model=model, geometry=geometry, crs=crs)
         self.agent_type = "CityAgent"
         self.nearby_amenities = []
@@ -47,7 +48,7 @@ class CityAgent(mg.GeoAgent):
             context=ctx,
         )
 
-        self._init_memory_sync(edge_id, geometry, archetype, target_info, gender, age)
+        self._init_memory_sync(edge_id, geometry, archetype, target_info, home_info, gender, age)
 
         self.memory.stream._store["cognition"] = deque([
             MemoryNode(
@@ -69,7 +70,8 @@ class CityAgent(mg.GeoAgent):
             )
 
     def _init_memory_sync(self, edge_id, geometry, archetype: str,
-                          target_info=None, gender="unknown", age=None) -> None:
+                          target_info=None, home_info=None,
+                          gender="unknown", age=None) -> None:
         self.memory.status._data["agent_profile"] = {
             "archetype": archetype,
             "age": age if age is not None else random.randint(18, 70),
@@ -95,12 +97,30 @@ class CityAgent(mg.GeoAgent):
         destination_entry["start_lon"] = geometry.x
         destination_entry["start_lat"] = geometry.y
         self.memory.status._data["destination"] = destination_entry
+        self.memory.status._data["home"] = home_info or {
+            "name": None, "amenity_type": None,
+            "lon": None, "lat": None, "target_node": None,
+        }
+        # Store initial activity target (work/campus) so daily plans can re-route
+        if archetype != "resident" and target_info and target_info.get("name") != "home":
+            self.memory.status._data["work"] = {
+                "name": target_info.get("name"),
+                "amenity_type": target_info.get("amenity_type"),
+                "lon": target_info.get("lon"),
+                "lat": target_info.get("lat"),
+                "target_node": target_info.get("target_node"),
+            }
+        else:
+            self.memory.status._data["work"] = {
+                "name": None, "amenity_type": None,
+                "lon": None, "lat": None, "target_node": None,
+            }
         proposed_path = self.model._compute_proposed_path(current_node, target_info)
         self.memory.status._data["proposed_path"] = proposed_path
         self.memory.status._data["needs"] = {
-            "hunger": 0.5,
+            "hunger": 0.0,
             "energy": 1.0,
-            "social": 0.5,
+            "social": 0.2,
             "comfort": 0.7,
         }
         self.memory.status._data["cognition_state"] = {
@@ -189,13 +209,20 @@ class CityAgent(mg.GeoAgent):
         current_node = None
         if self.current_edge_geom is not None:
             cs = list(self.current_edge_geom.coords)
-            sx, sy = cs[0][0], cs[0][1]
-            ex, ey = cs[-1][0], cs[-1][1]
-            dsx = sx - self.geometry.x
-            dsy = sy - self.geometry.y
-            dex = ex - self.geometry.x
-            dey = ey - self.geometry.y
-            current_node = (round(sx, 6), round(sy, 6)) if (dsx*dsx + dsy*dsy) < (dex*dex + dey*dey) else (round(ex, 6), round(ey, 6))
+            if self.position_along_edge >= 1.0:
+                ex, ey = cs[-1][0], cs[-1][1]
+                current_node = (round(ex, 6), round(ey, 6))
+            elif self.position_along_edge <= 0.0:
+                sx, sy = cs[0][0], cs[0][1]
+                current_node = (round(sx, 6), round(sy, 6))
+            else:
+                sx, sy = cs[0][0], cs[0][1]
+                ex, ey = cs[-1][0], cs[-1][1]
+                dsx = sx - self.geometry.x
+                dsy = sy - self.geometry.y
+                dex = ex - self.geometry.x
+                dey = ey - self.geometry.y
+                current_node = (round(sx, 6), round(sy, 6)) if (dsx*dsx + dsy*dsy) < (dex*dex + dey*dey) else (round(ex, 6), round(ey, 6))
 
         await self.memory.status.update("position", {
             "lon": self.geometry.x,
@@ -293,6 +320,8 @@ class CityAgent(mg.GeoAgent):
             if entry[0] != self.current_edge_id and entry[0] != self.previous_edge_id
         ]
         if not candidates:
+            candidates = [entry for entry in raw_edges if entry[0] != self.current_edge_id]
+        if not candidates:
             candidates = raw_edges
 
         perception_mode = getattr(self.model, 'perception_mode', 'both')
@@ -381,9 +410,10 @@ class CityAgent(mg.GeoAgent):
             if entry[0] != self.current_edge_id and entry[0] != self.previous_edge_id
         ]
         if not candidates:
+            candidates = [entry for entry in next_edges if entry[0] != self.current_edge_id]
+        if not candidates:
             candidates = next_edges
         if not candidates:
-            self.position_along_edge = 0.0
             return
         candidates.sort(key=lambda e: self.model.edge_visit_count_global.get(e[0], 0))
         eid, geom, direction = candidates[0][0], candidates[0][1], candidates[0][2]

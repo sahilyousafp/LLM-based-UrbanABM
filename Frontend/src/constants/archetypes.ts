@@ -5,13 +5,6 @@ export const ARCHETYPE_COLORS: Record<string, string> = {
   student:  '#ff375f',
 };
 
-// Nav-arrow colours — distinct from the 3D rim colours and from the orange trail (#ffa337).
-export const ARCHETYPE_NAV_COLORS: Record<string, string> = {
-  resident: '#32ade6',
-  commuter: '#5e5ce6',
-  tourist:  '#bf5af2',
-  student:  '#ff375f',
-};
 
 export const ARCHETYPE_GLB: Record<string, string> = {
   resident: 'assets/agents/agent_res_low_512px.glb',

@@ -56,6 +56,10 @@ class AgentRecord:
     target_amenity_type: Optional[str] = None
     target_lon: Optional[float] = None
     target_lat: Optional[float] = None
+    home_lon: Optional[float] = None
+    home_lat: Optional[float] = None
+    work_lon: Optional[float] = None
+    work_lat: Optional[float] = None
     perception_mode: str = "both"
     plan: Dict[str, Any] = field(default_factory=dict)
 
@@ -90,6 +94,10 @@ class AgentRecord:
             'target_amenity_type': self.target_amenity_type,
             'target_lon': self.target_lon,
             'target_lat': self.target_lat,
+            'home_lon': self.home_lon,
+            'home_lat': self.home_lat,
+            'work_lon': self.work_lon,
+            'work_lat': self.work_lat,
             'perception_mode': self.perception_mode,
             'plan_json': json.dumps(self.plan),
             'step_type': self._derive_step_type(),
@@ -186,6 +194,10 @@ class GeoParquetRecorder:
         self._temp_files: List[Path] = []
         self._last_written_paths: List[Path] = []  # tracks all successfully flushed paths
 
+        # Auto-flush timer
+        self._flush_stop_event = threading.Event()
+        self._flush_thread: Optional[threading.Thread] = None
+
         logger.info(
             f"GeoParquetRecorder initialized. Output: {self.output_dir} | "
             f"Buffer: {max_buffer_size}"
@@ -204,7 +216,7 @@ class GeoParquetRecorder:
         if self.is_recording:
             logger.warning("Recording already in progress")
             return self.session_id
-        
+
         self.session_name = session_name or datetime.now().strftime("%Y%m%d_%H%M%S")
         self.session_id = f"{self.session_name}_{id(self)}"
         self.start_time = datetime.now()
@@ -214,6 +226,7 @@ class GeoParquetRecorder:
         self.is_recording = True
         self.buffer = []
         self.total_records = 0
+        self._temp_file_counter = 0
         self._temp_files = []
         self._last_written_paths = []
         self.stats = {
@@ -222,8 +235,20 @@ class GeoParquetRecorder:
             'records_written': 0,
         }
 
+        self._flush_stop_event.clear()
+        self._flush_thread = threading.Thread(
+            target=self._auto_flush_loop, daemon=True,
+        )
+        self._flush_thread.start()
+
         logger.info(f"Recording started: {self.session_id}")
         return self.session_id
+
+    def _auto_flush_loop(self) -> None:
+        """Periodically flush buffer to temp files on disk for crash safety."""
+        while not self._flush_stop_event.wait(timeout=self.auto_flush_interval):
+            if self.buffer:
+                self._flush_locked()
 
     def record_agent_state(
         self,
@@ -294,6 +319,8 @@ class GeoParquetRecorder:
         satisfaction_reasoning = None
 
         destination = {}
+        home = {}
+        work = {}
         if hasattr(agent, 'memory'):
             # Use synchronous access to avoid asyncio issues
             # Access internal data directly for performance
@@ -308,7 +335,9 @@ class GeoParquetRecorder:
                 satisfaction_source = data.get('satisfaction_source', 'none')
                 satisfaction_reasoning = data.get('satisfaction_reasoning', None)
                 destination = data.get('destination', {})
-        
+                home = data.get('home', {})
+                work = data.get('work', {})
+
         # Get nearby amenities from agent
         nearby_amenities = getattr(agent, 'nearby_amenities', [])
         
@@ -387,6 +416,10 @@ class GeoParquetRecorder:
             target_amenity_type=destination.get('amenity_type'),
             target_lon=destination.get('lon'),
             target_lat=destination.get('lat'),
+            home_lon=home.get('lon'),
+            home_lat=home.get('lat'),
+            work_lon=work.get('lon'),
+            work_lat=work.get('lat'),
             perception_mode=self._get_current_mode(),
         )
     
@@ -410,8 +443,6 @@ class GeoParquetRecorder:
             geometry = [Point(lon, lat) for lon, lat in zip(df['longitude'], df['latitude'])]
             gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
 
-            # Nested folder structure: date/archetype/perception_mode/
-            # Group by both archetype AND perception_mode (records may span mode changes)
             groups = gdf.groupby(['archetype', 'perception_mode'])
             written_paths = []
 
@@ -420,20 +451,19 @@ class GeoParquetRecorder:
                 mode_clean = mode.lower().replace(' ', '_')
                 base_dir = self.output_dir / self._recording_date / archetype_clean / mode_clean
                 base_dir.mkdir(parents=True, exist_ok=True)
-                filename = f"{self.session_name}_{mode_clean}.parquet"
-                file_path = base_dir / filename
 
-                if file_path.exists():
-                    existing = gpd.read_parquet(str(file_path))
-                    group_gdf = pd.concat([existing, group_gdf], ignore_index=True)
-                    group_gdf = gpd.GeoDataFrame(group_gdf, crs="EPSG:4326")
-
-                # Deduplicate: keep the latest record for each (agent_id, step) pair.
-                # Guards against any code path that calls record_agent_state twice per step.
                 group_gdf = group_gdf.drop_duplicates(subset=['agent_id', 'step'], keep='last')
-                group_gdf.to_parquet(str(file_path))
-                written_paths.append(file_path)
-                logger.info(f"Flushed {len(group_gdf)} records for '{archetype}/{mode}' to {file_path}")
+
+                self._temp_file_counter += 1
+                tmp_name = f"agent_recording_{self.session_name}_flush_{self._temp_file_counter:03d}.tmp.parquet"
+                tmp_path = base_dir / tmp_name
+                group_gdf.to_parquet(str(tmp_path))
+                self._temp_files.append(tmp_path)
+                written_paths.append(tmp_path)
+                logger.info(
+                    f"Flushed {len(group_gdf)} records for '{archetype}/{mode}' "
+                    f"to temp file {tmp_path.name}"
+                )
 
             self.stats['records_written'] += len(self.buffer)
             self.buffer = []
@@ -451,64 +481,63 @@ class GeoParquetRecorder:
     def _merge_temp_files(self) -> Optional[Path]:
         """
         Merge all temp flush files into final GeoParquet files (one per archetype/perception_mode).
-        
+
         Returns:
             Path to the first merged file, or None if failed
         """
         if not self._temp_files:
             logger.debug("No temp files to merge")
             return None
-        
+
         try:
             import geopandas as gpd
             import pandas as pd
-            
-            # Read all temp files
+
             all_records = []
             for temp_file in self._temp_files:
                 if temp_file.exists():
                     gdf = gpd.read_parquet(str(temp_file))
                     all_records.append(gdf)
                     logger.debug(f"Loaded temp file: {temp_file.name} ({len(gdf)} records)")
-            
+
             if not all_records:
                 logger.error("No valid temp files found to merge")
                 return None
-            
-            # Concatenate all GeoDataFrames
+
             merged_gdf = pd.concat(all_records, ignore_index=True)
             merged_gdf = gpd.GeoDataFrame(merged_gdf, crs="EPSG:4326")
-            
-            # Group by both archetype AND perception_mode
+
             groups = merged_gdf.groupby(['archetype', 'perception_mode'])
             written_paths = []
-            
+
             for (archetype, mode), group_gdf in groups:
                 archetype_clean = archetype.lower().replace(' ', '_')
                 mode_clean = mode.lower().replace(' ', '_')
-                
-                # Build folder structure: <date>/<archetype>/<perception_mode>/
-                base_dir = self.output_dir / self._recording_date / archetype_clean / mode_clean
+
+                date_folder = self._recording_date or datetime.now().strftime("%Y-%m-%d")
+                base_dir = self.output_dir / date_folder / archetype_clean / mode_clean
                 base_dir.mkdir(parents=True, exist_ok=True)
-                
-                filename = f"agent_recording_{self.session_name}_{mode_clean}.parquet"
+
+                group_gdf = group_gdf.drop_duplicates(subset=['agent_id', 'step'], keep='last')
+
+                filename = f"{self.session_name}_{mode_clean}.parquet"
                 final_path = base_dir / filename
-                
+
                 group_gdf.to_parquet(str(final_path))
                 written_paths.append(final_path)
                 logger.info(f"Merged {len(group_gdf)} records for '{archetype}/{mode}' -> {final_path.name}")
-            
-            # Clean up temp files if not keeping them
-            if not self.keep_temp_files:
-                for temp_file in self._temp_files:
-                    try:
+
+            for temp_file in self._temp_files:
+                try:
+                    if temp_file.exists():
                         temp_file.unlink()
-                        logger.debug(f"Deleted temp file: {temp_file}")
-                    except Exception as e:
-                        logger.warning(f"Failed to delete temp file {temp_file}: {e}")
-            
+                        logger.debug(f"Cleaned up temp file: {temp_file}")
+                except Exception as e:
+                    logger.warning(f"Failed to delete temp file {temp_file}: {e}")
+            self._temp_files = []
+
             return written_paths[0] if written_paths else None
-            
+
         except Exception as e:
             logger.error(f"Failed to merge temp files: {e}")
             return None
@@ -519,9 +548,15 @@ class GeoParquetRecorder:
             return None
 
         self.is_recording = False
-        final_path = self._flush_locked(is_final_flush=True)
-        # Buffer may be empty if all data was already flushed in intermediate writes —
-        # fall back to the most recently flushed path so callers always get a valid file.
+
+        self._flush_stop_event.set()
+        if self._flush_thread and self._flush_thread.is_alive():
+            self._flush_thread.join(timeout=5.0)
+        self._flush_thread = None
+
+        self._flush_locked(is_final_flush=True)
+
+        final_path = self._merge_temp_files()
         if final_path is None and self._last_written_paths:
             final_path = self._last_written_paths[-1]
         logger.info(f"Recording stopped. Total records: {self.total_records} -> {final_path}")

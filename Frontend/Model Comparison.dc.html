@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<style>
+/* ── Tweaks ── */
+:root {
+  --mc-highlight-top: 1; /* 1 = dims non-top to 60%, 0 = uniform */
+}
+
+/* ── Palette ── */
+:root {
+  --mc-bg: #0f1117;
+  --mc-surface: #1a1d27;
+  --mc-border: rgba(255, 255, 255, 0.08);
+  --mc-border-strong: rgba(255, 255, 255, 0.14);
+  --mc-text: #f0f2f8;
+  --mc-muted: #6b7280;
+  --mc-accent: oklch(0.65 0.18 255);
+  --mc-accent-dim: oklch(0.55 0.12 255);
+  --mc-accent-glow: oklch(0.65 0.18 255 / 0.18);
+  --mc-radius: 14px;
+  --mc-radius-sm: 8px;
+  --mc-radius-pill: 999px;
+  --mc-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --mc-spring: cubic-bezier(0.2, 0.9, 0.25, 1.2);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: #07090c;
+  color: var(--mc-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Backdrop ── */
+.mc-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: mc-fade-in 300ms var(--mc-ease) forwards;
+}
+
+@keyframes mc-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Modal ── */
+.mc-modal {
+  width: 900px;
+  max-width: 95vw;
+  max-height: 90vh;
+  background: var(--mc-bg);
+  border: 1px solid var(--mc-border);
+  border-radius: 20px;
+  box-shadow:
+    0 32px 64px -16px rgba(0, 0, 0, 0.7),
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: mc-scale-in 400ms var(--mc-ease) forwards;
+}
+
+@keyframes mc-scale-in {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Header ── */
+.mc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.mc-header-text { display: flex; flex-direction: column; gap: 6px; }
+
+.mc-eyebrow {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mc-accent);
+  opacity: 0.85;
+}
+
+.mc-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--mc-text);
+  letter-spacing: -0.01em;
+}
+
+.mc-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--mc-muted);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 180ms var(--mc-ease);
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+
+.mc-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--mc-border);
+  color: var(--mc-text);
+}
+
+/* ── Body ── */
+.mc-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+}
+
+/* ── Chart Section ── */
+.mc-chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mc-chart-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mc-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--mc-radius-pill);
+  background: var(--mc-accent-glow);
+  border: 1px solid oklch(0.65 0.18 255 / 0.25);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mc-accent);
+  white-space: nowrap;
+}
+
+.mc-chart-subtitle {
+  font-size: 13px;
+  color: var(--mc-muted);
+  line-height: 1.4;
+}
+
+/* ── Horizontal Bar Chart ── */
+.mc-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mc-bar-row {
+  display: grid;
+  grid-template-columns: 190px 1fr 52px;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: opacity 400ms var(--mc-ease);
+  position: relative;
+}
+
+.mc-bar-row:last-child { border-bottom: none; }
+
+/* Highlight top: dims non-top rows */
+.mc-bars[data-highlight-top="true"] .mc-bar-row:not([data-rank="1"]) {
+  opacity: 0.6;
+}
+.mc-bars[data-highlight-top="true"] .mc-bar-row:not([data-rank="1"]):hover {
+  opacity: 1;
+}
+.mc-bars[data-highlight-top="true"] .mc-bar-row[data-rank="1"] {
+  opacity: 1;
+}
+
+.mc-bar-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--mc-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mc-bar-track {
+  height: 28px;
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.mc-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: var(--mc-accent);
+  transition: width 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.mc-bar-row[data-rank="1"] .mc-bar-fill {
+  background: linear-gradient(90deg, var(--mc-accent) 0%, oklch(0.72 0.16 260) 100%);
+  box-shadow: 0 0 20px -4px var(--mc-accent-glow);
+}
+
+.mc-bar-score {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mc-text);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ── Tooltip ── */
+.mc-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(4px);
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-border-strong);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--mc-text);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms var(--mc-ease), transform 180ms var(--mc-ease);
+  z-index: 10;
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+}
+
+.mc-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--mc-border-strong);
+}
+
+.mc-bar-row:hover .mc-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.mc-tooltip-score {
+  color: var(--mc-accent);
+  font-weight: 700;
+}
+
+/* ── Divider ── */
+.mc-divider {
+  height: 1px;
+  background: var(--mc-border);
+  margin: 28px 0;
+}
+
+/* ── Form Section ── */
+.mc-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.mc-form-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mc-form-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mc-text);
+}
+
+.mc-form-subtitle {
+  font-size: 12.5px;
+  color: var(--mc-muted);
+}
+
+.mc-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  align-items: end;
+}
+
+.mc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mc-field-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mc-muted);
+}
+
+.mc-input,
+.mc-select {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: var(--mc-radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--mc-border);
+  color: var(--mc-text);
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color 200ms var(--mc-ease),
+              background 200ms var(--mc-ease),
+              box-shadow 200ms var(--mc-ease);
+}
+
+.mc-input::placeholder {
+  color: var(--mc-muted);
+  opacity: 0.7;
+}
+
+.mc-input:focus,
+.mc-select:focus {
+  outline: none;
+  border-color: oklch(0.65 0.18 255 / 0.5);
+  background: oklch(0.65 0.18 255 / 0.05);
+  box-shadow: 0 0 0 3px oklch(0.65 0.18 255 / 0.1);
+}
+
+.mc-select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 34px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(240,242,248,0.4)' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.mc-select option {
+  background: var(--mc-surface);
+  color: var(--mc-text);
+}
+
+.mc-field--narrow { max-width: 120px; }
+
+.mc-btn-run {
+  padding: 9px 22px;
+  border-radius: var(--mc-radius-pill);
+  border: 1px solid oklch(0.65 0.18 255 / 0.5);
+  background: linear-gradient(180deg, var(--mc-accent) 0%, var(--mc-accent-dim) 100%);
+  box-shadow: 0 4px 16px -4px oklch(0.65 0.18 255 / 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 160ms var(--mc-spring),
+              filter 200ms var(--mc-ease),
+              box-shadow 200ms var(--mc-ease);
+  align-self: flex-end;
+}
+
+.mc-btn-run:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px -4px oklch(0.65 0.18 255 / 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.mc-btn-run:active {
+  transform: scale(0.97);
+}
+
+.mc-btn-run:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+
+/* ── Progress ── */
+.mc-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mc-progress[data-visible="false"] {
+  display: none;
+}
+
+.mc-progress-track {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.mc-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--mc-accent);
+  transition: width 400ms var(--mc-ease);
+  width: 0%;
+}
+
+.mc-progress-status {
+  font-size: 12px;
+  color: var(--mc-muted);
+}
+
+/* ── Scrollbar ── */
+.mc-body::-webkit-scrollbar { width: 5px; }
+.mc-body::-webkit-scrollbar-track { background: transparent; }
+.mc-body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 3px; }
+.mc-body::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.18); }
+
+/* ── Hidden utility ── */
+.mc-hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="mc-backdrop" id="mc-backdrop">
+  <div class="mc-modal" id="mc-modal">
+
+    <!-- Zone 1: Header -->
+    <div class="mc-header">
+      <div class="mc-header-text">
+        <span class="mc-eyebrow">Model Comparison</span>
+        <h2 class="mc-title">Choose the right LLM for your simulation</h2>
+      </div>
+      <button class="mc-close" id="mc-close" title="Close">×</button>
+    </div>
+
+    <!-- Zone 2 + 3: Body -->
+    <div class="mc-body">
+
+      <!-- Chart Area -->
+      <div class="mc-chart-section">
+        <div class="mc-chart-head">
+          <span class="mc-badge">EQ Bench V2</span>
+          <span class="mc-chart-subtitle">Scores from the EQ-Bench v2 leaderboard + local notebook runs</span>
+        </div>
+        <div class="mc-bars" id="mc-bars" data-highlight-top="true"></div>
+      </div>
+
+      <!-- Divider -->
+      <div class="mc-divider"></div>
+
+      <!-- Add Your Own Model -->
+      <div class="mc-form-section">
+        <div class="mc-form-head">
+          <span class="mc-form-title">Add your own model</span>
+          <span class="mc-form-subtitle">Run EQ-Bench v2 on Ollama or HuggingFace</span>
+        </div>
+        <div class="mc-form-grid">
+          <div class="mc-field">
+            <label class="mc-field-label" for="mc-source">Source</label>
+            <select class="mc-select" id="mc-source">
+              <option value="ollama" selected>Ollama (local)</option>
+              <option value="huggingface">HuggingFace</option>
+            </select>
+          </div>
+          <div class="mc-field" id="mc-ollama-model-wrap">
+            <label class="mc-field-label" for="mc-model">Model</label>
+            <select class="mc-select" id="mc-model">
+              <option value="qwen2.5-coder:3b" selected>qwen2.5-coder:3b</option>
+            </select>
+          </div>
+          <div class="mc-field mc-hidden" id="mc-hf-wrap">
+            <label class="mc-field-label" for="mc-hf-model">Model ID</label>
+            <input type="text" class="mc-input" id="mc-hf-model" placeholder="e.g. meta-llama/Llama-3.1-8B-Instruct">
+          </div>
+          <div class="mc-field mc-hidden" id="mc-hf-key-wrap">
+            <label class="mc-field-label" for="mc-hf-key">HF Token</label>
+            <input type="password" class="mc-input" id="mc-hf-key" placeholder="hf_...">
+          </div>
+          <div class="mc-field mc-field--narrow">
+            <label class="mc-field-label" for="mc-qcount">Questions</label>
+            <select class="mc-select" id="mc-qcount">
+              <option value="20" selected>20</option>
+              <option value="50">50</option>
+              <option value="171">Full 171</option>
+            </select>
+          </div>
+          <div class="mc-field" style="justify-content: flex-end;">
+            <label class="mc-field-label">&nbsp;</label>
+            <button class="mc-btn-run" id="mc-run">Run Benchmark</button>
+          </div>
+        </div>
+        <div class="mc-progress" id="mc-progress" data-visible="false">
+          <div class="mc-progress-track">
+            <div class="mc-progress-fill" id="mc-progress-fill"></div>
+          </div>
+          <div class="mc-progress-status" id="mc-progress-status"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  // ── Data ──
+  const models = [
+    { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet', score: 86.36 },
+    { id: 'gpt-4-turbo',       name: 'GPT-4 Turbo',       score: 86.35 },
+    { id: 'gpt-4-1106',        name: 'GPT-4 (1106)',       score: 86.05 },
+    { id: 'deepseek-v4-fast',  name: 'DeepSeek V4 Fast',   score: 82.57 },
+    { id: 'ollama-llama-3-1',  name: 'Ollama Llama 3.1',   score: 58.80 },
+    { id: 'ollama-qwen-2-5',   name: 'Ollama Qwen 2.5-Coder 3B', score: 55.10 },
+  ];
+
+  // ── Tweak: highlightTop ──
+  const highlightTop = getComputedStyle(document.documentElement)
+    .getPropertyValue('--mc-highlight-top').trim() !== '0';
+
+  // ── Sort descending ──
+  models.sort((a, b) => b.score - a.score);
+  const maxScore = 100;
+
+  // ── Render bars ──
+  const barsContainer = document.getElementById('mc-bars');
+  barsContainer.dataset.highlightTop = String(highlightTop);
+
+  function renderBars() {
+    barsContainer.innerHTML = '';
+    const sorted = [...models].sort((a, b) => b.score - a.score);
+    sorted.forEach((m, i) => {
+      const rank = i + 1;
+      const pct = (m.score / maxScore) * 100;
+
+      const row = document.createElement('div');
+      row.className = 'mc-bar-row';
+      row.dataset.rank = String(rank);
+
+      const nameEl = document.createElement('span');
+      nameEl.className = 'mc-bar-name';
+      nameEl.textContent = m.name;
+
+      const track = document.createElement('div');
+      track.className = 'mc-bar-track';
+
+      const fill = document.createElement('div');
+      fill.className = 'mc-bar-fill';
+      fill.style.width = '0%';
+      track.appendChild(fill);
+
+      const tooltip = document.createElement('div');
+      tooltip.className = 'mc-tooltip';
+      tooltip.innerHTML = m.name + ' — <span class="mc-tooltip-score">' + m.score.toFixed(1) + '/100</span>';
+      row.appendChild(tooltip);
+
+      const scoreEl = document.createElement('span');
+      scoreEl.className = 'mc-bar-score';
+      scoreEl.textContent = m.score.toFixed(1);
+
+      row.appendChild(nameEl);
+      row.appendChild(track);
+      row.appendChild(scoreEl);
+      barsContainer.appendChild(row);
+
+      // Animate in with stagger
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          fill.style.width = pct + '%';
+        }, 80 + i * 60);
+      });
+    });
+  }
+
+  renderBars();
+
+  // ── Source toggle ──
+  const sourceSel = document.getElementById('mc-source');
+  const ollamaWrap = document.getElementById('mc-ollama-model-wrap');
+  const hfWrap = document.getElementById('mc-hf-wrap');
+  const hfKeyWrap = document.getElementById('mc-hf-key-wrap');
+
+  function syncSource() {
+    const isOllama = sourceSel.value === 'ollama';
+    ollamaWrap.classList.toggle('mc-hidden', !isOllama);
+    hfWrap.classList.toggle('mc-hidden', isOllama);
+    hfKeyWrap.classList.toggle('mc-hidden', isOllama);
+  }
+  sourceSel.addEventListener('change', syncSource);
+  syncSource();
+
+  // ── Run button (demo) ──
+  const runBtn = document.getElementById('mc-run');
+  const progress = document.getElementById('mc-progress');
+  const progressFill = document.getElementById('mc-progress-fill');
+  const progressStatus = document.getElementById('mc-progress-status');
+
+  runBtn.addEventListener('click', function () {
+    runBtn.disabled = true;
+    runBtn.textContent = 'Running…';
+    progress.dataset.visible = 'true';
+    progressFill.style.width = '0%';
+    progressStatus.textContent = 'Starting…';
+
+    // Demo progress
+    let pct = 0;
+    const interval = setInterval(() => {
+      pct += Math.random() * 15 + 5;
+      if (pct >= 100) {
+        pct = 100;
+        clearInterval(interval);
+        progressFill.style.width = '100%';
+
+        const score = (50 + Math.random() * 40).toFixed(1);
+        const modelName = sourceSel.value === 'ollama'
+          ? document.getElementById('mc-model').value
+          : document.getElementById('mc-hf-model').value || 'custom-model';
+
+        progressStatus.textContent = 'Done — EQ-Bench score: ' + score + '/100';
+        runBtn.disabled = false;
+        runBtn.textContent = 'Run Benchmark';
+
+        // Add to chart
+        models.push({
+          id: 'custom_' + modelName,
+          name: modelName,
+          score: parseFloat(score)
+        });
+        renderBars();
+      } else {
+        progressFill.style.width = pct + '%';
+        progressStatus.textContent = Math.floor(pct) + '% scored…';
+      }
+    }, 400);
+  });
+
+  // ── Close ──
+  document.getElementById('mc-close').addEventListener('click', () => {
+    document.getElementById('mc-backdrop').style.display = 'none';
+  });
+  document.getElementById('mc-backdrop').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      document.getElementById('mc-backdrop').style.display = 'none';
+    }
+  });
+})();
+</script>
+</body>
+</html>

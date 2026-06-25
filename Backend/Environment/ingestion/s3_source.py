@@ -51,7 +51,7 @@ def s3_buildings(
     try:
         mem_con.execute(sql)
         count = mem_con.execute("SELECT COUNT(*) FROM buildings").fetchone()[0]
-        log_fn(f"  ✓ {count:,} buildings loaded")
+        log_fn(f"  [OK] {count:,} buildings loaded")
         return True
     except Exception as exc:
         log_fn(f"  ✗ buildings error: {exc}")
@@ -84,7 +84,7 @@ def s3_amenities(
     try:
         mem_con.execute(sql)
         count = mem_con.execute("SELECT COUNT(*) FROM amenities").fetchone()[0]
-        log_fn(f"  ✓ {count:,} amenities loaded")
+        log_fn(f"  [OK] {count:,} amenities loaded")
         return True
     except Exception as exc:
         log_fn(f"  ✗ amenities error: {exc}")
@@ -119,7 +119,7 @@ def s3_transport(
     try:
         mem_con.execute(sql)
         count = mem_con.execute("SELECT COUNT(*) FROM walk_edges").fetchone()[0]
-        log_fn(f"  ✓ {count:,} walk edges loaded")
+        log_fn(f"  [OK] {count:,} walk edges loaded")
         return True
     except Exception as exc:
         log_fn(f"  ✗ transport error: {exc}")

@@ -252,9 +252,9 @@ async def get_agent_summary(agent_id: int):
         if hasattr(agent, 'street_perception') and agent.street_perception:
             sp = agent.street_perception
             scene_parts = []
-            for key in ("scene_overview", "vegetation", "pedestrian_activity", "lighting_atmosphere"):
+            for key in ("scene", "greenery", "crowdedness", "lighting"):
                 val = sp.get(key, "")
-                if val and val.strip().lower() != "unknown":
+                if val and str(val).strip().lower() != "unknown":
                     scene_parts.append(val)
             if scene_parts:
                 perception_ctx = f" Street scene: {' '.join(scene_parts[:2])}"

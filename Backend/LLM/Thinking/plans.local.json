@@ -1,0 +1,143 @@
+{
+  "_comment": "Default plans for main system. Edit to change archetype behavior across the full simulation.",
+  "tourist": {
+    "nav_mode": "both",
+    "phases": [
+      {
+        "id": "explore_1",
+        "goal": "visit_attractions",
+        "target_types": [
+          "attraction",
+          "museum"
+        ],
+        "max_visits": 3,
+        "priority": "high",
+        "perception_preferences": [
+          "greenery",
+          "lighting",
+          "spatial_character"
+        ],
+        "perception_avoid": []
+      },
+      {
+        "id": "rest_1",
+        "goal": "find_cafe",
+        "target_types": [
+          "cafe",
+          "restaurant"
+        ],
+        "max_visits": 1,
+        "priority": "medium",
+        "perception_preferences": [
+          "greenery",
+          "crowdedness"
+        ],
+        "perception_avoid": []
+      },
+      {
+        "id": "explore_2",
+        "goal": "scenic_walk",
+        "target_types": [
+          "park",
+          "viewpoint"
+        ],
+        "max_visits": 2,
+        "priority": "low",
+        "perception_preferences": [
+          "greenery",
+          "lighting",
+          "spatial_character"
+        ],
+        "perception_avoid": []
+      }
+    ],
+    "gps_dist": 120,
+    "compass_dist": 60
+  },
+  "resident": {
+    "nav_mode": "both",
+    "phases": [
+      {
+        "id": "errands_1",
+        "goal": "grocery_shopping",
+        "target_types": [
+          "supermarket",
+          "bakery"
+        ],
+        "max_visits": 1,
+        "priority": "high",
+        "perception_preferences": [
+          "spatial_character"
+        ],
+        "perception_avoid": []
+      },
+      {
+        "id": "leisure_1",
+        "goal": "relax",
+        "target_types": [
+          "park",
+          "pharmacy"
+        ],
+        "max_visits": 1,
+        "priority": "low",
+        "perception_preferences": [
+          "greenery",
+          "lighting"
+        ],
+        "perception_avoid": []
+      }
+    ]
+  },
+  "commuter": {
+    "nav_mode": "gps",
+    "phases": [
+      {
+        "id": "transit_1",
+        "goal": "reach_destination",
+        "target_types": [],
+        "max_visits": 0,
+        "priority": "critical",
+        "perception_preferences": [
+          "spatial_character",
+          "lighting"
+        ],
+        "perception_avoid": []
+      }
+    ]
+  },
+  "student": {
+    "nav_mode": "both",
+    "phases": [
+      {
+        "id": "study_1",
+        "goal": "reach_campus",
+        "target_types": [
+          "university",
+          "library"
+        ],
+        "max_visits": 1,
+        "priority": "high",
+        "perception_preferences": [
+          "crowdedness",
+          "lighting"
+        ],
+        "perception_avoid": []
+      },
+      {
+        "id": "social_1",
+        "goal": "meet_friends",
+        "target_types": [
+          "cafe",
+          "fast_food"
+        ],
+        "max_visits": 2,
+        "priority": "medium",
+        "perception_preferences": [
+          "crowdedness",
+          "greenery"
+        ],
+        "perception_avoid": []
+      }
+    ]
+  }
+}

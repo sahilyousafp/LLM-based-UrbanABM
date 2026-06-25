@@ -23,9 +23,10 @@ import {
 import {
   LOCAL_PROVIDERS, API_PROVIDERS, DEFAULT_MODELS,
   ABM_SCORES, ABM_DIMS, type ABMScore,
+  PROVIDER_COLORS, CUSTOM_COLORS,
 } from './constants/llmProviders';
 import {
-  ARCHETYPE_COLORS, ARCHETYPE_NAV_COLORS, ARCHETYPE_GLB, GENERIC_GLB,
+  ARCHETYPE_COLORS, ARCHETYPE_GLB, GENERIC_GLB,
   ARCHETYPE_DESCRIPTIONS, ARCHETYPE_NAV_DEFAULTS,
 } from './constants/archetypes';
 
@@ -42,10 +43,10 @@ const DEFAULT_STATE: UABMState = {
   mapServerUrl: 'http://127.0.0.1:8000',
   labServerUrl: 'http://127.0.0.1:8100',
   perceptionMode: 'both',
-  layers: { buildings: true, walk: true, amenities: false, streetview: true },
+  layers: { buildings: true, buildings3d: false, walk: true, amenities: false, streetview: true },
   zone: { bbox: null, spacing: 200 },
   selectedPoint: null,
-  vlm: { provider: 'qwen25vl-3b', hfModel: '', enabledFields: null, customPrompt: {}, customFields: [], fieldStructures: {} },
+  vlm: { provider: 'qwen3vl-8b', hfModel: '', enabledFields: null, customPrompt: {}, customFields: [], fieldStructures: {} },
   llm: { mode: 'local', providerId: 'ollama', model: '' },
   archetypes: null,
   selectedArchetype: null,
@@ -54,6 +55,7 @@ const DEFAULT_STATE: UABMState = {
     start: null, target: null,
     navMode: 'both', navGpsDist: 120, navCompassDist: 60,
     moodHistory: [], positionHistory: [], playing: false, speed: 1.0,
+    timeOverride: null,
   },
   multiAgent: {
     count: 15, spawnMode: 'random', pinMode: 'home',
@@ -62,6 +64,7 @@ const DEFAULT_STATE: UABMState = {
     playing: false, speed: 1.0,
   },
   recordingSession: null,
+  recordingBase: null,
 };
 
 const STATE_KEY = 'uabm:state:v2';
@@ -195,6 +198,25 @@ async function loadStaticLayers(): Promise<void> {
       },
     });
   } catch (e) { console.warn('buildings layer failed', e); }
+
+  // 3D buildings from Mapbox composite source
+  try {
+    const is3dLight = state.theme === 'light';
+    map.addLayer({
+      id: 'buildings-3d',
+      source: 'composite',
+      'source-layer': 'building',
+      type: 'fill-extrusion',
+      minzoom: 14,
+      filter: ['==', 'extrude', 'true'],
+      paint: {
+        'fill-extrusion-color': is3dLight ? '#d4d4d8' : '#27272a',
+        'fill-extrusion-height': ['get', 'height'],
+        'fill-extrusion-base': ['get', 'min_height'],
+        'fill-extrusion-opacity': 0.6,
+      },
+    });
+  } catch (e) { console.warn('3D buildings layer failed', e); }
 
   // Walk network
   try {
@@ -392,14 +414,19 @@ async function loadStaticLayers(): Promise<void> {
     id: 'results-heatmap-layer', type: 'heatmap', source: 'results-heatmap',
     layout: { visibility: 'none' },
     paint: {
-      'heatmap-radius': 18,
-      'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 12, 0.6, 18, 1.4],
+      // Larger, zoom-aware radius so hotspots stay visible when zoomed in
+      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 12, 18, 18, 45],
+      'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 12, 0.8, 18, 2.5],
       'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'],
         0, 'rgba(0,0,0,0)',
-        0.2, 'rgba(255,107,53,0.35)',
-        0.5, 'rgba(255,107,53,0.65)',
-        1, 'rgba(255,107,53,1)'],
-      'heatmap-opacity': 0.75,
+        0.08, 'rgba(0,0,255,0.55)',
+        0.2, 'rgba(0,200,255,0.75)',
+        0.35, 'rgba(0,228,0,0.82)',
+        0.5, 'rgba(255,255,0,0.88)',
+        0.65, 'rgba(255,160,0,0.93)',
+        0.8, 'rgba(255,60,0,0.97)',
+        1, 'rgba(255,0,0,1)'],
+      'heatmap-opacity': 0.9,
     },
   });
 
@@ -471,14 +498,22 @@ async function loadStaticLayers(): Promise<void> {
     id: 'recording-heatmap-layer', type: 'heatmap', source: 'recording-heatmap',
     layout: { visibility: 'none' },
     paint: {
-      'heatmap-radius': 16,
-      'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 12, 0.5, 18, 1.2],
+      // Per-cell log-normalized dwell weight (set in buildRecordingOverlays), boosted 1.5x
+      'heatmap-weight': ['*', ['get', 'w'], 1.5],
+      // Larger, zoom-aware radius so hotspots stay visible when zoomed in
+      'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 12, 8, 16, 18, 18, 30, 20, 45],
+      'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 12, 0.6, 18, 2.2],
+      // Colors appear earlier and more opaque so clusters read as hotspots sooner
       'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'],
         0, 'rgba(0,0,0,0)',
-        0.2, 'rgba(100,210,255,0.3)',
-        0.5, 'rgba(10,132,255,0.6)',
-        1, 'rgba(10,132,255,1)'],
-      'heatmap-opacity': 0.72,
+        0.1, 'rgba(0,40,180,0.5)',
+        0.25, 'rgba(0,160,255,0.7)',
+        0.42, 'rgba(0,220,120,0.78)',
+        0.6, 'rgba(220,235,0,0.85)',
+        0.75, 'rgba(255,150,0,0.92)',
+        0.88, 'rgba(255,60,0,0.97)',
+        1, 'rgba(255,0,0,1)'],
+      'heatmap-opacity': 0.85,
     },
   });
   map.addSource('recording-decision-pts', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
@@ -517,10 +552,11 @@ async function loadStaticLayers(): Promise<void> {
 function applyLayerVisibility(): void {
   if (!mapReady || !map) return;
   const mapping: Record<string, string[]> = {
-    buildings:  ['buildings-fill', 'buildings-line'],
-    walk:       ['walk-line'],
-    amenities:  ['amenities-pt'],
-    streetview: ['sv-pt', 'sv-candidates-pt', 'sv-downloading-pt'],
+    buildings:   ['buildings-fill', 'buildings-line'],
+    buildings3d: ['buildings-3d'],
+    walk:        ['walk-line'],
+    amenities:   ['amenities-pt'],
+    streetview:  ['sv-pt', 'sv-candidates-pt', 'sv-downloading-pt'],
   };
   for (const [k, ids] of Object.entries(mapping)) {
     for (const id of ids) {
@@ -730,6 +766,7 @@ function refreshNavDots(): void {
    ===================================================================== */
 let p1Bound = false;
 let currentBbox: [number, number, number, number] | null = null;
+let _lastCandidates: { lat: number; lon: number; heading: number; street_name: string; highway_type: string; edge_id: string }[] = [];
 
 function zoneBboxFeature(w: number, s: number, e: number, n: number) {
   return {
@@ -850,7 +887,7 @@ async function renderCandidates(): Promise<void> {
       const existing: [number, number][] = svSrc?._data
         ? svSrc._data.features.map((f) => f.geometry.coordinates as [number, number])
         : [];
-      const nearThreshDeg = 5.0 / 110540;
+      const nearThreshDeg = spacing / 110540;
       const nearSq = nearThreshDeg * nearThreshDeg;
       features = features.filter((f) => {
         const [flon, flat] = f.geometry.coordinates;
@@ -859,6 +896,7 @@ async function renderCandidates(): Promise<void> {
     }
 
     src.setData({ type: 'FeatureCollection', features });
+    _lastCandidates = features.map((f) => f.properties as { lat: number; lon: number; heading: number; street_name: string; highway_type: string; edge_id: string });
     ($('#p1-kpi-candidates') as HTMLElement).textContent = String(features.length);
     status.textContent = `Bbox set. ${features.length} street-aligned candidate point${features.length === 1 ? '' : 's'} at ${spacing}m spacing.`;
   } catch (e) {
@@ -1002,7 +1040,7 @@ function panel1Enter(): void {
 
     try {
       const res = await api.postJSON<{ error?: string; job_id?: string }>(
-        api.map, '/api/streetview/download', { bbox: currentBbox, spacing: state.zone.spacing },
+        api.map, '/api/streetview/download', { bbox: currentBbox, spacing: state.zone.spacing, candidates: _lastCandidates },
       );
       if (res.error || !res.job_id) {
         toast(res.error || 'Download failed', 'danger');
@@ -1311,7 +1349,13 @@ const _ZONE_HL: Record<string, [string, string, string, string, string, string]>
   bottom_left: ['0%',  '55%', '45%', '45%',  'rgba(10,132,255,0.20)', 'rgba(10,132,255,0.75)'],
 };
 
+document.addEventListener('click', () => {
+  document.querySelectorAll('.sfa-info-tip.visible').forEach((t) => t.classList.remove('visible'));
+  document.querySelectorAll('.sfa-info-btn.active').forEach((b) => b.classList.remove('active'));
+});
+
 function _buildSceneFields(p: Record<string, unknown>, container: HTMLElement): void {
+  document.querySelectorAll('.sfa-info-tip').forEach((t) => t.remove());
   container.innerHTML = '';
   PERCEPTION_FIELDS.forEach((spec) => {
     const raw = p[spec.key];
@@ -1329,34 +1373,95 @@ function _buildSceneFields(p: Record<string, unknown>, container: HTMLElement): 
     if (rawStr.startsWith('[')) {
       try {
         const arr = JSON.parse(rawStr) as Record<string, unknown>[];
-        const body = document.createElement('div');
-        body.className = 'sfa-body';
+        const ARCH_KEYS = new Set(['architectural_style', 'building_condition', 'storefront_type', 'architectural_details']);
+        const allKeys = new Set<string>();
+        arr.forEach((obj) => Object.keys(obj).filter(k => k !== 'zone').forEach(k => allKeys.add(k)));
+        const cols = Array.from(allKeys).filter(k => !ARCH_KEYS.has(k));
+        const archCols = Array.from(allKeys).filter(k => ARCH_KEYS.has(k));
+        const hasArch = archCols.length > 0;
+
+        const grid = document.createElement('div');
+        grid.className = 'sfa-grid-table';
+        grid.style.gridTemplateColumns = `auto ${cols.map(() => 'minmax(60px, 1fr)').join(' ')}${hasArch ? ' 28px' : ''}`;
+
+        const thead = document.createElement('div');
+        thead.className = 'sfa-grid-head';
+        const thZone = document.createElement('span');
+        thZone.className = 'sfa-gh-cell';
+        thZone.textContent = 'zone';
+        thead.appendChild(thZone);
+        cols.forEach((c) => {
+          const th = document.createElement('span');
+          th.className = 'sfa-gh-cell';
+          th.textContent = c.replace(/_/g, ' ');
+          thead.appendChild(th);
+        });
+        if (hasArch) {
+          const thInfo = document.createElement('span');
+          thInfo.className = 'sfa-gh-cell';
+          thead.appendChild(thInfo);
+        }
+        grid.appendChild(thead);
+
         arr.forEach((obj) => {
           const row = document.createElement('div');
-          row.className = 'sfa-row';
+          row.className = 'sfa-grid-row';
           const zone = obj['zone'] ? String(obj['zone']) : null;
-          if (zone) {
-            const zoneEl = document.createElement('span');
-            zoneEl.className = `sfa-zone sfa-zone-${zone.replace(/_/g, '-')}`;
-            zoneEl.textContent = zone.replace(/_/g, ' ');
-            row.appendChild(zoneEl);
-          }
-          const pairs = document.createElement('div');
-          pairs.className = 'sfa-pairs';
-          Object.entries(obj).filter(([k]) => k !== 'zone').forEach(([key, val]) => {
-            const chip = document.createElement('div');
-            chip.className = 'sfa-chip';
-            const kEl = document.createElement('span');
-            kEl.className = 'sfa-chip-key';
-            kEl.textContent = key;
-            const vEl = document.createElement('span');
-            vEl.className = `sfa-chip-val sfa-${_sfaValueClass(String(val))}`;
-            vEl.textContent = String(val);
-            chip.appendChild(kEl);
-            chip.appendChild(vEl);
-            pairs.appendChild(chip);
+          const zoneEl = document.createElement('span');
+          zoneEl.className = `sfa-zone sfa-zone-${(zone || 'center').replace(/_/g, '-')}`;
+          zoneEl.textContent = (zone || '—').replace(/_/g, ' ');
+          row.appendChild(zoneEl);
+
+          cols.forEach((key) => {
+            const val = obj[key] != null ? String(obj[key]) : '—';
+            const cell = document.createElement('span');
+            cell.className = `sfa-grid-val sfa-v-${_sfaValueClass(val)}`;
+            cell.textContent = val;
+            row.appendChild(cell);
           });
-          row.appendChild(pairs);
+
+          if (hasArch) {
+            const wrap = document.createElement('span');
+            wrap.className = 'sfa-info-wrap';
+            const btn = document.createElement('button');
+            btn.className = 'sfa-info-btn';
+            btn.textContent = 'i';
+            btn.type = 'button';
+            const tip = document.createElement('div');
+            tip.className = 'sfa-info-tip';
+            archCols.forEach((key) => {
+              const val = obj[key] != null ? String(obj[key]) : '—';
+              if (val === '—') return;
+              const line = document.createElement('div');
+              line.className = 'sfa-info-line';
+              const kEl = document.createElement('span');
+              kEl.className = 'sfa-info-key';
+              kEl.textContent = key.replace(/_/g, ' ');
+              const vEl = document.createElement('span');
+              vEl.className = `sfa-info-val sfa-v-${_sfaValueClass(val)}`;
+              vEl.textContent = val;
+              line.appendChild(kEl);
+              line.appendChild(vEl);
+              tip.appendChild(line);
+            });
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              document.querySelectorAll('.sfa-info-tip.visible').forEach((t) => { if (t !== tip) t.classList.remove('visible'); });
+              document.querySelectorAll('.sfa-info-btn.active').forEach((b) => { if (b !== btn) b.classList.remove('active'); });
+              const open = tip.classList.toggle('visible');
+              btn.classList.toggle('active', open);
+              if (open) {
+                const r = btn.getBoundingClientRect();
+                tip.style.top = `${r.top + r.height / 2}px`;
+                tip.style.left = `${r.left - 8}px`;
+                tip.style.transform = 'translate(-100%, -50%)';
+              }
+            });
+            wrap.appendChild(btn);
+            document.body.appendChild(tip);
+            row.appendChild(wrap);
+          }
+
           if (zone) {
             const hl = document.getElementById('sv-zone-highlight') as HTMLElement | null;
             if (hl) {
@@ -1374,9 +1479,9 @@ function _buildSceneFields(p: Record<string, unknown>, container: HTMLElement): 
               row.addEventListener('mouseleave', () => hl.classList.remove('visible'));
             }
           }
-          body.appendChild(row);
+          grid.appendChild(row);
         });
-        section.appendChild(body);
+        section.appendChild(grid);
       } catch {
         const plain = document.createElement('div');
         plain.className = 'sfa-plain';
@@ -1842,22 +1947,25 @@ function _initAnalyseCard(): void {
     return div;
   }
 
-  // ── Model metadata (static) ─────────────────────────────────────────────────
-  type ModelMeta = {
-    key: string; displayName: string; org: string; brandColor: string;
-    slug: string; // filename key for _analysis.json fetch
-  };
+  // ── Model metadata (derived from JSON files at runtime) ─────────────────────
+  const _BRAND_COLORS = ['#7B5CF5','#3B82F6','#10B981','#0078D4','#FF9D00','#F43F5E','#8B5CF6','#14B8A6','#F59E0B','#6366F1'];
 
-  const MODEL_META: Record<string, ModelMeta> = {
-    qwen:     { key:'qwen',     displayName:'Qwen2.5-VL-7B',     org:'Qwen / Alibaba', brandColor:'#7B5CF5',  slug:'qwen25vl_7b' },
-    llava:    { key:'llava',    displayName:'LLaVA-OneVision-7B', org:'LLaVA-HF',       brandColor:'#3B82F6',  slug:'llava_onevision_7b' },
-    internvl: { key:'internvl', displayName:'InternVL2.5-8B',    org:'OpenGVLab',       brandColor:'#10B981',  slug:'internvl25_8b' },
-    phi:      { key:'phi',      displayName:'Phi-3.5-Vision',    org:'Microsoft',       brandColor:'#0078D4',  slug:'phi35_vision' },
-    idefics3: { key:'idefics3', displayName:'Idefics3-8B',       org:'HuggingFace',     brandColor:'#FF9D00',  slug:'idefics3_8b' },
-  };
-
-  const ORDER = ['qwen','llava','internvl','phi','idefics3'] as const;
-  const ORDER_META = ORDER.map(k => MODEL_META[k]);
+  function _deriveModelMeta(modelId: string, idx: number): { displayName: string; org: string; brandColor: string; initials: string } {
+    const parts = modelId.split('/');
+    const org = parts.length > 1 ? parts[0] : 'Unknown';
+    const name = parts.length > 1 ? parts[1] : parts[0];
+    const displayName = name
+      .replace(/-Instruct$/, '')
+      .replace(/-hf$/, '')
+      .replace(/^llava-onevision-qwen2-/, 'LLaVA-OV-')
+      .replace(/Qwen2_5-VL/i, 'Qwen2.5-VL')
+      .replace(/Qwen3-VL/i, 'Qwen3-VL')
+      .replace(/Phi-3.5-vision/i, 'Phi-3.5-Vision')
+      .replace(/Idefics3-8B-Llama3/i, 'Idefics3-8B')
+      .replace(/InternVL2_5/i, 'InternVL2.5');
+    const initials = displayName.replace(/[^A-Z0-9]/g, '').slice(0, 3) || displayName.slice(0, 2).toUpperCase();
+    return { displayName, org, brandColor: _BRAND_COLORS[idx % _BRAND_COLORS.length], initials };
+  }
 
   type LightingEntry  = { zone:string; element:string; condition:string };
   type SpatialEntry   = { zone:string; width:string; enclosure:string; passability:string; lane_type:string; crossing:string; architectural_style:string; building_condition:string; storefront_type:string; architectural_details?:string };
@@ -1866,26 +1974,30 @@ function _initAnalyseCard(): void {
   type AmenityEntry   = { zone:string; element:string; material_and_colour:string; presence:string };
   type TextEntry      = { text:string; zone:string; type:string };
   type SceneAnalysis  = { scene:string; lighting:LightingEntry[]; spatial_character:SpatialEntry[]; crowdedness:CrowdEntry[]; greenery:GreenEntry[]; street_amenities:AmenityEntry[]; visible_text:TextEntry[] };
-  type BenchModel     = { key:string; displayName:string; org:string; brandColor:string; modelId:string; latencyMs:number; sa:SceneAnalysis };
+  type BenchModel     = { key:string; displayName:string; org:string; brandColor:string; initials:string; modelId:string; latencyMs:number; sa:SceneAnalysis };
 
-  async function _loadBenchData(): Promise<Record<string, BenchModel>> {
+  async function _loadBenchData(): Promise<{ models: Record<string, BenchModel>; order: string[] }> {
     try {
       const resp = await fetch(`${api.map}/api/vlm/analysis-outputs`);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const all: Record<string, any> = await resp.json();
-      const out: Record<string, BenchModel> = {};
-      for (const meta of ORDER_META) {
-        const data = all[meta.slug];
-        if (!data) continue;
-        const sa: SceneAnalysis = data.scene_analysis || data.sa || {};
-        const meta2 = data.metadata || {};
-        out[meta.key] = {
-          key: meta.key,
-          displayName: meta.displayName,
-          org: meta.org,
-          brandColor: meta.brandColor,
-          modelId: meta2.model || meta.slug,
-          latencyMs: meta2.latency_ms || 0,
+      const models: Record<string, BenchModel> = {};
+      const order: string[] = [];
+      let idx = 0;
+      for (const [slug, data] of Object.entries(all)) {
+        if (!data || data.error || !data.scene_analysis) continue;
+        const meta = data.metadata || {};
+        const modelId: string = meta.model || slug;
+        const derived = _deriveModelMeta(modelId, idx++);
+        const sa = data.scene_analysis || {};
+        models[slug] = {
+          key: slug,
+          displayName: derived.displayName,
+          org: derived.org,
+          brandColor: derived.brandColor,
+          initials: derived.initials,
+          modelId,
+          latencyMs: meta.latency_ms || 0,
           sa: {
             scene: sa.scene || '',
             lighting: sa.lighting || [],
@@ -1896,11 +2008,12 @@ function _initAnalyseCard(): void {
             visible_text: sa.visible_text || [],
           },
         };
+        order.push(slug);
       }
-      return out;
+      return { models, order };
     } catch (e) {
       console.warn('Failed to load VLM analysis data:', e);
-      return {};
+      return { models: {}, order: [] };
     }
   }
 
@@ -1910,30 +2023,22 @@ function _initAnalyseCard(): void {
     list.innerHTML = '<div style="padding:20px;text-align:center;opacity:.5;">Loading benchmark data…</div>';
     list.style.cssText = 'display:flex;flex-direction:column;gap:0;';
 
-    const BENCH = await _loadBenchData();
+    const { models: BENCH, order: ORDER } = await _loadBenchData();
     list.innerHTML = '';
-    if (Object.keys(BENCH).length === 0) {
+    if (ORDER.length === 0) {
       list.innerHTML = '<div style="padding:20px;text-align:center;opacity:.5;color:#ff453a;">Could not load benchmark data — is the backend running?</div>';
       return;
     }
-    const activeKeys = new Set<string>(ORDER as readonly string[]);
+    const activeKeys = new Set<string>(ORDER);
     let selectedZone = 'center';
     const ZONES = ['far_left','left','center','right','far_right'] as const;
     const ZONE_LABEL: Record<string,string> = { far_left:'Far Left', left:'Left', center:'Center', right:'Right', far_right:'Far Right' };
 
-    const LOGOS: Record<string,string> = {
-      qwen:     `<svg viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#7B5CF5" fill-opacity="0.18"/><text x="12" y="17" text-anchor="middle" font-size="12" font-weight="800" font-family="system-ui,sans-serif" fill="#7B5CF5">Q</text></svg>`,
-      llava:    `<svg viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#3B82F6" fill-opacity="0.18"/><text x="12" y="16" text-anchor="middle" font-size="7" font-weight="800" font-family="system-ui,sans-serif" fill="#3B82F6">LLaVA</text></svg>`,
-      internvl: `<svg viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#10B981" fill-opacity="0.18"/><text x="12" y="17" text-anchor="middle" font-size="9" font-weight="800" font-family="system-ui,sans-serif" fill="#10B981">IV</text></svg>`,
-      phi:      `<svg viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#0078D4" fill-opacity="0.12"/><rect x="5" y="5" width="6" height="6" fill="#F25022"/><rect x="13" y="5" width="6" height="6" fill="#7FBA00"/><rect x="5" y="13" width="6" height="6" fill="#00A4EF"/><rect x="13" y="13" width="6" height="6" fill="#FFB900"/></svg>`,
-      idefics3: `<svg viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#FF9D00" fill-opacity="0.18"/><text x="12" y="17" text-anchor="middle" font-size="9" font-weight="800" font-family="system-ui,sans-serif" fill="#FF9D00">HF</text></svg>`,
-    };
-    const LOGOS_LG: Record<string,string> = {
-      qwen:     `<svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#7B5CF5" fill-opacity="0.18"/><text x="18" y="26" text-anchor="middle" font-size="18" font-weight="800" font-family="system-ui,sans-serif" fill="#7B5CF5">Q</text></svg>`,
-      llava:    `<svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#3B82F6" fill-opacity="0.18"/><text x="18" y="23" text-anchor="middle" font-size="9" font-weight="800" font-family="system-ui,sans-serif" fill="#3B82F6">LLaVA</text></svg>`,
-      internvl: `<svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#10B981" fill-opacity="0.18"/><text x="18" y="25" text-anchor="middle" font-size="13" font-weight="800" font-family="system-ui,sans-serif" fill="#10B981">IV</text></svg>`,
-      phi:      `<svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#0078D4" fill-opacity="0.12"/><rect x="7" y="7" width="9" height="9" fill="#F25022"/><rect x="20" y="7" width="9" height="9" fill="#7FBA00"/><rect x="7" y="20" width="9" height="9" fill="#00A4EF"/><rect x="20" y="20" width="9" height="9" fill="#FFB900"/></svg>`,
-      idefics3: `<svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#FF9D00" fill-opacity="0.18"/><text x="18" y="25" text-anchor="middle" font-size="13" font-weight="800" font-family="system-ui,sans-serif" fill="#FF9D00">HF</text></svg>`,
+    const _logoSvg = (m: BenchModel, size: number) => {
+      const r = Math.round(size * 0.25);
+      const fs = m.initials.length > 2 ? Math.round(size * 0.25) : Math.round(size * 0.42);
+      const ty = Math.round(size * (m.initials.length > 2 ? 0.62 : 0.7));
+      return `<svg viewBox="0 0 ${size} ${size}" fill="none"><rect width="${size}" height="${size}" rx="${r}" fill="${m.brandColor}" fill-opacity="0.18"/><text x="${size/2}" y="${ty}" text-anchor="middle" font-size="${fs}" font-weight="800" font-family="system-ui,sans-serif" fill="${m.brandColor}">${m.initials}</text></svg>`;
     };
 
     // ── Helpers ───────────────────────────────────────────────────────────────
@@ -2040,7 +2145,7 @@ function _initAnalyseCard(): void {
       pill.className = 'vlm-zone-pill active';
       pill.dataset.key = k;
       pill.style.setProperty('--pc', m.brandColor);
-      pill.innerHTML = `<span class="vzp-logo">${LOGOS[k]}</span><span class="vzp-name">${escapeHtml(m.displayName)}</span><span class="vzp-lat">${(m.latencyMs/1000).toFixed(1)}s</span>`;
+      pill.innerHTML = `<span class="vzp-logo">${_logoSvg(m, 24)}</span><span class="vzp-name">${escapeHtml(m.displayName)}</span><span class="vzp-lat">${(m.latencyMs/1000).toFixed(1)}s</span>`;
       pill.addEventListener('click', () => {
         if (activeKeys.has(k) && activeKeys.size <= 1) return;
         if (activeKeys.has(k)) { activeKeys.delete(k); pill.classList.remove('active'); }
@@ -2135,7 +2240,7 @@ function _initAnalyseCard(): void {
         const hdr = document.createElement('div');
         hdr.style.cssText = `border-radius:9px;padding:9px 12px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-left:3px solid ${m.brandColor};`;
         hdr.innerHTML = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
-          <span style="width:22px;height:22px;display:inline-flex;flex-shrink:0;">${LOGOS_LG[k]}</span>
+          <span style="width:22px;height:22px;display:inline-flex;flex-shrink:0;">${_logoSvg(m, 36)}</span>
           <span style="font-weight:700;font-size:12px;color:${m.brandColor};">${escapeHtml(m.displayName)}</span>
         </div>
         <div style="font-size:10px;opacity:.35;font-family:monospace;margin-bottom:6px;">${escapeHtml(m.org)} &middot; &#8987; ${(m.latencyMs/1000).toFixed(1)}s</div>
@@ -3479,73 +3584,265 @@ function applyAppleSelects(): void {
 let compareModalBound = false;
 let compareModalStateRef: LLMSelection | null = null;
 
+let _cmpBenchInterval: ReturnType<typeof setInterval> | null = null;
+
 function renderCompareModal(stateRef: LLMSelection, onPick: (id: string) => void): void {
   const body = $('#llm-compare-body') as HTMLElement | null;
   if (!body) return;
-  const all = [...LOCAL_PROVIDERS, ...API_PROVIDERS];
-  const cur = stateRef.providerId;
+  if (_cmpBenchInterval) { clearInterval(_cmpBenchInterval); _cmpBenchInterval = null; }
 
-  const dimLegend = ABM_DIMS.map((d) =>
-    `<div class="cmp-legend-item"><strong>${d.label}</strong> — ${d.tip}</div>`
-  ).join('');
+  type ProviderEntry = { id: string; name: string; scores: ABMScore; custom?: boolean };
 
-  const colHeaders = ABM_DIMS.map((d) =>
-    `<div class="cmp-col-hd" title="${d.tip}">${d.label}</div>`
-  ).join('');
+  // 3 top EQ-Bench v2 frontier models from the web leaderboard
+  // + 3 models benchmarked in 02_llm_provider_comparison.ipynb
+  const entries: ProviderEntry[] = [
+    { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet', scores: { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0, eqbench: 86.36 } },
+    { id: 'gpt-4-turbo',       name: 'GPT-4 Turbo',       scores: { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0, eqbench: 86.35 } },
+    { id: 'gpt-4-1106',        name: 'GPT-4 (1106)',      scores: { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0, eqbench: 86.05 } },
+    { id: 'deepseek-v4-fast',  name: 'DeepSeek V4 Fast',  scores: { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0, eqbench: 82.57 } },
+    { id: 'ollama-llama-3-1',  name: 'Ollama Llama 3.1',  scores: { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0, eqbench: 58.80 } },
+    { id: 'ollama-qwen-2-5',   name: 'Ollama Qwen 2.5-Coder 3B', scores: { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0, eqbench: 55.10 } },
+  ];
+  function colorFor(id: string, idx: number): string {
+    return PROVIDER_COLORS[id] || CUSTOM_COLORS[idx % CUSTOM_COLORS.length];
+  }
 
-  const localRows = LOCAL_PROVIDERS.map((p) => providerRow(p, cur, 'Local')).join('');
-  const apiRows   = API_PROVIDERS.map((p) => providerRow(p, cur, 'API')).join('');
+  function drawBarChart(canvas: HTMLCanvasElement): void {
+    const w = canvas.width, h = canvas.height;
+    const ctx = canvas.getContext('2d')!;
+    ctx.clearRect(0, 0, w, h);
 
-  function providerRow(p: { id: string; name: string; desc: string }, cur: string, badge: string): string {
-    const s = ABM_SCORES[p.id] ?? { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0 };
-    const bars = ABM_DIMS.map((d) => {
-      const pct = Math.round((s[d.key] / 5) * 100);
-      const color = pct >= 80 ? 'var(--success)' : pct >= 60 ? 'var(--warning)' : 'var(--danger)';
-      return `<div class="cmp-score-cell">
-        <div class="cmp-bar" style="--fill:${pct}%;--color:${color}"></div>
-        <span class="cmp-score-num">${s[d.key]}<span class="cmp-denom">/5</span></span>
-      </div>`;
-    }).join('');
-    const sel = p.id === cur;
-    return `<div class="cmp-row${sel ? ' cmp-selected' : ''}" data-id="${p.id}">
-      <div class="cmp-info">
-        <div class="cmp-name-row">
-          <span class="cmp-name">${escapeHtml(p.name)}</span>
-          <span class="cmp-badge ${badge === 'Local' ? 'local' : 'api'}">${badge}</span>
-          ${sel ? '<span class="cmp-active-dot"></span>' : ''}
-        </div>
-        <div class="cmp-desc">${escapeHtml(p.desc)}</div>
-        <div class="cmp-default-model">${escapeHtml(DEFAULT_MODELS[p.id] || '')}</div>
-      </div>
-      ${bars}
-    </div>`;
+    const padLeft = 56, padRight = 24, padTop = 32, padBottom = 80;
+    const plotW = w - padLeft - padRight;
+    const plotH = h - padTop - padBottom;
+    const maxScore = 100;
+
+    // Horizontal grid lines and y-axis labels (0-100)
+    ctx.font = '11px system-ui,-apple-system,sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let i = 0; i <= 5; i++) {
+      const val = i * 20;
+      const y = padTop + plotH - (val / maxScore) * plotH;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(padLeft, y); ctx.lineTo(padLeft + plotW, y); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.fillText(`${val}`, padLeft - 8, y);
+    }
+
+    // Axis lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padLeft, padTop);
+    ctx.lineTo(padLeft, padTop + plotH);
+    ctx.lineTo(padLeft + plotW, padTop + plotH);
+    ctx.stroke();
+
+    // Bars
+    const barGap = 12;
+    const barW = (plotW - (entries.length + 1) * barGap) / entries.length;
+    entries.forEach((entry, i) => {
+      const score = entry.scores.eqbench;
+      const x = padLeft + barGap + i * (barW + barGap);
+      const barH = (score / maxScore) * plotH;
+      const y = padTop + plotH - barH;
+      const color = colorFor(entry.id, i);
+
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, barW, barH);
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, barW, barH);
+
+      // Score label on top of bar
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`${score.toFixed(1)}`, x + barW / 2, y - 4);
+
+      // Model name below x-axis (rotated for readability)
+      ctx.save();
+      ctx.translate(x + barW / 2, padTop + plotH + 14);
+      ctx.rotate(-Math.PI / 6);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fillText(entry.name, 0, 0);
+      ctx.restore();
+    });
   }
 
   body.innerHTML = `
-    <div class="cmp-legend">${dimLegend}</div>
-    <div class="cmp-table">
-      <div class="cmp-section-label">Local Models</div>
-      <div class="cmp-col-headers">
-        <div class="cmp-info-hd">Provider</div>${colHeaders}
-      </div>
-      ${localRows}
-      <div class="cmp-section-label" style="margin-top:16px;">API Models</div>
-      <div class="cmp-col-headers">
-        <div class="cmp-info-hd">Provider</div>${colHeaders}
-      </div>
-      ${apiRows}
+    <div class="cmp-chart-header">
+      <span class="cmp-chart-tag">EQ Bench V2</span>
+      <h3 class="cmp-chart-title">Emotional Intelligence Benchmark</h3>
+      <p class="cmp-chart-subtitle">Scores from the EQ-Bench v2 leaderboard + local notebook runs</p>
     </div>
-    <div class="cmp-footnote">
-      Scores are estimated suitability for LLM-driven ABM — not live benchmarks.
-      Click any row to select that provider.
+    <div class="cmp-radar-wrap"><canvas id="cmp-radar" width="500" height="420"></canvas></div>
+    <div class="cmp-bench-card">
+      <div class="cmp-bench-header">
+        <span class="cmp-bench-title">Add your own model</span>
+        <span class="cmp-bench-subtitle">Run EQ-Bench v2 on Ollama or HuggingFace</span>
+      </div>
+      <div class="cmp-bench-form">
+        <div class="cmp-bench-field">
+          <label for="cmp-bench-source">Source</label>
+          <select class="input" id="cmp-bench-source">
+            <option value="ollama">Ollama (local)</option>
+            <option value="huggingface">HuggingFace</option>
+          </select>
+        </div>
+        <div class="cmp-bench-field" id="cmp-bench-model-wrap">
+          <label for="cmp-bench-model">Model</label>
+          <select class="input" id="cmp-bench-model"><option>Loading…</option></select>
+        </div>
+        <div class="cmp-bench-field hidden" id="cmp-bench-hf-wrap">
+          <label for="cmp-bench-hf-model">Model ID</label>
+          <input type="text" class="input" id="cmp-bench-hf-model" placeholder="e.g. meta-llama/Llama-3.1-8B-Instruct">
+        </div>
+        <div class="cmp-bench-field hidden" id="cmp-bench-key-wrap">
+          <label for="cmp-bench-key">HF Token</label>
+          <input type="password" class="input" id="cmp-bench-key" placeholder="hf_...">
+        </div>
+        <div class="cmp-bench-field cmp-bench-field--narrow">
+          <label for="cmp-bench-qcount">Questions</label>
+          <select class="input" id="cmp-bench-qcount">
+            <option value="20" selected>20</option>
+            <option value="50">50</option>
+            <option value="171">Full 171</option>
+          </select>
+        </div>
+        <div class="cmp-bench-field cmp-bench-field--action">
+          <label>&nbsp;</label>
+          <button class="btn primary cmp-bench-run" id="cmp-bench-run">Run Benchmark</button>
+        </div>
+      </div>
+      <div class="cmp-bench-progress" id="cmp-bench-progress" style="display:none">
+        <div class="cmp-bench-bar"><div class="cmp-bench-bar-fill" id="cmp-bench-fill" style="width:0%"></div></div>
+        <div class="cmp-bench-status" id="cmp-bench-status"></div>
+      </div>
     </div>`;
 
-  body.querySelectorAll<HTMLElement>('.cmp-row').forEach((row) => {
-    row.addEventListener('click', () => {
-      const id = row.getAttribute('data-id')!;
-      onPick(id);
-      document.getElementById('llm-compare-modal')!.classList.add('hidden');
-    });
+  const canvas = body.querySelector('#cmp-radar') as HTMLCanvasElement;
+
+  // Load persisted custom benchmarks so previously-run models appear on the chart
+  api._fetch(api.map, '/api/benchmark/results').then((data: unknown) => {
+    const d = data as { results?: Array<{ label: string; model: string; score: number }> };
+    for (const r of d.results || []) {
+      const customId = `custom_${r.model}`;
+      if (entries.some(e => e.id === customId)) continue;
+      entries.push({ id: customId, name: r.label, scores: { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0, eqbench: r.score }, custom: true });
+    }
+    drawBarChart(canvas);
+  }).catch(() => drawBarChart(canvas));
+
+  // Upgrade native selects to Apple Select dropdowns
+  body.querySelectorAll<HTMLSelectElement>('select.input').forEach(appleSelect);
+
+  // Source toggle
+  const sourceSel = body.querySelector('#cmp-bench-source') as HTMLSelectElement;
+  const ollamaWrap = body.querySelector('#cmp-bench-model-wrap') as HTMLElement;
+  const hfWrap = body.querySelector('#cmp-bench-hf-wrap') as HTMLElement;
+  const keyWrap = body.querySelector('#cmp-bench-key-wrap') as HTMLElement;
+  function syncSourceFields(): void {
+    const isOllama = sourceSel.value === 'ollama';
+    ollamaWrap.classList.toggle('hidden', !isOllama);
+    hfWrap.classList.toggle('hidden', isOllama);
+    keyWrap.classList.toggle('hidden', isOllama);
+  }
+  sourceSel.addEventListener('change', syncSourceFields);
+  syncSourceFields();
+
+  // Load Ollama models
+  const modelSel = body.querySelector('#cmp-bench-model') as HTMLSelectElement;
+  api._fetch(api.map, '/api/ollama/models').then((data: unknown) => {
+    const d = data as { models?: string[]; error?: string };
+    const models = d.models || [];
+    if (models.length === 0) {
+      modelSel.innerHTML = '<option disabled>Ollama not available</option>';
+    } else {
+      modelSel.innerHTML = models.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join('');
+    }
+  }).catch(() => {
+    modelSel.innerHTML = '<option disabled>Ollama offline</option>';
+  });
+
+  // Run benchmark
+  const hfModelInput = body.querySelector('#cmp-bench-hf-model') as HTMLInputElement;
+  const keyInput = body.querySelector('#cmp-bench-key') as HTMLInputElement;
+  const qcountSel = body.querySelector('#cmp-bench-qcount') as HTMLSelectElement;
+  const runBtn = body.querySelector('#cmp-bench-run') as HTMLButtonElement;
+  const progWrap = body.querySelector('#cmp-bench-progress') as HTMLElement;
+  const fill = body.querySelector('#cmp-bench-fill') as HTMLElement;
+  const status = body.querySelector('#cmp-bench-status') as HTMLElement;
+
+  runBtn.addEventListener('click', async () => {
+    const isOllama = sourceSel.value === 'ollama';
+    const model = isOllama ? modelSel.value : hfModelInput.value.trim();
+    if (!model) return;
+
+    runBtn.disabled = true;
+    runBtn.textContent = 'Running…';
+    progWrap.style.display = 'block';
+    fill.style.width = '0%';
+    status.textContent = 'Starting…';
+
+    try {
+      const payload: Record<string, unknown> = {
+        provider: sourceSel.value,
+        model,
+        max_questions: parseInt(qcountSel.value, 10),
+      };
+      if (!isOllama) {
+        payload.base_url = 'https://api-inference.huggingface.co/v1';
+        payload.api_key = keyInput.value.trim();
+      }
+
+      const start = await api.postJSON<{ job_id?: string; error?: string }>(api.map, '/api/benchmark/eqbench', payload);
+      if (!start.job_id) {
+        status.textContent = `Error: ${start.error || 'Unknown'}`;
+        runBtn.disabled = false;
+        runBtn.textContent = 'Run Benchmark';
+        return;
+      }
+      const jobId = start.job_id;
+
+      _cmpBenchInterval = setInterval(async () => {
+        try {
+          const s = await api._fetch(api.map, `/api/benchmark/eqbench/status/${jobId}`) as Record<string, unknown>;
+          const pct = (s.pct as number) || 0;
+          fill.style.width = `${pct}%`;
+          if (s.status === 'running') {
+            status.textContent = `${s.scored}/${s.total} scored | avg: ${s.running_avg ?? '—'}`;
+          } else if (s.status === 'done') {
+            clearInterval(_cmpBenchInterval!);
+            _cmpBenchInterval = null;
+            fill.style.width = '100%';
+            status.textContent = `Done — EQ-Bench score: ${s.score}/100 (${s.scored} questions, ${(s.median_latency_ms as number)?.toFixed(0) ?? '?'}ms median)`;
+            runBtn.disabled = false;
+            runBtn.textContent = 'Run Benchmark';
+
+            const customId = `custom_${model}`;
+            const existing = entries.findIndex(e => e.id === customId);
+            const entry: ProviderEntry = { id: customId, name: model, scores: { spatial: 0, fidelity: 0, json: 0, speed: 0, cost: 0, eqbench: s.score as number }, custom: true };
+            if (existing >= 0) entries[existing] = entry; else entries.push(entry);
+            drawBarChart(canvas);
+          } else if (s.status === 'error') {
+            clearInterval(_cmpBenchInterval!);
+            _cmpBenchInterval = null;
+            status.textContent = `Error: ${s.error || 'Unknown'}`;
+            runBtn.disabled = false;
+            runBtn.textContent = 'Run Benchmark';
+          }
+        } catch { /* ignore poll errors */ }
+      }, 2000);
+    } catch {
+      status.textContent = 'Failed to start benchmark';
+      runBtn.disabled = false;
+      runBtn.textContent = 'Run Benchmark';
+    }
   });
 }
 
@@ -3810,7 +4107,21 @@ function buildProfileTagHTML(profile: { pace?: string; curiosity?: string; socia
 
 function renderNeedsBar(host: HTMLElement, needs: Record<string, number>): void {
   host.innerHTML = '';
-  (['hunger', 'energy', 'social', 'comfort'] as const).forEach((k) => {
+  (['energy', 'comfort'] as const).forEach((k) => {
+    const v = +(needs[k] || 0);
+    const row = document.createElement('div');
+    row.className = 'need-row';
+    row.setAttribute('data-key', k);
+    row.innerHTML = `
+      <span style="text-transform:capitalize">${k}</span>
+      <div class="bar"><div class="fill" style="width: ${Math.round(v * 100)}%;"></div></div>
+      <span class="val">${v.toFixed(2)}</span>`;
+    host.appendChild(row);
+  });
+  const divider = document.createElement('div');
+  divider.className = 'needs-divider';
+  host.appendChild(divider);
+  (['hunger', 'social'] as const).forEach((k) => {
     const v = +(needs[k] || 0);
     const row = document.createElement('div');
     row.className = 'need-row';
@@ -4188,6 +4499,20 @@ function bindPanel4(): void {
   $('#p4-rec-start')!.addEventListener('click', () => startRecording('p4'));
   $('#p4-rec-stop')!.addEventListener('click', stopRecording);
 
+  // P4 recording playback layer toggles
+  $('#p4-rec-rl-heatmap')?.addEventListener('change', (e) => {
+    map?.setLayoutProperty('recording-heatmap-layer', 'visibility',
+      (e.target as HTMLInputElement).checked ? 'visible' : 'none');
+  });
+  $('#p4-rec-rl-trails')?.addEventListener('change', (e) => {
+    map?.setLayoutProperty('recording-trails-layer', 'visibility',
+      (e.target as HTMLInputElement).checked ? 'visible' : 'none');
+  });
+  $('#p4-rec-rl-decision-pts')?.addEventListener('change', (e) => {
+    map?.setLayoutProperty('recording-decision-pts-layer', 'visibility',
+      (e.target as HTMLInputElement).checked ? 'visible' : 'none');
+  });
+
   // P4 rec panel tab switching
   $('#p4-rec-tabs')?.querySelectorAll<HTMLButtonElement>('button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -4198,21 +4523,19 @@ function bindPanel4(): void {
       const replayTab = $('#p4-rec-tab-replay')  as HTMLElement | null;
       if (recTab)    recTab.style.display    = v === 'record' ? '' : 'none';
       if (replayTab) replayTab.style.display = v === 'replay' ? '' : 'none';
-      if (v === 'replay') void fetchP4RecordingList();
+      if (v === 'replay') { /* noop — user imports file */ }
     });
   });
 
-  // P4 playback
-  $('#p4-playback-refresh')?.addEventListener('click', () => void fetchP4RecordingList());
-  $('#p4-playback-select')?.addEventListener('change', (e) => {
-    const val = (e.target as HTMLSelectElement).value;
-    if (val && p4LoadedRecordings.has(val)) showRecordingOnMap(val);
+  // P4 file import
+  $('#p4-import-btn')?.addEventListener('click', () => {
+    ($('#p4-import-file') as HTMLInputElement)?.click();
   });
-  $('#p4-playback-load')?.addEventListener('click', () => {
-    const sel = $('#p4-playback-select') as HTMLSelectElement | null;
-    if (sel?.value) void loadP4Recording(sel.value);
+  $('#p4-import-file')?.addEventListener('change', (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) void importRecordingFile(file, 'p4');
+    (e.target as HTMLInputElement).value = '';
   });
-  void fetchP4RecordingList();
   $('#p4-speed')?.addEventListener('input', (e) => {
     const spd = +(e.target as HTMLInputElement).value;
     state.singleAgent.speed = spd; saveState();
@@ -4398,9 +4721,12 @@ async function refreshSingleAgent(prefetched?: Record<string, unknown>): Promise
 
     renderSingleCognition(cog as Parameters<typeof renderSingleCognition>[0]);
     lastStreamEvents = stream.events || [];
-    const filteredEvents = streamTab === 'all' ? lastStreamEvents : lastStreamEvents.filter(e => e.topic === streamTab);
+    let filteredEvents = streamTab === 'all' ? lastStreamEvents : lastStreamEvents.filter(e => e.topic === streamTab);
+    if (state.singleAgent.timeOverride) {
+      filteredEvents = filteredEvents.filter(e => (e.metadata as Record<string, unknown>)?.time_of_day === state.singleAgent.timeOverride);
+    }
     renderThoughts(filteredEvents);
-    renderStreamSummary(streamTab, lastStreamEvents);
+    renderStreamSummary(streamTab, filteredEvents);
     void renderTimePhaseBanner('#p4-time-phase-stats');
 
     const loc = info.location;
@@ -4443,7 +4769,7 @@ async function refreshSingleAgent(prefetched?: Record<string, unknown>): Promise
 
       // Create or update the navigation marker showing current position + travel direction
       if (!agentNavMarker && map) {
-        const navColor = ARCHETYPE_NAV_COLORS[sa.archetype] ?? '#64d2ff';
+        const navColor = ARCHETYPE_COLORS[sa.archetype] ?? '#64d2ff';
         const el = document.createElement('div');
         el.className = 'agent-nav-marker';
         el.innerHTML = `<div class="agent-nav-pulse" style="background:${navColor}33"></div>
@@ -4473,6 +4799,25 @@ async function refreshSingleAgent(prefetched?: Record<string, unknown>): Promise
     lastPercData = perc as typeof lastPercData;
     if (!resultsMode) renderSinglePerception(lastPercData);
     ($('#p4-llm-stats') as HTMLElement).textContent = `${(stats as { total_calls?: number }).total_calls || 0} calls`;
+
+    // Update proposed Dijkstra path on map
+    if (prefetched?.proposed_path) {
+      const nodes = (prefetched.proposed_path as { nodes?: unknown[] }).nodes;
+      if (Array.isArray(nodes) && nodes.length >= 2) {
+        const coords = nodes.map((n: unknown) => {
+          if (Array.isArray(n)) return n as [number, number];
+          const t = n as [number, number];
+          return [t[0], t[1]] as [number, number];
+        });
+        map?.getSource('planned')?.setData({
+          type: 'FeatureCollection',
+          features: [{ type: 'Feature', geometry: { type: 'LineString', coordinates: coords }, properties: {} }],
+        });
+      } else {
+        map?.getSource('planned')?.setData({ type: 'FeatureCollection', features: [] });
+      }
+    }
+
     updateDetailOverlay();
     saveState();
   } catch (e) { console.warn('refreshSingleAgent', e); }
@@ -4629,15 +4974,16 @@ function renderThoughtsInto(host: HTMLElement, events: StreamEvent[], tab: strin
     if (m.perception_available) badges.push('<span class="chip accent" style="font-size:10px;">perc</span>');
     let extraHtml = '';
     if (ev.topic === 'perception' && m.source !== 'visual_satisfaction') {
+      const tod = (m.time_of_day as string) || '';
+      const isNightTime = tod === 'evening' || tod === 'night';
       const sceneFields: [string, string][] = [
-        ['buildings', 'Buildings'],
-        ['vegetation', 'Vegetation'],
-        ['pedestrian_activity', 'Pedestrian activity'],
-        ['lighting_atmosphere', 'Lighting'],
-        ['spatial_enclosure', 'Enclosure'],
+        ['spatial_character', 'Spatial character'],
+        ['greenery', 'Greenery'],
+        ['crowdedness', 'Crowdedness'],
+        ...(!isNightTime ? [['lighting', 'Lighting'] as [string, string]] : []),
+        ['street_amenities', 'Street amenities'],
+        ['visible_text', 'Signage/text'],
       ];
-      const archKey = Object.keys(m).find(k => k.startsWith('as_'));
-      if (archKey) sceneFields.push([archKey, archKey.replace('as_', '').replace(/_/g, ' ')]);
       const rows = sceneFields
         .map(([key, label]) => {
           const val = (m[key] as string | undefined) || '';
@@ -4674,7 +5020,7 @@ function renderThoughtsInto(host: HTMLElement, events: StreamEvent[], tab: strin
       : '';
 
     const _phaseNames = ['morning', 'afternoon', 'evening', 'night'] as const;
-    const _phase = _phaseNames[Math.floor(ev.step / 24) % 4];
+    const _phase = state.singleAgent.timeOverride ?? _phaseNames[Math.floor(ev.step / 24) % 4];
     const phaseBadge = `<span class="chip phase-${_phase}" style="font-size:10px;">${_phase}</span>`;
     div.innerHTML = `
       <div class="row1">
@@ -4697,21 +5043,64 @@ function renderThoughts(events: StreamEvent[]): void {
 async function renderTimePhaseBanner(hostSel = '#p4-time-phase-stats'): Promise<void> {
   const host = $(hostSel) as HTMLElement | null;
   if (!host) return;
-  try {
-    const data = await api.m<{
-      phases: Record<string, { total: number; by_topic: Record<string, number>; samples: string[] }>;
-      current_phase: string;
-    }>('/api/time_stats');
+  const isP4 = hostSel.includes('p4');
+
+  if (isP4) {
     const phaseOrder = ['morning', 'afternoon', 'evening', 'night'] as const;
+    const _phases = ['morning', 'afternoon', 'evening', 'night'];
+    const counts: Record<string, number> = { morning: 0, afternoon: 0, evening: 0, night: 0 };
+    for (const ev of lastStreamEvents) {
+      const tod = (ev.metadata as Record<string, unknown>)?.time_of_day as string | undefined;
+      const phase = tod && tod in counts ? tod : _phases[Math.floor(ev.step / 24) % 4];
+      counts[phase]++;
+    }
+    const override = state.singleAgent.timeOverride;
+    host.classList.toggle('has-override', override !== null);
     host.innerHTML = phaseOrder.map(p => {
-      const bucket = data.phases[p] ?? { total: 0, by_topic: {} };
-      const isActive = p === data.current_phase;
-      return `<div class="tps-cell phase-${p}${isActive ? ' active' : ''}" title="${p}: ${bucket.total} events">
-        ${p} <span style="opacity:0.6">${bucket.total}</span>
+      const isActive = override ? p === override : false;
+      const isLocked = override === p;
+      return `<div class="tps-cell phase-${p}${isActive ? ' active' : ''}${isLocked ? ' locked' : ''}"
+        data-phase="${p}" title="${p}: ${counts[p]} events${isLocked ? ' (locked)' : ''}">
+        ${p} <span style="opacity:0.6">${counts[p]}</span>
       </div>`;
     }).join('');
-  } catch {
-    host.innerHTML = '';
+    host.querySelectorAll<HTMLElement>('.tps-cell[data-phase]').forEach(cell => {
+      cell.addEventListener('click', () => {
+        const phase = cell.dataset['phase']!;
+        void toggleTimeOverride(phase);
+      });
+    });
+  } else {
+    try {
+      const data = await api.m<{
+        phases: Record<string, { total: number; by_topic: Record<string, number>; samples: string[] }>;
+        current_phase: string;
+      }>('/api/time_stats');
+      const phaseOrder = ['morning', 'afternoon', 'evening', 'night'] as const;
+      host.innerHTML = phaseOrder.map(p => {
+        const bucket = data.phases[p] ?? { total: 0, by_topic: {} };
+        const isActive = p === data.current_phase;
+        return `<div class="tps-cell phase-${p}${isActive ? ' active' : ''}" title="${p}: ${bucket.total} events">
+          ${p} <span style="opacity:0.6">${bucket.total}</span>
+        </div>`;
+      }).join('');
+    } catch {
+      host.innerHTML = '';
+    }
+  }
+}
+
+async function toggleTimeOverride(phase: string): Promise<void> {
+  const current = state.singleAgent.timeOverride;
+  const newPhase = current === phase ? null : phase;
+  try {
+    await api.postJSON(api.lab, '/api/time_override', { phase: newPhase });
+    state.singleAgent.timeOverride = newPhase;
+    saveState();
+    void renderTimePhaseBanner('#p4-time-phase-stats');
+    toast(newPhase ? `Time locked to ${newPhase}` : 'Time auto-advancing', 'success');
+  } catch (e) {
+    toast(`Failed to set time: ${e instanceof Error ? e.message : e}`, 'danger');
   }
 }
 
@@ -4825,20 +5214,8 @@ function renderSinglePerception(
 
   const p = perc.perception!;
 
-  // Archetype-specific perspective block (as_tourist / as_resident / etc.)
-  const archKey = `as_${archetype}`;
-  const archRaw = p[archKey];
-  let archHtml = '';
-  if (archRaw) {
-    const archText = String(archRaw).trim();
-    if (archText.length > 2) {
-      const label = archetype[0].toUpperCase() + archetype.slice(1);
-      archHtml = `<div class="perc-arch-view">
-        <div class="perc-arch-label">${escapeHtml(label)}'s perspective</div>
-        <div class="perc-arch-text">${escapeHtml(archText)}</div>
-      </div>`;
-    }
-  }
+  // The perception contract no longer carries archetype-specific perspectives.
+  const archHtml = '';
 
   // Generic scene fields — try DuckDB keys first, fall back to old JSON keys
   const formatField = (raw: unknown): string => {
@@ -4856,12 +5233,13 @@ function renderSinglePerception(
     return display;
   };
   const priorityFields: Array<{ keys: string[]; label: string }> = [
-    { keys: ['scene_overview', 'scene'],               label: 'Scene' },
-    { keys: ['pedestrian_activity', 'crowdedness'],    label: 'Activity' },
-    { keys: ['vegetation', 'greenery'],                label: 'Greenery' },
-    { keys: ['lighting_atmosphere', 'lighting'],       label: 'Lighting' },
-    { keys: ['spatial_enclosure', 'spatial_character'], label: 'Spatial feel' },
-    { keys: ['buildings'],                              label: 'Buildings' },
+    { keys: ['scene', 'scene_overview'],                label: 'Scene' },
+    { keys: ['spatial_character', 'spatial_enclosure'], label: 'Spatial character' },
+    { keys: ['greenery', 'vegetation'],                 label: 'Greenery' },
+    { keys: ['crowdedness', 'pedestrian_activity'],     label: 'Crowdedness' },
+    { keys: ['lighting', 'lighting_atmosphere'],        label: 'Lighting' },
+    { keys: ['street_amenities'],                       label: 'Street amenities' },
+    { keys: ['visible_text'],                           label: 'Signage/text' },
   ];
   const fieldsHtml = priorityFields.map(({ keys, label }) => {
     const raw = keys.map(k => p[k]).find(v => v != null && v !== '');
@@ -4906,7 +5284,8 @@ async function resetSingleAgent(): Promise<void> {
   pauseSinglePlay();
   state.singleAgent.id = null;
   state.singleAgent.positionHistory = [];
-  state.singleAgent.moodHistory = []; stepLog = []; lastStreamEvents = []; lastPercData = {};
+  state.singleAgent.moodHistory = []; state.singleAgent.timeOverride = null;
+  stepLog = []; lastStreamEvents = []; lastPercData = {};
   thoughtMarker?.remove(); thoughtMarker = null;
   state.singleAgent.start = null; state.singleAgent.target = null;
   if (startMarker)    { startMarker.remove();    startMarker = null; }
@@ -4969,8 +5348,8 @@ async function enterResultsMode(): Promise<void> {
   // Fetch topic summaries + narratives in parallel
   const id = state.singleAgent.id;
   const [sums, narr] = await Promise.all([
-    api.m<Record<string, string | null>>(`/api/agent/${id}/results-summary`).catch(() => null),
-    api.m<{ generic?: string; history_aware?: string }>(`/api/agent/${id}/narrative-compare`).catch(() => null),
+    api.l<Record<string, string | null>>(`/api/agent/${id}/results-summary`).catch(() => null),
+    api.l<{ generic?: string; history_aware?: string }>(`/api/agent/${id}/narrative-compare`).catch(() => null),
   ]);
   if (!resultsMode) return;
   resultsSummaries = sums || {};
@@ -5332,27 +5711,143 @@ async function loadAndShowRecording(filename: string): Promise<void> {
   }
 }
 
+const p5EnabledDatasets = new Set<string>();
+let p5TrailClickBound = false;
+let recTrailPopup: MapboxPopup | null = null;
+
+function getMergedRecordingData(store: Map<string, P5RecordingData>): P5RecordingData {
+  const agents: P5RecAgent[] = [];
+  let maxSteps = 0;
+  const sessions: string[] = [];
+  for (const [key, data] of store) {
+    if (!p5EnabledDatasets.has(key)) continue;
+    sessions.push(data.session);
+    agents.push(...data.agents.map(a => Object.assign({}, a, { _datasetKey: key, _datasetSession: data.session })));
+    maxSteps = Math.max(maxSteps, data.totalSteps);
+  }
+  return { session: sessions.join(' + '), totalSteps: maxSteps, agents };
+}
+
+interface RecordingSummary {
+  moodHistory: string[];
+  dominantMood: string;
+  avgCuriosity: number | null;
+  avgFatigue: number | null;
+  avgNeeds: Record<string, number>;
+}
+
+function computeRecordingSummary(agents: P5RecAgent[]): RecordingSummary {
+  const moodHistory = agents.flatMap(a => a.moodHistory ?? []);
+  const counts: Record<string, number> = {};
+  moodHistory.forEach(m => { counts[m] = (counts[m] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const dominantMood = sorted[0]?.[0] ?? '—';
+
+  const cogHist = agents.flatMap(a => a.cognitionHistory ?? []);
+  const avgCuriosity = cogHist.length
+    ? cogHist.reduce((s, c) => s + c.curiosity, 0) / cogHist.length
+    : null;
+  const avgFatigue = cogHist.length
+    ? cogHist.reduce((s, c) => s + c.fatigue, 0) / cogHist.length
+    : null;
+
+  const allLastNeeds = agents
+    .map(a => a.needsHistory?.[a.needsHistory.length - 1])
+    .filter((n): n is Record<string, number> => n !== undefined);
+  const avgNeeds: Record<string, number> = {};
+  if (allLastNeeds.length) {
+    for (const n of allLastNeeds) {
+      for (const [k, v] of Object.entries(n)) {
+        avgNeeds[k] = (avgNeeds[k] ?? 0) + v;
+      }
+    }
+    for (const k of Object.keys(avgNeeds)) avgNeeds[k] /= allLastNeeds.length;
+  }
+
+  return { moodHistory, dominantMood, avgCuriosity, avgFatigue, avgNeeds };
+}
+
+function renderP4RecordingSummary(agents: P5RecAgent[]): void {
+  if (!agents.length) return;
+  const summary = computeRecordingSummary(agents);
+  if (summary.moodHistory.length) {
+    state.singleAgent.moodHistory = summary.moodHistory;
+    renderEmotionPie('#p4-emotion-svg', '#p4-emotion-legend', summary.moodHistory);
+  }
+  ($('#p4-mood') as HTMLElement).textContent = summary.dominantMood;
+  ($('#p4-curiosity') as HTMLElement).textContent = fmtPct(summary.avgCuriosity);
+  ($('#p4-fatigue') as HTMLElement).textContent = fmtPct(summary.avgFatigue);
+  renderNeedsBar($('#p4-needs') as HTMLElement, summary.avgNeeds);
+}
+
+function renderP5RecordingSummary(agents: P5RecAgent[]): void {
+  if (!agents.length) return;
+  const summary = computeRecordingSummary(agents);
+  if (summary.moodHistory.length) {
+    renderEmotionPie('#p5-emotion-svg', '#p5-emotion-legend', summary.moodHistory);
+  }
+  ($('#p5-det-mood') as HTMLElement).textContent = summary.dominantMood;
+  ($('#p5-det-curiosity') as HTMLElement).textContent = fmtPct(summary.avgCuriosity);
+  ($('#p5-det-fatigue') as HTMLElement).textContent = fmtPct(summary.avgFatigue);
+  renderNeedsBar($('#p5-det-needs') as HTMLElement, summary.avgNeeds);
+}
+
+function findAgentInStores(agentId: number): P5RecAgent | undefined {
+  for (const data of p5LoadedRecordings.values()) {
+    const a = data.agents.find(ag => ag.id === agentId);
+    if (a) return a;
+  }
+  for (const data of p4LoadedRecordings.values()) {
+    const a = data.agents.find(ag => ag.id === agentId);
+    if (a) return a;
+  }
+  return undefined;
+}
+
+function findAgentAcrossLayers(agentId: number): P5RecAgent[] {
+  const results: P5RecAgent[] = [];
+  for (const [key, data] of p5LoadedRecordings) {
+    if (!p5EnabledDatasets.has(key)) continue;
+    const a = data.agents.find(ag => ag.id === agentId);
+    if (a) results.push(a);
+  }
+  for (const [key, data] of p4LoadedRecordings) {
+    if (!p5EnabledDatasets.has(key)) continue;
+    const a = data.agents.find(ag => ag.id === agentId);
+    if (a) results.push(a);
+  }
+  return results;
+}
+
 function showRecordingOnMap(filename: string): void {
   const data = p5LoadedRecordings.get(filename) ?? p4LoadedRecordings.get(filename);
   if (!data) return;
-  // Track as active in whichever store owns it
   if (p5LoadedRecordings.has(filename)) p5ActiveRecording = filename;
   else p4ActiveRecording = filename;
 
-  // Reset archetype filter to all present archetypes
-  const allArchetypes = [...new Set(data.agents.map(a => a.archetype))];
+  p5EnabledDatasets.add(filename);
+
+  const merged = getMergedRecordingData(
+    p4LoadedRecordings.has(filename) ? p4LoadedRecordings : p5LoadedRecordings);
+
+  const allArchetypes = [...new Set(merged.agents.map(a => a.archetype))];
   p5RecordingFilterArchetypes = new Set(allArchetypes);
 
-  buildRecordingOverlays(data, p5RecordingFilterArchetypes);
-  buildRecordingFilterChips(data);
+  buildRecordingOverlays(merged, p5RecordingFilterArchetypes);
+  buildRecordingFilterChips(merged);
+  const panel = p4LoadedRecordings.has(filename) ? 'p4' as const : 'p5' as const;
+  buildDatasetList(p4LoadedRecordings.has(filename) ? p4LoadedRecordings : p5LoadedRecordings, panel);
 
-  // Show the inline overlay panel
-  const overlays = $('#p5-playback-overlays') as HTMLElement | null;
+  // Reflect the currently selected datasets in the Emotion Mix / Needs modules
+  if (panel === 'p4') renderP4RecordingSummary(merged.agents);
+  else renderP5RecordingSummary(merged.agents);
+
+  const overlayId = panel === 'p4' ? '#p4-playback-overlays' : '#p5-playback-overlays';
+  const overlays = $(overlayId) as HTMLElement | null;
   if (overlays) overlays.style.display = 'flex';
 
-  // Fit map to recording bounds
-  if (data.agents.length > 0 && map) {
-    const allCoords = data.agents.flatMap(a => a.positions);
+  if (merged.agents.length > 0 && map) {
+    const allCoords = merged.agents.flatMap(a => a.positions);
     if (allCoords.length > 0) {
       const lons = allCoords.map(c => c[0]);
       const lats = allCoords.map(c => c[1]);
@@ -5365,8 +5860,168 @@ function showRecordingOnMap(filename: string): void {
     }
   }
 
+  if (!p5TrailClickBound) {
+    p5TrailClickBound = true;
+    map?.on('click', 'recording-trails-layer', (e: MapboxMapEvent) => {
+      if (!map) return;
+      (e.originalEvent as Event).stopPropagation();
+      if (amenityPopup) amenityPopup.remove();
+      if (trailPopup) trailPopup.remove();
+      const feats = map.queryRenderedFeatures([e.point.x, e.point.y] as [number, number], { layers: ['recording-trails-layer'] });
+      const feat = feats[0];
+      if (!feat) return;
+      const agentId = feat.properties['agentId'] as number | undefined;
+      if (agentId == null) return;
+      const agentsForId = findAgentAcrossLayers(agentId);
+      if (!agentsForId.length) return;
+      const currentStore = p5LoadedRecordings.size > 0 ? p5LoadedRecordings : p4LoadedRecordings;
+      const currentMerged = getMergedRecordingData(currentStore);
+      populateP5FromRecording(agentsForId, currentMerged);
+
+      const agent = agentsForId[0];
+      const clickLng = (e.lngLat as unknown as { lng: number; lat: number }).lng;
+      const clickLat = (e.lngLat as unknown as { lng: number; lat: number }).lat;
+      let closestIdx = 0, closestDist = Infinity;
+      agent.positions.forEach((pos, i) => {
+        const d = (pos[0] - clickLng) ** 2 + (pos[1] - clickLat) ** 2;
+        if (d < closestDist) { closestDist = d; closestIdx = i; }
+      });
+      const step = closestIdx + 1;
+
+      const allEvents = agentsForId.flatMap(a => a.streamEvents ?? []);
+      let stepEvent: (typeof allEvents)[number] | undefined;
+      if (allEvents.length) {
+        stepEvent = allEvents.filter(ev => ev.step === step).pop();
+        if (!stepEvent) {
+          let bestDist = Infinity;
+          for (const ev of allEvents) {
+            const d = Math.abs(ev.step - step);
+            if (d < bestDist) { bestDist = d; stepEvent = ev; }
+          }
+        }
+      }
+      const cog = agent.cognitionHistory?.[closestIdx];
+      const needsAtStep = agent.needsHistory?.[closestIdx];
+      const satReason = agent.satisfactionHistory?.[closestIdx] || '';
+      const moodStr = cog?.mood ?? 'neutral';
+      const moodColor = getMoodColor(moodStr);
+      const fmtPct = (v: number | null | undefined) => v == null ? '—' : `${Math.round(v * 100)}%`;
+      const needsHtml = needsAtStep
+        ? Object.entries(needsAtStep).map(([k, v]) => `
+            <div class="trail-need-row">
+              <span class="trail-need-label">${escapeHtml(k)}</span>
+              <div class="trail-need-bar"><div class="trail-need-fill" style="width:${Math.round((v as number) * 100)}%;background:${(v as number) < 0.3 ? 'var(--danger)' : (v as number) < 0.6 ? 'var(--warning)' : 'var(--success)'}"></div></div>
+              <span class="trail-need-val">${fmtPct(v as number)}</span>
+            </div>`).join('')
+        : '<span style="color:var(--text-muted);font-size:11px">not recorded</span>';
+      const satHtml = satReason
+        ? `<div class="trail-popup-section-title">Satisfaction</div>
+           <div class="trail-popup-desc">${escapeHtml(satReason)}</div>`
+        : '';
+      const datasetSession = (feat.properties['datasetSession'] as string) ?? '';
+      const datasetChip = datasetSession
+        ? `<span class="dataset-chip">${escapeHtml(datasetSession)}</span>`
+        : '';
+      const popupHtml = `<div class="trail-popup-inner">
+        <div class="trail-popup-header">
+          <span class="step-badge">#${step}</span>
+          <span class="mood-dot" style="background:${moodColor}"></span>
+          <span class="mood-label" style="color:${moodColor}">${escapeHtml(moodStr)}</span>
+          <span class="topic-chip">${escapeHtml(stepEvent?.topic ?? '')}</span>
+          ${datasetChip}
+        </div>
+        <div class="trail-popup-desc">${escapeHtml(stepEvent?.description ?? '—')}</div>
+        <div class="trail-popup-section-title">Cognition</div>
+        <div class="trail-cognition-row">
+          <span>Curiosity</span><span>${fmtPct(cog?.curiosity)}</span>
+          <span>Fatigue</span><span>${fmtPct(cog?.fatigue)}</span>
+        </div>
+        <div class="trail-popup-section-title">Needs</div>
+        ${needsHtml}
+        ${satHtml}
+      </div>`;
+      if (recTrailPopup) recTrailPopup.remove();
+      recTrailPopup = new mapboxgl.Popup({ className: 'trail-popup', closeButton: true, maxWidth: '320px' })
+        .setLngLat(agent.positions[closestIdx] as [number, number])
+        .setHTML(popupHtml)
+        .addTo(map as unknown as Parameters<MapboxPopup['addTo']>[0]) as MapboxPopup;
+
+      const thoughtEls = document.querySelectorAll('#p5-det-thoughts .thought');
+      thoughtEls.forEach(el => el.classList.remove('highlighted'));
+      if (stepEvent) {
+        for (const el of thoughtEls) {
+          if (el.textContent?.includes(stepEvent.description)) {
+            el.classList.add('highlighted');
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            break;
+          }
+        }
+      }
+    });
+  }
+
   const status = $('#p5-playback-status') as HTMLElement | null;
-  if (status) status.textContent = `${data.session} · ${data.agents.length} agents · ${data.totalSteps} steps`;
+  const dsCount = p5EnabledDatasets.size;
+  if (status) status.textContent = `${dsCount} dataset${dsCount !== 1 ? 's' : ''} · ${merged.agents.length} agents · ${merged.totalSteps} steps`;
+}
+
+function buildDatasetList(store: Map<string, P5RecordingData>, panel: 'p4' | 'p5'): void {
+  const container = $(`#${panel}-dataset-list`) as HTMLElement | null;
+  if (!container) return;
+  container.innerHTML = '';
+  if (store.size === 0) return;
+  const colors = ['#64d2ff', '#ff9f0a', '#30d158', '#ff375f', '#bf5af2', '#ffd60a'];
+  let ci = 0;
+  for (const [key, data] of store) {
+    const enabled = p5EnabledDatasets.has(key);
+    const color = colors[ci++ % colors.length];
+    const row = document.createElement('label');
+    row.className = 'dataset-row';
+    row.style.opacity = enabled ? '1' : '0.45';
+    row.innerHTML = `
+      <input type="checkbox" ${enabled ? 'checked' : ''} />
+      <span class="dataset-dot" style="background:${color}"></span>
+      <span class="dataset-name">${escapeHtml(data.session)}</span>
+      <span class="dataset-meta">${data.agents.length} agent${data.agents.length !== 1 ? 's' : ''} · ${data.totalSteps} steps</span>
+      <button class="dataset-remove" title="Remove">×</button>`;
+    const cb = row.querySelector('input') as HTMLInputElement;
+    cb.addEventListener('change', () => {
+      if (cb.checked) p5EnabledDatasets.add(key);
+      else p5EnabledDatasets.delete(key);
+      refreshMergedOverlays(store, panel);
+    });
+    const removeBtn = row.querySelector('.dataset-remove') as HTMLButtonElement;
+    removeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      store.delete(key);
+      p5EnabledDatasets.delete(key);
+      refreshMergedOverlays(store, panel);
+    });
+    container.appendChild(row);
+  }
+}
+
+function refreshMergedOverlays(store: Map<string, P5RecordingData>, panel: 'p4' | 'p5' = 'p5'): void {
+  const merged = getMergedRecordingData(store);
+  const allArchetypes = [...new Set(merged.agents.map(a => a.archetype))];
+  p5RecordingFilterArchetypes = new Set(allArchetypes);
+  buildRecordingOverlays(merged, p5RecordingFilterArchetypes);
+  buildRecordingFilterChips(merged);
+  buildDatasetList(store, panel);
+  // Keep Emotion Mix / Needs in sync with the currently checked datasets
+  if (panel === 'p4') renderP4RecordingSummary(merged.agents);
+  else renderP5RecordingSummary(merged.agents);
+  const statusSel = panel === 'p4' ? '#p4-playback-status' : '#p5-playback-status';
+  const status = $(statusSel) as HTMLElement | null;
+  const dsCount = p5EnabledDatasets.size;
+  if (status) status.textContent = `${dsCount} dataset${dsCount !== 1 ? 's' : ''} · ${merged.agents.length} agents · ${merged.totalSteps} steps`;
+}
+
+function getRecToggleState(layer: 'heatmap' | 'trails' | 'decision-pts'): boolean {
+  const prefix = state.currentPanel === 4 ? 'p4' : 'p5';
+  const el = $(`#${prefix}-rec-rl-${layer}`) as HTMLInputElement | null;
+  return el?.checked !== false;
 }
 
 function buildRecordingOverlays(data: P5RecordingData, filterSet: Set<string>): void {
@@ -5378,23 +6033,32 @@ function buildRecordingOverlays(data: P5RecordingData, filterSet: Set<string>): 
     .map(a => ({
       type: 'Feature',
       geometry: { type: 'LineString', coordinates: a.positions },
-      properties: { archetype: a.archetype },
+      properties: { archetype: a.archetype, agentId: a.id, datasetSession: (a as unknown as Record<string, unknown>)._datasetSession ?? '' },
     }));
   map?.getSource('recording-trails')?.setData({ type: 'FeatureCollection', features: trailFeatures });
-  const trailOn = ($('#p5-rec-rl-trails') as HTMLInputElement | null)?.checked !== false;
-  map?.setLayoutProperty('recording-trails-layer', 'visibility', trailOn ? 'visible' : 'none');
+  map?.setLayoutProperty('recording-trails-layer', 'visibility', getRecToggleState('trails') ? 'visible' : 'none');
 
-  // Heatmap — all position points
-  const heatFeatures = filtered.flatMap(a =>
-    a.positions.map(pos => ({
-      type: 'Feature',
-      geometry: { type: 'Point', coordinates: pos },
-      properties: {},
-    }))
+  // Heatmap — bin positions to a ~11m grid and weight cells by log(dwell count) so
+  // genuine hotspots stand out instead of every visited street reading equally hot.
+  const cells = new Map<string, { lon: number; lat: number; count: number }>();
+  filtered.forEach(a =>
+    a.positions.forEach(pos => {
+      const key = `${pos[0].toFixed(4)},${pos[1].toFixed(4)}`;
+      const cell = cells.get(key);
+      if (cell) cell.count++;
+      else cells.set(key, { lon: pos[0], lat: pos[1], count: 1 });
+    })
   );
+  let maxCount = 0;
+  cells.forEach(c => { if (c.count > maxCount) maxCount = c.count; });
+  const logMax = Math.log1p(maxCount);
+  const heatFeatures = maxCount === 0 ? [] : Array.from(cells.values()).map(c => ({
+    type: 'Feature',
+    geometry: { type: 'Point', coordinates: [c.lon, c.lat] },
+    properties: { w: Math.log1p(c.count) / logMax },
+  }));
   map?.getSource('recording-heatmap')?.setData({ type: 'FeatureCollection', features: heatFeatures });
-  const heatOn = ($('#p5-rec-rl-heatmap') as HTMLInputElement | null)?.checked !== false;
-  map?.setLayoutProperty('recording-heatmap-layer', 'visibility', heatOn ? 'visible' : 'none');
+  map?.setLayoutProperty('recording-heatmap-layer', 'visibility', getRecToggleState('heatmap') ? 'visible' : 'none');
 
   // Decision points — bearing changes > 45°
   const decFeatures: object[] = [];
@@ -5414,12 +6078,12 @@ function buildRecordingOverlays(data: P5RecordingData, filterSet: Set<string>): 
     }
   });
   map?.getSource('recording-decision-pts')?.setData({ type: 'FeatureCollection', features: decFeatures });
-  const decOn = ($('#p5-rec-rl-decision-pts') as HTMLInputElement | null)?.checked !== false;
-  map?.setLayoutProperty('recording-decision-pts-layer', 'visibility', decOn ? 'visible' : 'none');
+  map?.setLayoutProperty('recording-decision-pts-layer', 'visibility', getRecToggleState('decision-pts') ? 'visible' : 'none');
 }
 
 function buildRecordingFilterChips(data: P5RecordingData): void {
-  const container = $('#p5-playback-filters') as HTMLElement | null;
+  const filterId = state.currentPanel === 4 ? '#p4-playback-filters' : '#p5-playback-filters';
+  const container = $(filterId) as HTMLElement | null;
   if (!container) return;
   const archetypeColorMap: Record<string, string> = {
     resident: '#30d158', commuter: '#0a84ff', tourist: '#ff9f0a', student: '#ff375f',
@@ -5456,8 +6120,164 @@ const archetypeColors: Record<string, string> = {
   resident: '#30d158', commuter: '#0a84ff',
   tourist: '#ff9f0a',  student: '#ff375f',
 };
-interface P5RecAgent { id: number; archetype: string; positions: [number, number][]; start: [number, number] | null; target: [number, number] | null; }
+interface P5RecAgent {
+  id: number; archetype: string; positions: [number, number][];
+  start: [number, number] | null; target: [number, number] | null;
+  moodHistory?: string[];
+  cognitionHistory?: { mood: string; curiosity: number; fatigue: number }[];
+  needsHistory?: Record<string, number>[];
+  streamEvents?: StreamEvent[];
+  satisfactionHistory?: string[];
+}
 interface P5RecordingData { session: string; totalSteps: number; agents: P5RecAgent[]; }
+
+async function importRecordingFile(file: File, panel: 'p4' | 'p5'): Promise<void> {
+  const statusSel = panel === 'p4' ? '#p4-playback-status' : '#p5-playback-status';
+  const status = $(statusSel) as HTMLElement | null;
+  if (status) status.textContent = 'Uploading…';
+  try {
+    const base = panel === 'p4' ? api.lab : api.map;
+    const form = new FormData();
+    form.append('file', file);
+    const resp = await fetch(`${base}/api/recording/upload`, { method: 'POST', body: form });
+    if (!resp.ok) { if (status) status.textContent = `Server error ${resp.status} — restart the server`; return; }
+    const raw = await resp.json() as Record<string, unknown>;
+    if (raw.error) { if (status) status.textContent = `Error: ${raw.error}`; return; }
+    const agents = (raw.agents ?? []) as P5RecAgent[];
+    if (!agents.length) { if (status) status.textContent = 'No agents found in file.'; return; }
+    const data: P5RecordingData = {
+      session: (raw.session as string) ?? file.name.replace(/\.parquet$/i, ''),
+      totalSteps: (raw.total_steps as number) ?? 0,
+      agents,
+    };
+    const key = `import:${file.name}`;
+    if (panel === 'p4') {
+      p4LoadedRecordings.set(key, data);
+      p4ActiveRecording = key;
+    } else {
+      p5LoadedRecordings.set(key, data);
+      p5ActiveRecording = key;
+    }
+    showRecordingOnMap(key);
+
+    if (panel === 'p4' && agents.length > 0) {
+      populateP4FromRecording(agents[0]);
+      renderP4RecordingSummary(getMergedRecordingData(p4LoadedRecordings).agents);
+    }
+    if (panel === 'p5' && agents.length > 0) {
+      populateP5FromRecording([agents[0]], data);
+      renderP5RecordingSummary(getMergedRecordingData(p5LoadedRecordings).agents);
+    }
+    if (status) status.textContent = `Imported: ${data.agents.length} agent(s), ${data.totalSteps} steps`;
+  } catch (e) {
+    if (status) status.textContent = `Import failed: ${e instanceof Error ? e.message : e}`;
+  }
+}
+
+function populateP4FromRecording(agent: P5RecAgent): void {
+  streamTab = 'all';
+  $('#p4-stream-tabs')?.querySelectorAll('button').forEach(b => {
+    b.setAttribute('aria-selected', b.getAttribute('data-v') === 'all' ? 'true' : 'false');
+  });
+
+  if (agent.moodHistory?.length) {
+    state.singleAgent.moodHistory = agent.moodHistory;
+    renderEmotionPie('#p4-emotion-svg', '#p4-emotion-legend', agent.moodHistory);
+  }
+  if (agent.needsHistory?.length) {
+    const lastNeeds = agent.needsHistory[agent.needsHistory.length - 1];
+    renderNeedsBar($('#p4-needs') as HTMLElement, lastNeeds);
+  }
+  if (agent.streamEvents?.length) {
+    lastStreamEvents = agent.streamEvents;
+    renderThoughts(lastStreamEvents);
+    renderStreamSummary('all', lastStreamEvents);
+  }
+  const moodLast = agent.moodHistory?.[agent.moodHistory.length - 1] ?? '—';
+  ($('#p4-mood') as HTMLElement).textContent = moodLast;
+
+  // Trail line on map
+  if (agent.positions.length >= 2) {
+    map?.getSource('trail')?.setData({
+      type: 'FeatureCollection',
+      features: [{ type: 'Feature', geometry: { type: 'LineString', coordinates: agent.positions }, properties: {} }],
+    });
+  }
+
+  // Clickable step dots on map
+  const dotFeatures = agent.positions.map((pos, i) => {
+    const cog = agent.cognitionHistory?.[i];
+    const mood = cog?.mood ?? agent.moodHistory?.[i] ?? 'neutral';
+    const needs = agent.needsHistory?.[i];
+    const streamEv = agent.streamEvents?.find(e => e.step === i + 1);
+    const desc = streamEv?.description
+      || (needs ? `${mood} · hunger ${(needs.hunger ?? 0).toFixed(2)}, energy ${(needs.energy ?? 0).toFixed(2)}` : mood);
+    return {
+      type: 'Feature' as const,
+      geometry: { type: 'Point' as const, coordinates: pos },
+      properties: {
+        step: i + 1,
+        topic: streamEv?.topic ?? 'step',
+        description: desc,
+        mood,
+        curiosity: cog?.curiosity ?? null,
+        fatigue: cog?.fatigue ?? null,
+        needs: needs ? JSON.stringify(needs) : null,
+      },
+    };
+  });
+  map?.getSource('trail-dots')?.setData({ type: 'FeatureCollection', features: dotFeatures });
+
+  // Fit map to recording bounds
+  if (agent.positions.length > 0 && map) {
+    const lons = agent.positions.map(c => c[0]);
+    const lats = agent.positions.map(c => c[1]);
+    (map as unknown as { fitBounds: (b: [[number, number], [number, number]], o: object) => void })
+      .fitBounds([[Math.min(...lons), Math.min(...lats)], [Math.max(...lons), Math.max(...lats)]],
+        { padding: 60, maxZoom: 17, duration: 800 });
+  }
+}
+
+function populateP5FromRecording(agents: P5RecAgent[], data: P5RecordingData): void {
+  const agent = agents[0];
+  if (!agent) return;
+  const detPanel = $('#p5-agent-detail') as HTMLElement | null;
+  if (!detPanel) return;
+  detPanel.style.display = '';
+  const nameEl = $('#p5-det-name') as HTMLElement | null;
+  if (nameEl) nameEl.textContent = agents.length > 1 ? `Agent ${agent.id} (avg of ${agents.length} layers)` : `Agent ${agent.id}`;
+  const tagEl = $('#p5-det-tags') as HTMLElement | null;
+  if (tagEl) tagEl.innerHTML = `<span class="chip">${agent.archetype}</span>`;
+
+  const allMoods = agents.flatMap(a => a.moodHistory ?? []);
+  if (allMoods.length) {
+    const moodEl = $('#p5-det-mood') as HTMLElement | null;
+    if (moodEl) moodEl.textContent = allMoods[allMoods.length - 1];
+    renderEmotionPie('#p5-emotion-svg', '#p5-emotion-legend', allMoods);
+  }
+
+  const allLastNeeds = agents
+    .map(a => a.needsHistory?.length ? a.needsHistory[a.needsHistory.length - 1] : null)
+    .filter((n): n is Record<string, number> => n !== null);
+  if (allLastNeeds.length) {
+    const avg: Record<string, number> = {};
+    for (const n of allLastNeeds) {
+      for (const [k, v] of Object.entries(n)) {
+        avg[k] = (avg[k] ?? 0) + v;
+      }
+    }
+    for (const k of Object.keys(avg)) avg[k] /= allLastNeeds.length;
+    const needsHost = $('#p5-det-needs') as HTMLElement | null;
+    if (needsHost) renderNeedsBar(needsHost, avg);
+  }
+
+  const allEvents = agents.flatMap(a => a.streamEvents ?? []);
+  if (allEvents.length) {
+    allEvents.sort((a, b) => a.step - b.step);
+    const host = $('#p5-det-thoughts') as HTMLElement | null;
+    if (host) renderThoughtsInto(host, allEvents, 'all', allEvents, false);
+  }
+}
 
 let p5Bound = false;
 let p5StepTimer: number | null = null;
@@ -5528,7 +6348,11 @@ async function selectAgentDetail(agentId: number, hintArch?: string): Promise<vo
   // Emotion pie — build mood history from cognition events (same as P4)
   const moodHist = allEvents
     .filter(e => e.topic === 'cognition')
-    .map(e => String((e.metadata as Record<string, unknown>)?.mood ?? e.description?.match(/mood[:\s]+(\w+)/i)?.[1] ?? ''))
+    .map(e => {
+      const meta = e.metadata as Record<string, unknown>;
+      const cog = meta?.cognition as Record<string, unknown>;
+      return String(cog?.mood ?? meta?.mood ?? e.description?.match(/mood[:\s]+(\w+)/i)?.[1] ?? '');
+    })
     .filter(Boolean);
   if (moodHist.length === 0 && cog['mood']) moodHist.push(String(cog['mood']));
   renderEmotionPie('#p5-emotion-svg', '#p5-emotion-legend', moodHist);
@@ -5546,35 +6370,29 @@ async function selectAgentDetail(agentId: number, hintArch?: string): Promise<vo
   renderStreamSummary(p5DetTab, allEvents, '#p5-det-stream-summary');
   renderP5DetThoughts(allEvents, p5DetTab);
 
-  // Home / office markers for resident and commuter archetypes
+  // Home / work markers — all archetypes now have a home; non-residents also have work
   p5HomeMarker?.remove(); p5HomeMarker = null;
   p5OfficeMarker?.remove(); p5OfficeMarker = null;
-  const dest = mem?.destination as Record<string, unknown> | undefined;
-  const homeLoc = mem?.home_location as Record<string, unknown> | undefined;
-  const workLoc = mem?.work_location as Record<string, unknown> | undefined;
+  const homeLoc = mem?.home as Record<string, unknown> | undefined;
+  const workLoc = mem?.work as Record<string, unknown> | undefined;
   if (map) {
-    if (arch === 'resident') {
-      const lon = homeLoc?.lon as number ?? dest?.['lon'] as number | undefined;
-      const lat = homeLoc?.lat as number ?? dest?.['lat'] as number | undefined;
-      if (lon != null && lat != null) {
-        const popup = new (mapboxgl.Popup as unknown as new (o: object) => MapboxPopup)({ offset: 25, closeButton: false })
-          .setHTML('<div style="font-size:13px;font-weight:600;">🏠 Home</div>');
-        p5HomeMarker = new (mapboxgl.Marker as unknown as new (o: object) => MapboxMarker)({ color: '#30d158', scale: 0.9 })
-          .setLngLat([lon, lat])
-          .setPopup(popup)
-          .addTo(map as unknown as Parameters<MapboxMarker['addTo']>[0]) as MapboxMarker;
-      }
-    } else if (arch === 'commuter') {
-      const lon = workLoc?.lon as number ?? dest?.['lon'] as number | undefined;
-      const lat = workLoc?.lat as number ?? dest?.['lat'] as number | undefined;
-      if (lon != null && lat != null) {
-        const popup = new (mapboxgl.Popup as unknown as new (o: object) => MapboxPopup)({ offset: 25, closeButton: false })
-          .setHTML('<div style="font-size:13px;font-weight:600;">🏢 Office</div>');
-        p5OfficeMarker = new (mapboxgl.Marker as unknown as new (o: object) => MapboxMarker)({ color: '#0a84ff', scale: 0.9 })
-          .setLngLat([lon, lat])
-          .setPopup(popup)
-          .addTo(map as unknown as Parameters<MapboxMarker['addTo']>[0]) as MapboxMarker;
-      }
+    if (homeLoc?.lon != null && homeLoc?.lat != null) {
+      const homeLabel = arch === 'tourist' ? 'Hotel' : 'Home';
+      const popup = new (mapboxgl.Popup as unknown as new (o: object) => MapboxPopup)({ offset: 25, closeButton: false })
+        .setHTML(`<div style="font-size:13px;font-weight:600;">${homeLabel}</div>`);
+      p5HomeMarker = new (mapboxgl.Marker as unknown as new (o: object) => MapboxMarker)({ color: '#30d158', scale: 0.9 })
+        .setLngLat([homeLoc.lon as number, homeLoc.lat as number])
+        .setPopup(popup)
+        .addTo(map as unknown as Parameters<MapboxMarker['addTo']>[0]) as MapboxMarker;
+    }
+    if (workLoc?.lon != null && workLoc?.lat != null) {
+      const workLabel = arch === 'student' ? 'Campus' : arch === 'tourist' ? 'Attraction' : 'Office';
+      const popup = new (mapboxgl.Popup as unknown as new (o: object) => MapboxPopup)({ offset: 25, closeButton: false })
+        .setHTML(`<div style="font-size:13px;font-weight:600;">${workLabel}</div>`);
+      p5OfficeMarker = new (mapboxgl.Marker as unknown as new (o: object) => MapboxMarker)({ color: '#0a84ff', scale: 0.9 })
+        .setLngLat([workLoc.lon as number, workLoc.lat as number])
+        .setPopup(popup)
+        .addTo(map as unknown as Parameters<MapboxMarker['addTo']>[0]) as MapboxMarker;
     }
   }
 
@@ -5725,11 +6543,12 @@ function bindPanel5(): void {
     });
   });
   $('#p5-spawn')!.addEventListener('click', doMultiSpawn);
-  $('#p5-clear-pins')!.addEventListener('click', () => {
+  $('#p5-clear-pins')?.addEventListener('click', () => {
     state.multiAgent.spawnPoints = [];
     state.multiAgent.homePoints = [];
     state.multiAgent.workPoints = [];
     saveState(); refreshSpawnPins(); updateSpawnHint();
+    toast('Pins cleared', 'success');
   });
   $('#p5-play')!.addEventListener('click', startMultiPlay);
   $('#p5-pause')!.addEventListener('click', pauseMultiPlay);
@@ -5754,21 +6573,18 @@ function bindPanel5(): void {
       const replayTab = $('#p5-rec-tab-replay')  as HTMLElement | null;
       if (recTab)    recTab.style.display    = v === 'record' ? '' : 'none';
       if (replayTab) replayTab.style.display = v === 'replay' ? '' : 'none';
-      if (v === 'replay') void fetchRecordingList();
+      if (v === 'replay') { /* noop — user imports file */ }
     });
   });
 
-  // Playback panel
-  $('#p5-playback-refresh')!.addEventListener('click', () => void fetchRecordingList());
-  $('#p5-playback-select')!.addEventListener('change', (e) => {
-    const val = (e.target as HTMLSelectElement).value;
-    ($('#p5-playback-load') as HTMLButtonElement).disabled = !val;
-    // If already loaded, show immediately on selection
-    if (val && p5LoadedRecordings.has(val)) showRecordingOnMap(val);
+  // P5 file import
+  $('#p5-import-btn')?.addEventListener('click', () => {
+    ($('#p5-import-file') as HTMLInputElement)?.click();
   });
-  $('#p5-playback-load')!.addEventListener('click', () => {
-    const val = ($('#p5-playback-select') as HTMLSelectElement).value;
-    if (val) void loadAndShowRecording(val);
+  $('#p5-import-file')?.addEventListener('change', (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) void importRecordingFile(file, 'p5');
+    (e.target as HTMLInputElement).value = '';
   });
 
   // P5 results legend checkboxes
@@ -6159,6 +6975,10 @@ function setRecordingUIState(active: boolean, statusText: string, fileUrl?: stri
   }
 }
 
+function _onBeforeUnload(e: BeforeUnloadEvent): void {
+  e.preventDefault();
+}
+
 async function startRecording(panel: 'p4' | 'p5' = 'p5'): Promise<void> {
   const name = ($(`#${panel}-rec-name`) as HTMLInputElement | null)?.value || '';
   // P4 (single-agent lab) runs on api.lab; P5 (multi-agent sim) runs on api.map
@@ -6168,9 +6988,12 @@ async function startRecording(panel: 'p4' | 'p5' = 'p5'): Promise<void> {
     if (name) q.set('session_name', name);
     const res = await api.postJSON<{ session_id: string; session_name?: string }>(
       base, `/api/recording/start?${q.toString()}`, {});
-    state.recordingSession = res.session_id; saveState();
+    state.recordingSession = res.session_id;
+    state.recordingBase = base;
+    saveState();
     recordingBase = base;
     setRecordingUIState(true, `Recording · ${res.session_name || res.session_id}`);
+    window.addEventListener('beforeunload', _onBeforeUnload);
     if (recordPollTimer !== null) clearInterval(recordPollTimer);
     recordPollTimer = window.setInterval(async () => {
       const s = await api._fetch(recordingBase, '/api/recording/status')
@@ -6185,6 +7008,10 @@ async function stopRecording(): Promise<void> {
     const res = await api.postJSON<{ file_name?: string; total_records?: number; message?: string }>(
       base, '/api/recording/stop', {});
     recordingBase = '';
+    state.recordingSession = null;
+    state.recordingBase = null;
+    saveState();
+    window.removeEventListener('beforeunload', _onBeforeUnload);
     if (recordPollTimer !== null) { clearInterval(recordPollTimer); recordPollTimer = null; }
     const fileUrl = res.file_name
       ? `${base}/api/recording/download/${res.file_name.split('/').map(encodeURIComponent).join('/')}`
@@ -6283,12 +7110,16 @@ function bindGlobalControls(): void {
       if (statusEl) { statusEl.textContent = 'Error saving'; }
     }
   });
-  (['buildings', 'walk', 'amenities', 'streetview'] as const).forEach((k) => {
+  (['buildings', 'buildings3d', 'walk', 'amenities', 'streetview'] as const).forEach((k) => {
     const cb = $(`#s-layer-${k}`) as HTMLInputElement;
+    if (!cb) return;
     cb.checked = !!state.layers[k];
     cb.addEventListener('change', () => {
       state.layers[k] = cb.checked; saveState();
       applyLayerVisibility();
+      if (k === 'buildings3d' && map) {
+        map.easeTo({ pitch: cb.checked ? 45 : 0, duration: 600 });
+      }
     });
   });
 
@@ -6619,5 +7450,41 @@ function boot(): void {
   initGeocoder();
   loadExternalSources();
   initIntro();
+  tryRecoverRecording();
 }
+
+async function tryRecoverRecording(): Promise<void> {
+  if (!state.recordingSession || !state.recordingBase) return;
+  const base = state.recordingBase;
+  try {
+    const s = await api._fetch(base, '/api/recording/status')
+      .catch(() => null) as { is_recording?: boolean; steps_recorded?: number; total_records?: number } | null;
+    if (s && s.is_recording) {
+      recordingBase = base;
+      setRecordingUIState(true, `Recording · ${s.steps_recorded || 0} steps · ${s.total_records || 0} records`);
+      window.addEventListener('beforeunload', _onBeforeUnload);
+      if (recordPollTimer !== null) clearInterval(recordPollTimer);
+      recordPollTimer = window.setInterval(async () => {
+        const st = await api._fetch(recordingBase, '/api/recording/status')
+          .catch(() => null) as { steps_recorded?: number; total_records?: number } | null;
+        if (st) setRecordingUIState(true, `Recording · ${st.steps_recorded || 0} steps · ${st.total_records || 0} records`);
+      }, 2000);
+      toast('Reconnected to active recording session', 'success');
+    } else {
+      state.recordingSession = null;
+      state.recordingBase = null;
+      saveState();
+      const rec = await api._fetch(base, '/api/recording/recover')
+        .catch(() => null) as { recovered?: boolean; files?: string[]; message?: string } | null;
+      if (rec && rec.recovered && rec.files?.length) {
+        toast(`Recovered ${rec.files.length} recording(s) from interrupted session`, 'warning');
+      }
+    }
+  } catch {
+    state.recordingSession = null;
+    state.recordingBase = null;
+    saveState();
+  }
+}
+
 export { boot };

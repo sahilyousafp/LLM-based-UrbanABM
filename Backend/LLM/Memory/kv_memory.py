@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 # Default schema for a CityAgent memory
 DEFAULT_SCHEMA: dict[str, Any] = {
     "position": {"lon": 0.0, "lat": 0.0, "edge_id": None},
-    "needs": {"hunger": 0.5, "energy": 1.0, "social": 0.5, "comfort": 0.7},
+    "needs": {"hunger": 0.0, "energy": 1.0, "social": 0.2, "comfort": 0.7},
     "visited_edges": {},
     "visited_amenities": [],
     "agent_profile": {"archetype": "resident", "age": 30, "preferences": []},

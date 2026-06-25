@@ -11,14 +11,14 @@ from LLM.Thinking.prompts import needs_evaluation_prompt, visual_satisfaction_pr
 
 logger = logging.getLogger(__name__)
 
-# Need decay rates per step (subtracted each simulation step)
-# Each step ≈ 30s of walking. Rates calibrated so hunger fills in ~2h (240 steps),
-# energy drains in ~3h, social/comfort shift noticeably over 2–3h walks.
+# Need decay rates per simulation step (96 steps = 1 day, 1 step ≈ 15 min).
+# Calibrated from: BLS American Time Use Survey 2024, CitySim (arXiv:2506.21805),
+# urban walking affect study (ScienceDirect 2025), walking energy expenditure (NCBI).
 DECAY_RATES = {
-    "hunger": 0.003,   # 0→full in ~333 steps ≈ ~2.8h walking
-    "energy": 0.003,   # full→0 in ~333 steps ≈ ~2.8h walking
-    "social": 0.003,   # 0→full in ~333 steps ≈ ~2.8h walking
-    "comfort": 0.003,  # full→0 in ~333 steps ≈ ~2.8h walking
+    "hunger":  0.035,  # ATUS: 3 meals/day, ~5h between meals → 20 steps to 0.7
+    "energy":  0.015,  # 16 waking hours of walking → 64 steps to deplete
+    "social":  0.025,  # ATUS: 35 min social/day, ~6h alone → 24 steps to 0.7
+    "comfort": 0.008,  # Urban walking study: environment-responsive over ~2h
 }
 
 # Agent must be within this distance (metres) of an amenity to receive satisfaction
@@ -45,7 +45,7 @@ class NeedsBlock(Block):
         Args:
             step: current simulation step
             nearby_amenities: list of {"name", "type", "dist"} from model query
-            street_perception: dict with scene_overview, buildings, vegetation, etc. from visual analysis
+            street_perception: dict with scene, lighting, spatial_character, crowdedness, greenery, street_amenities, visible_text
             nearby_agents: list of {"id", "archetype", "dist_m"} agents within ~55m
         """
         time_of_day = kwargs.get("time_of_day", "")
@@ -58,20 +58,21 @@ class NeedsBlock(Block):
         # Uses _last_scene_key for deduplication — identical scenes are not re-logged,
         # preventing the 100-entry stream buffer from filling with duplicate data.
         if street_perception:
-            scene_key = (street_perception.get("scene_overview") or "")[:80]
+            scene_key = (street_perception.get("scene") or "")[:80]
             last_key = await self.memory.status.get("_last_scene_key", "")
             if scene_key and scene_key != last_key:
                 await self.memory.stream.add(
                     topic="perception",
                     step=step,
-                    description=street_perception.get("scene_overview", ""),
+                    description=street_perception.get("scene", ""),
                     metadata={
-                        "buildings":           street_perception.get("buildings", ""),
-                        "vegetation":          street_perception.get("vegetation", ""),
-                        "pedestrian_activity": street_perception.get("pedestrian_activity", ""),
-                        "lighting_atmosphere": street_perception.get("lighting_atmosphere", ""),
-                        "spatial_enclosure":   street_perception.get("spatial_enclosure", ""),
-                        f"as_{archetype}":     street_perception.get(f"as_{archetype}", ""),
+                        "spatial_character": street_perception.get("spatial_character", ""),
+                        "greenery":          street_perception.get("greenery", ""),
+                        "crowdedness":       street_perception.get("crowdedness", ""),
+                        "lighting":          street_perception.get("lighting", ""),
+                        "street_amenities":  street_perception.get("street_amenities", ""),
+                        "visible_text":      street_perception.get("visible_text", ""),
+                        "time_of_day": time_of_day,
                     },
                 )
                 await self.memory.status.update("_last_scene_key", scene_key)
@@ -116,7 +117,7 @@ class NeedsBlock(Block):
                 topic="needs",
                 step=step,
                 description=f"Crowd nearby: {len(nearby_agents)} agent(s) within 55m. Social need reduced by {crowd_bonus:.2f}.",
-                metadata={"crowd_count": len(nearby_agents), "crowd_bonus": crowd_bonus},
+                metadata={"crowd_count": len(nearby_agents), "crowd_bonus": crowd_bonus, "time_of_day": time_of_day},
             )
 
         # 1. Visual satisfaction evaluation (every 5 steps to avoid fully cancelling decay)
@@ -137,7 +138,7 @@ class NeedsBlock(Block):
                     topic="perception",
                     step=step,
                     description=f"Visual environment affected needs: {satisfaction_reasoning}",
-                    metadata={"source": "visual_satisfaction", "llm_used": llm_used},
+                    metadata={"source": "visual_satisfaction", "llm_used": llm_used, "time_of_day": time_of_day},
                 )
 
         # 2. Amenity satisfaction evaluation (only if agent is physically at the amenity)
@@ -171,7 +172,7 @@ class NeedsBlock(Block):
                         step=step,
                         description=f"{amenity_result.get('activity', f'Visited {amenity_name}')}. Needs after: hunger={needs['hunger']:.2f}, "
                                     f"energy={needs['energy']:.2f}, social={needs['social']:.2f}, comfort={needs['comfort']:.2f}",
-                        metadata={"amenity": visited_amenity, "llm_used": llm_used},
+                        metadata={"amenity": visited_amenity, "llm_used": llm_used, "time_of_day": time_of_day},
                     )
 
                     # Append to visited amenities list (keep last 20)

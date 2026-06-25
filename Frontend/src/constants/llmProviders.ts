@@ -25,24 +25,33 @@ export const DEFAULT_MODELS: Record<string, string> = {
   docker:     'llama3.2:3b',
 };
 
-export interface ABMScore { spatial: number; fidelity: number; json: number; speed: number; cost: number; }
+export interface ABMScore { spatial: number; fidelity: number; json: number; speed: number; cost: number; eqbench: number; }
 
 export const ABM_SCORES: Record<string, ABMScore> = {
-  gemini:     { spatial: 4, fidelity: 4, json: 5, speed: 5, cost: 5 },
-  openai:     { spatial: 4, fidelity: 5, json: 5, speed: 4, cost: 2 },
-  deepseek:   { spatial: 4, fidelity: 4, json: 4, speed: 3, cost: 5 },
-  openrouter: { spatial: 3, fidelity: 4, json: 4, speed: 3, cost: 3 },
-  groq:       { spatial: 3, fidelity: 3, json: 4, speed: 5, cost: 5 },
-  ollama:     { spatial: 2, fidelity: 3, json: 3, speed: 2, cost: 5 },
-  vllm:       { spatial: 4, fidelity: 4, json: 5, speed: 4, cost: 5 },
-  lmdeploy:   { spatial: 4, fidelity: 4, json: 5, speed: 5, cost: 5 },
-  docker:     { spatial: 2, fidelity: 2, json: 3, speed: 2, cost: 5 },
+  gemini:     { spatial: 4, fidelity: 4, json: 5, speed: 5, cost: 5, eqbench: 72 },
+  openai:     { spatial: 4, fidelity: 5, json: 5, speed: 4, cost: 2, eqbench: 79 },
+  deepseek:   { spatial: 4, fidelity: 4, json: 4, speed: 3, cost: 5, eqbench: 83 },
+  openrouter: { spatial: 3, fidelity: 4, json: 4, speed: 3, cost: 3, eqbench: 79 },
+  groq:       { spatial: 3, fidelity: 3, json: 4, speed: 5, cost: 5, eqbench: 72 },
+  ollama:     { spatial: 2, fidelity: 3, json: 3, speed: 2, cost: 5, eqbench: 55 },
+  vllm:       { spatial: 4, fidelity: 4, json: 5, speed: 4, cost: 5, eqbench: 60 },
+  lmdeploy:   { spatial: 4, fidelity: 4, json: 5, speed: 5, cost: 5, eqbench: 55 },
+  docker:     { spatial: 2, fidelity: 2, json: 3, speed: 2, cost: 5, eqbench: 48 },
 };
 
-export const ABM_DIMS: { key: keyof ABMScore; label: string; tip: string }[] = [
+export const PROVIDER_COLORS: Record<string, string> = {
+  ollama: '#bf5af2', vllm: '#a29bfe', lmdeploy: '#6c5ce7', docker: '#636e72',
+  gemini: '#0a84ff', openai: '#30d158', deepseek: '#ff9f0a', openrouter: '#ff453a', groq: '#4ecdc4',
+};
+export const CUSTOM_COLORS = ['#ff6b6b', '#45b7d1', '#f9ca24', '#fd79a8', '#e17055', '#00cec9'];
+
+export interface ABMDim { key: keyof ABMScore; label: string; tip: string; max?: number; }
+
+export const ABM_DIMS: ABMDim[] = [
   { key: 'spatial',  label: 'Urban',  tip: 'Street-level spatial reasoning' },
   { key: 'fidelity', label: 'Role',   tip: 'Persona consistency across steps' },
   { key: 'json',     label: 'JSON',   tip: 'Structured output reliability' },
   { key: 'speed',    label: 'Speed',  tip: 'Inference latency suitability' },
   { key: 'cost',     label: 'Cost',   tip: 'Operational cost efficiency' },
+  { key: 'eqbench',  label: 'EQ',     tip: 'EQ-Bench V2 emotional intelligence (Paech, 2024)', max: 100 },
 ];

@@ -1,26 +1,149 @@
 {
   "metadata": {
-    "timestamp": "20260613_205753",
+    "timestamp": "20260621_011912",
     "latitude": 41.402898,
     "longitude": 2.157921,
-    "heading": 58.0,
-    "street_name": "Carrer de Terol",
+    "heading": 142.6,
+    "street_name": "",
     "highway_type": "road",
-    "edge_id": "06744684-49be-49a4-8642-5868ed1f9240",
-    "source_image": "sv_41.402898_2.157921_h58.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "edge_id": "1fa9960d-4890-45e9-8052-66ebc6f3bc4b",
+    "source_image": "sv_41.402898_2.157921_h142.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 1152532.6,
+    "latency_ms": 175116.6,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "unknown",
-    "lighting": [],
-    "spatial_character": [],
-    "crowdedness": [],
-    "greenery": [],
-    "street_amenities": [],
-    "visible_text": []
+    "scene": "A sunlit urban plaza with dense pedestrian activity on the left sidewalk and sparse activity in the center roadway, flanked by buildings with ground-floor retail and residential upper floors, and featuring trees, trash bins, and bicycle racks.",
+    "lighting": [
+      {
+        "zone": "center",
+        "element": "direct overhead sunlight",
+        "condition": "bright"
+      }
+    ],
+    "spatial_character": [
+      {
+        "zone": "far_left",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "vernacular",
+        "building_condition": "good",
+        "storefront_type": "restaurant",
+        "architectural_details": "ground-floor outdoor seating area with tables and umbrellas"
+      },
+      {
+        "zone": "left",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "vernacular",
+        "building_condition": "good",
+        "storefront_type": "cafe",
+        "architectural_details": "ground-floor outdoor seating area with tables and umbrellas"
+      },
+      {
+        "zone": "center",
+        "width": "wide",
+        "enclosure": "open",
+        "passability": "clear",
+        "lane_type": "main_roadway",
+        "crossing": "none",
+        "architectural_style": "vernacular",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "multi-story buildings with balconies and ground-floor commercial spaces"
+      },
+      {
+        "zone": "right",
+        "width": "moderate",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "vernacular",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ground-floor storefronts with bicycle racks and parking signage"
+      },
+      {
+        "zone": "far_right",
+        "width": "narrow",
+        "enclosure": "semi",
+        "passability": "clear",
+        "lane_type": "sidewalk",
+        "crossing": "none",
+        "architectural_style": "vernacular",
+        "building_condition": "good",
+        "storefront_type": "retail",
+        "architectural_details": "ground-floor storefronts with bicycle racks and parking signage"
+      }
+    ],
+    "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "dense"
+      },
+      {
+        "zone": "center",
+        "density_level": "sparse"
+      }
+    ],
+    "greenery": [
+      {
+        "zone": "left",
+        "element": "deciduous trees with green and yellow foliage",
+        "coverage": "moderate"
+      },
+      {
+        "zone": "center",
+        "element": "deciduous trees with green and yellow foliage",
+        "coverage": "moderate"
+      }
+    ],
+    "street_amenities": [
+      {
+        "zone": "left",
+        "element": "outdoor cafe tables and chairs",
+        "material_and_colour": "wooden and metal",
+        "presence": "many"
+      },
+      {
+        "zone": "center",
+        "element": "large grey trash bins",
+        "material_and_colour": "metallic grey",
+        "presence": "several"
+      },
+      {
+        "zone": "right",
+        "element": "bicycle racks",
+        "material_and_colour": "metallic grey",
+        "presence": "many"
+      },
+      {
+        "zone": "right",
+        "element": "parking sign",
+        "material_and_colour": "blue and white plastic",
+        "presence": "few"
+      }
+    ],
+    "visible_text": [
+      {
+        "text": "P",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
+        "text": "GRATIS",
+        "zone": "center",
+        "type": "graffiti"
+      }
+    ]
   },
   "nearby_landmarks": []
 }

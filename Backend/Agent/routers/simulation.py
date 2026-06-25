@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Body
 from state import sim
 
 router = APIRouter()
@@ -10,6 +10,7 @@ async def step_simulation():
     return {
         "step": sim.city_model.steps,
         "time_of_day": sim.city_model.time_of_day,
+        "time_locked": sim.city_model.time_is_locked,
         "agents": len(sim.city_model.city_agents),
         "llm_stats": sim.city_model.llm_client.stats(),
     }
@@ -35,8 +36,22 @@ async def step_continuous():
     return {
         "step": sim.city_model.steps,
         "time_of_day": sim.city_model.time_of_day,
+        "time_locked": sim.city_model.time_is_locked,
         "agents": agents_data,
         "llm_stats": sim.city_model.llm_client.stats(),
+    }
+
+
+@router.post("/api/time_override")
+async def set_time_override(payload: dict = Body(...)):
+    phase = payload.get("phase")
+    try:
+        sim.city_model.set_time_override(phase)
+    except ValueError as e:
+        return {"error": str(e)}
+    return {
+        "time_of_day": sim.city_model.time_of_day,
+        "locked": sim.city_model.time_is_locked,
     }
 
 

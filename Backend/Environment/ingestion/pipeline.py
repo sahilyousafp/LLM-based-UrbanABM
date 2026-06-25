@@ -227,7 +227,7 @@ class OverturePipeline:
                             """)
                         os.unlink(tmp_path)
                         count = pending_con.execute(f"SELECT COUNT(*) FROM {tbl}").fetchone()[0]
-                        self._log(f"  ✓ {tbl}: {count:,} rows written to pending database")
+                        self._log(f"  [OK] {tbl}: {count:,} rows written to pending database")
                     except Exception as exc:
                         self._log(f"  ✗ Failed to merge {tbl}: {exc}")
                 pending_con.close()

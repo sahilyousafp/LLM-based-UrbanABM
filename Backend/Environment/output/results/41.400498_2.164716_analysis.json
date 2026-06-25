@@ -1,24 +1,24 @@
 {
   "metadata": {
-    "timestamp": "20260613_194302",
+    "timestamp": "20260620_225820",
     "latitude": 41.400498,
     "longitude": 2.164716,
-    "heading": 125.0,
-    "street_name": "Carrer de Còrsega",
+    "heading": 133.7,
+    "street_name": "",
     "highway_type": "road",
-    "edge_id": "58145599-b506-4bac-901d-b1c32d7ee28a",
-    "source_image": "sv_41.400498_2.164716_h125.jpg",
-    "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+    "edge_id": "2279166f-64d2-4ccf-9111-a3826ef3c9be",
+    "source_image": "sv_41.400498_2.164716_h133.jpg",
+    "model": "Qwen/Qwen3-VL-8B-Instruct",
     "device": "cuda",
-    "latency_ms": 287575.8,
+    "latency_ms": 184664.9,
     "status": "ok"
   },
   "scene_analysis": {
-    "scene": "Urban street with narrow sidewalks and buildings, leading to a gated area at the end.",
+    "scene": "A narrow urban street with a metal gate blocking the center, flanked by buildings with mixed architectural styles, under bright, low-angle sunlight with sparse pedestrian presence.",
     "lighting": [
       {
         "zone": "center",
-        "element": "direct overhead sunlight",
+        "element": "low-angle sun behind buildings",
         "condition": "bright"
       }
     ],
@@ -26,14 +26,14 @@
       {
         "zone": "far_left",
         "width": "narrow",
-        "enclosure": "semi",
+        "enclosure": "enclosed",
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "neoclassical",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "beige facade with dark shutters and signage"
       },
       {
         "zone": "left",
@@ -42,22 +42,22 @@
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "neoclassical",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "beige facade with dark shutters and signage"
       },
       {
         "zone": "center",
-        "width": "wide",
-        "enclosure": "open",
-        "passability": "clear",
-        "lane_type": "road",
+        "width": "narrow",
+        "enclosure": "enclosed",
+        "passability": "obstructed",
+        "lane_type": "unknown",
         "crossing": "none",
-        "architectural_style": "unknown",
-        "building_condition": "good",
-        "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_style": "other",
+        "building_condition": "unknown",
+        "storefront_type": "other",
+        "architectural_details": "metal gate blocking passage"
       },
       {
         "zone": "right",
@@ -66,10 +66,10 @@
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "contemporary",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "marble-clad facade with glass entrance"
       },
       {
         "zone": "far_right",
@@ -78,13 +78,17 @@
         "passability": "clear",
         "lane_type": "sidewalk",
         "crossing": "none",
-        "architectural_style": "unknown",
+        "architectural_style": "contemporary",
         "building_condition": "good",
         "storefront_type": "retail",
-        "architectural_details": null
+        "architectural_details": "marble-clad facade with glass entrance"
       }
     ],
     "crowdedness": [
+      {
+        "zone": "left",
+        "density_level": "sparse"
+      },
       {
         "zone": "center",
         "density_level": "empty"
@@ -93,26 +97,44 @@
     "greenery": [],
     "street_amenities": [
       {
+        "zone": "left",
+        "element": "metal gate",
+        "material_and_colour": "black metal",
+        "presence": "few"
+      },
+      {
+        "zone": "left",
+        "element": "traffic sign",
+        "material_and_colour": "metallic",
+        "presence": "few"
+      },
+      {
+        "zone": "right",
+        "element": "traffic sign",
+        "material_and_colour": "metallic",
+        "presence": "few"
+      },
+      {
         "zone": "center",
-        "element": "black painted metal gate",
-        "material_and_colour": "black painted metal",
-        "presence": "several"
+        "element": "traffic sign",
+        "material_and_colour": "metallic",
+        "presence": "few"
       }
     ],
     "visible_text": [
       {
+        "text": "Caixa d'Eng",
+        "zone": "right",
+        "type": "sign"
+      },
+      {
         "text": "10",
+        "zone": "center",
+        "type": "sign"
+      },
+      {
+        "text": "11",
         "zone": "left",
-        "type": "sign"
-      },
-      {
-        "text": "GECA",
-        "zone": "center",
-        "type": "sign"
-      },
-      {
-        "text": "XINS",
-        "zone": "center",
         "type": "sign"
       }
     ]

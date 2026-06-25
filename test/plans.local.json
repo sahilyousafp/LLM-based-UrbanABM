@@ -9,7 +9,7 @@
       ],
       "pace": "leisurely",
       "curiosity": "high",
-      "social": "low",
+      "social": "moderate",
       "description": "A curious visitor spending the day exploring the neighbourhood's cultural highlights, enjoying good food, and wandering through pleasant streets."
     },
     "daily_plan": [
@@ -23,11 +23,15 @@
         ],
         "max_visits": 1,
         "perception_preferences": [
-          "buildings",
-          "spatial_enclosure",
-          "vegetation"
+          "spatial_character",
+          "greenery"
         ],
-        "perception_avoid": [],
+        "perception_avoid": [
+          {
+            "field": "crossing",
+            "value": "signalised"
+          }
+        ],
         "en_route_stops": [
           {
             "id": "breakfast_stop",
@@ -46,7 +50,7 @@
       },
       {
         "id": "midday_lunch",
-        "time_of_day": "afternoon",
+        "time_of_day": "midday",
         "goal": "Find a restaurant or cafe for a proper lunch",
         "target_types": [
           "restaurant",
@@ -54,15 +58,15 @@
         ],
         "max_visits": 1,
         "perception_preferences": [
-          "pedestrian_activity",
-          "street_furniture"
+          "crowdedness",
+          "street_amenities"
         ],
         "perception_avoid": [],
         "en_route_stops": []
       },
       {
         "id": "afternoon_park",
-        "time_of_day": "evening",
+        "time_of_day": "afternoon",
         "goal": "Relax in a park or find a scenic viewpoint",
         "target_types": [
           "park",
@@ -70,9 +74,9 @@
         ],
         "max_visits": 1,
         "perception_preferences": [
-          "vegetation",
-          "lighting_atmosphere",
-          "spatial_enclosure"
+          "greenery",
+          "lighting",
+          "spatial_character"
         ],
         "perception_avoid": [],
         "en_route_stops": [
@@ -117,8 +121,8 @@
         ],
         "max_visits": 1,
         "perception_preferences": [
-          "street_furniture",
-          "spatial_enclosure"
+          "street_amenities",
+          "spatial_character"
         ],
         "perception_avoid": [],
         "en_route_stops": [
@@ -146,8 +150,8 @@
         ],
         "max_visits": 1,
         "perception_preferences": [
-          "vegetation",
-          "lighting_atmosphere"
+          "greenery",
+          "lighting"
         ],
         "perception_avoid": [],
         "en_route_stops": []
@@ -158,11 +162,12 @@
     "profile": {
       "interests": [
         "efficiency",
-        "punctuality"
+        "punctuality",
+        "cafe"
       ],
       "pace": "fast",
-      "curiosity": "low",
-      "social": "high",
+      "curiosity": "none",
+      "social": "low",
       "description": "A focused commuter whose single priority is reaching work on time with minimal deviation."
     },
     "daily_plan": [
@@ -170,11 +175,14 @@
         "id": "commute_to_work",
         "time_of_day": "morning",
         "goal": "Reach the workplace as efficiently as possible",
-        "target_types": [],
+        "target_types": [
+          "cafe",
+          "transit_stops"
+        ],
         "max_visits": 0,
         "perception_preferences": [
-          "street_furniture",
-          "lighting_atmosphere"
+          "street_amenities",
+          "lighting"
         ],
         "perception_avoid": [],
         "en_route_stops": []
@@ -206,16 +214,16 @@
         ],
         "max_visits": 1,
         "perception_preferences": [
-          "pedestrian_activity",
-          "lighting_atmosphere"
+          "crowdedness",
+          "lighting"
         ],
         "perception_avoid": [
           {
-            "field": "lighting_atmosphere",
+            "field": "lighting",
             "value": "dim"
           },
           {
-            "field": "street_furniture",
+            "field": "street_amenities",
             "value": "absent"
           }
         ],
@@ -244,68 +252,15 @@
         ],
         "max_visits": 2,
         "perception_preferences": [
-          "pedestrian_activity",
-          "vegetation"
+          "crowdedness",
+          "greenery"
         ],
         "perception_avoid": [
           {
-            "field": "street_furniture",
+            "field": "street_amenities",
             "value": "absent"
           }
         ],
-        "en_route_stops": []
-      }
-    ]
-  },
-  "Sahil Yousaf": {
-    "profile": {
-      "interests": [
-        "Local cafe",
-        "green spaces",
-        "community areas",
-        "open seating",
-        "residents"
-      ],
-      "pace": "moderate",
-      "curiosity": "high",
-      "social": "high",
-      "description": "Immigrant student who loves walking through lively streets with green spaces and touristic features.",
-      "age": "young",
-      "gender": "male"
-    },
-    "daily_plan": [
-      {
-        "id": "Morning_Explorehase_1",
-        "time_of_day": "morning",
-        "goal": "Explore the city and local culture",
-        "target_types": [
-          "Bakery",
-          "Cafe",
-          "library",
-          "institute"
-        ],
-        "perception_preferences": [
-          "crowd",
-          "greenery",
-          "outdoor seating",
-          "street furniture",
-          "aesthetic architecture"
-        ],
-        "perception_avoid": [
-          {
-            "field": "less crowd",
-            "value": ""
-          },
-          {
-            "field": "dirty streets",
-            "value": ""
-          },
-          {
-            "field": "narrow spaces",
-            "value": ""
-          }
-        ],
-        "max_visits": 1,
         "en_route_stops": []
       }
     ]
