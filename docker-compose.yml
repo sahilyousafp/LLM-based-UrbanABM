@@ -16,7 +16,8 @@ services:
       PORT: "8000"
       RELOAD: "false"
     volumes:
-      - abm_recordings:/app/Documentation   # persist recordings + tracker DB
+      - abm_recordings:/app/Documentation        # persist recordings + tracker DB
+      - abm_environment:/app/Backend/Environment # persist perception.duckdb VLM writes
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 15s
@@ -55,3 +56,6 @@ services:
 volumes:
   ollama_models:
   abm_recordings:     # persists GeoParquet recordings + agent tracker across restarts
+  abm_environment:    # persists perception.duckdb VLM writes across restarts
+                      # NOTE: populated from image on first run; if you rebuild the image
+                      # with new DB files run: docker volume rm <project>_abm_environment
