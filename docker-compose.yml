@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: sahilyousafp/urban-abm-backend:latest
+    image: sahilyousafp/urbanagents:backend
     ports:
       - "8000:8000"
     env_file:
@@ -31,7 +31,7 @@ services:
     build:
       context: .
       dockerfile: Frontend/Dockerfile
-    image: sahilyousafp/urban-abm-frontend:latest
+    image: sahilyousafp/urbanagents:frontend
     ports:
       - "8091:80"
     depends_on:

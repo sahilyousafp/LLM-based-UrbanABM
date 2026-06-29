@@ -1,5 +1,4 @@
-REGISTRY := sahilyousafp
-TAG      := latest
+REGISTRY  := sahilyousafp/urbanagents
 PLATFORMS := linux/amd64,linux/arm64
 
 .PHONY: build push push-cross up up-ollama down logs reset-db
@@ -8,16 +7,16 @@ build:
 	docker compose build
 
 push: build
-	docker push $(REGISTRY)/urban-abm-backend:$(TAG)
-	docker push $(REGISTRY)/urban-abm-frontend:$(TAG)
+	docker push $(REGISTRY):backend
+	docker push $(REGISTRY):frontend
 
 # Multi-platform push (required when building on Apple Silicon for x86 cloud hosts).
 # Requires: docker buildx create --use
 push-cross:
 	docker buildx build --platform $(PLATFORMS) \
-		-t $(REGISTRY)/urban-abm-backend:$(TAG) --push .
+		-t $(REGISTRY):backend --push .
 	docker buildx build --platform $(PLATFORMS) \
-		-t $(REGISTRY)/urban-abm-frontend:$(TAG) --push \
+		-t $(REGISTRY):frontend --push \
 		-f Frontend/Dockerfile .
 
 up:
