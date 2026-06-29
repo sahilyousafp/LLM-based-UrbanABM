@@ -7,12 +7,16 @@ services:
     image: sahilyousafp/urban-abm-backend:latest
     ports:
       - "8000:8000"
-    env_file: .env          # user supplies LLM keys here
+    env_file:
+      - path: .env          # user supplies LLM keys here
+        required: false     # prevents crash on fresh clone before .env is created
     environment:
       DATABASE_PATH: /app/Backend/Environment/eixample_overture.duckdb
       HOST: 0.0.0.0
       PORT: "8000"
       RELOAD: "false"
+    volumes:
+      - abm_recordings:/app/Documentation   # persist recordings + tracker DB
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 15s
@@ -50,3 +54,4 @@ services:
 
 volumes:
   ollama_models:
+  abm_recordings:     # persists GeoParquet recordings + agent tracker across restarts
