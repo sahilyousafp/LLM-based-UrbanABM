@@ -8,6 +8,7 @@ env/
 node_modules/
 Frontend/node_modules/
 Frontend/dist/
+Frontend/public/video/    # gitignored large video assets — excluded from build context
 
 # Git / IDE
 .git/

@@ -4,15 +4,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: sahilyousafp/urban-abm-backend:latest
+    image: sahilyousafp/urbanagents:backend
     ports:
       - "8000:8000"
-    env_file: .env          # user supplies LLM keys here
+    env_file:
+      - path: .env          # user supplies LLM keys here
+        required: false     # prevents crash on fresh clone before .env is created
     environment:
       DATABASE_PATH: /app/Backend/Environment/eixample_overture.duckdb
       HOST: 0.0.0.0
       PORT: "8000"
       RELOAD: "false"
+    volumes:
+      - abm_recordings:/app/Documentation        # persist recordings + tracker DB
+      - abm_environment:/app/Backend/Environment # persist perception.duckdb VLM writes
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 15s
@@ -26,7 +31,7 @@ services:
     build:
       context: .
       dockerfile: Frontend/Dockerfile
-    image: sahilyousafp/urban-abm-frontend:latest
+    image: sahilyousafp/urbanagents:frontend
     ports:
       - "8091:80"
     depends_on:
@@ -50,3 +55,7 @@ services:
 
 volumes:
   ollama_models:
+  abm_recordings:     # persists GeoParquet recordings + agent tracker across restarts
+  abm_environment:    # persists perception.duckdb VLM writes across restarts
+                      # NOTE: populated from image on first run; if you rebuild the image
+                      # with new DB files run: docker volume rm <project>_abm_environment
