@@ -1,0 +1,62 @@
+# Virtual environments
+.venv/
+UrbanABM/
+venv/
+env/
+
+# Node
+node_modules/
+Frontend/node_modules/
+Frontend/dist/
+
+# Git / IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Tool caches
+.aider*/
+.claude/
+.code-review-graph/
+graphify-out/
+.mcp.json
+opencode.json
+
+# Directories not needed at runtime
+benchmark/
+docs/
+Documentation/
+cache/
+test/
+scripts/
+Audit/
+
+# Windows startup scripts (not needed in container)
+*.bat
+Makefile
+
+# Unused DuckDB files (only ship eixample_overture + perception)
+Backend/Environment/eixample_osm.duckdb
+Backend/Environment/eixample_overture.backup.duckdb
+Backend/Environment/unnamed_pending.duckdb
+Backend/Environment/output/
+
+# Runtime outputs and temp files
+*.parquet
+*.log
+*.duckdb.wal
+*.duckdb.tmp
+*.backup
+*.bak
+*.tmp
+*.temp
+
+# Secrets — never bake into image
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/

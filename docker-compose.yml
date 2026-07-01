@@ -1,0 +1,52 @@
+services:
+  # ── Python / FastAPI backend ───────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sahilyousafp/urban-abm-backend:latest
+    ports:
+      - "8000:8000"
+    env_file: .env          # user supplies LLM keys here
+    environment:
+      DATABASE_PATH: /app/Backend/Environment/eixample_overture.duckdb
+      HOST: 0.0.0.0
+      PORT: "8000"
+      RELOAD: "false"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # ── Nginx + pre-built React/Three.js frontend ─────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Frontend/Dockerfile
+    image: sahilyousafp/urban-abm-frontend:latest
+    ports:
+      - "8091:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── Optional local Ollama LLM ─────────────────────────────────────────────
+  # Activate with:  docker compose --profile ollama up
+  # Then pull a model (one-time):  docker exec ollama ollama pull llama3.1
+  # Set in .env:   LLM_PROVIDER=ollama
+  #                LLM_BASE_URL=http://ollama:11434/v1
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ollama"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  ollama_models:
