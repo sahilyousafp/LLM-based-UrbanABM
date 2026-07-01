@@ -11,7 +11,7 @@ Sahil Yousaf | Shajay Bhooshan — MaAI02, Institute for Advanced Architecture o
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 <p align="center">
-  <img src="docs/images/presentation/slide_13_img_1.gif" alt="CityMind — Multi-agent simulation running on Barcelona Eixample" width="100%">
+  <img src="Documentation/readme_images/slide_13_img_1.gif" alt="CityMind — Multi-agent simulation running on Barcelona Eixample" width="100%">
 </p>
 
 ---
@@ -72,9 +72,9 @@ Set in Barcelona's Eixample district, the system models pedestrian archetypes �
 ### Generative Agents (Simulacra)
 
 <p align="center">
-  <img src="docs/images/presentation/slide_05_img_1.png" alt="Generative Agents — Simulacra environment" width="48%">
+  <img src="Documentation/readme_images/slide_05_img_1.png" alt="Generative Agents — Simulacra environment" width="48%">
   &nbsp;
-  <img src="docs/images/presentation/slide_05_img_2.png" alt="Generative Agents — Agent interactions" width="48%">
+  <img src="Documentation/readme_images/slide_05_img_2.png" alt="Generative Agents — Agent interactions" width="48%">
 </p>
 
 - 25 LLM-powered agents with manually written personas
@@ -86,7 +86,7 @@ Set in Barcelona's Eixample district, the system models pedestrian archetypes �
 ### CitySim
 
 <p align="center">
-  <img src="docs/images/presentation/slide_07_img_3.png" alt="CitySim — Activity Planning, Social Interactions, Mobility Prediction" width="60%">
+  <img src="Documentation/readme_images/slide_07_img_3.png" alt="CitySim — Activity Planning, Social Interactions, Mobility Prediction" width="60%">
 </p>
 
 Simulated movement in the city of Shibuya, Tokyo — based on preferences of spaces with respect to Google Map ratings and verified databases. Jumps from preferences of spaces with respect to profile descriptions and a daily planning module.
@@ -108,19 +108,19 @@ CityMind addresses these gaps by combining **traceable spatial movement** on rea
 The knowledge layer provides three data sources that ground agent behavior in real-world urban context.
 
 <p align="center">
-  <img src="docs/images/presentation/slide_18_img_1.jpg" alt="Map panel — Street View extraction with Overture Maps data sources" width="100%">
+  <img src="Documentation/readme_images/slide_18_img_1.jpg" alt="Map panel — Street View extraction with Overture Maps data sources" width="100%">
 </p>
 
 ### 1. Map Data
 
 <p align="center">
-  <img src="docs/images/presentation/slide_20_img_1.gif" alt="Map data — pedestrian network over Barcelona Eixample" width="100%">
+  <img src="Documentation/readme_images/slide_20_img_1.gif" alt="Map data — pedestrian network over Barcelona Eixample" width="100%">
 </p>
 
 **Case Study: Eixample, Barcelona**
 
 <p align="center">
-  <img src="docs/images/presentation/slide_23_img_2.jpg" alt="Barcelona Eixample — walkability grid" width="40%">
+  <img src="Documentation/readme_images/slide_23_img_2.jpg" alt="Barcelona Eixample — walkability grid" width="40%">
 </p>
 
 Qualities that make Eixample ideal for pedestrian simulation:
@@ -134,7 +134,7 @@ Data sourced from **Overture Maps** (via BigQuery) — chosen over OSM due to OS
 ### 2. Vision Data
 
 <p align="center">
-  <img src="docs/images/presentation/slide_25_img_1.gif" alt="Street View imagery extraction across the grid" width="100%">
+  <img src="Documentation/readme_images/slide_25_img_1.gif" alt="Street View imagery extraction across the grid" width="100%">
 </p>
 
 Street-level imagery captured at regular intervals across the pedestrian network. 308 existing viewpoints at 70m spacing provide visual context for agent perception — each point stores a panoramic street view that agents "see" when passing nearby.
@@ -142,9 +142,9 @@ Street-level imagery captured at regular intervals across the pedestrian network
 ### 3. Vision Analysis (VLM)
 
 <p align="center">
-  <img src="docs/images/presentation/slide_28_img_1.gif" alt="VLM comparison — analyzing street scenes" width="48%">
+  <img src="Documentation/readme_images/slide_28_img_1.gif" alt="VLM comparison — analyzing street scenes" width="48%">
   &nbsp;
-  <img src="docs/images/presentation/slide_30_img_1.gif" alt="VLM comparison — Qwen3 VL 8B selected" width="48%">
+  <img src="Documentation/readme_images/slide_30_img_1.gif" alt="VLM comparison — Qwen3 VL 8B selected" width="48%">
 </p>
 
 Multiple Vision Language Models were compared for structured scene analysis:
@@ -156,9 +156,9 @@ Multiple Vision Language Models were compared for structured scene analysis:
   - Repetition (flagged and rerouted for unknown values)
 
 <p align="center">
-  <img src="docs/images/presentation/slide_31_img_3.jpg" alt="VLM issues — 4 attempts to populate 7 features" width="48%">
+  <img src="Documentation/readme_images/slide_31_img_3.jpg" alt="VLM issues — 4 attempts to populate 7 features" width="48%">
   &nbsp;
-  <img src="docs/images/presentation/slide_32_img_3.jpg" alt="VLM issues — echo detection and reattempt" width="48%">
+  <img src="Documentation/readme_images/slide_32_img_3.jpg" alt="VLM issues — echo detection and reattempt" width="48%">
 </p>
 
 ---
@@ -168,9 +168,9 @@ Multiple Vision Language Models were compared for structured scene analysis:
 ### Profile & Daily Plan
 
 <p align="center">
-  <img src="docs/images/presentation/slide_40_img_1.png" alt="Personality editor — Tourist profile with daily plan" width="48%">
+  <img src="Documentation/readme_images/slide_40_img_1.png" alt="Personality editor — Tourist profile with daily plan" width="48%">
   &nbsp;
-  <img src="docs/images/presentation/slide_42_img_1.png" alt="Daily plan — time blocks with activity schedules" width="48%">
+  <img src="Documentation/readme_images/slide_42_img_1.png" alt="Daily plan — time blocks with activity schedules" width="48%">
 </p>
 
 Each agent archetype has a **profile** (personality, preferences, age, background) and a **daily plan** structured into time blocks:
@@ -186,13 +186,13 @@ The daily plan drives goal selection — each block specifies target amenity typ
 ### Mobility
 
 <p align="center">
-  <img src="docs/images/presentation/slide_45_img_1.gif" alt="Agent mobility — hybrid LLM + rule-based pathfinding" width="100%">
+  <img src="Documentation/readme_images/slide_45_img_1.gif" alt="Agent mobility — hybrid LLM + rule-based pathfinding" width="100%">
 </p>
 
 The mobility system uses a **hybrid approach**:
 
 <p align="center">
-  <img src="docs/images/presentation/slide_47_img_2.jpg" alt="Mobility system diagram — LLM driver with rule-based triggers" width="30%">
+  <img src="Documentation/readme_images/slide_47_img_2.jpg" alt="Mobility system diagram — LLM driver with rule-based triggers" width="30%">
 </p>
 
 | Component | Role |
@@ -213,7 +213,7 @@ Each agent runs four decision blocks per simulation step:
 ### Emotions
 
 <p align="center">
-  <img src="docs/images/presentation/slide_51_img_1.jpg" alt="Single Agent Lab — emotion mix, cognition, perception, street view" width="100%">
+  <img src="Documentation/readme_images/slide_51_img_1.jpg" alt="Single Agent Lab — emotion mix, cognition, perception, street view" width="100%">
 </p>
 
 The emotion system operates on two timescales:
@@ -239,7 +239,7 @@ The emotion system operates on two timescales:
 **Thought Stream & Perception:**
 
 <p align="center">
-  <img src="docs/images/presentation/slide_52_img_1.jpg" alt="Emotion and needs modules detail" width="48%">
+  <img src="Documentation/readme_images/slide_52_img_1.jpg" alt="Emotion and needs modules detail" width="48%">
 </p>
 
 Agents perceive nearby amenities within a 50m radius. The nearest JSON point provides spatial context — amenity types, descriptions, and vision analysis data — that feeds into the thought stream. The thought stream records mobility decisions, amenity interactions, and perception events categorized by time of day (morning, afternoon, evening, night).
@@ -247,7 +247,7 @@ Agents perceive nearby amenities within a 50m radius. The nearest JSON point pro
 ### LLM Selection
 
 <p align="center">
-  <img src="docs/images/presentation/slide_56_img_1.png" alt="EQ-Bench v2 — Emotional Intelligence Score comparison" width="80%">
+  <img src="Documentation/readme_images/slide_56_img_1.png" alt="EQ-Bench v2 — Emotional Intelligence Score comparison" width="80%">
 </p>
 
 LLM selection was guided by the **EQ-Bench V2 Emotional Intelligence Score** (Paech, 2024):
@@ -451,19 +451,19 @@ Residents are the only archetype with **long-term memory consolidation** — the
 ### Data Storage
 
 <p align="center">
-  <img src="docs/images/presentation/slide_68_img_1.gif" alt="Data storage — DuckDB spatial database" width="100%">
+  <img src="Documentation/readme_images/slide_68_img_1.gif" alt="Data storage — DuckDB spatial database" width="100%">
 </p>
 
 **Choice: DuckDB** — single-file database with easy scalability and native spatial extension support. Stores buildings, roads, amenities, pedestrian network, and VLM analysis results.
 
 <p align="center">
-  <img src="docs/images/presentation/slide_69_img_2.png" alt="DuckDB schema overview" width="60%">
+  <img src="Documentation/readme_images/slide_69_img_2.png" alt="DuckDB schema overview" width="60%">
 </p>
 
 ### LLM Engine
 
 <p align="center">
-  <img src="docs/images/presentation/slide_74_img_1.png" alt="LLM Engine architecture — Ollama, vLLM, LMDeploy, SGLang comparison" width="80%">
+  <img src="Documentation/readme_images/slide_74_img_1.png" alt="LLM Engine architecture — Ollama, vLLM, LMDeploy, SGLang comparison" width="80%">
 </p>
 
 The engine supports two modes:
@@ -486,21 +486,21 @@ The engine supports two modes:
 ### Tourist Simulation — 25 Agents, 4,751 Steps
 
 <p align="center">
-  <img src="docs/images/presentation/slide_78_img_1.png" alt="25 Tourist agents — full trajectory traces color-coded by emotion" width="100%">
+  <img src="Documentation/readme_images/slide_78_img_1.png" alt="25 Tourist agents — full trajectory traces color-coded by emotion" width="100%">
 </p>
 
 #### Amenities Only vs Vision + Amenities
 
 <p align="center">
-  <img src="docs/images/presentation/slide_59_img_1.gif" alt="Simulation — amenities only mode" width="48%">
+  <img src="Documentation/readme_images/slide_59_img_1.gif" alt="Simulation — amenities only mode" width="48%">
   &nbsp;
-  <img src="docs/images/presentation/slide_60_img_1.gif" alt="Simulation — vision + amenities mode" width="48%">
+  <img src="Documentation/readme_images/slide_60_img_1.gif" alt="Simulation — vision + amenities mode" width="48%">
 </p>
 
 #### Coverage Density
 
 <p align="center">
-  <img src="docs/images/presentation/slide_79_img_1.png" alt="Tourist coverage density — concentrated around Placa Catalunya, Casa Batllo, Casa de Punxes" width="100%">
+  <img src="Documentation/readme_images/slide_79_img_1.png" alt="Tourist coverage density — concentrated around Placa Catalunya, Casa Batllo, Casa de Punxes" width="100%">
 </p>
 
 Key landmarks attracting tourist agent density: **Placa Catalunya**, **Casa de Punxes**, **Muñoz Ramonet Gardens**, **Casa Batllo**.
@@ -508,18 +508,18 @@ Key landmarks attracting tourist agent density: **Placa Catalunya**, **Casa de P
 #### Emotion Heatmaps
 
 <p align="center">
-  <img src="docs/images/presentation/slide_80_img_1.png" alt="Excitement heatmap — concentrated around landmarks" width="48%">
+  <img src="Documentation/readme_images/slide_80_img_1.png" alt="Excitement heatmap — concentrated around landmarks" width="48%">
   &nbsp;
-  <img src="docs/images/presentation/slide_81_img_1.png" alt="Stress heatmap — repetitive environment zones" width="48%">
+  <img src="Documentation/readme_images/slide_81_img_1.png" alt="Stress heatmap — repetitive environment zones" width="48%">
 </p>
 <p align="center">
   <em>Left: Excitement — concentrated around landmarks &nbsp;&nbsp;|&nbsp;&nbsp; Right: Stress — repetitive environment zones</em>
 </p>
 
 <p align="center">
-  <img src="docs/images/presentation/slide_82_img_1.png" alt="Boredom heatmap — repetitive grid areas" width="48%">
+  <img src="Documentation/readme_images/slide_82_img_1.png" alt="Boredom heatmap — repetitive grid areas" width="48%">
   &nbsp;
-  <img src="docs/images/presentation/slide_83_img_1.png" alt="Boredom heatmap — wider view with sidebar" width="48%">
+  <img src="Documentation/readme_images/slide_83_img_1.png" alt="Boredom heatmap — wider view with sidebar" width="48%">
 </p>
 <p align="center">
   <em>Boredom — repetitive environments trigger disengagement</em>
@@ -622,7 +622,7 @@ LLM_CALLS_PER_STEP=0
 ### Character Selection
 
 <p align="center">
-  <img src="docs/images/presentation/slide_14_img_1.png" alt="Pick your character — Resident, Commuter, Tourist, Student, Build Yourself" width="100%">
+  <img src="Documentation/readme_images/slide_14_img_1.png" alt="Pick your character — Resident, Commuter, Tourist, Student, Build Yourself" width="100%">
 </p>
 
 Choose from five agent archetypes — Resident, Commuter, Tourist, Student — or create your own custom archetype. Each character has a 3D model preview and distinct personality traits.
@@ -630,7 +630,7 @@ Choose from five agent archetypes — Resident, Commuter, Tourist, Student — o
 ### Personality Editor
 
 <p align="center">
-  <img src="docs/images/presentation/slide_40_img_1.png" alt="Archetype personality editor — Tourist profile with daily plan" width="100%">
+  <img src="Documentation/readme_images/slide_40_img_1.png" alt="Archetype personality editor — Tourist profile with daily plan" width="100%">
 </p>
 
 Edit agent archetypes — name, age, preferences, and daily activity schedules. Each archetype defines how the LLM reasons about movement decisions. A 3D character preview shows the agent model.
@@ -638,7 +638,7 @@ Edit agent archetypes — name, age, preferences, and daily activity schedules. 
 ### Single Agent Lab
 
 <p align="center">
-  <img src="docs/images/presentation/slide_51_img_1.jpg" alt="Single agent lab — emotion mix, cognition, needs, street view perception" width="100%">
+  <img src="Documentation/readme_images/slide_51_img_1.jpg" alt="Single agent lab — emotion mix, cognition, needs, street view perception" width="100%">
 </p>
 
 Place a single agent with start/target locations and watch it navigate step-by-step. Inspect its emotion mix (pie chart), cognition state (mood, curiosity, fatigue), needs bars (hunger, energy, social, comfort), and what it "sees" through Street View perception. Record sessions for replay.
@@ -646,7 +646,7 @@ Place a single agent with start/target locations and watch it navigate step-by-s
 ### Map & Data Panel
 
 <p align="center">
-  <img src="docs/images/presentation/slide_23_img_1.jpg" alt="Map panel — Street View extraction with Overture Maps download and data sources" width="100%">
+  <img src="Documentation/readme_images/slide_23_img_1.jpg" alt="Map panel — Street View extraction with Overture Maps download and data sources" width="100%">
 </p>
 
 Mapbox GL map with toggleable layers: building footprints, pedestrian walk network, amenity points, Street View analysis grid, and real-time agent positions. Includes Overture Maps zone download, Street View extraction controls, VLM analysis triggers, and external data source management (GTFS transit, custom data, weather).
@@ -654,7 +654,7 @@ Mapbox GL map with toggleable layers: building footprints, pedestrian walk netwo
 ### Recording & Analysis
 
 <p align="center">
-  <img src="docs/images/presentation/slide_78_img_1.png" alt="Recording analysis — 25 agent trajectories with emotion coloring and analytics" width="100%">
+  <img src="Documentation/readme_images/slide_78_img_1.png" alt="Recording analysis — 25 agent trajectories with emotion coloring and analytics" width="100%">
 </p>
 
 Post-simulation analysis dashboard showing all agent trajectories color-coded by emotional state, with timeline scrubbing and analytics panels for mood evolution, curiosity/fatigue tracking, and needs decay over the full simulation run.
